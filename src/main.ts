@@ -12,6 +12,7 @@ import i18n from './i18n';
 import router from '@/router';
 import 'tailwindcss/tailwind.css';
 import 'ant-design-vue/dist/reset.css';
+import '@/assets/font/fonts.css';
 
 async function bootstrap() {
   const app = createApp(App);

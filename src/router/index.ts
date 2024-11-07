@@ -9,7 +9,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/main',
     name: 'Main',
-    component: () => import('@/pages/index.vue'),
+    component: () => import('@/pages/bigScreen/index.vue'),
     // meta: { title: "社保应用" },
   },
   {
