@@ -1,7 +1,7 @@
 <template>
   <div class="finishedProduct absolute text-white">
     <a-flex justify="center" align="center">
-      <div class="title absolute left-0 top-0">
+      <div class="title absolute left-0 top-0 flex items-center">
         <span class="no m-x-10px">04</span>
         <span class="ml-10 text-[1.5em] color-[#CFDEF1]">成品证本收集</span>
       </div>
@@ -31,12 +31,12 @@
 
 <style scoped lang="less">
 .finishedProduct {
-  background-image: url('../../assets/image/bigScreen/finishedProductBg.png');
+  background-image: url('@/assets/image/bigScreen/finishedProductBg.png');
   background-size: 100% 100%;
   background-repeat: 'no-repeat';
 
   .title {
-    height: 3.5em;
+    height: 3em;
     width: 100%;
     .no {
       font-size: 2.5em;

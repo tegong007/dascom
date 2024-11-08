@@ -81,7 +81,7 @@ import type { NotificationPlacement } from 'ant-design-vue';
 import { notification } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { useAppStore } from '../../store/index';
-import InfoLog from '@/pages/Info/index.vue';
+import InfoLog from '@/pages/Module/info.vue';
 import { getDocStatus, getLineRun } from '@/apis/webApi';
 import { throttle } from '@/utils/throttle.js';
 

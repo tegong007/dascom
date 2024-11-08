@@ -1,6 +1,14 @@
 <template>
   <div class="bg h-100vh text-[18px] text-white">
-    <a-row class="relative top-6em h-23em p-l-3em p-r-1.5em" :gutter="[8, 0]">
+    <a-flex
+      justify="space-between"
+      align="center"
+      class="p-x-5em p-t-0.4em text-[1.3em] color-[#CFDEF1]"
+    >
+      <span class="relative">网络状态:xxx</span>
+      <span class="relative">{{ currentTime }}</span>
+    </a-flex>
+    <a-row class="relative top-4em h-23em p-l-3em p-r-1.5em" :gutter="[8, 0]">
       <a-col flex="1">
         <FinishedProductBg class="wh-full" />
       </a-col>
@@ -18,39 +26,49 @@
         </a-row>
       </a-col>
     </a-row>
+    <div class="absolute bottom-0 h5em w-full flex items-center justify-center">
+      <div
+        class="setBtn h-7em w-12em transition-transform duration-300 hover:scale-115"
+        @click="goto('SetPage')"
+      />
+      <div class="maintainBtn h-7em w-12em transition-transform duration-300 hover:scale-115" />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import FinishedProductBg from './finishedProduct.vue';
-import AddMore from './addMore.vue';
-import Print from './printPage.vue';
-import Start from './startPage.vue';
-// function formatDateTime() {
-//   const now = new Date();
-//   const year = now.getFullYear(); // 获取年份
-//   const month = now.getMonth() + 1; // 获取月份，月份从0开始，所以需要+1
-//   const day = now.getDate(); // 获取日
-//   const hours = now.getHours(); // 获取小时
-//   const minutes = now.getMinutes(); // 获取分钟
-//   const seconds = now.getSeconds(); // 获取分钟
+import FinishedProductBg from './module/finishedProduct.vue';
+import AddMore from './module/addMore.vue';
+import Print from './module/printPage.vue';
+import Start from './module/startPage.vue';
+import { formatDateTime } from '@/utils/time'; // 确保路径正确
+import router from '@/router/index.ts';
 
-//   // 使用padStart方法确保月份和日期始终是两位数
-//   const formattedMonth = month.toString().padStart(2, "0");
-//   const formattedDay = day.toString().padStart(2, "0");
-//   const formattedHours = hours.toString().padStart(2, "0");
-//   const formattedMinutes = minutes.toString().padStart(2, "0");
-//   const formattedSeconds = seconds.toString().padStart(2, "0");
-
-//   // 拼接成指定格式
-//   const formattedDateTime = `${year}-${formattedMonth}-${formattedDay} ${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
-//   return formattedDateTime;
-// }
+const currentTime = ref('');
+setInterval(() => {
+  currentTime.value = formatDateTime();
+}, 1000);
+function goto(page: string) {
+  router.push({ name: page });
+}
 </script>
 
-<style scoped lang="less">
+<style lang="less">
+.siyuan {
+  font-family: 'siyuan';
+}
 .bg {
   background-image: url('../../assets/image/bigScreen/bg.png');
+  background-size: 100% 100%;
+  background-repeat: 'no-repeat';
+}
+.setBtn {
+  background-image: url('../../assets/image/bigScreen/setBtn.png');
+  background-size: 100% 100%;
+  background-repeat: 'no-repeat';
+}
+.maintainBtn {
+  background-image: url('../../assets/image/bigScreen/maintain.png');
   background-size: 100% 100%;
   background-repeat: 'no-repeat';
 }

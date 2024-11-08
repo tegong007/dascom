@@ -90,7 +90,7 @@
 import type { NotificationPlacement } from 'ant-design-vue';
 import { notification } from 'ant-design-vue';
 import { useAppStore } from '../../store/index';
-import InfoLog from '../info/index.vue';
+import InfoLog from './info.vue';
 import TheHeader from '@/components/TheHeader.vue';
 import TheModal from '@/components/TheModal.vue';
 import { getDocStatus, startOrStopPrintTask } from '@/apis/webApi';
