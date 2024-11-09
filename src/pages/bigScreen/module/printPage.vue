@@ -3,7 +3,7 @@
     <a-flex justify="center" align="center">
       <div class="title absolute left-0 top-0 flex items-center">
         <span class="no m-x-0.3em">02</span>
-        <span class="ml-10 text-[1.5em] color-[#CFDEF1]">主副业打印</span>
+        <span class="ml-10 text-[1.5em] color-[#CFDEF1]">主副页打印</span>
       </div>
       <div class="sum absolute top-[3.5em] w-90% flex">
         <div v-for="(item, index) in items" :key="index" class="flex-1">

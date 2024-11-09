@@ -1,5 +1,6 @@
 <template>
   <div class="bg h-100vh text-[18px] text-white">
+    <bigScreenHeader />
     <a-flex
       justify="space-between"
       align="center"
@@ -44,6 +45,7 @@ import FinishedProductBg from './module/finishedProduct.vue';
 import AddMore from './module/addMore.vue';
 import Print from './module/printPage.vue';
 import Start from './module/startPage.vue';
+import bigScreenHeader from '@/components/bigScreen/header.vue';
 import { formatDateTime } from '@/utils/time'; // 确保路径正确
 import router from '@/router/index.ts';
 
