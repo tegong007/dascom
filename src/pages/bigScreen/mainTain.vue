@@ -13,7 +13,12 @@
                   {{ item.name }}
                 </div>
                 <div class="good-num text-[5em]">
-                  {{ item.num }}
+                  <CountTo
+                    :start-val="0"
+                    separator
+                    :end-val="item.num"
+                    :duration="Math.floor(Math.random() * 2000) + 1000"
+                  />
                 </div>
               </div>
             </div>

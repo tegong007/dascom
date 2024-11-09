@@ -11,7 +11,7 @@
             良本证本数量
           </div>
           <div class="good-num mt10">
-            13
+            <CountTo :start-val="0" separator :end-val="13" :duration="1000" />
           </div>
         </div>
         <div class="flex flex-col flex-1 items-center">
@@ -19,7 +19,7 @@
             費本证本数量
           </div>
           <div class="good-num mt10">
-            13
+            <CountTo :start-val="0" separator :end-val="13" :duration="1500" />
           </div>
         </div>
       </div>

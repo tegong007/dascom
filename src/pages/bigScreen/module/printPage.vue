@@ -48,33 +48,47 @@
 <script setup lang="ts">
 import SeamlessScroll from '../../../components/seamless-scroll.vue';
 
-const items = [
+// 使用ref创建响应式数据
+const items = ref([
   {
     name: 'Y色余量',
-    num: '13',
-    status: 'normal',
+    num: 13,
+    status: 'error',
   },
   {
     name: 'M色余量',
-    num: '14',
+    num: 14,
     status: 'normal',
   },
   {
     name: 'C色余量',
-    num: '26',
-    status: 'normal',
+    num: 26,
+    status: 'warning',
   },
   {
     name: 'K色余量',
-    num: '31',
+    num: 31,
     status: 'normal',
   },
   {
     name: '光油余量',
-    num: '48',
+    num: 48,
     status: 'normal',
   },
-];
+]);
+
+function updateNums() {
+  items.value.forEach((item) => {
+    // 随机增加1到5之间的数
+    item.num += Math.floor(Math.random() * 5) + 1;
+    // 确保num不超过99
+    if (item.num > 99) {
+      item.num = 0;
+    }
+  });
+}
+// 设置定时器，每隔1秒执行一次updateNums函数
+setInterval(updateNums, 5000);
 
 const periodDataList = ref<any>([]);
 

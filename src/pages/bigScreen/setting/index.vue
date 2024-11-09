@@ -18,21 +18,11 @@
             </a-radio-button>
           </a-radio-group>
         </div>
-        <div class="h-full flex flex-1 border-l-[4px] border-[#3F89DD]">
-          <!-- <Transfer v-if="currentModel === 'test'" />
-          <ModalForm
-            v-else
-            :current-model="currentModel"
-            :options-data="getarrJson(currentModel)"
-          />
-        </div> -->
-          <StartSet />
+        <div class="h-full flex flex-col flex-1 border-l-[4px] border-[#3F89DD]">
+          <Process />
+          <Reader />
+          <TrunLine />
         </div>
-        <!-- <div class="flex items-center justify-center">
-          <a-button size="large" @click="goHome">
-            {{ $t("moduleTest.gohomeBtn") }}
-          </a-button>
-        </div> -->
       </div>
     </div>
     <div class="absolute top-2em h6em w-full flex items-center justify-center">
@@ -50,7 +40,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import StartSet from '@/pages/bigScreen/setting/startSet.vue';
+import Process from '@/pages/bigScreen/setting/startSet/process.vue';
+import Reader from '@/pages/bigScreen/setting/startSet/reader.vue';
+import TrunLine from '@/pages/bigScreen/setting/startSet/turnline.vue';
 import router from '@/router/index.ts';
 
 // const { t } = useI18n();
@@ -79,7 +71,7 @@ function goto(page: string) {
   height: calc(100vh - 66px);
 }
 .bg {
-  background-image: url('../../assets/image/bigScreen/bg-none.png');
+  background-image: url('@/assets/image/bigScreen/bg-none.png');
   background-size: 100% 100%;
   background-repeat: 'no-repeat';
   .bg-color {
@@ -92,7 +84,7 @@ function goto(page: string) {
   }
 }
 .returnBtn {
-  background-image: url('../../assets/image/bigScreen/returnBtn.png');
+  background-image: url('@/assets/image/bigScreen/returnBtn.png');
   background-size: 100% 100%;
   background-repeat: 'no-repeat';
 }

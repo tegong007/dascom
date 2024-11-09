@@ -40,6 +40,7 @@
     "axios": "^1.6.7",
     "electron-icon-builder": "^2.0.1",
     "vue-i18n": "9.9.0",
+    "vue3-count-to": "^1.1.2",
     "vue3-seamless-scroll": "^2.0.1"
   },
   "devDependencies": {

@@ -15,7 +15,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'setPage', // 子路由的路径，相对于父路由的路径
         name: 'SetPage',
-        component: RouterReplaceComp(() => import('../pages/bigScreen/setPage.vue')),
+        component: RouterReplaceComp(() => import('../pages/bigScreen/setting/index.vue')),
       },
       {
         path: 'mainTain', // 另一个子路由的路径

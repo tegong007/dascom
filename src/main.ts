@@ -4,6 +4,7 @@ import 'uno.css';
 
 import { createApp } from 'vue';
 import Antd from 'ant-design-vue';
+import { CountTo } from 'vue3-count-to';
 import App from './App.vue';
 import { setupStore } from './store';
 import { setupNaiveDiscreteApi } from './utils';
@@ -20,6 +21,7 @@ async function bootstrap() {
   app.use(i18n);
   app.use(Antd);
   app.use(router);
+  app.component('CountTo', CountTo);
   // await setupRouter(app);
   app.mount('#app').$nextTick(() => {
     postMessage({ payload: 'removeLoading' }, '*');
