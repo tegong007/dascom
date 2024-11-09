@@ -18,7 +18,13 @@
               {{ item.name }}
             </div>
             <div class="good-num mt8">
-              {{ item.num }}%
+              <CountTo
+                :start-val="0"
+                separator
+                :end-val="item.num"
+                suffix="%"
+                :duration="Math.floor(Math.random() * 2000) + 1000"
+              />
             </div>
           </div>
         </div>
@@ -48,13 +54,13 @@
 <script setup lang="ts">
 import SeamlessScroll from '../../../components/seamless-scroll.vue';
 
-const items = [
+const items = ref([
   {
     name: '空白本余量',
-    num: '13',
+    num: 13,
     status: 'normal',
   },
-];
+]);
 const periodDataList = ref<any>([
   {
     dateTime: '2022-05-03',
@@ -121,6 +127,19 @@ const periodDataList = ref<any>([
     bl: '10%',
   },
 ]);
+
+function updateNums() {
+  items.value.forEach((item) => {
+    // 随机增加1到5之间的数
+    item.num += Math.floor(Math.random() * 5) + 1;
+    // 确保num不超过99
+    if (item.num > 99) {
+      item.num = 0;
+    }
+  });
+}
+// 设置定时器，每隔1秒执行一次updateNums函数
+setInterval(updateNums, 5000);
 </script>
 
 <style scoped lang="less">

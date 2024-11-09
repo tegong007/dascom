@@ -18,7 +18,13 @@
               {{ item.name }}
             </div>
             <div class="good-num mt8">
-              {{ item.num }}%
+              <CountTo
+                :start-val="0"
+                separator
+                :end-val="item.num"
+                suffix="%"
+                :duration="Math.floor(Math.random() * 2000) + 1000"
+              />
             </div>
           </div>
         </div>
