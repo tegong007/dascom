@@ -55,9 +55,9 @@ import router from '@/router/index.ts';
 
 // const { t } = useI18n();
 definePage({
-  name: 'TestModal',
+  name: 'SetPage',
   meta: {
-    title: '测试页',
+    title: '设置页',
   },
 });
 const currentModel = ref<string>('test');

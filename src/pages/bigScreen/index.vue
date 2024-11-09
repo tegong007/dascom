@@ -31,7 +31,10 @@
         class="setBtn h-7em w-12em transition-transform duration-300 hover:scale-115"
         @click="goto('SetPage')"
       />
-      <div class="maintainBtn h-7em w-12em transition-transform duration-300 hover:scale-115" />
+      <div
+        class="maintainBtn h-7em w-12em transition-transform duration-300 hover:scale-115"
+        @click="goto('MainTain')"
+      />
     </div>
   </div>
 </template>

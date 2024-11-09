@@ -19,13 +19,12 @@ declare module 'vue-router/auto-routes' {
    */
   export interface RouteNamedMap {
     '/bigScreen/': RouteRecordInfo<'/bigScreen/', '/bigScreen', Record<never, never>, Record<never, never>>,
-    '/bigScreen/mainTain': RouteRecordInfo<'/bigScreen/mainTain', '/bigScreen/mainTain', Record<never, never>, Record<never, never>>,
+    'MainTain': RouteRecordInfo<'MainTain', '/bigScreen/mainTain', Record<never, never>, Record<never, never>>,
     '/bigScreen/module/addMore': RouteRecordInfo<'/bigScreen/module/addMore', '/bigScreen/module/addMore', Record<never, never>, Record<never, never>>,
     '/bigScreen/module/finishedProduct': RouteRecordInfo<'/bigScreen/module/finishedProduct', '/bigScreen/module/finishedProduct', Record<never, never>, Record<never, never>>,
     '/bigScreen/module/printPage': RouteRecordInfo<'/bigScreen/module/printPage', '/bigScreen/module/printPage', Record<never, never>, Record<never, never>>,
     '/bigScreen/module/startPage': RouteRecordInfo<'/bigScreen/module/startPage', '/bigScreen/module/startPage', Record<never, never>, Record<never, never>>,
-    '/bigScreen/printPage': RouteRecordInfo<'/bigScreen/printPage', '/bigScreen/printPage', Record<never, never>, Record<never, never>>,
-    'TestModal': RouteRecordInfo<'TestModal', '/bigScreen/setPage', Record<never, never>, Record<never, never>>,
+    'SetPage': RouteRecordInfo<'SetPage', '/bigScreen/setPage', Record<never, never>, Record<never, never>>,
     '/bigScreen/setting/startSet': RouteRecordInfo<'/bigScreen/setting/startSet', '/bigScreen/setting/startSet', Record<never, never>, Record<never, never>>,
     'Main': RouteRecordInfo<'Main', '/Module', Record<never, never>, Record<never, never>>,
     'TestModal': RouteRecordInfo<'TestModal', '/Module/indexPage', Record<never, never>, Record<never, never>>,
