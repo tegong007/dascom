@@ -6,8 +6,8 @@
       align="center"
       class="p-x-5em p-t-0.4em text-[1.3em] color-[#CFDEF1]"
     >
-      <span class="relative">网络状态:xxx</span>
-      <span class="relative">{{ currentTime }}</span>
+      <span class="light relative">网络状态:xxx</span>
+      <span class="light relative">{{ currentTime }}</span>
     </a-flex>
     <a-row class="relative top-4em h-23em p-l-3em p-r-1.5em" :gutter="[8, 0]">
       <a-col flex="1">
@@ -66,6 +66,9 @@ function goto(page: string) {
   background-image: url('../../assets/image/bigScreen/bg.png');
   background-size: 100% 100%;
   background-repeat: 'no-repeat';
+  .light {
+    text-shadow: 0px 0px 8px #ffffff;
+  }
 }
 .setBtn {
   background-image: url('../../assets/image/bigScreen/setBtn.png');

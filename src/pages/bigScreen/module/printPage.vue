@@ -3,7 +3,7 @@
     <a-flex justify="center" align="center">
       <div class="absolute left-0 top-0 h-3em w100% flex items-center">
         <span class="m-x-0.3em text-2.5em font-[youshe]">02</span>
-        <span class="ml-10 text-[1.5em] color-[#CFDEF1]">主副页打印</span>
+        <span class="title ml-10 text-[1.5em] color-[#CFDEF1]">主副页打印</span>
       </div>
       <div class="absolute top-[3.5em] h-[4.8em] w-90% flex">
         <div v-for="(item, index) in items" :key="index" class="flex-1">
@@ -52,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import SeamlessScroll from '../../../components/seamless-scroll.vue';
+import SeamlessScroll from '@/components/bigScreen/seamless-scroll.vue';
 
 // 使用ref创建响应式数据
 const items = ref([

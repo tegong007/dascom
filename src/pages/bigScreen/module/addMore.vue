@@ -2,7 +2,7 @@
   <div class="addMore text-[18px] text-white">
     <a-flex justify="center" align="center">
       <div class="absolute left-0 top-0 h-3em w100% flex items-center">
-        <span class="m-x-0.4em text-2.5em font-[youehse]">03</span>
+        <span class="m-x-0.4em text-2.5em font-[youshe]">03</span>
         <span class="ml-10 text-[1.5em] color-[#CFDEF1]">加注打印</span>
       </div>
       <div class="absolute top-[3.5em] h-4.8em w-90% flex">
@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import SeamlessScroll from '../../../components/seamless-scroll.vue';
+import SeamlessScroll from '@/components/bigScreen/seamless-scroll.vue';
 
 const periodDataList = ref<any>([
   {

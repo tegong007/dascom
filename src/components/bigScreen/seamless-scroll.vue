@@ -94,7 +94,7 @@ const props = defineProps({
   // flex-wrap: wrap;
   text-align: center;
   width: 100%;
-  font-size: 14px;
+  font-size: 16px;
   .descr {
     padding: 2px 0;
     border-right: 3px solid #7ff3fd;

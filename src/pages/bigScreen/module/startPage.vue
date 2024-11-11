@@ -52,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import SeamlessScroll from '../../../components/seamless-scroll.vue';
+import SeamlessScroll from '@/components/bigScreen/seamless-scroll.vue';
 
 const items = ref([
   {
