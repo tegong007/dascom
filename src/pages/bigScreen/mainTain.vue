@@ -1,12 +1,13 @@
 <template>
   <div class="bg h-100vh w-full">
+    <bigScreenHeader />
     <div class="content wh-full flex flex-col text-white">
       <div
         class="bg-color m-x-4em m-t-7em box-border h-83% flex gap-2.5em border-[4px] border-[#3F89DD] p-3em"
       >
         <div class="contain-1 relative box-border flex flex-col flex-1 items-center p-2em">
           <span class="text-[2em] color-[#CFDEF1]">证本统计</span>
-          <div class="sum absolute top-[9em] w-90% flex">
+          <div class="absolute top-[9em] h-10em w-90% flex">
             <div v-for="(item, index) in items" :key="index" class="flex-1">
               <div class="h-full w-full flex flex-col items-center justify-between">
                 <div class="mt-5 text-[2em] color-[#CFDEF1]">
@@ -32,7 +33,7 @@
                 <div class="mt-5 text-[2em] color-[#CFDEF1]">
                   {{ item.name }}
                 </div>
-                <div class="good-num text-[5em]">
+                <div class="text-[5em] font-[youshe]">
                   {{ item.num }}
                 </div>
               </div>
@@ -56,6 +57,7 @@
 
 <script setup lang="ts">
 import router from '@/router/index.ts';
+import bigScreenHeader from '@/components/bigScreen/header.vue';
 
 definePage({
   name: 'MainTain',
@@ -71,24 +73,24 @@ function goto(page: string) {
 const items = [
   {
     name: '成本证本',
-    num: '13',
+    num: 13,
     status: 'error',
   },
   {
     name: '原始废本',
-    num: '14',
+    num: 14,
     status: 'normal',
   },
   {
     name: '打印废本',
-    num: '26',
+    num: 26,
     status: 'warning',
   },
 ];
 const haocai = [
   {
     name: '油量',
-    num: '13',
+    num: 50,
     status: 'error',
   },
 ];
@@ -109,13 +111,6 @@ const haocai = [
       rgba(255, 255, 255, 0.29) 33%,
       rgba(0, 142, 255, 0.29) 98%
     );
-    .sum {
-      // height: calc(100% - 3.5em);
-      height: 10em;
-      .good-num {
-        font-family: 'youshe';
-      }
-    }
   }
   .contain-1 {
     background-image: url('../../assets/image/bigScreen/main1.png');

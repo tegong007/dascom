@@ -1,5 +1,6 @@
 <template>
   <div class="bg h-100vh w-full">
+    <bigScreenHeader />
     <div class="content wh-full flex flex-col text-white">
       <div class="bg-color m-x-4em m-t-7em h-83% flex border-[4px] border-[#3F89DD]">
         <div class="h-full w-[10%] flex flex-col">
@@ -44,7 +45,7 @@ import Process from '@/pages/bigScreen/setting/startSet/process.vue';
 import Reader from '@/pages/bigScreen/setting/startSet/reader.vue';
 import TrunLine from '@/pages/bigScreen/setting/startSet/turnline.vue';
 import router from '@/router/index.ts';
-
+import bigScreenHeader from '@/components/bigScreen/header.vue';
 // const { t } = useI18n();
 definePage({
   name: 'SetPage',

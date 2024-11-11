@@ -46,7 +46,7 @@ import AddMore from './module/addMore.vue';
 import Print from './module/printPage.vue';
 import Start from './module/startPage.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
-import { formatDateTime } from '@/utils/time'; // 确保路径正确
+import { formatDateTime } from '@/utils/time';
 import router from '@/router/index.ts';
 
 const currentTime = ref('');

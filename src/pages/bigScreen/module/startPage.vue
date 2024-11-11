@@ -1,11 +1,11 @@
 <template>
   <div class="startPage text-[18px] text-white">
     <a-flex justify="center" align="center">
-      <div class="title absolute left-0 top-0 flex items-center">
-        <span class="no m-x-0.5em">01</span>
+      <div class="absolute left-0 top-0 h-3em w100% flex items-center">
+        <span class="m-x-0.5em text-2.5em font-[youshe]">01</span>
         <span class="ml-10 text-[1.5em] color-[#CFDEF1]">空白本余量</span>
       </div>
-      <div class="sum absolute top-[3.5em] w-90% flex">
+      <div class="absolute top-[3.5em] h-4.8em w-90% flex">
         <div v-for="(item, index) in items" :key="index" class="flex-1">
           <div
             :class="[
@@ -17,7 +17,7 @@
             <div class="mt-5 text-[1em] color-[#CFDEF1]">
               {{ item.name }}
             </div>
-            <div class="good-num mt8">
+            <div class="mt8 text-2em font-[youshe]">
               <CountTo
                 :start-val="0"
                 separator
@@ -147,22 +147,7 @@ setInterval(updateNums, 5000);
   background-image: url('@/assets/image/bigScreen/boxbg.png');
   background-size: 100% 100%;
   background-repeat: 'no-repeat';
-  .title {
-    height: 3em;
-    width: 100%;
-    .no {
-      font-size: 2.5em;
-      font-family: 'youshe';
-    }
-  }
-  .sum {
-    // height: calc(100% - 3.5em);
-    height: 4.8em;
-    .good-num {
-      font-size: 2em;
-      font-family: 'youshe';
-    }
-  }
+
   .table-data {
     height: calc(100% - 8.3em);
     .scroll-table {
