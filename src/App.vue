@@ -26,11 +26,7 @@ const indicator = h(LoadingOutlined, {
       },
     }"
   >
-    <a-spin
-      :spinning="appStore.spinning"
-      :indicator="indicator"
-      :tip="t('modal.loading')"
-    >
+    <a-spin :spinning="appStore.spinning" :indicator="indicator" :tip="t('modal.loading')">
       <router-view v-slot="{ Component, route: curRoute }">
         <KeepAlive>
           <component :is="Component" :key="curRoute.fullPath" />
@@ -52,6 +48,8 @@ const indicator = h(LoadingOutlined, {
     margin-top: -70px !important;
     margin-left: -100px !important;
   }
-  // color: blue;
+}
+::v-deep(.ant-spin-blur::after) {
+  background-color: rgba(0, 0, 0, 1);
 }
 </style>
