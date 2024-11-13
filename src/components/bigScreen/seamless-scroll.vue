@@ -2,7 +2,10 @@
   <div class="table-wrap w-full">
     <div class="titleContent w-full">
       <div class="tit">
-        位置
+        序号
+      </div>
+      <div class="tit">
+        证本ID
       </div>
       <div class="tit">
         状态
@@ -28,13 +31,16 @@
     >
       <div v-for="(item, i) in props.data" :key="i" class="countContent w-full">
         <div class="descr">
-          {{ item.shouldArriveNumber }}
+          {{ item.no }}
         </div>
         <div class="descr">
-          {{ item.actualAttendance }}
+          {{ item.certificateID }}
         </div>
         <div class="descr">
-          {{ item.endTime }}
+          {{ item.status }}
+        </div>
+        <div class="descr">
+          {{ item.time }}
         </div>
       </div>
     </Vue3SeamlessScroll>
@@ -77,16 +83,26 @@ const props = defineProps({
     text-align: center;
     border-right: 3px solid #7ff3fd;
     background: linear-gradient(229deg, rgba(144, 236, 255, 0.65) 0%, rgba(0, 106, 245, 0.06) 57%);
+    white-space: nowrap;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1; /* 限制在3行内 */
+    text-overflow: ellipsis; /* 超出部分显示为... */
     // border: 2px solid red;
+  }
+  .tit:first-child {
+    // border-right: none; /* 最后一个元素不显示右侧边框 */
+    flex: 0.5;
+  }
+  .tit:nth-child(2) {
+    flex: 1.2;
+  }
+  .tit:nth-child(3) {
+    flex: 1.5;
   }
   .tit:last-child {
     border-right: none; /* 最后一个元素不显示右侧边框 */
-    flex: 1.5;
-  }
-  .tit:nth-child(2) {
     flex: 2;
   }
-  /* 给中间的列设置更大的flex值 */
 }
 
 .countContent {
@@ -101,12 +117,25 @@ const props = defineProps({
     border-bottom: 3px solid #7ff3fd;
     flex: 1;
     background: rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+    white-space: nowrap;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1; /* 限制在3行内 */
+    text-overflow: ellipsis; /* 超出部分显示为... */
+  }
+  .descr:first-child {
+    // border-right: none; /* 最后一个元素不显示右侧边框 */
+    flex: 0.5;
+  }
+
+  .descr:nth-child(2) {
+    flex: 1.2;
+  }
+  .descr:nth-child(3) {
+    flex: 1.5;
   }
   .descr:last-child {
     border-right: none; /* 最后一个元素不显示右侧边框 */
-    flex: 1.5;
-  }
-  .descr:nth-child(2) {
     flex: 2;
   }
 }

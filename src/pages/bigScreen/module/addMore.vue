@@ -6,7 +6,7 @@
         <span class="ml-10 text-[1.5em] color-[#CFDEF1]">加注打印</span>
       </div>
       <div class="absolute top-[3.5em] h-4.8em w-90% flex">
-        <div v-for="(item, index) in items" :key="index" class="flex-1">
+        <div v-for="(item, index) in props.data.items" :key="index" class="flex-1">
           <div class="w-full flex flex-col items-center">
             <div class="mt-5 text-[1em] color-[#CFDEF1]">
               {{ item.name }}
@@ -29,7 +29,7 @@
             <span class="ml3">证件信息</span>
           </div>
           <div class="scroll-table w-full">
-            <SeamlessScroll :data="periodDataList" />
+            <SeamlessScroll :data="props.data.periodDataList" />
           </div>
         </div>
       </div>
@@ -40,113 +40,9 @@
 <script setup lang="ts">
 import SeamlessScroll from '@/components/bigScreen/seamless-scroll.vue';
 
-const periodDataList = ref<any>([
-  {
-    dateTime: '2022-05-03',
-    startTime: '2022-05-03',
-    endTime: '2022-05-03',
-    shouldArriveNumber: '1',
-    actualAttendance: '100',
-    bl: '10%',
-  },
-  {
-    dateTime: '2022-05-03',
-    startTime: '2022-05-03',
-    endTime: '2022-05-03',
-    shouldArriveNumber: '2',
-    actualAttendance: '200',
-    bl: '10%',
-  },
-  {
-    dateTime: '2022-05-03',
-    startTime: '2022-05-03',
-    endTime: '2022-05-03',
-    shouldArriveNumber: '3',
-    actualAttendance: '300',
-    bl: '10%',
-  },
-  {
-    dateTime: '2022-05-03',
-    startTime: '2022-05-03',
-    endTime: '2022-05-03',
-    shouldArriveNumber: '4',
-    actualAttendance: '400',
-    bl: '10%',
-  },
-  {
-    dateTime: '2022-05-03',
-    startTime: '2022-05-03',
-    endTime: '2022-05-03',
-    shouldArriveNumber: '5',
-    actualAttendance: '500',
-    bl: '10%',
-  },
-  {
-    dateTime: '2022-05-03',
-    startTime: '2022-05-03',
-    endTime: '2022-05-03',
-    shouldArriveNumber: '6',
-    actualAttendance: '600',
-    bl: '10%',
-  },
-  {
-    dateTime: '2022-05-03',
-    startTime: '2022-05-03',
-    endTime: '2022-05-03',
-    shouldArriveNumber: '7',
-    actualAttendance: '700',
-    bl: '10%',
-  },
-  {
-    dateTime: '2022-05-03',
-    startTime: '2022-05-03',
-    endTime: '2022-05-03',
-    shouldArriveNumber: '8',
-    actualAttendance: '800',
-    bl: '10%',
-  },
-]);
-// 使用ref创建响应式数据
-const items = ref([
-  {
-    name: 'Y色余量',
-    num: 13,
-    status: 'error',
-  },
-  {
-    name: 'M色余量',
-    num: 14,
-    status: 'normal',
-  },
-  {
-    name: 'C色余量',
-    num: 26,
-    status: 'warning',
-  },
-  {
-    name: 'K色余量',
-    num: 31,
-    status: 'normal',
-  },
-  {
-    name: '光油余量',
-    num: 48,
-    status: 'normal',
-  },
-]);
-
-function updateNums() {
-  items.value.forEach((item) => {
-    // 随机增加1到5之间的数
-    item.num += Math.floor(Math.random() * 5) + 1;
-    // 确保num不超过99
-    if (item.num > 99) {
-      item.num = 0;
-    }
-  });
-}
-// 设置定时器，每隔1秒执行一次updateNums函数
-setInterval(updateNums, 5000);
+const props = defineProps({
+  data: Object,
+});
 </script>
 
 <style scoped lang="less">

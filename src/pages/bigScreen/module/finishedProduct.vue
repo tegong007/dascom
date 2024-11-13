@@ -6,7 +6,7 @@
         <span class="ml-10 text-[1.5em] color-[#CFDEF1]">成品证本收集</span>
       </div>
       <div class="sum absolute top-[3.5em] w-full flex flex-col flex-1">
-        <div v-for="item in items" :key="item.name" class="flex flex-col flex-1 items-center">
+        <div v-for="item in props.data" :key="item.name" class="flex flex-col flex-1 items-center">
           <div class="mt-10 text-[1.5em] color-[#CFDEF1]">
             {{ item.name }}
           </div>
@@ -21,32 +21,10 @@
 
 <script setup lang="ts">
 import { CountTo } from 'vue3-count-to';
-// 使用ref创建响应式数据
-const items = ref([
-  {
-    name: '良本证本数量',
-    num: 13,
-    status: 'error',
-  },
-  {
-    name: '費本证本数量',
-    num: 14,
-    status: 'normal',
-  },
-]);
 
-function updateNums() {
-  items.value.forEach((item) => {
-    // 随机增加1到5之间的数
-    item.num += Math.floor(Math.random() * 5) + 1;
-    // 确保num不超过99
-    if (item.num > 99) {
-      item.num = 0;
-    }
-  });
-}
-// 设置定时器，每隔1秒执行一次updateNums函数
-setInterval(updateNums, 5000);
+const props = defineProps({
+  data: Array,
+});
 </script>
 
 <style scoped lang="less">
