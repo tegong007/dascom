@@ -39,7 +39,7 @@ export function initMachine(data: any) {
   return request.post(api, data);
 }
 // 多本-证本状态查询
-export function lineGetDocStatus(data: any) {
+export function lineGetDocStatus() {
   const api = `${v1}/tss/doc-status/current-task`;
-  return request.post(api, data);
+  return request.post(api);
 }

@@ -34,13 +34,13 @@
           {{ item.no }}
         </div>
         <div class="descr">
-          {{ item.certificateID }}
+          {{ item.docID }}
         </div>
         <div class="descr">
-          {{ item.status }}
+          {{ item.position }}
         </div>
         <div class="descr">
-          {{ item.time }}
+          {{ item.operTime }}
         </div>
       </div>
     </Vue3SeamlessScroll>
