@@ -53,7 +53,7 @@
     <contextHolder />
   </div>
 
-  <TheModel :open="open" :handle-ok="reset" :handle-cancel="handleCancel" title="确认停止" />
+  <TheModal :open="open" :handle-ok="reset" :handle-cancel="handleCancel" title="确认停止" />
 </template>
 
 <script setup lang="ts">
@@ -68,6 +68,7 @@ import { initMachine, startOrStopPrintTask } from '@/apis/webApi';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 import { formatDateTime } from '@/utils/time';
 import router from '@/router/index.ts';
+import TheModal from '@/components/TheModal.vue';
 // 防抖+定時
 import { throttle } from '@/utils/throttle.js';
 // 加載中
