@@ -128,20 +128,4 @@ const haocai = [
   background-size: 100% 100%;
   background-repeat: 'no-repeat';
 }
-.ant-radio-button-wrapper:first-child {
-  border-inline-start: 0px solid #d9d9d9;
-  border-start-start-radius: 0px;
-  border-end-start-radius: 0px;
-}
-.ant-radio-button-wrapper:last-child {
-  border-inline-start: 0px solid #d9d9d9;
-  border-start-start-radius: 0px;
-  border-end-start-radius: 0px;
-}
-
-.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
-  z-index: 1;
-  color: #ffffff;
-  background: #ffffff2c;
-}
 </style>

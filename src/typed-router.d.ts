@@ -19,6 +19,7 @@ declare module 'vue-router/auto-routes' {
    */
   export interface RouteNamedMap {
     '/bigScreen/': RouteRecordInfo<'/bigScreen/', '/bigScreen', Record<never, never>, Record<never, never>>,
+    'MainTain': RouteRecordInfo<'MainTain', '/bigScreen/detail', Record<never, never>, Record<never, never>>,
     'MainTain': RouteRecordInfo<'MainTain', '/bigScreen/mainTain', Record<never, never>, Record<never, never>>,
     '/bigScreen/module/addMore': RouteRecordInfo<'/bigScreen/module/addMore', '/bigScreen/module/addMore', Record<never, never>, Record<never, never>>,
     '/bigScreen/module/finishedProduct': RouteRecordInfo<'/bigScreen/module/finishedProduct', '/bigScreen/module/finishedProduct', Record<never, never>, Record<never, never>>,
@@ -33,5 +34,6 @@ declare module 'vue-router/auto-routes' {
     '/Module/info': RouteRecordInfo<'/Module/info', '/Module/info', Record<never, never>, Record<never, never>>,
     '/Module/ModuleForm': RouteRecordInfo<'/Module/ModuleForm', '/Module/ModuleForm', Record<never, never>, Record<never, never>>,
     '/Module/transfer': RouteRecordInfo<'/Module/transfer', '/Module/transfer', Record<never, never>, Record<never, never>>,
+    '/test': RouteRecordInfo<'/test', '/test', Record<never, never>, Record<never, never>>,
   }
 }

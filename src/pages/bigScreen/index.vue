@@ -1,5 +1,10 @@
 <template>
   <div class="bg h-100vh text-[18px] text-white">
+    <!-- <div class="w-full flex items-center justify-center absolute bottom-5.6em left--0.62em opacity-0 hover:opacity-100 ">   <img
+          src="@/assets/image/bigScreen/machine.png"
+          class="w-87.5em h-21.8em border-8 border-sky-500"
+          @click="goto('detail')"
+        /></div> -->
     <bigScreenHeader />
     <a-flex
       justify="space-between"
@@ -240,7 +245,8 @@ async function startInterval() {
   if (startTaskStatus) {
     // canClick.value = false;
     // 开启定时器，每隔1.5秒访问一次
-    intervalRef.value = setInterval(throttle(updateNums, 1000), 1000) as unknown as number;
+    // intervalRef.value = setInterval(throttle(updateNums, 1000), 1000) as unknown as number;
+    intervalRef.value = setInterval(throttle(updateNums, 3000), 3000) as unknown as number;
   }
 }
 // const distributeData = async () => {
@@ -283,25 +289,10 @@ async function startInterval() {
 //           (a, b) => new Date(b.operTime) - new Date(a.operTime)
 //         ).map((item, index) => ({ ...item, no: index + 1 }));
 
-//         data.value.model3.items.forEach((item) => {
-//           // 随机增加1到5之间的数
-//           item.num -= Math.floor(Math.random() * 5) + 1;
-//           // 确保num不超过99
-//           if (item.num < 0) {
-//             item.num = 99;
-//           }
-//         });
 //         data.value.model2.periodDataList = Model2.sort(
 //           (a, b) => new Date(b.operTime) - new Date(a.operTime)
 //         ).map((item, index) => ({ ...item, no: index + 1 }));
-//         data.value.model2.items.forEach((item) => {
-//           // 随机增加1到5之间的数
-//           item.num -= Math.floor(Math.random() * 5) + 1;
-//           // 确保num不超过99
-//           if (item.num < 0) {
-//             item.num = 99;
-//           }
-//         });
+
 //         data.value.model1.periodDataList = Model1.sort(
 //           (a, b) => new Date(b.operTime) - new Date(a.operTime)
 //         ).map((item, index) => ({ ...item, no: index + 1 }));
@@ -320,24 +311,6 @@ async function startInterval() {
 
 // 现在先模拟
 function updateNums() {
-  // 04
-  data.value.model4.forEach((item) => {
-    // 随机增加1到5之间的数
-    item.num -= Math.floor(Math.random() * 5) + 1;
-    // 确保num不超过99
-    if (item.num < 99) {
-      item.num = 0;
-    }
-  });
-  // 03
-  data.value.model3.items.forEach((item) => {
-    // 随机增加1到5之间的数
-    item.num -= Math.floor(Math.random() * 5) + 1;
-    // 确保num不超过99
-    if (item.num < 0) {
-      item.num = 99;
-    }
-  });
   data.value.model3.periodDataList = [
     {
       no: 1,
@@ -378,15 +351,7 @@ function updateNums() {
       operTime: '2022-06-27 12:57:24',
     },
   ];
-  // 02
-  data.value.model2.items.forEach((item) => {
-    // 随机增加1到5之间的数
-    item.num -= Math.floor(Math.random() * 5) + 1;
-    // 确保num不超过99
-    if (item.num < 0) {
-      item.num = 99;
-    }
-  });
+
   data.value.model2.periodDataList = [
     {
       no: 1,
@@ -437,7 +402,6 @@ function updateNums() {
       operTime: '2024-10-23 11:38:33',
     },
   ];
-  // 01
 
   data.value.model1.periodDataList = [
     {
@@ -493,7 +457,7 @@ async function startTask() {
   appStore.setSpinning(true);
   try {
     // await startOrStopPrintTask({ operate: 1 });
-    await startOrStopPrintTask({ operate: 0 });
+    await startOrStopPrintTask({ operate: 0, taskData: { docCount: window.docCount } });
     return true;
   }
   catch (error) {
@@ -561,6 +525,11 @@ async function init() {
   .light {
     text-shadow: 0px 0px 8px #ffffff;
   }
+  // .machine{
+  //     background-image: url("../../assets/image/bigScreen/machine.png");
+  // background-size: 100% 100%;
+  // background-repeat: "no-repeat";
+  // }
   .groupBtn {
     div {
       background-size: 100% 100%;

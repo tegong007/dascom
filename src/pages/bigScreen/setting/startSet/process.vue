@@ -14,7 +14,7 @@
               <span class="ml3">证件信息</span>
             </div>
             <div class="w-full p-1em">
-              <SeamlessScroll :data="periodDataList" />
+              <SeamlessScroll />
             </div>
           </div>
         </div>
@@ -54,73 +54,6 @@
 
 <script lang="ts" setup>
 const value1 = ref('摄像头1');
-
-const periodDataList = ref<any>([
-  {
-    dateTime: '2022-05-03',
-    startTime: '2022-05-03',
-    endTime: '2022-05-03',
-    shouldArriveNumber: '1',
-    actualAttendance: '100',
-    bl: '10%',
-  },
-  {
-    dateTime: '2022-05-03',
-    startTime: '2022-05-03',
-    endTime: '2022-05-03',
-    shouldArriveNumber: '2',
-    actualAttendance: '200',
-    bl: '10%',
-  },
-  {
-    dateTime: '2022-05-03',
-    startTime: '2022-05-03',
-    endTime: '2022-05-03',
-    shouldArriveNumber: '3',
-    actualAttendance: '300',
-    bl: '10%',
-  },
-  {
-    dateTime: '2022-05-03',
-    startTime: '2022-05-03',
-    endTime: '2022-05-03',
-    shouldArriveNumber: '4',
-    actualAttendance: '400',
-    bl: '10%',
-  },
-  {
-    dateTime: '2022-05-03',
-    startTime: '2022-05-03',
-    endTime: '2022-05-03',
-    shouldArriveNumber: '5',
-    actualAttendance: '500',
-    bl: '10%',
-  },
-  {
-    dateTime: '2022-05-03',
-    startTime: '2022-05-03',
-    endTime: '2022-05-03',
-    shouldArriveNumber: '6',
-    actualAttendance: '600',
-    bl: '10%',
-  },
-  {
-    dateTime: '2022-05-03',
-    startTime: '2022-05-03',
-    endTime: '2022-05-03',
-    shouldArriveNumber: '7',
-    actualAttendance: '700',
-    bl: '10%',
-  },
-  {
-    dateTime: '2022-05-03',
-    startTime: '2022-05-03',
-    endTime: '2022-05-03',
-    shouldArriveNumber: '8',
-    actualAttendance: '800',
-    bl: '10%',
-  },
-]);
 </script>
 
 <style scoped>

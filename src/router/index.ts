@@ -22,6 +22,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'MainTain',
     component: () => import('../pages/bigScreen/mainTain.vue'),
   },
+  {
+    path: '/detail',
+    name: 'detail',
+    component: () => import('@/pages/bigScreen/detail/index.vue'),
+  },
   // 单本
   {
     path: '/testModal',
@@ -33,6 +38,12 @@ const routes: Array<RouteRecordRaw> = [
     name: 'singleLine',
     component: () => import('@/pages/Module/index.vue'),
   },
+  {
+    path: '/test',
+    name: 'test',
+    component: () => import('@/pages/test.vue'),
+  },
+
 ];
 
 const router = createRouter({
