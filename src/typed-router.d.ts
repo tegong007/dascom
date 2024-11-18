@@ -21,6 +21,7 @@ declare module 'vue-router/auto-routes' {
     '/bigScreen/': RouteRecordInfo<'/bigScreen/', '/bigScreen', Record<never, never>, Record<never, never>>,
     'MainTain': RouteRecordInfo<'MainTain', '/bigScreen/detail', Record<never, never>, Record<never, never>>,
     '/bigScreen/detail/camerTable': RouteRecordInfo<'/bigScreen/detail/camerTable', '/bigScreen/detail/camerTable', Record<never, never>, Record<never, never>>,
+    '/bigScreen/detail/readerTable': RouteRecordInfo<'/bigScreen/detail/readerTable', '/bigScreen/detail/readerTable', Record<never, never>, Record<never, never>>,
     '/bigScreen/detail/table': RouteRecordInfo<'/bigScreen/detail/table', '/bigScreen/detail/table', Record<never, never>, Record<never, never>>,
     'MainTain': RouteRecordInfo<'MainTain', '/bigScreen/mainTain', Record<never, never>, Record<never, never>>,
     '/bigScreen/module/addMore': RouteRecordInfo<'/bigScreen/module/addMore', '/bigScreen/module/addMore', Record<never, never>, Record<never, never>>,

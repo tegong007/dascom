@@ -22,6 +22,7 @@
           class="scrollable-box box-border flex-1 overflow-auto p-r-10"
         >
           <CamerTable />
+          <ReaderTable />
         </div>
       </div>
     </div>
@@ -43,6 +44,7 @@ import router from '@/router/index.ts';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 import DetailTable from '@/pages/bigScreen/detail/table.vue';
 import CamerTable from '@/pages/bigScreen/detail/camerTable.vue';
+import ReaderTable from '@/pages/bigScreen/detail/readerTable.vue';
 
 const chooseId = ref('');
 definePage({

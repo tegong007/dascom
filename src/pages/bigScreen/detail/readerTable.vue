@@ -1,7 +1,7 @@
 <template>
   <div class="table-wrap relative w-full">
     <div class="m-x-20 m-y-8 text-[25px] font-[youshe]">
-      摄像头数据
+      读写器数据
     </div>
     <main>
       <!-- 表頭 -->
