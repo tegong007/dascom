@@ -5,7 +5,7 @@
         序号
       </div>
       <div class="tit">
-        证本ID
+        证本号
       </div>
       <div class="tit">
         状态

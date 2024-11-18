@@ -43,3 +43,8 @@ export function lineGetDocStatus() {
   const api = `${v1}/tss/doc-status/current-task`;
   return request.post(api);
 }
+// 多本-证本状态查询
+export function lineGetDocdetail(data: any) {
+  const api = `${v1}/tss/doc-detail`;
+  return request.post(api, data);
+}

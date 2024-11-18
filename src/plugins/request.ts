@@ -20,7 +20,7 @@ service.interceptors.response.use(
   (res: AxiosResponse) => {
     if (res.status === 200) {
       if (res.data.code === 0) {
-        return res.data.respData;
+        return res.data;
       }
       else {
         return Promise.reject(res.data.msg);
