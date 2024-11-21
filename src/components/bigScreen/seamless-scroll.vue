@@ -1,5 +1,5 @@
 <template>
-  <div class="table-wrap w-full">
+  <div class="table-wrap">
     <div class="titleContent w-full">
       <div class="tit">
         序号
@@ -59,14 +59,15 @@ const props = defineProps({
 
 <style lang="scss" scoped>
 .table-wrap {
-  width: 100%;
+  // width: 100%;
   // padding: 0 20px;
   border: 3px solid #7ff3fd; /* 设置边框 */
 
   color: #ffffff;
   .scroll {
     max-height: 145px;
-    min-height: 145px;
+    // min-height: 145px;
+    min-height: 13.5vh;
     overflow: hidden;
   }
 }

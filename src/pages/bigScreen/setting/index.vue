@@ -2,7 +2,9 @@
   <div class="bg h-100vh w-full">
     <bigScreenHeader />
     <div class="content wh-full flex flex-col text-white">
-      <div class="bg-color m-x-4em m-t-7em h-83% flex border-[4px] border-[#3F89DD]">
+      <div
+        class="bg-color m-x-4em m-t-7em h-83% flex border-[4px] border-[#3F89DD]"
+      >
         <div class="h-full w-[10%] flex flex-col">
           <a-radio-group
             v-model:value="currentModel"
@@ -19,7 +21,9 @@
             </a-radio-button>
           </a-radio-group>
         </div>
-        <div class="h-full flex flex-col flex-1 border-l-[4px] border-[#3F89DD]">
+        <div
+          class="h-full flex flex-col flex-1 border-l-[4px] border-[#3F89DD]"
+        >
           <Process />
           <Reader />
           <TrunLine />
@@ -41,6 +45,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRoute } from 'vue-router';
 import Process from '@/pages/bigScreen/setting/startSet/process.vue';
 import Reader from '@/pages/bigScreen/setting/startSet/reader.vue';
 import TrunLine from '@/pages/bigScreen/setting/startSet/turnline.vue';
@@ -53,18 +58,32 @@ definePage({
     title: '设置页',
   },
 });
-const currentModel = ref<string>('test');
+const route = useRoute();
+const currentModel = ref<string>('0');
+onMounted(() => {
+  nextTick(() => {
+    const query = route.query;
+    currentModel.value = query.currentModel;
+  });
+});
+// console.log(query); // 这里应该能获取到查询参数
 const options = [
-  { label: `空白本校验`, value: 'test' },
-  { label: `主副页打印`, value: 'm1' },
-  { label: `加注打印`, value: 'm2' },
-  { label: `成本证本收集`, value: 'm3' },
+  { label: `空白本校验`, value: '0' },
+  { label: `主副页打印`, value: '1' },
+  { label: `加注打印`, value: '2' },
+  { label: `成本证本收集`, value: '3' },
   // { label: `${t("moduleTest.module")}4`, value: "m4" },
 ];
 
 function goto(page: string) {
   router.push({ name: page });
 }
+
+// // 使用 watch 监视 divRef 值的变化
+// watch(query.currentModel, (newValue) => {
+//   console.log("🚀 ~ file: index.vue:85 ~ watch ~ newValue:", newValue);
+//   currentModel.value = newValue;
+// });
 </script>
 
 <style scoped lang="less">

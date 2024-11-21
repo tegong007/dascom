@@ -6,7 +6,11 @@
         <span class="ml-10 text-[1.5em] color-[#CFDEF1]">加注打印</span>
       </div>
       <div class="absolute top-[3.5em] h-4.8em w-90% flex">
-        <div v-for="(item, index) in props.data.items" :key="index" class="flex-1">
+        <div
+          v-for="(item, index) in props.data.items"
+          :key="index"
+          class="flex-1"
+        >
           <div class="w-full flex flex-col items-center">
             <div class="mt-5 text-[1em] color-[#CFDEF1]">
               {{ item.name }}
@@ -50,11 +54,11 @@ const props = defineProps({
   background-image: url('@/assets/image/bigScreen/boxbg.png');
   background-size: 100% 100%;
   background-repeat: 'no-repeat';
-  .table-data {
-    height: calc(100% - 8.3em);
-    .scroll-table {
-      height: calc(100% - 10em);
-    }
-  }
+  // .table-data {
+  //   height: calc(100% - 8.3em);
+  //   .scroll-table {
+  //     height: calc(100% - 18px);
+  //   }
+  // }
 }
 </style>

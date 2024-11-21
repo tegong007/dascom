@@ -1,36 +1,63 @@
 <template>
-  <div class="bg h-100vh text-[18px] text-white">
+  <div class="bg h-100vh flex flex-col items-center text-[18px] text-white">
     <div
-      class="absolute bottom-5.6em left--0.62em w-full flex items-center justify-center opacity-0 hover:opacity-100"
+      class="absolute bottom-[12%] left-[-0.5] h-35% w-80% flex items-center justify-center opacity-0 hover:opacity-100"
     >
-      <img
+      <div
+        class="m-t-10vh h-[124px] w-[271px] flex items-center justify-center rounded-[30px] bg-[#0000007a]"
+        @click="goto('detail')"
+      >
+        <span
+          class="cursor-default border-1 border-[#fff] rounded-[30px] bg-[#00000049] p-10 text-[36px] font-[youshe]"
+        >点击查看详情
+        </span>
+      </div>
+      <!-- <img
         src="@/assets/image/bigScreen/machine.png"
         class="h-21.8em w-87.5em border-8 border-sky-500"
         @click="goto('detail')"
-      >
+      /> -->
     </div>
     <bigScreenHeader />
     <a-flex
       justify="space-between"
       align="center"
-      class="p-x-5em p-t-0.4em text-[1.3em] color-[#CFDEF1]"
+      class="w-full p-x-5em p-t-0.4em text-[1.3em] color-[#CFDEF1]"
     >
       <span class="light relative" @click="init">网络状态:已连接</span>
       <span class="light relative">{{ currentTime }}</span>
     </a-flex>
-    <a-row class="relative top-4em h-23em p-l-3em p-r-1.5em" :gutter="[8, 0]">
+    <a-row
+      class="relative top-[6vh] h-33.7% w-full p-l-3em p-r-1.5em"
+      :gutter="[8, 0]"
+    >
       <a-col flex="1">
         <FinishedProductBg class="wh-full" :data="data.model4" />
       </a-col>
       <a-col flex="5">
         <a-row justify="space-between" class="wh-full pl-16" :gutter="[16, 0]">
-          <a-col :span="8">
+          <a-col :span="8" class="group">
+            <span
+              class="absolute right-20 top-10 z-88 cursor-default border-1 border-[#fff] rounded-[30px] bg-[#00000049] p-6 text-[18px] font-[youshe] opacity-0 group-hover:opacity-100"
+              @click="goto('SetPage', { currentModel: 2 })"
+            >点击跳转测试
+            </span>
             <AddMore class="wh-full" :data="data.model3" />
           </a-col>
-          <a-col :span="8">
+          <a-col :span="8" class="group">
+            <span
+              class="absolute right-20 top-10 z-88 cursor-default border-1 border-[#fff] rounded-[30px] bg-[#00000049] p-6 text-[18px] font-[youshe] opacity-0 group-hover:opacity-100"
+              @click="goto('SetPage', { currentModel: 1 })"
+            >点击跳转测试
+            </span>
             <Print class="wh-full" :data="data.model2" />
           </a-col>
-          <a-col :span="8">
+          <a-col :span="8" class="group">
+            <span
+              class="absolute right-20 top-10 z-88 cursor-default border-1 border-[#fff] rounded-[30px] bg-[#00000049] p-6 text-[18px] font-[youshe] opacity-0 group-hover:opacity-100"
+              @click="goto('SetPage', { currentModel: 0 })"
+            >点击跳转测试
+            </span>
             <Start class="wh-full" :data="data.model1" />
           </a-col>
         </a-row>
@@ -53,7 +80,7 @@
       <div class="flex">
         <div
           class="setBtn h-7em w-12em transition-transform duration-300 hover:scale-115"
-          @click="goto('SetPage')"
+          @click="goto('SetPage', { currentModel: 0 })"
         />
         <div
           class="maintainBtn h-7em w-12em transition-transform duration-300 hover:scale-115"
@@ -135,10 +162,9 @@ setInterval(() => {
   currentTime.value = formatDateTime();
 }, 1000);
 // 页面跳转
-function goto(page: string) {
-  router.push({ name: page });
+function goto(page: string, query?: any) {
+  router.push({ name: page, query });
 }
-
 // 假数据
 const data = ref({
   model4: [
