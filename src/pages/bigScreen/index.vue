@@ -36,29 +36,19 @@
       </a-col>
       <a-col flex="5">
         <a-row justify="space-between" class="wh-full pl-16" :gutter="[16, 0]">
-          <a-col :span="8" class="group">
+          <a-col
+            v-for="(item, index) in [2, 1, 0]"
+            :key="index"
+            :span="8"
+            class="group"
+          >
             <span
               class="absolute right-20 top-10 z-88 cursor-default border-1 border-[#fff] rounded-[30px] bg-[#00000049] p-6 text-[18px] font-[youshe] opacity-0 group-hover:opacity-100"
-              @click="goto('SetPage', { currentModel: 2 })"
-            >点击跳转测试
-            </span>
-            <AddMore class="wh-full" :data="data.model3" />
-          </a-col>
-          <a-col :span="8" class="group">
-            <span
-              class="absolute right-20 top-10 z-88 cursor-default border-1 border-[#fff] rounded-[30px] bg-[#00000049] p-6 text-[18px] font-[youshe] opacity-0 group-hover:opacity-100"
-              @click="goto('SetPage', { currentModel: 1 })"
-            >点击跳转测试
-            </span>
-            <Print class="wh-full" :data="data.model2" />
-          </a-col>
-          <a-col :span="8" class="group">
-            <span
-              class="absolute right-20 top-10 z-88 cursor-default border-1 border-[#fff] rounded-[30px] bg-[#00000049] p-6 text-[18px] font-[youshe] opacity-0 group-hover:opacity-100"
-              @click="goto('SetPage', { currentModel: 0 })"
-            >点击跳转测试
-            </span>
-            <Start class="wh-full" :data="data.model1" />
+              @click="goto('SetPage', { currentModel: item })"
+            >点击跳转测试</span>
+            <AddMore v-if="item === 2" class="wh-full" :data="data.model3" />
+            <Print v-if="item === 1" class="wh-full" :data="data.model2" />
+            <Start v-if="item === 0" class="wh-full" :data="data.model1" />
           </a-col>
         </a-row>
       </a-col>

@@ -32,6 +32,7 @@ declare module 'vue-router/auto-routes' {
     '/bigScreen/module/printPage': RouteRecordInfo<'/bigScreen/module/printPage', '/bigScreen/module/printPage', Record<never, never>, Record<never, never>>,
     '/bigScreen/module/startPage': RouteRecordInfo<'/bigScreen/module/startPage', '/bigScreen/module/startPage', Record<never, never>, Record<never, never>>,
     'SetPage': RouteRecordInfo<'SetPage', '/bigScreen/setting', Record<never, never>, Record<never, never>>,
+    '/bigScreen/setting/print/': RouteRecordInfo<'/bigScreen/setting/print/', '/bigScreen/setting/print', Record<never, never>, Record<never, never>>,
     '/bigScreen/setting/startSet/process': RouteRecordInfo<'/bigScreen/setting/startSet/process', '/bigScreen/setting/startSet/process', Record<never, never>, Record<never, never>>,
     '/bigScreen/setting/startSet/reader': RouteRecordInfo<'/bigScreen/setting/startSet/reader', '/bigScreen/setting/startSet/reader', Record<never, never>, Record<never, never>>,
     '/bigScreen/setting/startSet/turnline': RouteRecordInfo<'/bigScreen/setting/startSet/turnline', '/bigScreen/setting/startSet/turnline', Record<never, never>, Record<never, never>>,

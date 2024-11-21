@@ -21,17 +21,23 @@
             </a-radio-button>
           </a-radio-group>
         </div>
-        <div
-          class="h-full flex flex-col flex-1 border-l-[4px] border-[#3F89DD]"
-        >
-          <Process />
-          <Reader />
-          <TrunLine />
+        <div class="wh-full border-l-[4px] border-[#3F89DD]">
+          <section
+            v-if="currentModel === '0'"
+            class="wh-full flex flex-col flex-1"
+          >
+            <Process />
+            <Reader />
+            <TrunLine />
+          </section>
+          <section>
+            <Print />
+          </section>
         </div>
       </div>
     </div>
     <div class="absolute top-2em h6em w-full flex items-center justify-center">
-      <span class="ml-10 text-[2.5em] color-[#CFDEF1]">设置</span>
+      <span class="ml-10 text-[2.5em] color-[#CFDEF1]">测试</span>
     </div>
 
     <div class="absolute bottom-0 h6em w-full flex items-center justify-center">
@@ -49,6 +55,7 @@ import { useRoute } from 'vue-router';
 import Process from '@/pages/bigScreen/setting/startSet/process.vue';
 import Reader from '@/pages/bigScreen/setting/startSet/reader.vue';
 import TrunLine from '@/pages/bigScreen/setting/startSet/turnline.vue';
+import Print from '@/pages/bigScreen/setting/print/index.vue';
 import router from '@/router/index.ts';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 // const { t } = useI18n();
