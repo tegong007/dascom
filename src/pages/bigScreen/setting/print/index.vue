@@ -8,31 +8,29 @@
         手动送本：
       </div>
       <br>
-      <div class="flex flex-1">
-        <a-button
-          type="link"
-          class="btn hover:text-[#89f7ff]!"
-          @click="sendDocLine"
-        >
-          手动进本
-        </a-button>
-      </div>
+      <a-button
+        type="link"
+        class="btn hover:text-[#89f7ff]!"
+        @click="sendDocLine"
+      >
+        手动进本
+      </a-button>
     </section>
     <section class="p-l-3em p-t-2em">
       <div class="text-[18px]">
         传输速度
       </div>
       <br>
-      <div class="flex flex-1">
-        <a-input
-          v-model:value="value"
-          placeholder="Basic usage"
-          class="m-r-10 w-150px"
-        />
-        <a-button type="link" class="btn hover:text-[#89f7ff]!">
-          保存
-        </a-button>
-      </div>
+
+      <a-input
+        v-model:value="value"
+        size="large"
+        placeholder="Basic usage"
+        class="m-r-10 w-150px"
+      />
+      <a-button type="link" class="btn hover:text-[#89f7ff]!">
+        保存
+      </a-button>
     </section>
     <div class="m-t-2em bg-[#fff]/[0.4] p-y-5px p-l-0.5em">
       <span>执行任务</span>
@@ -42,45 +40,44 @@
         任务执行：
       </div>
       <br>
-      <div class="flex flex-1">
-        <a-select
-          v-model:value="value1"
-          size="large"
-          class="m-r-10 w-150px"
-          @change="handleChange"
-        >
-          <a-select-option :value="0">
-            完整
-          </a-select-option>
-          <a-select-option :value="1">
-            只走本
-          </a-select-option>
-        </a-select>
-        <a-button
-          type="link"
-          class="btn"
-          :class="
-            !isStop
-              ? 'isStop  pointer-events-none hover:text-[#fff]!'
-              : 'hover:text-[#89f7ff]!'
-          "
-          @click="openTask"
-        >
-          启动任务
-        </a-button>
-        <a-button
-          type="link"
-          class="btn m-l-10"
-          :class="
-            isStop
-              ? 'isStop   hover:text-[#fff]! pointer-events-none'
-              : 'hover:text-[#89f7ff]!'
-          "
-          @click="stopTask"
-        >
-          停止
-        </a-button>
-      </div>
+
+      <a-select
+        v-model:value="value1"
+        size="large"
+        class="m-r-10 w-150px"
+        @change="handleChange"
+      >
+        <a-select-option :value="0">
+          完整
+        </a-select-option>
+        <a-select-option :value="1">
+          只走本
+        </a-select-option>
+      </a-select>
+      <a-button
+        type="link"
+        class="btn"
+        :class="
+          !isStop
+            ? 'isStop  pointer-events-none hover:text-[#fff]!'
+            : 'hover:text-[#89f7ff]!'
+        "
+        @click="openTask"
+      >
+        启动任务
+      </a-button>
+      <a-button
+        type="link"
+        class="btn m-l-10"
+        :class="
+          isStop
+            ? 'isStop   hover:text-[#fff]! pointer-events-none'
+            : 'hover:text-[#89f7ff]!'
+        "
+        @click="stopTask"
+      >
+        停止
+      </a-button>
     </section>
     <contextHolder />
   </div>
@@ -184,8 +181,6 @@ async function stopTask() {
   padding: 6px 20px;
   color: white;
   height: 40px;
-  /* height: unset; */
-  /* border-image: linear-gradient(180deg, #89f7ff -3%, rgba(0, 237, 255, 0.46) 100%) 3; */
 }
 .isStop {
   background: rgba(255, 255, 255, 0.29);

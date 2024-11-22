@@ -2,14 +2,15 @@
 import { h, watchEffect } from 'vue';
 import { LoadingOutlined } from '@ant-design/icons-vue';
 import { useI18n } from 'vue-i18n';
+import zhCN from 'ant-design-vue/es/locale/zh_CN';
 import { useAppStore } from './store';
-
+// import enUS from "ant-design-vue/es/locale/en_US";
 const appStore = useAppStore();
 const { t } = useI18n();
 watchEffect(() => {
   appStore.setThemeColor(appStore.primaryColor, appStore.isDark);
 });
-
+const locale = ref(zhCN.locale);
 const indicator = h(LoadingOutlined, {
   style: {
     fontSize: '200px',
@@ -20,13 +21,18 @@ const indicator = h(LoadingOutlined, {
 
 <template>
   <a-config-provider
+    :locale="locale === 'en' ? enUS : zhCN"
     :theme="{
       token: {
         fontSize: 16, //会击穿button的样式
       },
     }"
   >
-    <a-spin :spinning="appStore.spinning" :indicator="indicator" :tip="t('modal.loading')">
+    <a-spin
+      :spinning="appStore.spinning"
+      :indicator="indicator"
+      :tip="t('modal.loading')"
+    >
       <router-view v-slot="{ Component, route: curRoute }">
         <KeepAlive>
           <component :is="Component" :key="curRoute.fullPath" />

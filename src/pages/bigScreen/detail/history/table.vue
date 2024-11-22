@@ -1,57 +1,51 @@
 <template>
-  <div class="table-wrap relative h-92% w-full">
+  <div class="table-wrap h-92%">
     <!-- 表頭 -->
     <div :class="`titleContent ${isScroll ? 'isScroll' : ''}`">
-      <div class="tit">
-        证本号
-      </div>
-      <div class="tit flex-[1.5]!">
-        工位
-      </div>
-      <div class="tit flex-[1.5]!">
-        图片
-      </div>
-      <div class="tit">
-        状态
-      </div>
-      <div class="tit">
-        废本原因
-      </div>
-      <div class="tit flex-[2]!">
-        开始时间
-      </div>
-      <div class="tit flex-[2]!">
-        结束时间
+      <!-- <div class="tit">证本号</div>
+      <div class="tit">工位</div>
+      <div class="tit">图片</div>
+      <div class="tit">状态</div>
+      <div class="tit">废本原因</div>
+      <div class="tit">开始时间</div>
+      <div class="tit">结束时间</div> -->
+      <div
+        v-for="(item, index) in colums"
+        :key="index"
+        class="tit"
+        :style="`width:${item.width}px`"
+      >
+        {{ item.title }}
       </div>
       <!-- <div class="tit">详情</div> -->
     </div>
     <!-- 表格 -->
     <div ref="divRef" class="scrollable-box">
       <!-- <div
-        v-for="(item, i) in data"
-        :key="i"
-        :class="`countContent w-full hover:bg-[#f0b092ad] ${isCheck === item.docID ? 'bg-[#f86dcf] hover:bg-none' : ''}`"
-        @click="getdetailById(item?.docID)"
-      > -->
+          v-for="(item, i) in data"
+          :key="i"
+          :class="`countContent w-full hover:bg-[#f0b092ad] ${isCheck === item.docID ? 'bg-[#f86dcf] hover:bg-none' : ''}`"
+          @click="getdetailById(item?.docID)"
+        > -->
       <div v-for="(item, i) in data" :key="i" class="countContent w-full">
-        <div class="descr">
+        <div class="descr" :style="`width:${colums[0].width}px`">
           {{ item?.docID }}
         </div>
-        <div class="descr flex-[1.5]!">
+        <div class="descr" :style="`width:${colums[1].width}px`">
           {{ getWorkstationName(item?.position) }}
         </div>
-        <div class="descr flex-[1.5]!">
+        <div class="descr" :style="`width:${colums[2].width}px`">
           <a-image
             :width="50"
             src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
           />
         </div>
-        <div class="descr">
+        <div class="descr" :style="`width:${colums[3].width}px`">
           {{
             item?.result === 0 ? "良本" : item?.result === 1 ? "制本中" : "废本"
           }}
         </div>
-        <div class="descr">
+        <div class="descr" :style="`width:${colums[4].width}px`">
           <a-tooltip placement="topLeft">
             <template #title>
               {{ item.resultMsg }}
@@ -60,15 +54,15 @@
           </a-tooltip>
           <!-- {{ item.resultMsg }} -->
         </div>
-        <div class="descr flex-[2]!">
+        <div class="descr" :style="`width:${colums[5].width}px`">
           {{ item?.startTime }}
         </div>
-        <div class="descr flex-[2]!">
+        <div class="descr" :style="`width:${colums[6].width}px`">
           {{ item?.endTime }}
         </div>
         <!-- <div class="descr">
-          <a href="" class="color-[#f6ffed]">查看详情</a>
-        </div> -->
+            <a href="" class="color-[#f6ffed]">查看详情</a>
+          </div> -->
       </div>
     </div>
 
@@ -129,6 +123,37 @@ const isScroll = ref(false);
 const divRef = ref(null);
 // const isCheck = ref("");
 const total = ref(0);
+const colums = ref([
+  {
+    title: '证本号',
+    width: 150,
+  },
+  {
+    title: '工位',
+    width: 150,
+  },
+  {
+    title: '图片',
+    width: 150,
+  },
+  {
+    title: '状态',
+    width: 150,
+  },
+  {
+    title: '废本原因',
+    width: 150,
+    // isTip: true,
+  },
+  {
+    title: '开始时间',
+    width: 250,
+  },
+  {
+    title: '结束时间',
+    width: 850,
+  },
+]);
 const data = ref([
   {
     docId: 123234,
@@ -246,22 +271,57 @@ async function onPageChange(page: number) {
 
 <style lang="scss" scoped>
 .table-wrap {
+  overflow-x: auto;
   // width: 100%;
   // padding: 0 20px;
   //   border: 3px solid #7ff3fd; /* 设置边框 */
   // border-bottom:none;
 
   color: #ffffff;
-  .scroll {
-    max-height: 15vh;
-    min-height: 15vh;
-    overflow: hidden;
-  }
   .isScroll {
     width: calc(100% - 12px);
   }
+  /* 自定义滚动条样式--表格竖向 */
+  .scrollable-box::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+
+  .scrollable-box::-webkit-scrollbar-thumb {
+    background-color: #ffffff38;
+    border-radius: 6px;
+  }
+
+  .scrollable-box::-webkit-scrollbar-track {
+    /* background-color: #f1f1f1; */
+    background-image: linear-gradient(to bottom, rgba(0, 140, 255, 0.329) 0%, rgba(255, 255, 255, 0.205) 100%);
+    /* border-radius: 6px; */
+  }
+
+  .scrollable-box::-webkit-scrollbar-button {
+    display: none;
+  }
+}
+/* 自定义滚动条样式 --表格横向*/
+.table-wrap::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
 }
 
+.table-wrap::-webkit-scrollbar-thumb {
+  background-color: #ffffff38;
+  border-radius: 6px;
+}
+
+.table-wrap::-webkit-scrollbar-track {
+  /* background-color: #f1f1f1; */
+  background-image: linear-gradient(to bottom, rgba(0, 140, 255, 0.329) 0%, rgba(255, 255, 255, 0.205) 100%);
+  /* border-radius: 6px; */
+}
+
+.table-wrap::-webkit-scrollbar-button {
+  display: none;
+}
 .titleContent {
   // width: calc(100% - 12px);
   display: flex;
@@ -273,12 +333,13 @@ async function onPageChange(page: number) {
   // justify-content: space-between;
   // height: 40px;
   .tit {
-    flex: 1;
+    // flex: 1;
     padding: 8px 0;
     // flex: 0 16.6%;
     text-align: center;
     border-right: 3px solid #7ff3fd;
     background: linear-gradient(229deg, rgba(144, 236, 255, 0.65) 0%, rgba(0, 106, 245, 0.06) 57%);
+    flex-shrink: 0;
     white-space: nowrap;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1; /* 限制在3行内 */
@@ -299,19 +360,20 @@ async function onPageChange(page: number) {
   color: #cfdef1;
   font-family: siyuan;
   text-align: center;
-  width: 100%;
+  //   width: 100%;
   font-size: 16px;
   .descr {
     padding: 8px 0;
     border-right: 3px solid #7ff3fd;
     border-bottom: 3px solid #7ff3fd;
-    flex: 1;
+    // flex: 1;
     background: rgba(255, 255, 255, 0.2);
     overflow: hidden;
     white-space: nowrap;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1; /* 限制在3行内 */
     text-overflow: ellipsis; /* 超出部分显示为... */
+    flex-shrink: 0;
   }
   .descr:first-child {
     border-left: 3px solid #7ff3fd;
@@ -321,31 +383,11 @@ async function onPageChange(page: number) {
   }
 }
 .scrollable-box {
-  height: calc(100% - 110px);
+  height: calc(100% - 50px);
   // max-height: 650px;
-  overflow: auto;
+  width: 100%;
+  overflow-y: auto;
   // overflow: hidden;
-}
-
-/* 自定义滚动条样式 */
-.scrollable-box::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-}
-
-.scrollable-box::-webkit-scrollbar-thumb {
-  background-color: #ffffff38;
-  border-radius: 6px;
-}
-
-.scrollable-box::-webkit-scrollbar-track {
-  /* background-color: #f1f1f1; */
-  background-image: linear-gradient(to bottom, rgba(0, 140, 255, 0.329) 0%, rgba(255, 255, 255, 0.205) 100%);
-  /* border-radius: 6px; */
-}
-
-.scrollable-box::-webkit-scrollbar-button {
-  display: none;
 }
 
 ::v-deep(.ant-pagination) {

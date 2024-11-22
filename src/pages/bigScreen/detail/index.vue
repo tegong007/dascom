@@ -11,7 +11,11 @@
         <section class="flex flex-[3]">
           <div class="right-1-box flex-[3] p-x-20">
             <a-flex justify="end" aglin="center">
-              <a-button type="link" class="btn m-y-10 hover:text-[#89f7ff]!">
+              <a-button
+                type="link"
+                class="btn m-y-10 hover:text-[#89f7ff]!"
+                @click="goto('detailHistory')"
+              >
                 查看历史记录
               </a-button>
             </a-flex>

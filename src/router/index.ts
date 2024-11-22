@@ -27,6 +27,12 @@ const routes: Array<RouteRecordRaw> = [
     name: 'detail',
     component: () => import('@/pages/bigScreen/detail/index.vue'),
   },
+  {
+    path: '/detail-history',
+    name: 'detailHistory',
+    component: () => import('@/pages/bigScreen/detail/history/index.vue'),
+  },
+
   // 单本
   {
     path: '/testModal',
@@ -43,7 +49,6 @@ const routes: Array<RouteRecordRaw> = [
     name: 'test',
     component: () => import('@/pages/test.vue'),
   },
-
 ];
 
 const router = createRouter({

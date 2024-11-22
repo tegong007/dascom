@@ -4,7 +4,8 @@ const v1 = window.serverAddress ?? 'http://localhost:6101/';
 
 // 任务管理服务HTTP接口
 export function startOrStopPrintTask(data: any) {
-  const api = `${v1}/tss/print-task`;
+  // const api = `${v1}/tss/print-task`;
+  const api = `${v1}/doc-machine/print-task`;
   return request.post(api, data);
 }
 // 任务管理服务HTTP接口
