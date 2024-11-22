@@ -30,7 +30,7 @@
             <Reader />
             <TrunLine />
           </section>
-          <section>
+          <section v-if="currentModel === '1'">
             <Print />
           </section>
         </div>
