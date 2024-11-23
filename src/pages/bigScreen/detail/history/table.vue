@@ -325,6 +325,7 @@ async function onPageChange(page: number) {
 .titleContent {
   // width: calc(100% - 12px);
   display: flex;
+  width: fit-content;
   align-items: center;
   border-bottom: 3px solid #7ff3fd; /* 底部边框 */
   border-top: 3px solid #7ff3fd; /* 底部边框 */
@@ -385,7 +386,8 @@ async function onPageChange(page: number) {
 .scrollable-box {
   height: calc(100% - 50px);
   // max-height: 650px;
-  width: 100%;
+  // width: 100%;
+  width: fit-content;
   overflow-y: auto;
   // overflow: hidden;
 }

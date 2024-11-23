@@ -86,7 +86,7 @@
 <script lang="ts" setup>
 import type { NotificationPlacement } from 'ant-design-vue';
 import { notification } from 'ant-design-vue';
-import { sendDoc, startOrStopPrintTask } from '@/apis/webApi';
+import { getApiTransfer, startOrStopPrintTask } from '@/apis/webApi';
 import { useAppStore } from '@/store/index';
 
 const appStore = useAppStore();
@@ -123,7 +123,11 @@ function handleChange(value: number) {
 }
 async function sendDocLine() {
   try {
-    await sendDoc();
+    // await sendDoc();
+    const params = {
+      transURI: `/doc-machine/module-send-doc`,
+    };
+    await getApiTransfer(params);
     openNotify('bottomRight', '手动送本成功', 'success');
   }
   catch (error) {

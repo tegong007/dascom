@@ -38,8 +38,3 @@ export function lineGetDocdetail(data: any) {
   const api = `${v1}/tss/doc-detail`;
   return request.post(api, data);
 }
-// 模块走本
-export function sendDoc() {
-  const api = `${v1}/doc-machine/module-send-doc`;
-  return request.post(api);
-}
