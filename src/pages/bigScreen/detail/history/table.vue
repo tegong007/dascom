@@ -331,6 +331,7 @@ async function onPageChange(page: number) {
   border-top: 3px solid #7ff3fd; /* 底部边框 */
   color: #cfdef1;
   font-family: siyuan;
+  width: fit-content;
   // justify-content: space-between;
   // height: 40px;
   .tit {

@@ -126,6 +126,7 @@ async function sendDocLine() {
     // await sendDoc();
     const params = {
       transURI: `/doc-machine/module-send-doc`,
+      paraIn: {},
     };
     await getApiTransfer(params);
     openNotify('bottomRight', '手动送本成功', 'success');

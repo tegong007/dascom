@@ -4,8 +4,8 @@ const v1 = window.serverAddress ?? 'http://localhost:6101/';
 
 // 任务管理服务HTTP接口
 export function startOrStopPrintTask(data: any) {
-  // const api = `${v1}/tss/print-task`;
-  const api = `${v1}/doc-machine/print-task`;
+  const api = `${v1}/tss/print-task`;
+  // const api = `${v1}/doc-machine/print-task`;
   return request.post(api, data);
 }
 // 任务管理服务HTTP接口
@@ -15,12 +15,12 @@ export function getDocStatus() {
 }
 // 子模块任务转发
 export function getApiTransfer(data: any) {
-  const api = `${v1}/tms/api-transfer`;
+  const api = `${v1}/tss/api-transfer`;
   return request.post(api, data);
 }
 // 流水线走本
 export function getLineRun(data: any) {
-  const api = `${v1}/tms/line-run`;
+  const api = `${v1}/tss/line-run`;
   return request.post(api, data);
 }
 //  设备初始化
