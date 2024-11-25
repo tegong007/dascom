@@ -1,18 +1,18 @@
 <template>
   <div class="table-wrap h-92%">
     <!-- 表頭 -->
-    <div :class="`titleContent ${isScroll ? 'isScroll' : ''}`">
+    <div :class="`titleContent fixed-col-top ${isScroll ? 'isScroll' : ''}`">
       <!-- <div class="tit">证本号</div>
-      <div class="tit">工位</div>
-      <div class="tit">图片</div>
-      <div class="tit">状态</div>
-      <div class="tit">废本原因</div>
-      <div class="tit">开始时间</div>
-      <div class="tit">结束时间</div> -->
+        <div class="tit">工位</div>
+        <div class="tit">图片</div>
+        <div class="tit">状态</div>
+        <div class="tit">废本原因</div>
+        <div class="tit">开始时间</div>
+        <div class="tit">结束时间</div> -->
       <div
         v-for="(item, index) in colums"
         :key="index"
-        class="tit"
+        :class="`tit ${index === 0 ? 'fixed-col-left' : ''}`"
         :style="`width:${item.width}px`"
       >
         {{ item.title }}
@@ -22,13 +22,13 @@
     <!-- 表格 -->
     <div ref="divRef" class="scrollable-box">
       <!-- <div
-          v-for="(item, i) in data"
-          :key="i"
-          :class="`countContent w-full hover:bg-[#f0b092ad] ${isCheck === item.docID ? 'bg-[#f86dcf] hover:bg-none' : ''}`"
-          @click="getdetailById(item?.docID)"
-        > -->
+            v-for="(item, i) in data"
+            :key="i"
+            :class="`countContent w-full hover:bg-[#f0b092ad] ${isCheck === item.docID ? 'bg-[#f86dcf] hover:bg-none' : ''}`"
+            @click="getdetailById(item?.docID)"
+          > -->
       <div v-for="(item, i) in data" :key="i" class="countContent w-full">
-        <div class="descr" :style="`width:${colums[0].width}px`">
+        <div class="descr fixed-col-left" :style="`width:${colums[0].width}px`">
           {{ item?.docID }}
         </div>
         <div class="descr" :style="`width:${colums[1].width}px`">
@@ -61,8 +61,8 @@
           {{ item?.endTime }}
         </div>
         <!-- <div class="descr">
-            <a href="" class="color-[#f6ffed]">查看详情</a>
-          </div> -->
+              <a href="" class="color-[#f6ffed]">查看详情</a>
+            </div> -->
       </div>
     </div>
 
@@ -339,6 +339,7 @@ async function onPageChange(page: number) {
     padding: 8px 0;
     // flex: 0 16.6%;
     text-align: center;
+    // border-right: 3px solid #7ff3fd;
     border: 3px solid #7ff3fd;
     border-left: none;
     background: linear-gradient(229deg, rgba(144, 236, 255, 0.65) 0%, rgba(0, 106, 245, 0.06) 57%);
@@ -385,14 +386,14 @@ async function onPageChange(page: number) {
     // border-right: none; /* 最后一个元素不显示右侧边框 */
   }
 }
-.scrollable-box {
-  height: calc(100% - 50px);
-  // max-height: 650px;
-  // width: 100%;
-  width: fit-content;
-  overflow-y: auto;
-  // overflow: hidden;
-}
+// .scrollable-box {
+//   height: calc(100% - 50px);
+//   // max-height: 650px;
+//   // width: 100%;
+//   width: fit-content;
+//   overflow-y: auto;
+//   // overflow: hidden;
+// }
 
 ::v-deep(.ant-pagination) {
   a,
@@ -402,6 +403,18 @@ async function onPageChange(page: number) {
   .ant-pagination-item-active {
     background-color: #ffffff1e;
   }
+}
+.fixed-col-left {
+  position: sticky;
+  left: 0; /* 固定在左侧 */
+  background: #253e57 !important; /* 背景色设置为白色，以避免内容被覆盖 */
+  z-index: 10; /* 确保固定列在其他列之上 */
+}
+.fixed-col-top {
+  position: sticky;
+  top: 0; /* 固定在左侧 */
+  background: #163759 !important; /* 背景色设置为白色，以避免内容被覆盖 */
+  z-index: 13; /* 确保固定列在其他列之上 */
 }
 // .countContent:nth-of-type(odd) {
 //   background: #318699 !important;

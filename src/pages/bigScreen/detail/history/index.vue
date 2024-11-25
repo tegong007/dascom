@@ -38,7 +38,7 @@
             </a-button>
           </a-form-item>
         </a-form>
-        <main class="relative h95%">
+        <main class="h95% w-1700px">
           <History />
         </main>
       </div>

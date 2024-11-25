@@ -24,6 +24,7 @@ declare module 'vue-router/auto-routes' {
     '/bigScreen/detail/certificateTable': RouteRecordInfo<'/bigScreen/detail/certificateTable', '/bigScreen/detail/certificateTable', Record<never, never>, Record<never, never>>,
     '/bigScreen/detail/history/': RouteRecordInfo<'/bigScreen/detail/history/', '/bigScreen/detail/history', Record<never, never>, Record<never, never>>,
     '/bigScreen/detail/history/table': RouteRecordInfo<'/bigScreen/detail/history/table', '/bigScreen/detail/history/table', Record<never, never>, Record<never, never>>,
+    '/bigScreen/detail/history/table2': RouteRecordInfo<'/bigScreen/detail/history/table2', '/bigScreen/detail/history/table2', Record<never, never>, Record<never, never>>,
     '/bigScreen/detail/info': RouteRecordInfo<'/bigScreen/detail/info', '/bigScreen/detail/info', Record<never, never>, Record<never, never>>,
     '/bigScreen/detail/readerTable': RouteRecordInfo<'/bigScreen/detail/readerTable', '/bigScreen/detail/readerTable', Record<never, never>, Record<never, never>>,
     '/bigScreen/detail/table': RouteRecordInfo<'/bigScreen/detail/table', '/bigScreen/detail/table', Record<never, never>, Record<never, never>>,
@@ -43,6 +44,5 @@ declare module 'vue-router/auto-routes' {
     '/Module/info': RouteRecordInfo<'/Module/info', '/Module/info', Record<never, never>, Record<never, never>>,
     '/Module/ModuleForm': RouteRecordInfo<'/Module/ModuleForm', '/Module/ModuleForm', Record<never, never>, Record<never, never>>,
     '/Module/transfer': RouteRecordInfo<'/Module/transfer', '/Module/transfer', Record<never, never>, Record<never, never>>,
-    '/test': RouteRecordInfo<'/test', '/test', Record<never, never>, Record<never, never>>,
   }
 }

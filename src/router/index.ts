@@ -44,11 +44,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'singleLine',
     component: () => import('@/pages/Module/index.vue'),
   },
-  {
-    path: '/test',
-    name: 'test',
-    component: () => import('@/pages/test.vue'),
-  },
+  // {
+  //   path: '/test',
+  //   name: 'test',
+  //   component: () => import('@/pages/test.vue'),
+  // },
 ];
 
 const router = createRouter({
