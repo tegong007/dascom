@@ -15,6 +15,13 @@
       >
         手动进本
       </a-button>
+      <a-button
+        type="link"
+        class="btn ml10 hover:text-[#89f7ff]!"
+        @click="init"
+      >
+        初始化
+      </a-button>
     </section>
     <section class="p-l-3em p-t-2em">
       <div class="text-[18px]">
@@ -86,7 +93,7 @@
 <script lang="ts" setup>
 import type { NotificationPlacement } from 'ant-design-vue';
 import { notification } from 'ant-design-vue';
-import { getApiTransfer, startOrStopPrintTask } from '@/apis/webApi';
+import { getApiTransfer, initMachine, startOrStopPrintTask } from '@/apis/webApi';
 import { useAppStore } from '@/store/index';
 
 const appStore = useAppStore();
@@ -120,6 +127,21 @@ const isStop = ref<boolean>(true);
 const value1 = ref(1);
 function handleChange(value: number) {
   value1.value = value;
+}
+// 初始化
+async function init() {
+  try {
+    appStore.setSpinning(true);
+    await initMachine({ module: 'm0' });
+    openNotify('bottomRight', '初始化接口调用成功', 'success');
+  }
+  catch (error) {
+    error;
+    openNotify('bottomRight', '初始化接口调用失败');
+  }
+  finally {
+    appStore.setSpinning(false);
+  }
 }
 async function sendDocLine() {
   try {

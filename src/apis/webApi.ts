@@ -10,7 +10,7 @@ export function startOrStopPrintTask(data: any) {
 }
 // 任务管理服务HTTP接口
 export function getDocStatus() {
-  const api = `${v1}/tms/doc-status`;
+  const api = `${v1}/tss/doc-status`;
   return request.post(api);
 }
 // 子模块任务转发
