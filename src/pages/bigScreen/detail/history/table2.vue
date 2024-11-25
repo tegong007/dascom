@@ -31,6 +31,15 @@
         <div class="descr fixed-col-left" :style="`width:${colums[0].width}px`">
           {{ item?.docID }}
         </div>
+        <div class="descr" :style="`width:${colums[0].width}px`">
+          {{ item?.docID }}
+        </div>
+        <div class="descr" :style="`width:${colums[0].width}px`">
+          {{ item?.docID }}
+        </div>
+        <div class="descr" :style="`width:${colums[0].width}px`">
+          {{ item?.docID }}
+        </div>
         <div class="descr" :style="`width:${colums[1].width}px`">
           {{ getWorkstationName(item?.position) }}
         </div>
@@ -45,7 +54,7 @@
             item?.result === 0 ? '良本' : item?.result === 1 ? '制本中' : '废本'
           }}
         </div>
-        <div class="descr" :style="`width:${colums[4].width}px`">
+        <div class="descr" :style="`width:${colums[7].width}px`">
           <a-tooltip placement="topLeft">
             <template #title>
               {{ item.resultMsg }}
@@ -54,10 +63,10 @@
           </a-tooltip>
           <!-- {{ item.resultMsg }} -->
         </div>
-        <div class="descr" :style="`width:${colums[5].width}px`">
+        <div class="descr" :style="`width:${colums[8].width}px`">
           {{ item?.startTime }}
         </div>
-        <div class="descr" :style="`width:${colums[6].width}px`">
+        <div class="descr" :style="`width:${colums[9].width}px`">
           {{ item?.endTime }}
         </div>
         <!-- <div class="descr">
@@ -66,18 +75,18 @@
       </div>
     </div>
 
-    <div class="absolute bottom-10 right-10 w-full flex justify-end">
-      <!-- :showSizeChanger="false" -->
-      <a-pagination
-        v-model:current="getdetailParams.page.number"
-        :total="total"
-        :page-size="15"
-        :show-size-changer="false"
-        show-less-items
-        @change="onPageChange"
-      />
-    </div>
     <!-- <contextHolder /> -->
+  </div>
+  <div class="relative bottom-[-15px] w-full flex justify-end">
+    <!-- :showSizeChanger="false" -->
+    <a-pagination
+      v-model:current="getdetailParams.page.number"
+      :total="total"
+      :page-size="15"
+      :show-size-changer="false"
+      show-less-items
+      @change="onPageChange"
+    />
   </div>
 </template>
 
@@ -125,7 +134,19 @@ const divRef = ref(null);
 const total = ref(0);
 const colums = ref([
   {
+    title: '批次号',
+    width: 150,
+  },
+  {
+    title: '团组号',
+    width: 150,
+  },
+  {
     title: '证本号',
+    width: 150,
+  },
+  {
+    title: '证本名',
     width: 150,
   },
   {
@@ -142,7 +163,7 @@ const colums = ref([
   },
   {
     title: '废本原因',
-    width: 150,
+    width: 250,
     // isTip: true,
   },
   {
@@ -151,7 +172,7 @@ const colums = ref([
   },
   {
     title: '结束时间',
-    width: 850,
+    width: 250,
   },
 ]);
 const data = ref([
@@ -404,18 +425,21 @@ async function onPageChange(page: number) {
     background-color: #ffffff1e;
   }
 }
-.fixed-col-left {
-  position: sticky;
-  left: 0; /* 固定在左侧 */
-  background: #253e57 !important; /* 背景色设置为白色，以避免内容被覆盖 */
-  z-index: 10; /* 确保固定列在其他列之上 */
-}
 .fixed-col-top {
   position: sticky;
   top: 0; /* 固定在左侧 */
   background: #163759 !important; /* 背景色设置为白色，以避免内容被覆盖 */
   z-index: 13; /* 确保固定列在其他列之上 */
 }
+.fixed-col-left {
+  position: sticky;
+  left: 0; /* 固定在左侧 */
+  //   background: #ffffff !important; /* 背景色设置为白色，以避免内容被覆盖 */
+  background-image: url('@/assets/image/bigScreen/table-col-bg.png') !important;
+  //   color: #413f3fc4;
+  z-index: 10; /* 确保固定列在其他列之上 */
+}
+
 // .countContent:nth-of-type(odd) {
 //   background: #318699 !important;
 //   .descr {

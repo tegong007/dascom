@@ -80,7 +80,7 @@
 const items = [
   {
     name: '批次编号',
-    num: 'PC2464485',
+    num: 'PC000001',
     status: 'error',
   },
   {
@@ -90,7 +90,7 @@ const items = [
   },
   {
     name: '团组编号',
-    num: 'T00000001',
+    num: 'T000001',
     status: 'warning',
   },
 ];

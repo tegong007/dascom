@@ -1,5 +1,5 @@
 <template>
-  <div class="table-wrap h-92%">
+  <div class="table-wrap relative h-92%">
     <!-- 表頭 -->
     <div :class="`titleContent ${isScroll ? 'isScroll' : ''}`">
       <!-- <div class="tit">证本号</div>
@@ -31,6 +31,16 @@
         <div class="descr" :style="`width:${colums[0].width}px`">
           {{ item?.docID }}
         </div>
+        <div class="descr" :style="`width:${colums[0].width}px`">
+          {{ item?.docID }}
+        </div>
+        <div class="descr" :style="`width:${colums[0].width}px`">
+          {{ item?.docID }}
+        </div>
+        <div class="descr" :style="`width:${colums[0].width}px`">
+          {{ item?.docID }}
+        </div>
+
         <div class="descr" :style="`width:${colums[1].width}px`">
           {{ getWorkstationName(item?.position) }}
         </div>
@@ -45,7 +55,7 @@
             item?.result === 0 ? '良本' : item?.result === 1 ? '制本中' : '废本'
           }}
         </div>
-        <div class="descr" :style="`width:${colums[4].width}px`">
+        <div class="descr" :style="`width:${colums[7].width}px`">
           <a-tooltip placement="topLeft">
             <template #title>
               {{ item.resultMsg }}
@@ -54,10 +64,10 @@
           </a-tooltip>
           <!-- {{ item.resultMsg }} -->
         </div>
-        <div class="descr" :style="`width:${colums[5].width}px`">
+        <div class="descr" :style="`width:${colums[8].width}px`">
           {{ item?.startTime }}
         </div>
-        <div class="descr" :style="`width:${colums[6].width}px`">
+        <div class="descr" :style="`width:${colums[8].width}px`">
           {{ item?.endTime }}
         </div>
         <!-- <div class="descr">
@@ -66,18 +76,18 @@
       </div>
     </div>
 
-    <div class="absolute bottom-10 right-10 w-full flex justify-end">
-      <!-- :showSizeChanger="false" -->
-      <a-pagination
-        v-model:current="getdetailParams.page.number"
-        :total="total"
-        :page-size="15"
-        :show-size-changer="false"
-        show-less-items
-        @change="onPageChange"
-      />
-    </div>
     <!-- <contextHolder /> -->
+  </div>
+  <div class="relative bottom-[-10px] w-full flex justify-end">
+    <!-- :showSizeChanger="false" -->
+    <a-pagination
+      v-model:current="getdetailParams.page.number"
+      :total="total"
+      :page-size="15"
+      :show-size-changer="false"
+      show-less-items
+      @change="onPageChange"
+    />
   </div>
 </template>
 
@@ -125,7 +135,19 @@ const divRef = ref(null);
 const total = ref(0);
 const colums = ref([
   {
+    title: '批次号',
+    width: 150,
+  },
+  {
+    title: '团组号',
+    width: 150,
+  },
+  {
     title: '证本号',
+    width: 150,
+  },
+  {
+    title: '证本名',
     width: 150,
   },
   {
@@ -142,7 +164,7 @@ const colums = ref([
   },
   {
     title: '废本原因',
-    width: 150,
+    width: 200,
     // isTip: true,
   },
   {
@@ -151,7 +173,7 @@ const colums = ref([
   },
   {
     title: '结束时间',
-    width: 850,
+    width: 250,
   },
 ]);
 const data = ref([
