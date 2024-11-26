@@ -51,7 +51,7 @@
         </div>
         <div class="descr" :style="`width:${colums[3].width}px`">
           {{
-            item?.result === 0 ? '良本' : item?.result === 1 ? '制本中' : '废本'
+            item?.result === 0 ? '良本' : item?.result === 1 ? '制证中' : '废本'
           }}
         </div>
         <div class="descr" :style="`width:${colums[7].width}px`">
@@ -434,8 +434,8 @@ async function onPageChange(page: number) {
 .fixed-col-left {
   position: sticky;
   left: 0; /* 固定在左侧 */
-  //   background: #ffffff !important; /* 背景色设置为白色，以避免内容被覆盖 */
-  background-image: url('@/assets/image/bigScreen/table-col-bg.png') !important;
+  background: #4d7ca4 !important; /* 背景色设置为白色，以避免内容被覆盖 */
+  // background-image: url('@/assets/image/bigScreen/table-col-bg.png') !important;
   //   color: #413f3fc4;
   z-index: 10; /* 确保固定列在其他列之上 */
 }

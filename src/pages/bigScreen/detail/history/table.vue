@@ -52,7 +52,7 @@
         </div>
         <div class="descr" :style="`width:${colums[3].width}px`">
           {{
-            item?.result === 0 ? '良本' : item?.result === 1 ? '制本中' : '废本'
+            item?.result === 0 ? '良本' : item?.result === 1 ? '制证中' : '废本'
           }}
         </div>
         <div class="descr" :style="`width:${colums[7].width}px`">

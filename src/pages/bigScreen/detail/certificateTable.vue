@@ -8,9 +8,7 @@
       <div class="tit flex-[1.5]!">
         工位
       </div>
-      <div class="tit flex-[1.5]!">
-        图片
-      </div>
+
       <div class="tit">
         状态
       </div>
@@ -20,9 +18,7 @@
       <div class="tit flex-[2]!">
         开始时间
       </div>
-      <div class="tit flex-[2]!">
-        结束时间
-      </div>
+      <!-- <div class="tit flex-[2]!">结束时间</div> -->
       <!-- <div class="tit">详情</div> -->
     </div>
     <!-- 表格 -->
@@ -35,20 +31,20 @@
       > -->
       <div v-for="(item, i) in data" :key="i" class="countContent w-full">
         <div class="descr">
-          {{ item?.docID }}
+          <a-tooltip placement="topLeft">
+            <template #title>
+              {{ item.docID }}
+            </template>
+            {{ item?.docID }}
+          </a-tooltip>
         </div>
         <div class="descr flex-[1.5]!">
           {{ getWorkstationName(item?.position) }}
         </div>
-        <div class="descr flex-[1.5]!">
-          <a-image
-            :width="50"
-            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-          />
-        </div>
+
         <div class="descr">
           {{
-            item?.result === 0 ? "良本" : item?.result === 1 ? "制本中" : "废本"
+            item?.result === 0 ? '良本' : item?.result === 1 ? '制证中' : '废本'
           }}
         </div>
         <div class="descr">
@@ -63,9 +59,9 @@
         <div class="descr flex-[2]!">
           {{ item?.startTime }}
         </div>
-        <div class="descr flex-[2]!">
+        <!-- <div class="descr flex-[2]!">
           {{ item?.endTime }}
-        </div>
+        </div> -->
         <!-- <div class="descr">
           <a href="" class="color-[#f6ffed]">查看详情</a>
         </div> -->

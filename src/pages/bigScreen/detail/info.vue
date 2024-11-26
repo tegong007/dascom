@@ -1,8 +1,12 @@
 <template>
   <div class="h-full flex flex-col color-[#CFDEF1] font-[siyuan]">
     <section class="flex flex-1">
-      <main v-for="(item, index) in items" :key="index" class="flex-1">
-        <div class="h-full w-full flex flex-col items-center justify-center">
+      <main
+        v-for="(item, index) in items"
+        :key="index"
+        class="flex flex-1 items-center"
+      >
+        <div class="h-50px w-full flex flex-col items-center justify-start">
           <div>
             {{ item.name }}
           </div>
@@ -96,7 +100,7 @@ const items = [
 ];
 const total = [
   {
-    name: '总制本数',
+    name: '总制证数',
     num: 15,
     status: 'normal',
   },
@@ -113,7 +117,7 @@ const total = [
 ];
 const current = [
   {
-    name: '当前制本数',
+    name: '当前制证数',
     num: 15,
     status: 'normal',
   },
@@ -125,7 +129,7 @@ const origns = [
     status: 'normal',
   },
   {
-    name: '制本人',
+    name: '制证人',
     num: '张三',
     status: 'normal',
   },

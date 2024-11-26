@@ -36,7 +36,7 @@
           {{ getWorkstationName(item?.position) }}
         </div>
         <div class="descr">
-          {{ !item?.result ? "良本" : 1 ? "制本中" : "废本" }}
+          {{ !item?.result ? '良本' : 1 ? '制证中' : '废本' }}
         </div>
         <div class="descr">
           <a-tooltip placement="topLeft">

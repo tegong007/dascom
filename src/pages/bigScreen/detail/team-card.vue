@@ -15,8 +15,8 @@
       <span> 序号：{{ item.id }} </span>
       <span> 团组名：{{ item.groupName }} </span>
       <span>团组编号：{{ item.groupNumber }}</span>
-      <span>制本数：{{ item.copyNumber }}</span>
-      <span> 开始制本时间：{{ item.startTime }}</span>
+      <span>制证数：{{ item.copyNumber }}</span>
+      <span> 开始制证时间：{{ item.startTime }}</span>
     </div>
   </div>
 </template>
