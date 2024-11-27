@@ -38,7 +38,7 @@
             </a-button>
           </a-form-item>
         </a-form>
-        <main class="h95% w-1700px">
+        <main class="h95%">
           <History />
         </main>
       </div>
@@ -59,7 +59,7 @@ import { reactive } from 'vue';
 import type { UnwrapRef } from 'vue';
 import type { FormProps } from 'ant-design-vue';
 import type { Dayjs } from 'dayjs';
-import History from './table2.vue';
+import History from './table.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 import router from '@/router/index.ts';
 

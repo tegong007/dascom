@@ -303,25 +303,29 @@ async function onPageChange(page: number) {
     width: calc(100% - 12px);
   }
   /* 自定义滚动条样式--表格竖向 */
-  .scrollable-box::-webkit-scrollbar {
-    width: 12px;
-    height: 12px;
-  }
+  // .scrollable-box::-webkit-scrollbar {
+  //   width: 12px;
+  //   height: 12px;
+  // }
 
-  .scrollable-box::-webkit-scrollbar-thumb {
-    background-color: #ffffff38;
-    border-radius: 6px;
-  }
+  // .scrollable-box::-webkit-scrollbar-thumb {
+  //   background-color: #ffffff38;
+  //   border-radius: 6px;
+  // }
 
-  .scrollable-box::-webkit-scrollbar-track {
-    /* background-color: #f1f1f1; */
-    background-image: linear-gradient(to bottom, rgba(0, 140, 255, 0.329) 0%, rgba(255, 255, 255, 0.205) 100%);
-    /* border-radius: 6px; */
-  }
+  // .scrollable-box::-webkit-scrollbar-track {
+  //   /* background-color: #f1f1f1; */
+  //   background-image: linear-gradient(
+  //     to bottom,
+  //     rgba(0, 140, 255, 0.329) 0%,
+  //     rgba(255, 255, 255, 0.205) 100%
+  //   );
+  //   /* border-radius: 6px; */
+  // }
 
-  .scrollable-box::-webkit-scrollbar-button {
-    display: none;
-  }
+  // .scrollable-box::-webkit-scrollbar-button {
+  //   display: none;
+  // }
 }
 /* 自定义滚动条样式 --表格横向*/
 .table-wrap::-webkit-scrollbar {
