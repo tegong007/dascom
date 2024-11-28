@@ -30,10 +30,20 @@
             />
           </a-form-item>
           <a-form-item label="时间">
-            <a-range-picker v-model:value="value2" show-time />
+            <a-range-picker
+              v-model:value="formState.timeRange"
+              show-time
+              :format="dateFormat"
+              :presets="rangePresets"
+              @change="onRangeChange"
+            />
           </a-form-item>
           <a-form-item>
-            <a-button type="link" class="btn hover:text-[#89f7ff]!">
+            <a-button
+              type="primary"
+              html-type="submit"
+              class="btn hover:text-[#89f7ff]!"
+            >
               查询
             </a-button>
           </a-form-item>
@@ -59,26 +69,52 @@ import { reactive } from 'vue';
 import type { UnwrapRef } from 'vue';
 import type { FormProps } from 'ant-design-vue';
 import type { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import History from './table.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 import router from '@/router/index.ts';
 
+type RangeValue = [Dayjs, Dayjs];
+const dateFormat = 'YYYY/MM/DD HH:mm:ss';
+function onRangeChange(dates: RangeValue, dateStrings: string[]) {
+  if (dates) {
+    // console.log('From: ', dates[0], ', to: ', dates[1]);
+    console.log('From: ', dateStrings[0], ', to: ', dateStrings[1]);
+  }
+  else {
+    console.log('Clear');
+  }
+}
+const rangePresets = ref([
+  { label: 'Last 7 Days', value: [dayjs().add(-7, 'd'), dayjs()] },
+  { label: 'Last 14 Days', value: [dayjs().add(-14, 'd'), dayjs()] },
+  { label: 'Last 30 Days', value: [dayjs().add(-30, 'd'), dayjs()] },
+  { label: 'Last 90 Days', value: [dayjs().add(-90, 'd'), dayjs()] },
+]);
+// import dayjs, { Dayjs } from 'dayjs';
 function goto(page: string) {
   router.push({ name: page });
 }
 
-type RangeValue = [Dayjs, Dayjs];
-const value2 = ref<RangeValue>();
+// const timeRange = ref<RangeValue>();
 interface FormState {
   user: string;
   password: string;
+  timeRange: RangeValue;
 }
+
 const formState: UnwrapRef<FormState> = reactive({
   user: '',
   password: '',
+  timeRange: [dayjs().add(-7, 'd'), dayjs()],
 });
 const handleFinish: FormProps['onFinish'] = (values) => {
   console.log(values, formState);
+  const formattedStrings: string[] = formState.timeRange.map(day =>
+    day.format(dateFormat),
+  );
+  console.log(formattedStrings);
+  // dayjs( formState.timeRange[0], dateFormat),
 };
 const handleFinishFailed: FormProps['onFinishFailed'] = (errors) => {
   console.log(errors);
