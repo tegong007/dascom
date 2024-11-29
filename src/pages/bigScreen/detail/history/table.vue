@@ -1,7 +1,6 @@
 <template>
   <div class="h-93%">
     <vxe-table
-
       class="mytable-style"
       height="auto"
       auto-resize border
@@ -268,9 +267,6 @@ handlePageData();
   color: #fff;
 }
 
-// ::v-deep(.mytable-style.vxe-table .vxe-body--column.row-last-cell-style) {
-//   border-right: 3px solid #7ff3fd;
-// }
 /* 固定列样式 */
 ::v-deep(.mytable-style .vxe-table--fixed-right-wrapper td),
 ::v-deep(.mytable-style .vxe-table--fixed-right-wrapper th),
@@ -281,9 +277,6 @@ handlePageData();
 ::v-deep(.mytable-style .vxe-table--fixed-right-wrapper td) {
   border-right: none !important;
 }
-// ::v-deep(.mytable-style .vxe-table--fixed-left-wrapper td) {
-//   border-right: none !important;
-// }
 
 /* 边框样式 */
 ::v-deep(.vxe-table--render-default.border--full .vxe-body--column) {

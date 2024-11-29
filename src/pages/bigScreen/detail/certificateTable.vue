@@ -1,362 +1,248 @@
 <template>
   <div class="table-wrap relative h-92% w-full">
-    <!-- 表頭 -->
-    <div :class="`titleContent ${isScroll ? 'isScroll' : ''}`">
-      <div class="tit">
-        证本号
-      </div>
-      <div class="tit flex-[1.5]!">
-        工位
-      </div>
-
-      <div class="tit">
-        状态
-      </div>
-      <div class="tit">
-        废本原因
-      </div>
-      <div class="tit flex-[2]!">
-        开始时间
-      </div>
-      <!-- <div class="tit flex-[2]!">结束时间</div> -->
-      <!-- <div class="tit">详情</div> -->
-    </div>
-    <!-- 表格 -->
-    <div ref="divRef" class="scrollable-box">
-      <!-- <div
-        v-for="(item, i) in data"
-        :key="i"
-        :class="`countContent w-full hover:bg-[#f0b092ad] ${isCheck === item.docID ? 'bg-[#f86dcf] hover:bg-none' : ''}`"
-        @click="getdetailById(item?.docID)"
-      > -->
-      <div v-for="(item, i) in data" :key="i" class="countContent w-full">
-        <div class="descr">
-          <a-tooltip placement="topLeft">
-            <template #title>
-              {{ item.docID }}
-            </template>
-            {{ item?.docID }}
-          </a-tooltip>
-        </div>
-        <div class="descr flex-[1.5]!">
-          {{ getWorkstationName(item?.position) }}
-        </div>
-
-        <div class="descr">
-          {{
-            item?.result === 0 ? '良本' : item?.result === 1 ? '制证中' : '废本'
-          }}
-        </div>
-        <div class="descr">
-          <a-tooltip placement="topLeft">
-            <template #title>
-              {{ item.resultMsg }}
-            </template>
-            {{ item?.resultMsg }}
-          </a-tooltip>
-          <!-- {{ item.resultMsg }} -->
-        </div>
-        <div class="descr flex-[2]!">
-          {{ item?.startTime }}
-        </div>
-        <!-- <div class="descr flex-[2]!">
-          {{ item?.endTime }}
-        </div> -->
-        <!-- <div class="descr">
-          <a href="" class="color-[#f6ffed]">查看详情</a>
-        </div> -->
-      </div>
-    </div>
-
-    <div class="absolute bottom-10 right-10 w-full flex justify-end">
-      <!-- :showSizeChanger="false" -->
-      <a-pagination
-        v-model:current="getdetailParams.page.number"
-        :total="total"
-        :page-size="15"
-        :show-size-changer="false"
-        show-less-items
-        @change="onPageChange"
+    <vxe-table
+      class="mytable-style"
+      height="auto"
+      auto-resize
+      border
+      :row-class-name="rowClassName"
+      :header-cell-class-name="headerCellClassName"
+      :cell-class-name="cellClassName"
+      :column-config="{ resizable: true }"
+      :row-config="{ isHover: true }"
+      :data="tableData"
+      @sort-change="sortChangeEvent"
+    >
+      <vxe-column type="seq" width="70" align="center" fixed="left" />
+      <vxe-column
+        v-for="(item, index) in colums"
+        :key="index"
+        :field="item.field"
+        :title="item.title"
+        :formatter="item.formatter"
+        show-overflow
+        align="center"
       />
-    </div>
-    <!-- <contextHolder /> -->
+
+      <!-- <vxe-column title="操作" fixed="right" width="200">
+        <a>按钮</a>
+      </vxe-column> -->
+    </vxe-table>
   </div>
 </template>
 
 <script setup lang="ts">
-// import { notification } from "ant-design-vue";
-// import { lineGetDocdetail } from "@/apis/webApi";
-// import { throttle } from "@/utils/throttle.js";
-import { getWorkstationName } from '@/utils/workstationDefinitions';
+import type {
+  VxeColumnPropTypes,
+  VxeTableEvents,
+  VxeTablePropTypes,
+} from 'vxe-table';
 
-// const props = defineProps({
-//   handleClick: {
-//     type: Function,
-//   },
+interface RowVO {
+  name?: string;
+  role?: string;
+  docId?: number;
+  result?: number;
+  sex?: string;
+  resultMsg?: string;
+  age?: number;
+  address?: string;
+}
+const resultList = [
+  { label: '成本', value: 0 },
+  { label: '制作中', value: 1 },
+  { label: '废本', value: 2 },
+];
+const formatterRetult: VxeColumnPropTypes.Formatter<RowVO> = ({
+  cellValue,
+}: any) => {
+  const item = resultList.find(item => item.value === cellValue);
+  return item ? item.label : cellValue;
+};
+const sortChangeEvent: VxeTableEvents.SortChange<RowVO> = ({ sortList }) => {
+  console.info(
+    sortList.map(item => `${item.field},${item.order}`).join('; '),
+  );
+};
+// const sortConfig = ref<VxeTablePropTypes.SortConfig<RowVO>>({
+//   multiple: true,
 // });
+const headerCellClassName: VxeTablePropTypes.HeaderCellClassName<RowVO> = ({
+  column,
+}: any) => {
+  column;
+  // if (column.field === 'name') {
+  return 'col-blue';
+  // }
+  // return null;
+};
 
-// const [api, contextHolder] = notification.useNotification();
-// function openNotify(
-//   placement: NotificationPlacement,
-//   msg: any,
-//   success?: string,
-// ) {
-//   return openNotification(placement, msg, success);
-// }
-// function openNotification(
-//   placement: NotificationPlacement,
-//   msg: any,
-//   success?: string,
-// ) {
-//   success
-//     ? api.success({
-//         message: "成功",
-//         description: ` ${msg}`,
-//         placement,
-//       })
-//     : api.error({
-//         message: "错误信息",
-//         description: ` ${msg}`,
-//         placement,
-//       });
-// }
-const intervalRef = ref<number | null>(null); // 定时器
-const isScroll = ref(false);
-const divRef = ref(null);
-// const isCheck = ref("");
-const total = ref(0);
-const data = ref([
+const rowClassName: VxeTablePropTypes.RowClassName<RowVO> = ({
+  rowIndex,
+}: any) => {
+  rowIndex;
+  // if ([0].includes(rowIndex)) {
+  //   return 'row-style-first';
+  // } else {
+  return 'row-style';
+  // }
+  // return null;
+};
+const cellClassName: VxeTablePropTypes.CellClassName<RowVO> = ({
+  row,
+  $rowIndex,
+  column,
+}: any) => {
+  row + $rowIndex + column;
+  // console.log('🚀 ~ file: table.vue:67 ~ $rowIndex:', $rowIndex);
+  // if ($rowIndex === pageVO.pageSize - 1) return 'row-last-cell-style';
+
+  // else
+  return 'cell-style';
+};
+const colums = ref([
+  {
+    title: '证本号',
+    field: 'docId',
+    width: 150,
+  },
+  {
+    title: '工位',
+    field: 'position',
+    width: 150,
+  },
+  {
+    title: '状态',
+    field: 'result',
+    formatter: formatterRetult,
+    width: 150,
+  },
+  {
+    title: '废本原因',
+    field: 'resultMsg',
+    width: 250,
+    // isTip: true,
+  },
+  {
+    title: '开始时间',
+    field: 'startTime',
+    width: 250,
+  },
+]);
+// const tableData = ref<RowVO[]>([]);
+
+const tableData = [
   {
     docId: 123234,
     result: 2,
     resultMsg: '我是个废本，为什么我是个废本呢 因为...',
   },
-  { docID: 45 },
+  { docId: 45 },
   {
     docId: 12356234,
     result: 1,
   },
-  { docID: 3245653456 },
+  { docId: 3245653456 },
   {
     docId: 123234,
     result: 1,
   },
-  { docID: 325643456 },
+  { docId: 325643456 },
   { docId: 12378234, resultMsg: '我是个废本，为什么我是个废本呢 因为...' },
-  { docID: 32953456 },
+  { docId: 32953456 },
   { docId: 127893234, resultMsg: '我是个废本，为什么我是个废本呢 因为...' },
-  { docID: 325643456 },
-]);
-const getdetailParams = ref({
-  docID: [],
-  page: {
-    number: 1,
-    amount: 15,
-  },
-});
-// 监视 divRef 变化的函数
-function checkScrollbar(divElement) {
-  if (divElement) {
-    // 检查是否有垂直滚动条
-    if (divElement.scrollHeight > divElement.clientHeight) {
-      console.log('垂直滚动条出现');
-      isScroll.value = true;
-      // 可以在这里执行其他操作，比如通知用户
-    }
-    else {
-      isScroll.value = false;
-    }
-    // 检查是否有水平滚动条
-    if (divElement.scrollWidth > divElement.clientWidth) {
-      console.log('水平滚动条出现');
-      // 可以在这里执行其他操作，比如通知用户
-    }
-  }
-}
-
-// 使用 watch 监视 divRef 值的变化
-watch(data, (newValue) => {
-  if (newValue) {
-    checkScrollbar(newValue);
-  }
-});
-
-// 也可以在组件挂载后检查一次
-onActivated(async () => {
-  nextTick(() => {
-    setTimeout(() => {
-      checkScrollbar(divRef.value);
-    }, 0);
-  });
-  // const Issuccess = await getDetail();
-  // if (Issuccess) {
-  //   intervalRef.value = setInterval(
-  //     throttle(await getDetail, 4000),
-  //     4000,
-  //   ) as unknown as number;
-  // }
-});
-
-onDeactivated(() => {
-  delInterval();
-  // checkScrollbar(divRef.value);
-  // await getDetail();
-});
-function delInterval() {
-  if (intervalRef.value !== null) {
-    clearInterval(intervalRef.value);
-  }
-  intervalRef.value = null;
-}
-//   async function getDetail() {
-//     try {
-//       const detailData = await lineGetDocdetail(getdetailParams.value);
-//       total.value = detailData.rslts?.length;
-//       data.value = detailData.rslts;
-//       return true;
-//     }
-//     catch (error) {
-//       console.log('🚀 ~ file: table.vue:172 ~ getDetail ~ error:', error);
-//       openNotify('bottomRight', '获取证本详细接口');
-//       delInterval();
-//       return false;
-//     }
-//   }
-
-async function onPageChange(page: number) {
-  getdetailParams.value.page.number = page;
-  // getdetailParams.value.page.number = page;
-  // await getDetail();
-  //  分页的时候调取接口数据
-}
-// async function getdetailById(docId: string) {
-//   if (isCheck.value === docId) {
-//     isCheck.value = "";
-//     props.handleClick("");
-//   } else {
-//     isCheck.value = docId;
-//     props.handleClick(docId);
-//   }
-// }
+  { docId: 325643456 },
+];
 </script>
 
 <style lang="scss" scoped>
-.table-wrap {
-  // width: 100%;
-  // padding: 0 20px;
-  //   border: 3px solid #7ff3fd; /* 设置边框 */
-  // border-bottom:none;
-
-  color: #ffffff;
-  .scroll {
-    max-height: 15vh;
-    min-height: 15vh;
-    overflow: hidden;
+::v-deep(.mytable-style) {
+  /* 滚动条样式 */
+  ::-webkit-scrollbar {
+    width: 17px;
+    height: 17px;
   }
-  .isScroll {
-    width: calc(100% - 12px);
+  ::-webkit-scrollbar-thumb {
+    background-color: #ffffff38;
+    border-radius: 15px;
   }
-}
-
-.titleContent {
-  // width: calc(100% - 12px);
-  display: flex;
-  align-items: center;
-  border-bottom: 3px solid #7ff3fd; /* 底部边框 */
-  border-top: 3px solid #7ff3fd; /* 底部边框 */
-  color: #cfdef1;
-  font-family: siyuan;
-  // justify-content: space-between;
-  // height: 40px;
-  .tit {
-    flex: 1;
-    padding: 8px 0;
-    // flex: 0 16.6%;
-    text-align: center;
-    border-right: 3px solid #7ff3fd;
-    background: linear-gradient(229deg, rgba(144, 236, 255, 0.65) 0%, rgba(0, 106, 245, 0.06) 57%);
-    white-space: nowrap;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1; /* 限制在3行内 */
-    text-overflow: ellipsis; /* 超出部分显示为... */
-    // border: 2px solid red;
+  ::-webkit-scrollbar-track {
+    background-image: linear-gradient(to bottom, rgba(0, 140, 255, 0.329) 0%, rgba(255, 255, 255, 0.205) 100%);
   }
-  .tit:first-child {
-    border-left: 3px solid #7ff3fd;
-  }
-  .tit:last-child {
-    // border-right: none; /* 最后一个元素不显示右侧边框 */
+  /* 表头样式 */
+  thead {
+    background: transparent;
   }
 }
 
-.countContent {
-  display: flex;
-  // flex-wrap: wrap;
-  color: #cfdef1;
-  font-family: siyuan;
-  text-align: center;
-  width: 100%;
-  font-size: 16px;
-  .descr {
-    padding: 8px 0;
-    border-right: 3px solid #7ff3fd;
-    border-bottom: 3px solid #7ff3fd;
-    flex: 1;
-    background: rgba(255, 255, 255, 0.2);
-    overflow: hidden;
-    white-space: nowrap;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1; /* 限制在3行内 */
-    text-overflow: ellipsis; /* 超出部分显示为... */
-  }
-  .descr:first-child {
-    border-left: 3px solid #7ff3fd;
-  }
-  .descr:last-child {
-    // border-right: none; /* 最后一个元素不显示右侧边框 */
-  }
+/* 表格样式 */
+::v-deep(.vxe-table--render-wrapper) {
+  background-color: transparent;
 }
-.scrollable-box {
-  height: calc(100% - 110px);
-  // max-height: 650px;
-  overflow: auto;
-  // overflow: hidden;
+::v-deep(.vxe-table--render-default .vxe-table--body-wrapper) {
+  background-color: rgba(255, 255, 255, 0.12);
 }
 
-/* 自定义滚动条样式 */
-.scrollable-box::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+/* 行样式 */
+::v-deep(.mytable-style.vxe-table .vxe-body--row.row-style-first),
+::v-deep(.mytable-style.vxe-table .vxe-body--row.row-style) {
+  background-color: rgba(255, 255, 255, 0);
+  color: #fff;
 }
 
-.scrollable-box::-webkit-scrollbar-thumb {
-  background-color: #ffffff38;
-  border-radius: 6px;
+/* 表头样式 */
+::v-deep(.vxe-table--render-default.border--full .vxe-table--header-wrapper) {
+  background-color: transparent;
+}
+::v-deep(.mytable-style.vxe-table .vxe-header--column.col-blue) {
+  background: linear-gradient(246deg, rgba(144, 236, 255, 0.65) 3%, rgba(0, 106, 245, 0.06) 50%);
+  border-right: 3px solid #7ff3fd;
+  color: #fff;
 }
 
-.scrollable-box::-webkit-scrollbar-track {
-  /* background-color: #f1f1f1; */
-  background-image: linear-gradient(to bottom, rgba(0, 140, 255, 0.329) 0%, rgba(255, 255, 255, 0.205) 100%);
-  /* border-radius: 6px; */
+/* 单元格样式 */
+::v-deep(.mytable-style.vxe-table .vxe-body--column.cell-style) {
+  border: 3px solid #7ff3fd;
+  border-top: none;
+  border-left: none;
+  color: #fff;
 }
 
-.scrollable-box::-webkit-scrollbar-button {
-  display: none;
+/* 固定列样式 */
+::v-deep(.mytable-style .vxe-table--fixed-right-wrapper td),
+::v-deep(.mytable-style .vxe-table--fixed-right-wrapper th),
+::v-deep(.mytable-style .vxe-table--fixed-left-wrapper td),
+::v-deep(.mytable-style .vxe-table--fixed-left-wrapper th) {
+  background-color: #4d7ca4 !important;
+}
+::v-deep(.mytable-style .vxe-table--fixed-right-wrapper td) {
+  border-right: none !important;
 }
 
-::v-deep(.ant-pagination) {
-  a,
-  button {
-    color: #fff;
+/* 边框样式 */
+::v-deep(.vxe-table--render-default.border--full .vxe-body--column) {
+  background-image: none;
+}
+::v-deep(.vxe-table .vxe-cell--sort) {
+  position: absolute;
+  right: 10px;
+}
+
+/* 固定列背景样式 */
+::v-deep(.vxe-table--render-default .vxe-table--fixed-right-wrapper),
+::v-deep(.vxe-table--render-default .vxe-table--fixed-left-wrapper) {
+  background-color: unset;
+}
+//分页
+::v-deep(.vxe-pager) {
+  background-color: unset;
+  color: #fff;
+  .vxe-pager--jump-next,
+  .vxe-pager--jump-prev,
+  .vxe-pager--next-btn,
+  .vxe-pager--num-btn,
+  .vxe-pager--prev-btn {
+    background-color: unset;
   }
-  .ant-pagination-item-active {
-    background-color: #ffffff1e;
-  }
 }
-// .countContent:nth-of-type(odd) {
-//   background: #318699 !important;
-//   .descr {
-//     // border-right: 1px solid #247587;
-//   }
-// }
 </style>

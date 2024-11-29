@@ -1,69 +1,37 @@
 <template>
-  <div class="">
-    <div
-      v-for="(item, index) in items"
-      :key="index"
-      :class="{ item }"
-      @click="selectItem(index)"
+  <div
+    v-for="(item, index) in props.items"
+    :key="index"
+    :class="{ item }"
+    @click="selectItem(item, index)"
+  >
+    <img
+      src="@/assets/image/bigScreen/choose-right.png"
+      class="absolute right-0 top-0 w-50px"
+      :class="`w-50px absolute right-0 top-0 ${selectedIndex === index ? 'opacity-100' : 'opacity-0'}`"
+      alt=""
     >
-      <img
-        src="@/assets/image/bigScreen/choose-right.png"
-        class="absolute right-0 top-0 w-50px"
-        :class="`w-50px absolute right-0 top-0 ${selectedIndex === index ? 'opacity-100' : 'opacity-0'}`"
-        alt=""
-      >
-      <span> 序号：{{ item.id }} </span>
-      <span> 团组名：{{ item.groupName }} </span>
-      <span>团组编号：{{ item.groupNumber }}</span>
-      <span>制证数：{{ item.copyNumber }}</span>
-      <span> 开始制证时间：{{ item.startTime }}</span>
-    </div>
+    <span> 序号：{{ item.id }} </span>
+    <span> 团组名：{{ item.teamName }} </span>
+    <span>团组编号：{{ item.teamId }}</span>
+    <span>制证数：{{ item.currentCertificate }}</span>
+    <span> 开始制证时间：{{ item.tStartTime }}</span>
   </div>
 </template>
 
 <script setup lang="ts">
+const props = defineProps({
+  handleClick: {
+    type: Function,
+  },
+  items: Array,
+});
 const selectedIndex = ref(0); // 默认选中第一项
-const items = ref([
-  {
-    id: '01',
-    groupName: '13112206029',
-    groupNumber: '120',
-    copyNumber: '123',
-    startTime: '2024.11.20',
-  },
-  {
-    id: '02',
-    groupName: '13112206029',
-    groupNumber: '120',
-    copyNumber: '123',
-    startTime: '2024.11.20',
-  },
-  {
-    id: '03',
-    groupName: '13112206029',
-    groupNumber: '120',
-    copyNumber: '123',
-    startTime: '2024.11.20',
-  },
-  {
-    id: '04',
-    groupName: '13112206029',
-    groupNumber: '120',
-    copyNumber: '123',
-    startTime: '2024.11.20',
-  },
-  {
-    id: '05',
-    groupName: '13112206029',
-    groupNumber: '120',
-    copyNumber: '123',
-    startTime: '2024.11.20',
-  },
-]);
-function selectItem(index: number) {
+
+function selectItem(item: any, index: number) {
   selectedIndex.value = index;
+  props.handleClick(item.teamId);
 }
-// selectedIndex: 0 // 默认选中第一项
 </script>
 
 <style lang="scss" scoped>

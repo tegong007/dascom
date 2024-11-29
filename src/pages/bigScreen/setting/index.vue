@@ -30,8 +30,11 @@
             <Reader />
             <TrunLine />
           </section>
-          <section v-if="currentModel === '1'">
+          <!-- <section v-if="currentModel === '1'">
             <Print />
+          </section> -->
+          <section v-if="currentModel === '4'">
+            <OnlyTest />
           </section>
         </div>
       </div>
@@ -55,7 +58,7 @@ import { useRoute } from 'vue-router';
 import Process from '@/pages/bigScreen/setting/startSet/process.vue';
 import Reader from '@/pages/bigScreen/setting/startSet/reader.vue';
 import TrunLine from '@/pages/bigScreen/setting/startSet/turnline.vue';
-import Print from '@/pages/bigScreen/setting/print/index.vue';
+import OnlyTest from '@/pages/bigScreen/setting/onlyTest/index.vue';
 import router from '@/router/index.ts';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 // const { t } = useI18n();
@@ -79,7 +82,7 @@ const options = [
   { label: `主副页打印`, value: '1' },
   { label: `加注打印`, value: '2' },
   { label: `成本证本收集`, value: '3' },
-  // { label: `${t("moduleTest.module")}4`, value: "m4" },
+  { label: `模块测试`, value: '4' },
 ];
 
 function goto(page: string) {

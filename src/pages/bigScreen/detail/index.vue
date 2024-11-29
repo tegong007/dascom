@@ -6,7 +6,7 @@
         class="bg-color m-x-4em m-t-7em box-border h-83% flex gap-1em border-[4px] border-[#3F89DD] p-3em"
       >
         <section class="scrollable-box left flex-1 overflow-auto">
-          <TeamCard />
+          <TeamCard :handle-click="getChooseId" :items="items" />
         </section>
         <section class="flex flex-[3]">
           <div class="right-1-box flex-[3] p-x-20">
@@ -16,24 +16,15 @@
                 class="btn m-y-10 hover:text-[#89f7ff]!"
                 @click="goto('detailHistory')"
               >
-                查看历史记录
+                查看证本历史记录
               </a-button>
             </a-flex>
             <CertificateTable />
           </div>
           <div class="right-2-box flex-[2]">
-            <Info />
+            <TeamInfo />
           </div>
         </section>
-        <!-- <div class="flex-1">
-          <DetailTable :handle-click="getChooseId" />
-        </div>
-        <div
-        v-if="chooseId"
-        class="scrollable-box box-border flex-1 overflow-auto p-r-10"
-        >
-          <ReaderTable />
-        </div> -->
       </main>
     </div>
     <div class="absolute top-2em h6em w-full flex items-center justify-center">
@@ -55,24 +46,61 @@ import bigScreenHeader from '@/components/bigScreen/header.vue';
 // import DetailTable from "@/pages/bigScreen/detail/table.vue";
 // import CamerTable from "@/pages/bigScreen/detail/camerTable.vue";
 import CertificateTable from '@/pages/bigScreen/detail/certificateTable.vue';
-import Info from '@/pages/bigScreen/detail/info.vue';
+import TeamInfo from '@/pages/bigScreen/detail/team-info.vue';
 // import ReaderTable from "@/pages/bigScreen/detail/readerTable.vue";
 
-// const chooseId = ref("");
-definePage({
-  name: 'MainTain',
-  meta: {
-    title: '维护页',
+const items = ref([
+  {
+    id: '01',
+    teamName: '13112206029',
+    teamId: '118',
+    currentCertificate: '123',
+    tStartTime: '2024.11.20',
   },
-});
+  {
+    id: '02',
+    teamName: '13112206029',
+    teamId: '119',
+    currentCertificate: '123',
+    tStartTime: '2024.11.20',
+  },
+  {
+    id: '03',
+    teamName: '13112206029',
+    teamId: '120',
+    currentCertificate: '123',
+    tStartTime: '2024.11.20',
+  },
+  {
+    id: '04',
+    teamName: '13112206029',
+    teamId: '121',
+    currentCertificate: '123',
+    tStartTime: '2024.11.20',
+  },
+  {
+    id: '05',
+    teamName: '13112206029',
+    teamId: '122',
+    currentCertificate: '123',
+    tStartTime: '2024.11.20',
+  },
+]);
+
+const chooseTeamId = ref('');
 
 function goto(page: string) {
   router.push({ name: page });
 }
-// function getChooseId(id: string) {
-//   console.log("🚀 ~ file: index.vue:55 ~ getChooseId ~ id:", id);
-//   chooseId.value = id ?? "";
-// }
+function getChooseId(id: string) {
+  console.log('🚀 ~ file: index.vue:55 ~ getChooseId ~ id:', id);
+  chooseTeamId.value = id ?? '';
+}
+async function getData() {
+  // console.log('🚀 ~ file: team-card.vue:70 ~ selectedIndex:', selectedIndex);
+}
+getData();
+// selectedIndex: 0 // 默认选中第一项
 </script>
 
 <style scoped lang="less">

@@ -38,3 +38,8 @@ export function lineGetDocdetail(data: any) {
   const api = `${v1}/tss/doc-detail`;
   return request.post(api, data);
 }
+// 当前批次
+export function getCurrentBatch() {
+  const api = `${v1}/tss/current-batch`;
+  return request.post(api);
+}
