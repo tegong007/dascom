@@ -11,7 +11,7 @@
       :class="`w-50px absolute right-0 top-0 ${selectedIndex === index ? 'opacity-100' : 'opacity-0'}`"
       alt=""
     >
-    <span> 序号：{{ item.id }} </span>
+    <span> 序号：{{ index + 1 }} </span>
     <span> 团组名：{{ item.teamName }} </span>
     <span>团组编号：{{ item.teamId }}</span>
     <span>制证数：{{ item.currentCertificate }}</span>

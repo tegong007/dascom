@@ -3,8 +3,20 @@
     <bigScreenHeader />
     <div class="content wh-full flex flex-col text-white">
       <div
-        class="bg-color m-x-4em m-t-7em box-border h-83% flex flex-col gap-2.5em border-[4px] border-[#3F89DD] p-3em"
+        class="bg-color relative m-x-4em m-t-7em box-border h-83% flex flex-col gap-2.5em overflow-hidden border-[4px] border-[#3F89DD] p-3em"
       >
+        <!-- <a-button type="primary" @click="showDrawer">Open</a-button>
+        <a-drawer
+          title="Basic Drawer"
+          placement="top"
+          :closable="false"
+          :open="open"
+          :get-container="false"
+          :style="{ position: 'absolute' }"
+          @close="onClose"
+        >
+          <p>Some cont555ents...</p>
+        </a-drawer> -->
         <a-form
           layout="inline"
           :model="formState"
@@ -13,25 +25,27 @@
           @finish-failed="handleFinishFailed"
         >
           <a-form-item label="批次号">
-            <a-input v-model:value="formState.user" placeholder="Username" />
+            <a-input
+              v-model:value="formState.batchId"
+              placeholder="请输入批次号"
+            />
           </a-form-item>
           <a-form-item label="团组号">
             <a-input
-              v-model:value="formState.password"
-              type="password"
-              placeholder="Password"
+              v-model:value="formState.teamId"
+              placeholder="请输入团组号"
             />
           </a-form-item>
           <a-form-item label="证本号">
             <a-input
-              v-model:value="formState.password"
-              type="password"
-              placeholder="Password"
+              v-model:value="formState.docId"
+              placeholder="请输入证本号"
             />
           </a-form-item>
           <a-form-item label="时间">
             <a-range-picker
               v-model:value="formState.timeRange"
+              :placeholder="['请选择开始时间', '请选择结束时间']"
               show-time
               :format="dateFormat"
               :presets="rangePresets"
@@ -48,6 +62,7 @@
             </a-button>
           </a-form-item>
         </a-form>
+
         <main class="h95%">
           <History />
         </main>
@@ -95,17 +110,27 @@ const rangePresets = ref([
 function goto(page: string) {
   router.push({ name: page });
 }
+// const open = ref(false);
 
+// const showDrawer = () => {
+//   open.value = true;
+// };
+
+// const onClose = () => {
+//   open.value = false;
+// };
 // const timeRange = ref<RangeValue>();
 interface FormState {
-  user: string;
-  password: string;
+  batchId: string;
+  teamId: string;
+  docId: string;
   timeRange: RangeValue;
 }
 
 const formState: UnwrapRef<FormState> = reactive({
   user: '',
   password: '',
+  docId: '',
   timeRange: [dayjs().add(-7, 'd'), dayjs()],
 });
 const handleFinish: FormProps['onFinish'] = (values) => {

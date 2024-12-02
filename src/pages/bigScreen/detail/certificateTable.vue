@@ -39,16 +39,13 @@ import type {
 } from 'vxe-table';
 
 interface RowVO {
-  name?: string;
-  role?: string;
-  docId?: number;
-  result?: number;
-  sex?: string;
-  resultMsg?: string;
-  age?: number;
-  address?: string;
+  docId?: string;
+  position?: string;
+  docStatus?: number;
+  errorMsg?: string;
+  docStartTime?: string;
 }
-const resultList = [
+const docStatusList = [
   { label: '成本', value: 0 },
   { label: '制作中', value: 1 },
   { label: '废本', value: 2 },
@@ -56,7 +53,7 @@ const resultList = [
 const formatterRetult: VxeColumnPropTypes.Formatter<RowVO> = ({
   cellValue,
 }: any) => {
-  const item = resultList.find(item => item.value === cellValue);
+  const item = docStatusList.find(item => item.value === cellValue);
   return item ? item.label : cellValue;
 };
 const sortChangeEvent: VxeTableEvents.SortChange<RowVO> = ({ sortList }) => {
@@ -113,13 +110,13 @@ const colums = ref([
   },
   {
     title: '状态',
-    field: 'result',
+    field: 'docStatus',
     formatter: formatterRetult,
     width: 150,
   },
   {
     title: '废本原因',
-    field: 'resultMsg',
+    field: 'errorMsg',
     width: 250,
     // isTip: true,
   },
@@ -134,23 +131,23 @@ const colums = ref([
 const tableData = [
   {
     docId: 123234,
-    result: 2,
-    resultMsg: '我是个废本，为什么我是个废本呢 因为...',
+    docStatus: 2,
+    errorMsg: '我是个废本，为什么我是个废本呢 因为...',
   },
   { docId: 45 },
   {
     docId: 12356234,
-    result: 1,
+    docStatus: 1,
   },
   { docId: 3245653456 },
   {
     docId: 123234,
-    result: 1,
+    docStatus: 1,
   },
   { docId: 325643456 },
-  { docId: 12378234, resultMsg: '我是个废本，为什么我是个废本呢 因为...' },
+  { docId: 12378234, errorMsg: '我是个废本，为什么我是个废本呢 因为...' },
   { docId: 32953456 },
-  { docId: 127893234, resultMsg: '我是个废本，为什么我是个废本呢 因为...' },
+  { docId: 127893234, errorMsg: '我是个废本，为什么我是个废本呢 因为...' },
   { docId: 325643456 },
 ];
 </script>
