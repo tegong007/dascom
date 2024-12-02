@@ -30,7 +30,7 @@
           <span
             class="relative p-y-[0.7em] text-[30px] color-[#627384] font-bold"
           >
-            {{ $t("modal.cancel") }}</span>
+            {{ $t('modal.cancel') }}</span>
           <div
             class="absolute h-full w-full cursor-pointer rounded-[1em] shadow-xl active:bg-[#000]/[0.4] hover:bg-[#fff]/[0.3]"
             @click="handleCancel"
@@ -40,7 +40,7 @@
           class="okBtn relative h-full w-[40%] flex items-center justify-center"
         >
           <span class="relative p-y-[0.7em] text-[30px] color-[#fff] font-bold">
-            {{ $t("modal.confirm") }}</span>
+            {{ $t('modal.confirm') }}</span>
           <div
             class="absolute h-full w-full cursor-pointer rounded-[1em] shadow-2xl active:bg-[#000]/[0.4] hover:bg-[#fff]/[0.3]"
             @click="handleOk"

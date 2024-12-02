@@ -19,6 +19,10 @@
       /> -->
     </div>
     <bigScreenHeader />
+    <CloseOutlined
+      class="absolute right-0em top-5 p-x-[1em] text-[25px] color-red hover:bg-[#f86e6e98] hover:color-white"
+      @click="showQuitModal"
+    />
     <a-flex
       justify="space-between"
       align="center"
@@ -85,13 +89,14 @@
     :open="open"
     :handle-ok="reset"
     :handle-cancel="handleCancel"
-    title="确认停止"
+    :title="modal"
   />
 </template>
 
 <script setup lang="ts">
 import type { NotificationPlacement } from 'ant-design-vue';
 import { notification } from 'ant-design-vue';
+import { CloseOutlined } from '@ant-design/icons-vue';
 import { useAppStore } from '../../store/index';
 import FinishedProductBg from './module/finishedProduct.vue';
 import AddMore from './module/addMore.vue';
@@ -107,6 +112,7 @@ import { formatDateTime } from '@/utils/time';
 import { getWorkstationName } from '@/utils/workstationDefinitions';
 import router from '@/router/index.ts';
 import TheModal from '@/components/TheModal.vue';
+
 // 防抖+定時
 import { throttle } from '@/utils/throttle.js';
 // 加載中
@@ -138,6 +144,7 @@ function openNotification(
 }
 const intervalRef = ref<number | null>(null); // 定时器
 const stoping = ref(false);
+const modal = ref('');
 // 停止二次確認
 const open = ref<boolean>(false);
 function handleCancel() {
@@ -145,6 +152,11 @@ function handleCancel() {
 }
 function setOpen(value: boolean) {
   open.value = value;
+  modal.value = '确认停止？';
+}
+function showQuitModal() {
+  open.value = true;
+  modal.value = '确认退出系统？';
 }
 // 时间展示
 const currentTime = ref('');
@@ -499,6 +511,10 @@ async function startTask() {
 
 // 手动停止
 async function reset() {
+  if (modal.value === '确认退出系统？') {
+    window.electron.send('quit-app');
+  }
+
   open.value = false;
   // flowData.value = [];
   await stopInterval();

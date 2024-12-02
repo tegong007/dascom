@@ -1,5 +1,5 @@
 <template>
-  <div class="table-wrap relative h-92% w-full">
+  <div class="table-wrap relative h-90% w-full">
     <vxe-table
       class="mytable-style"
       height="auto"
@@ -157,6 +157,7 @@ const tableData = [
 
 <style lang="scss" scoped>
 ::v-deep(.mytable-style) {
+  font-size: 14px;
   /* 滚动条样式 */
   ::-webkit-scrollbar {
     width: 17px;
