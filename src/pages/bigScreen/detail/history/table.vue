@@ -1,9 +1,10 @@
 <template>
-  <div class="h-93%">
+  <div class="h-91.2%">
     <vxe-table
       class="mytable-style"
       height="auto"
-      auto-resize border
+      auto-resize
+      border
       :row-class-name="rowClassName"
       :header-cell-class-name="headerCellClassName"
       :cell-class-name="cellClassName"
@@ -12,12 +13,7 @@
       :data="tableData"
       @sort-change="sortChangeEvent"
     >
-      <vxe-column
-        type="seq"
-        width="70"
-        align="center"
-        fixed="left"
-      />
+      <vxe-column type="seq" width="70" align="center" fixed="left" />
       <vxe-column
         v-for="(item, index) in colums"
         :key="index"

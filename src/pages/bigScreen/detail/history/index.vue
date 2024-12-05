@@ -3,7 +3,7 @@
     <bigScreenHeader />
     <div class="content wh-full flex flex-col text-white">
       <div
-        class="bg-color relative m-x-4em m-t-7em box-border h-83% flex flex-col gap-2.5em overflow-hidden border-[4px] border-[#3F89DD] p-3em"
+        class="bg-color relative m-x-4em m-t-7em box-border h-83% flex flex-col gap-2.5em overflow-hidden border-[4px] border-[#3F89DD] p-3em p-b-0"
       >
         <!-- <a-button type="primary" @click="showDrawer">Open</a-button>
         <a-drawer
@@ -21,38 +21,85 @@
           layout="inline"
           :model="formState"
           size="large"
+          class="w-full"
           @finish="handleFinish"
           @finish-failed="handleFinishFailed"
         >
-          <a-form-item label="批次号">
-            <a-input
-              v-model:value="formState.batchId"
-              placeholder="请输入批次号"
-            />
-          </a-form-item>
-          <a-form-item label="团组号">
-            <a-input
-              v-model:value="formState.teamId"
-              placeholder="请输入团组号"
-            />
-          </a-form-item>
-          <a-form-item label="证本号">
-            <a-input
-              v-model:value="formState.docId"
-              placeholder="请输入证本号"
-            />
-          </a-form-item>
-          <a-form-item label="时间">
-            <a-range-picker
-              v-model:value="formState.timeRange"
-              :placeholder="['请选择开始时间', '请选择结束时间']"
-              show-time
-              :format="dateFormat"
-              :presets="rangePresets"
-              @change="onRangeChange"
-            />
-          </a-form-item>
-          <a-form-item>
+          <a-row :gutter="[16, 24]" class="w-full" justify="space-between">
+            <a-col :span="6">
+              <a-form-item label="批次号">
+                <a-input
+                  v-model:value="formState.batchId"
+                  placeholder="请输入批次号"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col :span="6">
+              <a-form-item label="团组号">
+                <a-input
+                  v-model:value="formState.teamId"
+                  placeholder="请输入团组号"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col :span="6">
+              <a-form-item label="证本号">
+                <a-input
+                  v-model:value="formState.docId"
+                  placeholder="请输入证本号"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col :span="6">
+              <a-form-item label="状态">
+                <a-select v-model:value="formState.docStatus">
+                  <a-select-option value="all">
+                    全部
+                  </a-select-option>
+                  <a-select-option value="0">
+                    成本
+                  </a-select-option>
+                  <a-select-option value="1">
+                    废本
+                  </a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+
+            <a-col :span="12">
+              <a-form-item label="时间">
+                <a-range-picker
+                  v-model:value="formState.timeRange"
+                  :placeholder="['请选择开始时间', '请选择结束时间']"
+                  show-time
+                  :format="dateFormat"
+                  :presets="rangePresets"
+                  @change="onRangeChange"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col :span="12" class="text-right">
+              <a-button
+                type="primary"
+                html-type="submit"
+                class="btn mr-15 hover:text-[#89f7ff]!"
+              >
+                查询
+              </a-button>
+            </a-col>
+          </a-row>
+          <!-- <a-row :gutter="[16, 24]" class="w-full">
+            <a-col :span="24" style="text-align: right">
+              <a-button
+                type="primary"
+                html-type="submit"
+                class="btn hover:text-[#89f7ff]!"
+              >
+                查询
+              </a-button>
+            </a-col>
+          </a-row> -->
+          <!-- <a-form-item>
             <a-button
               type="primary"
               html-type="submit"
@@ -60,10 +107,10 @@
             >
               查询
             </a-button>
-          </a-form-item>
+          </a-form-item> -->
         </a-form>
 
-        <main class="h95%">
+        <main class="h-100%">
           <History />
         </main>
       </div>
@@ -124,6 +171,7 @@ interface FormState {
   batchId: string;
   teamId: string;
   docId: string;
+  docStatus: string;
   timeRange: RangeValue;
 }
 
@@ -131,6 +179,7 @@ const formState: UnwrapRef<FormState> = reactive({
   user: '',
   password: '',
   docId: '',
+  docStatus: 'all',
   timeRange: [dayjs().add(-7, 'd'), dayjs()],
 });
 const handleFinish: FormProps['onFinish'] = (values) => {
