@@ -155,7 +155,7 @@ const modal = ref('');
 // 停止二次確認
 const open = ref<boolean>(false);
 const docOpen = ref<boolean>(false);
-const docCount = ref(0);
+const docCount = ref(window.docCount);
 function handleCancel() {
   setOpen(false);
   setDocOpen(false);
@@ -267,6 +267,7 @@ const data = ref({
 
 //  开始任务后开始定时器
 async function startInterval(newDocCount: number) {
+  window.electronAPI.setConfig('docCount', newDocCount);
   docCount.value = newDocCount;
   // flowData.value = [];
   const startTaskStatus = await startTask();

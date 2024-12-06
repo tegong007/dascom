@@ -171,7 +171,52 @@ ipcMain.handle('open-win', (_, arg) => {
 ipcMain.handle('get-config', async () => {
   return config;
 });
+// 修改配置文件
+ipcMain.handle('modify-config', async (key, value) => {
+  let configPath;
+  if (process.env.VITE_DEV_SERVER_URL) {
+    configPath = path.join(process.env.VITE_PUBLIC, 'config.json');
+  }
+  else {
+    configPath = path.resolve(
+      path.dirname(process.execPath),
+      'resources/app/public/config.json',
+    );
+  }
 
+  try {
+    const rawConfig = fs.readFileSync(configPath);
+    const config = JSON.parse(rawConfig.toString());
+
+    // 确保 key 是一个字符串
+    if (typeof key !== 'string') {
+      console.error('Key must be a string');
+      return false;
+    }
+
+    // 修改指定键的值
+    config[key] = value;
+
+    // 确保没有将对象作为键覆盖已有的键
+    const configString = JSON.stringify(
+      config,
+      (k, v) => {
+        if (typeof k === 'object')
+          return undefined; // 忽略对象作为键
+        return v;
+      },
+      2,
+    );
+
+    fs.writeFileSync(configPath, configString);
+    console.log('Config file modified successfully');
+    return true; // 返回 true 表示修改成功
+  }
+  catch (error) {
+    console.error('Error modifying config file:', error);
+    return false; // 返回 false 表示修改失败
+  }
+});
 // 监听渲染进程发送的退出事件
 ipcMain.on('quit-app', () => {
   app.quit();

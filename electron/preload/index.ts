@@ -25,6 +25,7 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
 });
 contextBridge.exposeInMainWorld('electronAPI', {
   getConfig: () => ipcRenderer.invoke('get-config'),
+  setConfig: (key, value) => ipcRenderer.invoke('modify-config', key, value),
 });
 contextBridge.exposeInMainWorld('electron', {
   send: ipcRenderer.send,
