@@ -63,7 +63,7 @@
       <div class="flex">
         <div
           class="startBtn h-7em w-12em transition-transform duration-300 hover:scale-115"
-          @click="startInterval()"
+          @click="setDocOpen(true)"
         />
         <div
           class="stopBtn h-7em w-12em transition-transform duration-300 hover:scale-115"
@@ -91,6 +91,12 @@
     :handle-cancel="handleCancel"
     :title="modal"
   />
+  <docCountModal
+    :open="docOpen"
+    :handle-ok="startInterval"
+    :handle-cancel="handleCancel"
+    :title="docCount"
+  />
 </template>
 
 <script setup lang="ts">
@@ -112,6 +118,7 @@ import { formatDateTime } from '@/utils/time';
 import { getWorkstationName } from '@/utils/workstationDefinitions';
 import router from '@/router/index.ts';
 import TheModal from '@/components/TheModal.vue';
+import docCountModal from '@/components/docCountModal.vue';
 
 // 防抖+定時
 import { throttle } from '@/utils/throttle.js';
@@ -147,12 +154,18 @@ const stoping = ref(false);
 const modal = ref('');
 // 停止二次確認
 const open = ref<boolean>(false);
+const docOpen = ref<boolean>(false);
+const docCount = ref(0);
 function handleCancel() {
   setOpen(false);
+  setDocOpen(false);
 }
 function setOpen(value: boolean) {
   open.value = value;
   modal.value = '确认停止？';
+}
+function setDocOpen(value: boolean) {
+  docOpen.value = value;
 }
 function showQuitModal() {
   open.value = true;
@@ -253,7 +266,8 @@ const data = ref({
 });
 
 //  开始任务后开始定时器
-async function startInterval() {
+async function startInterval(newDocCount: number) {
+  docCount.value = newDocCount;
   // flowData.value = [];
   const startTaskStatus = await startTask();
   if (startTaskStatus) {
@@ -336,157 +350,6 @@ async function distributeData() {
   }
 }
 
-// 现在先模拟
-// function updateNums() {
-//   data.value.model3.periodDataList = [
-//     {
-//       no: 1,
-//       docID: "13112206029",
-//       position: "模组三翻页器1",
-//       operTime: "2022-06-06 12:41:10",
-//     },
-//     {
-//       no: 2,
-//       docID: "13712998598",
-//       position: "模组三读写位1",
-//       operTime: "2022-08-17 11:20:13",
-//     },
-//     {
-//       no: 3,
-//       docID: "13396827528",
-//       position: "模组三读写位2",
-//       operTime: "2022-09-08 08:43:40",
-//     },
-//     {
-//       no: 4,
-//       docID: "15818822212",
-//       position: "模组三读写位3",
-//       operTime: "2022-09-08 08:40:32",
-//     },
-//     {
-//       no: 5,
-//       docID: "18728292626",
-//       position: "模组三喷墨位1",
-//       operTime: "2022-06-27 12:36:12",
-//     },
-//     {
-//       no: 6,
-//       docID: "15034529999",
-//       position: "模组三喷墨位2",
-//       operTime: "2022-06-27 12:44:48",
-//     },
-//     {
-//       no: 7,
-//       docID: "13654373011",
-//       position: "模组三喷墨位3",
-//       operTime: "2022-06-27 12:30:39",
-//     },
-//     {
-//       no: 8,
-//       docID: "18991604525",
-//       position: "模组三摄像位",
-//       operTime: "2022-06-27 12:57:24",
-//     },
-//   ];
-
-//   data.value.model2.periodDataList = [
-//     {
-//       no: 1,
-//       docID: "186287989",
-//       position: "模组二激光位1",
-//       operTime: "2024-10-23 11:45:33",
-//     },
-//     {
-//       no: 2,
-//       docID: "661563058",
-//       position: "模组二激光位2",
-//       operTime: "2024-10-23 11:44:33",
-//     },
-//     {
-//       no: 3,
-//       docID: "131606629",
-//       position: "模组二激光位3",
-//       operTime: "2024-10-23 11:43:33",
-//     },
-//     {
-//       no: 4,
-//       docID: "136169902",
-//       position: "模组二摄像位",
-//       operTime: "2024-10-23 11:42:33",
-//     },
-//     {
-//       no: 5,
-//       docID: "131777771",
-//       position: "模组二读写位1",
-//       operTime: "2024-10-23 11:41:33",
-//     },
-//     {
-//       no: 6,
-//       docID: "131675711",
-//       position: "模组二读写位2",
-//       operTime: "2024-10-23 11:40:33",
-//     },
-//     {
-//       no: 7,
-//       docID: "131740065",
-//       position: "模组二读写位3",
-//       operTime: "2024-10-23 11:39:33",
-//     },
-//     {
-//       no: 8,
-//       docID: "136573011",
-//       position: "模组二激光位4",
-//       operTime: "2024-10-23 11:38:33",
-//     },
-//   ];
-
-//   data.value.model1.periodDataList = [
-//     {
-//       no: 1,
-//       docID: "139722077",
-//       position: "激光刻蚀",
-//       operTime: "2022-06-06 12:41:10",
-//     },
-//     {
-//       no: 2,
-//       docID: "138129999",
-//       position: "读芯片",
-//       operTime: "2022-09-08 08:43:40",
-//     },
-//     {
-//       no: 3,
-//       docID: "136722077",
-//       position: "发证位2",
-//       operTime: "2022-09-08 08:40:32",
-//     },
-//     {
-//       no: 4,
-//       docID: "186798642",
-//       position: "摄像位",
-//       operTime: "2022-06-27 12:36:12",
-//     },
-//     {
-//       no: 5,
-//       docID: "133798798",
-//       position: "读写位1",
-//       operTime: "2022-06-27 12:44:48",
-//     },
-//     {
-//       no: 6,
-//       docID: "156592483",
-//       position: "读写位2",
-//       operTime: "2022-06-27 12:30:39",
-//     },
-//     {
-//       no: 7,
-//       docID: "153218326",
-//       position: "读写位3",
-//       operTime: "2022-06-27 12:57:24",
-//     },
-//   ];
-//   appStore.setSpinning(false);
-// }
-
 //  开始任务调度
 async function startTask() {
   // imgIndex.value = 0;
@@ -496,7 +359,7 @@ async function startTask() {
     // await startOrStopPrintTask({ operate: 1 });
     await startOrStopPrintTask({
       operate: 0,
-      taskData: { docCount: window.docCount },
+      taskData: { docCount: docCount.value },
     });
     return true;
   }
@@ -508,6 +371,7 @@ async function startTask() {
   }
   return false;
 }
+//
 
 // 手动停止
 async function reset() {
