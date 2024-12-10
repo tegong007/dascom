@@ -5,11 +5,11 @@
       <main
         class="bg-color m-x-4em m-t-7em box-border h-83% flex gap-1em border-[4px] border-[#3F89DD] p-3em"
       >
-        <section class="scrollable-box left flex-1 overflow-auto">
+        <section class="scrollable-box left box-border w200px overflow-auto">
           <TeamCard :handle-click="getChooseId" :items="items" />
         </section>
-        <section class="flex flex-[3]">
-          <div class="right-1-box flex-[3] p-x-20">
+        <section class="box-border flex flex-1 overflow-hidden">
+          <div class="right-1-box box-border flex-[3] overflow-hidden p-x-20">
             <a-flex justify="end" aglin="center">
               <a-button
                 type="link"
@@ -19,9 +19,11 @@
                 查看证本历史记录
               </a-button>
             </a-flex>
-            <CertificateTable />
+            <div class="h92%">
+              <HistoryTable />
+            </div>
           </div>
-          <div class="right-2-box flex-[2]">
+          <div class="right-2-box box-border flex-[1]">
             <TeamInfo />
           </div>
         </section>
@@ -45,7 +47,8 @@ import router from '@/router/index.ts';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 // import DetailTable from "@/pages/bigScreen/detail/table.vue";
 // import CamerTable from "@/pages/bigScreen/detail/camerTable.vue";
-import CertificateTable from '@/pages/bigScreen/detail/certificateTable.vue';
+// import CertificateTable from '@/pages/bigScreen/detail/certificateTable.vue';
+import HistoryTable from '@/pages/bigScreen/detail/history/table.vue';
 import TeamInfo from '@/pages/bigScreen/detail/team-info.vue';
 // import ReaderTable from "@/pages/bigScreen/detail/readerTable.vue";
 
@@ -144,6 +147,7 @@ getData();
   background-image: url('@/assets/image/bigScreen/bg-none.png');
   background-size: 100% 100%;
   background-repeat: 'no-repeat';
+  box-sizing: border-box;
   .bg-color {
     background: linear-gradient(
       359deg,

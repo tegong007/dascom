@@ -1,6 +1,7 @@
 <template>
-  <div class="h-91.2%">
+  <div class="h-91.2% w-100%">
     <vxe-table
+      ref="tableRef"
       class="mytable-style"
       height="auto"
       auto-resize
@@ -9,18 +10,23 @@
       :header-cell-class-name="headerCellClassName"
       :cell-class-name="cellClassName"
       :column-config="{ resizable: true }"
-      :row-config="{ isHover: true }"
+      :row-config="{ keyField: 'docId', isHover: true }"
       :data="tableData"
+      @checkbox-change="selectChangeEvent"
       @sort-change="sortChangeEvent"
     >
-      <vxe-column type="seq" width="70" align="center" fixed="left" />
+      <vxe-column type="checkbox" width="60" />
+      <!-- <vxe-column type="seq" width="70" align="center" fixed="left" /> -->
       <vxe-column
         v-for="(item, index) in colums"
         :key="index"
         :field="item.field"
         :title="item.title"
         :formatter="item.formatter"
-        show-overflow
+        width="150"
+        show-header-overflow
+        show-overflow="title"
+        show-footer-overflow
         align="center"
       />
 
@@ -28,6 +34,7 @@
         <a>按钮</a>
       </vxe-column> -->
     </vxe-table>
+
     <vxe-pager
       v-model:current-page="pageVO.currentPage"
       v-model:page-size="pageVO.pageSize"
@@ -45,6 +52,15 @@ import type {
 } from 'vxe-table';
 import type { VxePagerEvents } from 'vxe-pc-ui';
 
+const tableRef = ref();
+
+function selectChangeEvent({ checked }) {
+  const $table = tableRef.value;
+  if ($table) {
+    const records = $table.getCheckboxRecords();
+    console.log(checked ? '勾选事件' : '取消事件', records);
+  }
+}
 interface RowVO {
   name?: string;
   role?: string;
@@ -163,12 +179,12 @@ const colums = ref([
 ]);
 const loading = ref(false);
 const tableData = ref<RowVO[]>([]);
-
 const AllList = [
   {
     docId: 123234,
     result: 2,
     resultMsg: '我是个废本，为什么我是个废本呢 因为...',
+    isCheck: true,
   },
   { docId: 45 },
   {
@@ -185,7 +201,19 @@ const AllList = [
   { docId: 32953456 },
   { docId: 127893234, resultMsg: '我是个废本，为什么我是个废本呢 因为...' },
   { docId: 325643456 },
+  { docId: 12 },
+  { docId: 13 },
+  { docId: 2 },
 ];
+
+function setSelectRow(rows, checked) {
+  const $table = tableRef.value;
+  if ($table) {
+    $table.setCheckboxRow(rows, checked);
+  }
+}
+
+// setSelectRow(filteredArray, true);
 
 // 前端分页
 function handlePageData() {
@@ -197,6 +225,10 @@ function handlePageData() {
       (currentPage - 1) * pageSize,
       currentPage * pageSize,
     );
+
+    // 默认选中逻辑
+    const filteredArray = tableData.value.filter(item => item.isCheck === true);
+    setSelectRow(filteredArray, true);
     loading.value = false;
   }, 100);
 }
@@ -212,6 +244,7 @@ handlePageData();
 
 <style scoped lang="scss">
 ::v-deep(.mytable-style) {
+  // max-width: 400px;
   /* 滚动条样式 */
   ::-webkit-scrollbar {
     width: 17px;

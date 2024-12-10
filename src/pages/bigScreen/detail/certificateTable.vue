@@ -8,12 +8,15 @@
       :row-class-name="rowClassName"
       :header-cell-class-name="headerCellClassName"
       :cell-class-name="cellClassName"
+      :checkbox-config="{ checkRowKeys: defaultSelectRowKeys }"
       :column-config="{ resizable: true }"
-      :row-config="{ isHover: true }"
+      :row-config="{ keyField: 'docId', isHover: true }"
+      check-row-keys="docId"
       :data="tableData"
       @sort-change="sortChangeEvent"
     >
-      <vxe-column type="seq" width="70" align="center" fixed="left" />
+      <vxe-column type="checkbox" width="60" />
+      <vxe-column type="seq" align="center" />
       <vxe-column
         v-for="(item, index) in colums"
         :key="index"
@@ -97,11 +100,13 @@ const cellClassName: VxeTablePropTypes.CellClassName<RowVO> = ({
   // else
   return 'cell-style';
 };
+const defaultSelectRowKeys = ref([123234, 12]);
 const colums = ref([
   {
     title: '证本号',
     field: 'docId',
     width: 150,
+    isChecked: true,
   },
   {
     title: '工位',

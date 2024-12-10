@@ -120,7 +120,7 @@
     <div class="absolute bottom-0 h6em w-full flex items-center justify-center">
       <div
         class="returnBtn h-8em w-13em transition-transform duration-300 hover:scale-115"
-        @click="goto('BigScreen')"
+        @click="goto('-1')"
       />
     </div>
   </div>
@@ -155,7 +155,7 @@ const rangePresets = ref([
 ]);
 // import dayjs, { Dayjs } from 'dayjs';
 function goto(page: string) {
-  router.push({ name: page });
+  page === '-1' ? router.go(-1) : router.push({ name: page });
 }
 // const open = ref(false);
 

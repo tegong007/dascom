@@ -12,10 +12,10 @@
       alt=""
     >
     <span> 序号：{{ index + 1 }} </span>
-    <span> 团组名：{{ item.teamName }} </span>
+    <!-- <span> 团组名：{{ item.teamName }} </span> -->
     <span>团组编号：{{ item.teamId }}</span>
-    <span>制证数：{{ item.currentCertificate }}</span>
-    <span> 开始制证时间：{{ item.tStartTime }}</span>
+    <!-- <span>制证数：{{ item.currentCertificate }}</span> -->
+    <!-- <span> 开始制证时间：{{ item.tStartTime }}</span> -->
   </div>
 </template>
 
@@ -47,7 +47,7 @@ function selectItem(item: any, index: number) {
   box-sizing: border-box;
   border: 3px solid;
   margin: 12px;
-  height: 130px;
+  height: 70px;
   padding: 10px;
   color: #cfdef1;
   position: relative;
