@@ -23,7 +23,6 @@
         :field="item.field"
         :title="item.title"
         :formatter="item.formatter"
-        width="150"
         show-header-overflow
         show-overflow="title"
         show-footer-overflow
@@ -227,7 +226,9 @@ function handlePageData() {
     );
 
     // 默认选中逻辑
-    const filteredArray = tableData.value.filter(item => item.isCheck === true);
+    const filteredArray = tableData.value.filter(
+      item => item.isCheck === true,
+    );
     setSelectRow(filteredArray, true);
     loading.value = false;
   }, 100);

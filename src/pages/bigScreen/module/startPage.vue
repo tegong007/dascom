@@ -6,11 +6,19 @@
         <span class="ml-10 text-[1.5em] color-[#CFDEF1]">空白本余量</span>
       </div>
       <div class="absolute top-[3.5em] h-4.8em w-90% flex">
-        <div v-for="(item, index) in props.data.items" :key="index" class="flex-1">
+        <div
+          v-for="(item, index) in props.data.items"
+          :key="index"
+          class="flex-1"
+        >
           <div
             :class="[
-              item.status === 'error' ? 'bg-[#FF0000]/[0.4] border-[#E83131] border-1px' : '',
-              item.status === 'warning' ? 'bg-[#FF9900]/[0.4] border-[#E8AB31] border-1px' : '',
+              item.status === 'error'
+                ? 'bg-[#FF0000]/[0.4] border-[#E83131] border-1px'
+                : '',
+              item.status === 'warning'
+                ? 'bg-[#FF9900]/[0.4] border-[#E8AB31] border-1px'
+                : '',
             ]"
             class="w-full flex flex-col items-center"
           >
@@ -39,13 +47,19 @@
             <SeamlessScroll :data="props.data.periodDataList" />
           </div>
         </div>
-        <!-- <div class="wh-full bg-[#FF0000]/[0.4] absolute top-0 flex justify-center items-center">
+        <!-- <div
+          class="wh-full bg-[#FF0000]/[0.4] absolute top-0 flex justify-center items-center"
+        >
           <a-button
             type="link"
-            class="bg-[#000]/[0.4] text-white p-20px flex justify-center items-center rounded-full border-1 border-[#fff]"
+            class="bg-[#000]/[0.4] text-white p-y-20px p-x-40 flex justify-center items-center rounded-full border-1 border-[#fff]"
             >故障</a-button
           >
           <img src="../../assets/image/bigScreen/errorBtn.png" alt="" />
+        </div> -->
+        <!-- 故障图片版本 -->
+        <!-- <div class="absolute top-0 wh-full flex items-center justify-center bg-[#FFAA00]/[0.4]">
+          <img src="@/assets/image/bigScreen/errorBtn.png" alt="">
         </div> -->
       </div>
     </a-flex>
