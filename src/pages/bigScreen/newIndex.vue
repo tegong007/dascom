@@ -1,5 +1,17 @@
 <template>
   <div class="bg h-100vh flex flex-col items-center text-[18px] text-white">
+    <bigScreenHeader />
+    <div
+      class="absolute top-3em h1.5em flex items-center justify-center rounded-2xl bg-[#919195] p-x-10"
+    >
+      <span class="text-[1em]">当前批次号:21256465 | 生产任务:【批次数】:10 证本总数:1000
+        待生产总数:100 成功数:888 失败数: 12</span>
+    </div>
+
+    <CloseOutlined
+      class="absolute right-0em top-5 p-x-[1em] text-[25px] color-red hover:bg-[#f86e6e98] hover:color-white"
+      @click="showQuitModal"
+    />
     <div
       class="absolute bottom-[12%] left-[-0.5] h-35% w-80% flex items-center justify-center opacity-0 hover:opacity-100"
     >
@@ -13,16 +25,12 @@
         </span>
       </div>
       <!-- <img
-        src="@/assets/image/bigScreen/machine.png"
-        class="h-21.8em w-87.5em border-8 border-sky-500"
-        @click="goto('detail')"
-      /> -->
+          src="@/assets/image/bigScreen/machine.png"
+          class="h-21.8em w-87.5em border-8 border-sky-500"
+          @click="goto('detail')"
+        /> -->
     </div>
-    <bigScreenHeader />
-    <CloseOutlined
-      class="absolute right-0em top-5 p-x-[1em] text-[25px] color-red hover:bg-[#f86e6e98] hover:color-white"
-      @click="showQuitModal"
-    />
+
     <a-flex
       justify="space-between"
       align="center"
@@ -57,18 +65,33 @@
         </a-row>
       </a-col>
     </a-row>
+    <!-- 左边按钮 -->
+    <div
+      class="groupBtn absolute right-35 top-150 h-100vh flex flex-col items-center justify-center"
+    >
+      <div
+        class="ztjbBtn h-3.7em w-8.6em transition-transform duration-300 hover:scale-115"
+      />
+      <div
+        class="qxjtBtn em mt2 h-3.7em w-8.6em transition-transform duration-300 hover:scale-115"
+      />
+    </div>
+    <!-- 下边按钮 -->
     <div
       class="groupBtn absolute bottom-0 h6em w-full flex items-center justify-center"
     >
       <div class="flex">
         <div
-          class="startBtn h-6em w-10em transition-transform duration-300 hover:scale-115"
-          @click="setDocOpen(true)"
+          class="pccxBtn h-6em w-10em transition-transform duration-300 hover:scale-115"
         />
-        <div
-          class="stopBtn h-6em w-10em transition-transform duration-300 hover:scale-115"
-          @click="setOpen(true)"
-        />
+        <!-- <div
+            class="startBtn h-6em w-10em transition-transform duration-300 hover:scale-115"
+            @click="setDocOpen(true)"
+          />
+          <div
+            class="stopBtn h-6em w-10em transition-transform duration-300 hover:scale-115"
+            @click="setOpen(true)"
+          /> -->
       </div>
       <span class="relative top--1em m-x-0.5em h-80% w-2px bg-[#8BB2FF]" />
       <div class="flex">
@@ -158,15 +181,15 @@ const docOpen = ref<boolean>(false);
 const docCount = ref(window.docCount);
 function handleCancel() {
   setOpen(false);
-  setDocOpen(false);
+  // setDocOpen(false);
 }
 function setOpen(value: boolean) {
   open.value = value;
   modal.value = '确认停止？';
 }
-function setDocOpen(value: boolean) {
-  docOpen.value = value;
-}
+// function setDocOpen(value: boolean) {
+//   docOpen.value = value;
+// }
 function showQuitModal() {
   open.value = true;
   modal.value = '确认退出系统？';
@@ -447,6 +470,15 @@ async function init() {
     .startBtn {
       background-image: url('../../assets/image/bigScreen/btn/start.png');
     }
+    .pccxBtn {
+      background-image: url('../../assets/image/bigScreen/btn/pccx.png');
+    }
+    .ztjbBtn {
+      background-image: url('../../assets/image/bigScreen/btn/ztjb.png');
+    }
+    .qxjtBtn {
+      background-image: url('../../assets/image/bigScreen/btn/qxjt.png');
+    }
     .stopBtn {
       background-image: url('../../assets/image/bigScreen/btn/stop.png');
     }
@@ -454,7 +486,7 @@ async function init() {
       background-image: url('../../assets/image/bigScreen/btn/set.png');
     }
     .maintainBtn {
-      background-image: url('../../assets/image/bigScreen/maintain.png');
+      background-image: url('../../assets/image/bigScreen/btn/maintain.png');
     }
   }
 }

@@ -10,7 +10,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/bigScreen',
     name: 'BigScreen',
-    component: () => import('../pages/bigScreen/index.vue'),
+    component: () => import('../pages/bigScreen/newIndex.vue'),
   },
   {
     path: '/setPage', // 子路由的路径，相对于父路由的路径

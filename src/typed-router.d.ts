@@ -34,6 +34,7 @@ declare module 'vue-router/auto-routes' {
     '/bigScreen/module/finishedProduct': RouteRecordInfo<'/bigScreen/module/finishedProduct', '/bigScreen/module/finishedProduct', Record<never, never>, Record<never, never>>,
     '/bigScreen/module/printPage': RouteRecordInfo<'/bigScreen/module/printPage', '/bigScreen/module/printPage', Record<never, never>, Record<never, never>>,
     '/bigScreen/module/startPage': RouteRecordInfo<'/bigScreen/module/startPage', '/bigScreen/module/startPage', Record<never, never>, Record<never, never>>,
+    '/bigScreen/newIndex': RouteRecordInfo<'/bigScreen/newIndex', '/bigScreen/newIndex', Record<never, never>, Record<never, never>>,
     'SetPage': RouteRecordInfo<'SetPage', '/bigScreen/setting', Record<never, never>, Record<never, never>>,
     '/bigScreen/setting/onlyTest/': RouteRecordInfo<'/bigScreen/setting/onlyTest/', '/bigScreen/setting/onlyTest', Record<never, never>, Record<never, never>>,
     '/bigScreen/setting/print/': RouteRecordInfo<'/bigScreen/setting/print/', '/bigScreen/setting/print', Record<never, never>, Record<never, never>>,
