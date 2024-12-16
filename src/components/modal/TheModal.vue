@@ -11,7 +11,7 @@
     <div class="delete-modal h-[22em]">
       <div class="h-full flex flex-col items-center justify-center">
         <img
-          src="../assets/image/warning.png"
+          src="@/assets/image/warning.png"
           class="mb-[1em] h-[10em] w-[10em]"
           alt=""
         >
@@ -70,6 +70,9 @@ const props = defineProps({
 <style scoped lang="less">
 ::v-deep(.ant-modal-content) {
   padding: 0;
+}
+::v-deep(.ant-modal-mask) {
+  background: rgba(0, 0, 0, 0.8);
 }
 .delete-modal {
   background: linear-gradient(to bottom, rgb(217, 220, 241), rgba(255, 255, 255, 0)) !important;

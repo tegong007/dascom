@@ -154,11 +154,7 @@ function getSelectEvent(fun: any) {
     border-radius: 2px;
   }
   ::-webkit-scrollbar-track {
-    // background-image: linear-gradient(
-    //   to bottom,
-    //   rgba(0, 140, 255, 0.329) 0%,
-    //   rgba(255, 255, 255, 0.205) 100%
-    // );
+    background-image: linear-gradient(to bottom, rgba(0, 140, 255, 0.329) 0%, rgba(255, 255, 255, 0.205) 100%);
   }
   /* 表头样式 */
   thead {

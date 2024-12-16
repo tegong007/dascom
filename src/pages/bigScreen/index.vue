@@ -118,7 +118,7 @@ import { formatDateTime } from '@/utils/time';
 import { getWorkstationName } from '@/utils/workstationDefinitions';
 import router from '@/router/index.ts';
 import TheModal from '@/components/TheModal.vue';
-import docCountModal from '@/components/docCountModal.vue';
+import docCountModal from '@/components/modal/docCountModal.vue';
 
 // 防抖+定時
 import { throttle } from '@/utils/throttle.js';

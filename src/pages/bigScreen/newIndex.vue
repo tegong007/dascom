@@ -70,6 +70,11 @@
     >
       <TheButton title="暂停进本" @click="setOpen(true)" />
       <TheButton title="全线急停" class="mt2em" />
+      <TheButton
+        title="新增批次"
+        class="mt2em"
+        @click="setAddBatchOpen(true)"
+      />
     </div>
     <!-- 下边按钮 -->
     <div
@@ -107,6 +112,7 @@
     :handle-cancel="handleCancel"
     :title="docCount"
   />
+  <addBatchOpenModal :open="addBatchOpen" :handle-cancel="handleCancel" />
 </template>
 
 <script setup lang="ts">
@@ -128,8 +134,9 @@ import bigScreenHeader from '@/components/bigScreen/header.vue';
 import { formatDateTime } from '@/utils/time';
 import { getWorkstationName } from '@/utils/workstationDefinitions';
 import router from '@/router/index.ts';
-import TheModal from '@/components/TheModal.vue';
-import docCountModal from '@/components/docCountModal.vue';
+import TheModal from '@/components/modal/TheModal.vue';
+import docCountModal from '@/components/modal/docCountModal.vue';
+import addBatchOpenModal from '@/components/modal/addBatch.vue';
 
 // 防抖+定時
 import { throttle } from '@/utils/throttle.js';
@@ -166,9 +173,11 @@ const modal = ref('');
 // 停止二次確認
 const open = ref<boolean>(false);
 const docOpen = ref<boolean>(false);
+const addBatchOpen = ref<boolean>(false);
 const docCount = ref(window.docCount);
 function handleCancel() {
   setOpen(false);
+  setAddBatchOpen(false);
   // setDocOpen(false);
 }
 function setOpen(value: boolean) {
@@ -178,6 +187,10 @@ function setOpen(value: boolean) {
 // function setDocOpen(value: boolean) {
 //   docOpen.value = value;
 // }
+
+function setAddBatchOpen(value: boolean) {
+  addBatchOpen.value = value;
+}
 function showQuitModal() {
   open.value = true;
   modal.value = '确认退出系统？';
