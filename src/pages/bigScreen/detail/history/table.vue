@@ -269,7 +269,7 @@ handlePageData();
   background-color: transparent;
 }
 ::v-deep(.vxe-table--render-default .vxe-table--body-wrapper) {
-  background-color: rgba(255, 255, 255, 0.12);
+  background-color: rgba(255, 255, 255, 0);
 }
 
 /* 行样式 */
@@ -284,7 +284,8 @@ handlePageData();
   background-color: transparent;
 }
 ::v-deep(.mytable-style.vxe-table .vxe-header--column.col-blue) {
-  background: linear-gradient(246deg, rgba(144, 236, 255, 0.65) 3%, rgba(0, 106, 245, 0.06) 50%);
+  // background: linear-gradient(246deg, rgba(144, 236, 255, 0.65) 3%, rgba(0, 106, 245, 0.06) 50%);
+  background: rgba(255, 255, 255, 0.2);
   border-right: 3px solid #7ff3fd;
   color: #fff;
 }

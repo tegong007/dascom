@@ -5,12 +5,10 @@
         <span class="m-x-0.5em text-2.5em font-[youshe]">01</span>
         <span class="ml-10 text-[1.5em] color-[#CFDEF1]">空白本余量</span>
       </div>
-      <div class="absolute top-[3.5em] h-4.8em w-90% flex">
-        <div
-          v-for="(item, index) in props.data.items"
-          :key="index"
-          class="flex-1"
-        >
+      <div
+        class="absolute top-[3.5em] h-4.8em w-90% flex justify-center gap-50"
+      >
+        <div v-for="(item, index) in props.data.items" :key="index">
           <div
             :class="[
               item.status === 'error'

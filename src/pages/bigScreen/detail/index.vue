@@ -20,7 +20,8 @@
               </a-button>
             </a-flex>
             <div class="h92%">
-              <HistoryTable />
+              <!-- <HistoryTable /> -->
+              <Test :colums="leftColums" :data="data" key-field="docId" />
             </div>
           </div>
           <div class="right-2-box box-border flex-[1]">
@@ -44,13 +45,103 @@
 <script setup lang="ts">
 import TeamCard from './team-card.vue';
 import router from '@/router/index.ts';
+import Test from '@/components/base/vxeTable.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 // import DetailTable from "@/pages/bigScreen/detail/table.vue";
 // import CamerTable from "@/pages/bigScreen/detail/camerTable.vue";
 // import CertificateTable from '@/pages/bigScreen/detail/certificateTable.vue';
-import HistoryTable from '@/pages/bigScreen/detail/history/table.vue';
+// import HistoryTable from '@/pages/bigScreen/detail/history/table.vue';
 import TeamInfo from '@/pages/bigScreen/detail/team-info.vue';
 // import ReaderTable from "@/pages/bigScreen/detail/readerTable.vue";
+
+const resultList = [
+  { label: '成本', value: 0 },
+  { label: '制作中', value: 1 },
+  { label: '废本', value: 2 },
+];
+
+const formatterRetult: VxeColumnPropTypes.Formatter<RowVO> = ({
+  cellValue,
+}: any) => {
+  const item = resultList.find(item => item.value === cellValue);
+  return item ? item.label : cellValue;
+};
+const leftColums = ref([
+  {
+    title: '批次号',
+    field: 'batchId',
+    width: 150,
+  },
+  {
+    title: '团组号',
+    field: 'teamId',
+    width: 150,
+  },
+  {
+    title: '证本号',
+    field: 'docId',
+    width: 150,
+  },
+  {
+    title: '工位',
+    field: 'position',
+    width: 150,
+  },
+  {
+    title: '图片',
+    field: 'image',
+    width: 150,
+  },
+  {
+    title: '状态',
+    field: 'result',
+    formatter: formatterRetult,
+    width: 150,
+  },
+  {
+    title: '废本原因',
+    field: 'resultMsg',
+    width: 250,
+    // isTip: true,
+  },
+  {
+    title: '开始时间',
+    field: 'startTime',
+    width: 250,
+  },
+  {
+    title: '结束时间',
+    field: 'endTime',
+    width: 250,
+  },
+]);
+
+const data = [
+  {
+    docId: 123234,
+    result: 2,
+    resultMsg: '我是个废本，为什么我是个废本呢 因为...',
+    isCheck: true,
+  },
+  { docId: 45 },
+  {
+    docId: 12356234,
+    result: 1,
+  },
+  { docId: 3245653456 },
+  {
+    docId: 123234,
+    result: 1,
+  },
+  { docId: 325643456 },
+  { docId: 12378234, resultMsg: '我是个废本，为什么我是个废本呢 因为...' },
+  { docId: 32953456 },
+  { docId: 127893234, resultMsg: '我是个废本，为什么我是个废本呢 因为...' },
+  { docId: 325643456 },
+  { docId: 12 },
+  { docId: 13 },
+  { docId: 2 },
+];
 
 const items = ref([
   {

@@ -2,10 +2,9 @@
   <div class="bg h-100vh flex flex-col items-center text-[18px] text-white">
     <bigScreenHeader />
     <div
-      class="absolute top-3em h1.5em flex items-center justify-center rounded-2xl bg-[#919195] p-x-10"
+      class="absolute top-3em h1.6em flex items-center justify-center rounded-2xl bg-[#919195b0] p-x-15"
     >
-      <span class="text-[1em]">当前批次号:21256465 | 生产任务:【批次数】:10 证本总数:1000
-        待生产总数:100 成功数:888 失败数: 12</span>
+      <span class="text-[1.1em]">当前批次号：20241010，证本数：1000，待生产数：100，成功数：888，失败数：12，挂起数：0</span>
     </div>
 
     <CloseOutlined
@@ -69,40 +68,28 @@
     <div
       class="groupBtn absolute right-35 top-150 h-100vh flex flex-col items-center justify-center"
     >
-      <div
-        class="ztjbBtn h-3.7em w-8.6em transition-transform duration-300 hover:scale-115"
-      />
-      <div
-        class="qxjtBtn em mt2 h-3.7em w-8.6em transition-transform duration-300 hover:scale-115"
-      />
+      <TheButton title="暂停进本" @click="setOpen(true)" />
+      <TheButton title="全线急停" class="mt2em" />
     </div>
     <!-- 下边按钮 -->
     <div
-      class="groupBtn absolute bottom-0 h6em w-full flex items-center justify-center"
+      class="groupBtn absolute bottom-0 h8em w-full flex items-center justify-center gap-20"
     >
       <div class="flex">
-        <div
-          class="pccxBtn h-6em w-10em transition-transform duration-300 hover:scale-115"
+        <TheButton title="批次查询" />
+      </div>
+      <span class="h-50% w-2px bg-[#8BB2FF]" />
+      <div class="flex gap-20">
+        <TheButton
+          title="设备设置"
+          @click="goto('SetPage', { currentModel: 0 })"
         />
+        <TheButton title="设备维护" @click="goto('MainTain')" />
         <!-- <div
             class="startBtn h-6em w-10em transition-transform duration-300 hover:scale-115"
             @click="setDocOpen(true)"
           />
-          <div
-            class="stopBtn h-6em w-10em transition-transform duration-300 hover:scale-115"
-            @click="setOpen(true)"
-          /> -->
-      </div>
-      <span class="relative top--1em m-x-0.5em h-80% w-2px bg-[#8BB2FF]" />
-      <div class="flex">
-        <div
-          class="setBtn h-6em w-10em transition-transform duration-300 hover:scale-115"
-          @click="goto('SetPage', { currentModel: 0 })"
-        />
-        <div
-          class="maintainBtn h-6em w-10em transition-transform duration-300 hover:scale-115"
-          @click="goto('MainTain')"
-        />
+         -->
       </div>
     </div>
     <contextHolder />
@@ -131,6 +118,7 @@ import FinishedProductBg from './module/finishedProduct.vue';
 import AddMore from './module/addMore.vue';
 import Print from './module/printPage.vue';
 import Start from './module/startPage.vue';
+import TheButton from '@/components/base/TheButton.vue';
 import {
   initMachine,
   lineGetDocStatus,
@@ -220,27 +208,12 @@ const data = ref({
   model3: {
     items: [
       {
-        name: 'Y色余量',
+        name: '成功数',
         num: 99,
         position: 'error',
       },
       {
-        name: 'M色余量',
-        num: 99,
-        position: 'normal',
-      },
-      {
-        name: 'C色余量',
-        num: 99,
-        position: 'warning',
-      },
-      {
-        name: 'K色余量',
-        num: 99,
-        position: 'normal',
-      },
-      {
-        name: '光油余量',
+        name: '失败数',
         num: 99,
         position: 'normal',
       },
@@ -251,27 +224,12 @@ const data = ref({
   model2: {
     items: [
       {
-        name: 'Y色余量',
+        name: '成功数',
         num: 99,
         position: 'error',
       },
       {
-        name: 'M色余量',
-        num: 99,
-        position: 'normal',
-      },
-      {
-        name: 'C色余量',
-        num: 99,
-        position: 'warning',
-      },
-      {
-        name: 'K色余量',
-        num: 99,
-        position: 'normal',
-      },
-      {
-        name: '光油余量',
+        name: '失败数',
         num: 99,
         position: 'normal',
       },
@@ -280,8 +238,18 @@ const data = ref({
   model1: {
     items: [
       {
+        name: '成功数',
+        num: 99,
+        position: 'error',
+      },
+      {
+        name: '失败数',
+        num: 99,
+        position: 'normal',
+      },
+      {
         name: '空白本余量',
-        num: '∞',
+        num: 99,
         position: 'normal',
       },
     ],
@@ -466,27 +434,6 @@ async function init() {
     div {
       background-size: 100% 100%;
       background-repeat: 'no-repeat';
-    }
-    .startBtn {
-      background-image: url('../../assets/image/bigScreen/btn/start.png');
-    }
-    .pccxBtn {
-      background-image: url('../../assets/image/bigScreen/btn/pccx.png');
-    }
-    .ztjbBtn {
-      background-image: url('../../assets/image/bigScreen/btn/ztjb.png');
-    }
-    .qxjtBtn {
-      background-image: url('../../assets/image/bigScreen/btn/qxjt.png');
-    }
-    .stopBtn {
-      background-image: url('../../assets/image/bigScreen/btn/stop.png');
-    }
-    .setBtn {
-      background-image: url('../../assets/image/bigScreen/btn/set.png');
-    }
-    .maintainBtn {
-      background-image: url('../../assets/image/bigScreen/btn/maintain.png');
     }
   }
 }

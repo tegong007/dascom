@@ -5,12 +5,10 @@
         <span class="m-x-0.4em text-2.5em font-[youshe]">03</span>
         <span class="ml-10 text-[1.5em] color-[#CFDEF1]">加注打印</span>
       </div>
-      <div class="absolute top-[3.5em] h-4.8em w-90% flex">
-        <div
-          v-for="(item, index) in props.data.items"
-          :key="index"
-          class="flex-1"
-        >
+      <div
+        class="absolute top-[3.5em] h-4.8em w-90% flex justify-center gap-50"
+      >
+        <div v-for="(item, index) in props.data.items" :key="index">
           <div class="w-full flex flex-col items-center">
             <div class="mt-5 text-[1em] color-[#CFDEF1]">
               {{ item.name }}
@@ -20,7 +18,6 @@
                 :start-val="0"
                 separator
                 :end-val="item.num"
-                suffix="%"
                 :duration="Math.floor(Math.random() * 2000) + 1000"
               />
             </div>

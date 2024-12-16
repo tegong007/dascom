@@ -76,12 +76,12 @@ const props = defineProps({
   border-radius: 1em;
 }
 .cancelBtn {
-  background-image: url('../assets/image/cancelBtn.png');
+  // background-image: url('@/assets/image/bigScreen/btn/cancel.png');
   background-size: 100% 100%;
   background-repeat: no-repeat; /* 不重复 */
 }
 .okBtn {
-  background-image: url('../assets/image/okBtn.png');
+  background-image: url('@/assets/image/bigScreen/btn/ok.png');
   background-size: 100% 100%;
   background-repeat: no-repeat; /* 不重复 */
 }

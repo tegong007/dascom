@@ -5,8 +5,10 @@
         <span class="m-x-0.3em text-2.5em font-[youshe]">02</span>
         <span class="title ml-10 text-[1.5em] color-[#CFDEF1]">主副页打印</span>
       </div>
-      <div class="absolute top-[3.5em] h-[4.8em] w-90% flex">
-        <div v-for="(item, index) in props.data.items" :key="index" class="flex-1">
+      <div
+        class="absolute top-[3.5em] h-[4.8em] w-90% flex justify-center gap-50"
+      >
+        <div v-for="(item, index) in props.data.items" :key="index">
           <!-- <div
             :class="[
               item.status === 'error' ? 'bg-[#FF0000]/[0.4] border-[#E83131] border-1px' : '',
@@ -23,7 +25,6 @@
                 :start-val="0"
                 separator
                 :end-val="item.num"
-                suffix="%"
                 :duration="Math.floor(Math.random() * 2000) + 1000"
               />
             </div>
