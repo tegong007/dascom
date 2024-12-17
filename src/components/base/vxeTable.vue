@@ -1,71 +1,93 @@
 <template>
   <div class="wh-full">
-    <div class="h-50px">
-      <!-- 根据数组长度渲染对应数量的按钮，并绑定点击事件和名字 -->
-
-      <vxe-button
-        v-for="(item, index) in props.funArr"
-        :key="index"
-        @click="getSelectEvent(item.action)"
-      >
-        {{ item.name }}
-      </vxe-button>
-    </div>
-
-    <div class="h-80% w-full">
+    <div class="h-100% w-full">
       <vxe-table
+
         ref="tableRef"
         class="mytable-style"
+        :keep-source="true"
         height="auto"
-        auto-resize
-        border
+        auto-resize border
+        :edit-config="editConfig"
         :row-class-name="rowClassName"
         :header-cell-class-name="headerCellClassName"
         :cell-class-name="cellClassName"
         :column-config="{ resizable: true }"
         :row-config="{ keyField: props.keyField, isHover: true }"
         :data="props.data"
+        is-del="props.isDel"
         @checkbox-change="selectChangeEvent"
-        @sort-change="sortChangeEvent"
       >
         <vxe-column v-if="props.checkbox" type="checkbox" width="60" />
-        <!-- <vxe-column type="seq" width="70" align="center" fixed="left" /> -->
-
+        <vxe-column v-if="props.seq" type="seq" width="70" align="center" />
         <vxe-column
           v-for="(item, index) in props.colums"
           :key="index"
           :field="item.field"
           :title="item.title"
           :formatter="item.formatter"
+          :edit-render="{
+            name: item.options ? 'select' : 'input',
+            options: item.options,
+          }"
           show-header-overflow
           :width="item.width"
           show-overflow="title"
           show-footer-overflow
           align="center"
         />
-
-        <!-- <vxe-column title="操作" fixed="right" width="200">
-                <a>按钮</a>
-             </vxe-column> -->
+        <vxe-column
+          v-if="props.rowDelect"
+          field="action"
+          title="操作"
+          width="140"
+        >
+          <template #default="{ row }">
+            <vxe-button mode="text" status="error" @click="removeRow(row)">
+              删除
+            </vxe-button>
+          </template>
+        </vxe-column>
       </vxe-table>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { VxeTableEvents, VxeTablePropTypes } from 'vxe-table';
+import type { VxeTablePropTypes } from 'vxe-table';
 // import type { VxePagerEvents } from 'vxe-pc-ui';
+import { defineExpose, defineProps } from 'vue';
 
 const props = defineProps({
   colums: Array, // 表头
   data: Array, // 数据
   keyField: String, // 主键
   checkbox: Boolean, // 复选框
+  seq: Boolean, // 序号
+  rowDelect: Boolean, // 行删除
+  isEdit: Boolean, // 是否可以编辑
   funArr: Array,
 });
 
 const tableRef = ref();
-
+function activeCellMethod({ row, column, columnIndex }) {
+  console.log(row, column);
+  if (row.isNoTeam) {
+    if (columnIndex === 4) {
+      return true;
+    }
+    return false;
+  }
+  return true;
+}
+// 编辑
+const editConfig = reactive({
+  trigger: 'click',
+  mode: 'cell',
+  showStatus: true,
+  enabled: props.isEdit,
+  beforeEditMethod: activeCellMethod,
+});
 function selectChangeEvent({ checked }) {
   const $table = tableRef.value;
   if ($table) {
@@ -73,26 +95,11 @@ function selectChangeEvent({ checked }) {
     console.log(checked ? '勾选事件' : '取消事件', records);
   }
 }
-interface RowVO {
-  name?: string;
-  role?: string;
-  docId?: number;
-  result?: number;
-  sex?: string;
-  resultMsg?: string;
-  age?: number;
-  address?: string;
-}
 
-const sortChangeEvent: VxeTableEvents.SortChange<RowVO> = ({ sortList }) => {
-  console.info(
-    sortList.map(item => `${item.field},${item.order}`).join('; '),
-  );
-};
 // const sortConfig = ref<VxeTablePropTypes.SortConfig<RowVO>>({
 //    multiple: true,
 // });
-const headerCellClassName: VxeTablePropTypes.HeaderCellClassName<RowVO> = ({
+const headerCellClassName: VxeTablePropTypes.HeaderCellClassName<any> = ({
   column,
 }: any) => {
   column; // if (column.field === 'name') {
@@ -100,7 +107,7 @@ const headerCellClassName: VxeTablePropTypes.HeaderCellClassName<RowVO> = ({
   // return null;
 };
 
-const rowClassName: VxeTablePropTypes.RowClassName<RowVO> = ({
+const rowClassName: VxeTablePropTypes.RowClassName<any> = ({
   rowIndex,
 }: any) => {
   rowIndex; // if ([0].includes(rowIndex)) {
@@ -109,7 +116,7 @@ const rowClassName: VxeTablePropTypes.RowClassName<RowVO> = ({
   return 'row-style'; // }
   // return null;
 };
-const cellClassName: VxeTablePropTypes.CellClassName<RowVO> = ({
+const cellClassName: VxeTablePropTypes.CellClassName<any> = ({
   row,
   $rowIndex,
   column,
@@ -128,13 +135,44 @@ const cellClassName: VxeTablePropTypes.CellClassName<RowVO> = ({
 //     $table.setCheckboxRow(rows, checked);
 //   }
 // }
-function getSelectEvent(fun: any) {
+// function getSelectEvent(fun: any) {
+//   const $table = tableRef.value;
+//   if ($table) {
+//     const selectRecords = $table.getCheckboxRecords();
+//     fun(selectRecords); // VxeUI.modal.alert(`${selectRecords.length}条数据`);
+//   }
+// }
+async function pushEvent(record: object) {
   const $table = tableRef.value;
   if ($table) {
-    const selectRecords = $table.getCheckboxRecords();
-    fun(selectRecords); // VxeUI.modal.alert(`${selectRecords.length}条数据`);
+    // const record = {
+    //   name: `Name_${new Date().getTime()}`,
+    // };
+    const { row: newRow } = await $table.insertAt(record, -1);
+    $table.setEditRow(newRow);
   }
 }
+async function removeRow(row: aby) {
+  const $table = tableRef.value;
+  if ($table) {
+    $table.remove(row);
+  }
+}
+
+function exportEvent() {
+  const $table = tableRef.value;
+  if ($table) {
+    const insertRecords = $table.getInsertRecords();
+    console.log(
+      '🚀 ~ file: vxeTable.vue:165 ~ exportEvent ~ insertRecords:',
+      insertRecords,
+    );
+  }
+}
+defineExpose({
+  pushEvent,
+  exportEvent,
+});
 </script>
 
 <style scoped lang="scss">

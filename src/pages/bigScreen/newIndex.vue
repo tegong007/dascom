@@ -136,7 +136,7 @@ import { getWorkstationName } from '@/utils/workstationDefinitions';
 import router from '@/router/index.ts';
 import TheModal from '@/components/modal/TheModal.vue';
 import docCountModal from '@/components/modal/docCountModal.vue';
-import addBatchOpenModal from '@/components/modal/addBatch.vue';
+import addBatchOpenModal from '@/components/modal/addBatch/index.vue';
 
 // 防抖+定時
 import { throttle } from '@/utils/throttle.js';
