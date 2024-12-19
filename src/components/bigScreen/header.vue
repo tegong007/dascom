@@ -41,15 +41,15 @@ const open = ref<boolean>(false);
 const modal = ref('');
 function showQuitModal() {
   open.value = true;
-  modal.value = '确认退出系统？';
+  modal.value = '是否退出系统？';
 }
 function setOpen(value: boolean) {
   open.value = value;
-  modal.value = '确认停止？';
+  modal.value = '是否停止？';
 }
 // 手动停止
 async function ok() {
-  if (modal.value === '确认退出系统？') {
+  if (modal.value === '是否退出系统？') {
     window.electron.send('quit-app');
   }
 
