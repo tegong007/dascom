@@ -27,6 +27,10 @@ async function bootstrap() {
   app.use(router);
   app.use(VxeUI).use(VxeUITable);
   app.component('CountTo', CountTo);
+  // 页面跳转
+  app.config.globalProperties.$goto = function (page: string, query?: any) {
+    router.push({ name: page, query });
+  };
   // await setupRouter(app);
   app.mount('#app').$nextTick(() => {
     postMessage({ payload: 'removeLoading' }, '*');

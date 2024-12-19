@@ -8,19 +8,24 @@ const routes: Array<RouteRecordRaw> = [
     redirect: '/bigScreen',
   },
   {
-    path: '/bigScreen',
+    path: '/bigScreen', // 首页
     name: 'BigScreen',
     component: () => import('../pages/bigScreen/newIndex.vue'),
   },
   {
-    path: '/setPage', // 子路由的路径，相对于父路由的路径
+    path: '/setPage', // 设置
     name: 'SetPage',
     component: () => import('../pages/bigScreen/setting/index.vue'),
   },
   {
-    path: '/mainTain', // 另一个子路由的路径
+    path: '/mainTain', // 维护
     name: 'MainTain',
     component: () => import('../pages/bigScreen/mainTain.vue'),
+  },
+  {
+    path: '/workstationStatus', // 工位状态
+    name: 'WorkstationStatus',
+    component: () => import('@/pages/bigScreen/workstationStatus/index.vue'),
   },
   {
     path: '/detail',

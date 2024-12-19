@@ -5,11 +5,15 @@
       <div
         class="bg-color m-x-4em m-t-7em box-border h-83% flex gap-2.5em border-[4px] border-[#3F89DD] p-3em"
       >
-        <div class="contain-1 relative box-border flex flex-col flex-1 items-center p-2em">
+        <div
+          class="contain-1 relative box-border flex flex-col flex-1 items-center p-2em"
+        >
           <span class="text-[2em] color-[#CFDEF1]">证本统计</span>
           <div class="absolute top-[9em] h-10em w-90% flex">
             <div v-for="(item, index) in items" :key="index" class="flex-1">
-              <div class="h-full w-full flex flex-col items-center justify-between">
+              <div
+                class="h-full w-full flex flex-col items-center justify-between"
+              >
                 <div class="mt-5 text-[2em] color-[#CFDEF1]">
                   {{ item.name }}
                 </div>
@@ -25,11 +29,15 @@
             </div>
           </div>
         </div>
-        <div class="contain-2 relative box-border flex flex-col flex-1 items-center p-2em">
+        <div
+          class="contain-2 relative box-border flex flex-col flex-1 items-center p-2em"
+        >
           <span class="text-[2em] color-[#CFDEF1]">耗材统计</span>
           <div class="sum absolute top-[9em] w-90% flex">
             <div v-for="(item, index) in haocai" :key="index" class="flex-1">
-              <div class="h-full w-full flex flex-col items-center justify-between">
+              <div
+                class="h-full w-full flex flex-col items-center justify-between"
+              >
                 <div class="mt-5 text-[2em] color-[#CFDEF1]">
                   {{ item.name }}
                 </div>
@@ -41,9 +49,6 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="absolute top-2em h6em w-full flex items-center justify-center">
-      <span class="ml-10 text-[2.5em] color-[#CFDEF1]">维护</span>
     </div>
 
     <div class="absolute bottom-0 h6em w-full flex items-center justify-center">

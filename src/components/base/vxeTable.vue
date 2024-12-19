@@ -2,7 +2,6 @@
   <div class="wh-full">
     <div class="h-100% w-full">
       <vxe-table
-
         ref="tableRef"
         class="mytable-style"
         :keep-source="true"

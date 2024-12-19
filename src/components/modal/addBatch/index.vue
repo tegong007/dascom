@@ -29,7 +29,7 @@
 
     <template #footer>
       <a-flex
-        justify="space-around"
+        justify="center"
         align="center"
         class="w-full rounded-none p-b-[2em]"
       >

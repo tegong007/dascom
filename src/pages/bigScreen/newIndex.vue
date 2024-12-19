@@ -7,10 +7,6 @@
       <span class="text-[1.1em]">当前批次号：20241010，证本数：1000，待生产数：100，成功数：888，失败数：12，挂起数：0</span>
     </div>
 
-    <CloseOutlined
-      class="absolute right-0em top-5 p-x-[1em] text-[25px] color-red hover:bg-[#f86e6e98] hover:color-white"
-      @click="showQuitModal"
-    />
     <div
       class="absolute bottom-[12%] left-[-0.5] h-35% w-80% flex items-center justify-center opacity-0 hover:opacity-100"
     >
@@ -30,16 +26,8 @@
         /> -->
     </div>
 
-    <a-flex
-      justify="space-between"
-      align="center"
-      class="w-full p-x-5em p-t-0.4em text-[1.3em] color-[#CFDEF1]"
-    >
-      <span class="light relative" @click="init">网络状态:已连接</span>
-      <span class="light relative">{{ currentTime }}</span>
-    </a-flex>
     <a-row
-      class="relative top-[6vh] h-33.7% w-full p-l-3em p-r-1.5em"
+      class="relative top-[5.3vh] h-33.7% w-full p-l-3em p-r-1.5em"
       :gutter="[8, 0]"
     >
       <a-col flex="1">
@@ -70,11 +58,11 @@
     >
       <TheButton title="暂停进本" @click="setOpen(true)" />
       <TheButton title="全线急停" class="mt2em" />
-      <TheButton
+      <!-- <TheButton
         title="新增批次"
         class="mt2em"
         @click="setAddBatchOpen(true)"
-      />
+      /> -->
     </div>
     <!-- 下边按钮 -->
     <div
@@ -89,7 +77,7 @@
           title="设备设置"
           @click="goto('SetPage', { currentModel: 0 })"
         />
-        <TheButton title="设备维护" @click="goto('MainTain')" />
+        <TheButton title="设备维护" @click="$goto('MainTain')" />
         <!-- <div
             class="startBtn h-6em w-10em transition-transform duration-300 hover:scale-115"
             @click="setDocOpen(true)"
@@ -112,13 +100,11 @@
     :handle-cancel="handleCancel"
     :title="docCount"
   />
-  <addBatchOpenModal :open="addBatchOpen" :handle-cancel="handleCancel" />
 </template>
 
 <script setup lang="ts">
 import type { NotificationPlacement } from 'ant-design-vue';
 import { notification } from 'ant-design-vue';
-import { CloseOutlined } from '@ant-design/icons-vue';
 import { useAppStore } from '../../store/index';
 import FinishedProductBg from './module/finishedProduct.vue';
 import AddMore from './module/addMore.vue';
@@ -126,17 +112,13 @@ import Print from './module/printPage.vue';
 import Start from './module/startPage.vue';
 import TheButton from '@/components/base/TheButton.vue';
 import {
-  initMachine,
   lineGetDocStatus,
   startOrStopPrintTask,
 } from '@/apis/webApi';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
-import { formatDateTime } from '@/utils/time';
 import { getWorkstationName } from '@/utils/workstationDefinitions';
-import router from '@/router/index.ts';
 import TheModal from '@/components/modal/TheModal.vue';
 import docCountModal from '@/components/modal/docCountModal.vue';
-import addBatchOpenModal from '@/components/modal/addBatch/index.vue';
 
 // 防抖+定時
 import { throttle } from '@/utils/throttle.js';
@@ -173,11 +155,9 @@ const modal = ref('');
 // 停止二次確認
 const open = ref<boolean>(false);
 const docOpen = ref<boolean>(false);
-const addBatchOpen = ref<boolean>(false);
 const docCount = ref(window.docCount);
 function handleCancel() {
   setOpen(false);
-  setAddBatchOpen(false);
   // setDocOpen(false);
 }
 function setOpen(value: boolean) {
@@ -188,22 +168,6 @@ function setOpen(value: boolean) {
 //   docOpen.value = value;
 // }
 
-function setAddBatchOpen(value: boolean) {
-  addBatchOpen.value = value;
-}
-function showQuitModal() {
-  open.value = true;
-  modal.value = '确认退出系统？';
-}
-// 时间展示
-const currentTime = ref('');
-setInterval(() => {
-  currentTime.value = formatDateTime();
-}, 1000);
-// 页面跳转
-function goto(page: string, query?: any) {
-  router.push({ name: page, query });
-}
 // 假数据
 const data = ref({
   model4: [
@@ -411,20 +375,18 @@ async function stopInterval() {
   }
 }
 // 初始化
-async function init() {
-  try {
-    appStore.setSpinning(true);
-    await initMachine({ module: 'm0' });
-    openNotify('bottomRight', '初始化接口调用成功', 'success');
-  }
-  catch (error) {
-    error;
-    openNotify('bottomRight', '初始化接口调用失败');
-  }
-  finally {
-    appStore.setSpinning(false);
-  }
-}
+// async function init() {
+//   try {
+//     appStore.setSpinning(true);
+//     await initMachine({ module: 'm0' });
+//     openNotify('bottomRight', '初始化接口调用成功', 'success');
+//   } catch (error) {
+//     error;
+//     openNotify('bottomRight', '初始化接口调用失败');
+//   } finally {
+//     appStore.setSpinning(false);
+//   }
+// }
 </script>
 
 <style lang="less">
