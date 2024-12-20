@@ -19,6 +19,10 @@ declare module 'vue-router/auto-routes' {
    */
   export interface RouteNamedMap {
     '/bigScreen/': RouteRecordInfo<'/bigScreen/', '/bigScreen', Record<never, never>, Record<never, never>>,
+    '/bigScreen/addBatch/': RouteRecordInfo<'/bigScreen/addBatch/', '/bigScreen/addBatch', Record<never, never>, Record<never, never>>,
+    '/bigScreen/addBatch/notearm-form': RouteRecordInfo<'/bigScreen/addBatch/notearm-form', '/bigScreen/addBatch/notearm-form', Record<never, never>, Record<never, never>>,
+    '/bigScreen/addBatch/team-form': RouteRecordInfo<'/bigScreen/addBatch/team-form', '/bigScreen/addBatch/team-form', Record<never, never>, Record<never, never>>,
+    '/bigScreen/addBatch/updateBatch': RouteRecordInfo<'/bigScreen/addBatch/updateBatch', '/bigScreen/addBatch/updateBatch', Record<never, never>, Record<never, never>>,
     '/bigScreen/detail/': RouteRecordInfo<'/bigScreen/detail/', '/bigScreen/detail', Record<never, never>, Record<never, never>>,
     '/bigScreen/detail/camerTable': RouteRecordInfo<'/bigScreen/detail/camerTable', '/bigScreen/detail/camerTable', Record<never, never>, Record<never, never>>,
     '/bigScreen/detail/certificateTable': RouteRecordInfo<'/bigScreen/detail/certificateTable', '/bigScreen/detail/certificateTable', Record<never, never>, Record<never, never>>,

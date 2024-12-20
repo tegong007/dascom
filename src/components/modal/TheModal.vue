@@ -8,51 +8,29 @@
     force-render
     @ok="props.handleOk"
   >
-    <div class="delete-modal h-[25em]">
-      <div class="h-full flex flex-col items-center justify-center">
+    <div class="delete-modal box-border h-[25em] p-t-50px">
+      <div class="h-full flex flex-col items-center justify-start">
         <img
+          v-if="props.warnIcon"
           src="@/assets/image/warning.png"
           class="mb-[1em] h-[10em] w-[10em]"
           alt=""
         >
-        <!-- <a-flex justify="center" align="center"> -->
         <span class="text-[30px] color-[#627384] font-bold">
           &nbsp;&nbsp; {{ props.title }}</span>
-        <!-- </a-flex> -->
       </div>
     </div>
-
     <template #footer>
-      <a-flex justify="space-around" align="center" class="h200px">
-        <div class="cancelBtn h-95px w-210px" @click="handleCancel" />
-        <div class="okBtn h-110px w-220px" @click="handleOk" />
+      <a-flex justify="center" align="center" class="pb-40px">
+        <div
+          class="cancelBtn h-110px w-220px transition-transform duration-300 hover:scale-115"
+          @click="handleCancel"
+        />
+        <div
+          class="okBtn h-110px w-220px transition-transform duration-300 hover:scale-115"
+          @click="handleOk"
+        />
       </a-flex>
-      <!-- <a-flex justify="space-around" align="center">
-        <div
-          class="cancelBtn relative h-full w-[40%] flex items-center justify-center"
-        >
-          <span
-            class="relative p-y-[0.7em] text-[30px] color-[#627384] font-bold"
-          >
-            {{ $t('modal.cancel') }}</span
-          >
-          <div
-            class="absolute h-full w-full cursor-pointer rounded-[1em] shadow-xl border active:bg-[#000]/[0.4] hover:bg-[#fff]/[0.3]"
-            @click="handleCancel"
-          />
-        </div>
-        <div
-          class="okBtn relative h-full w-[40%] flex items-center justify-center"
-        >
-          <span class="relative p-y-[0.7em] text-[30px] color-[#fff] font-bold">
-            {{ $t('modal.confirm') }}</span
-          >
-          <div
-            class="absolute h-full w-full cursor-pointer rounded-[1em] shadow-2xl active:bg-[#000]/[0.4] hover:bg-[#fff]/[0.3]"
-            @click="handleOk"
-          />
-        </div>
-      </a-flex> -->
     </template>
   </a-modal>
   <!-- </div> -->
@@ -65,6 +43,7 @@ const props = defineProps({
   open: Boolean,
   handleOk: Function,
   title: String,
+  warnIcon: Boolean,
   handleCancel: Function,
 });
 </script>
@@ -84,14 +63,19 @@ const props = defineProps({
 ::v-deep(.ant-modal-mask) {
   background: rgba(0, 0, 0, 0.8);
 }
-// .delete-modal {
-//   // background: linear-gradient(
-//   //   to bottom,
-//   //   rgb(217, 220, 241),
-//   //   rgba(255, 255, 255, 0)
-//   // ) !important;
-//   border-radius: 1em;
-// }
+::v-deep.scoll-bar {
+  overflow-y: auto;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  // border-left: 3px solid #7ff3fd;
+}
+::-webkit-scrollbar-thumb {
+  // background-color: #ffffff38;
+  background-color: #ffffff69;
+  border-radius: 5px;
+}
 .cancelBtn {
   background-image: url('@/assets/image/bigScreen/btn/cancel.png');
   background-size: 100% 100%;

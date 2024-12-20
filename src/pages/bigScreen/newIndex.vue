@@ -78,6 +78,7 @@
           @click="goto('SetPage', { currentModel: 0 })"
         />
         <TheButton title="设备维护" @click="$goto('MainTain')" />
+        <TheButton title="添加批次" @click="$goto('AddBatch')" />
         <!-- <div
             class="startBtn h-6em w-10em transition-transform duration-300 hover:scale-115"
             @click="setDocOpen(true)"
@@ -111,10 +112,7 @@ import AddMore from './module/addMore.vue';
 import Print from './module/printPage.vue';
 import Start from './module/startPage.vue';
 import TheButton from '@/components/base/TheButton.vue';
-import {
-  lineGetDocStatus,
-  startOrStopPrintTask,
-} from '@/apis/webApi';
+import { lineGetDocStatus, startOrStopPrintTask } from '@/apis/webApi';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 import { getWorkstationName } from '@/utils/workstationDefinitions';
 import TheModal from '@/components/modal/TheModal.vue';

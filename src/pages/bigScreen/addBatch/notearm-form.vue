@@ -4,7 +4,7 @@
     layout="inline"
     :model="formState"
     :rules="rules"
-    class="mt10 w-full rounded-[8px] bg-[#ffffff34] p-x-10 p-y-20"
+    class="w-full rounded-[8px] bg-[#ffffff34] p-x-10 p-y-20"
   >
     <a-row :gutter="[0, 0]" class="w-full" justify="space-evenly">
       <a-col :span="5">
@@ -18,16 +18,14 @@
           />
         </a-form-item>
       </a-col>
-      <a-col :span="5" />
-      <a-col :span="5" />
-      <a-col :span="5" />
-      <a-col :span="2" class="text-right">
+      <a-col :span="18" class="text-right">
         <a-button
           type="primary"
-          class="btn hover:text-[#89f7ff]!"
+          class="btn flex items-center hover:text-[#89f7ff]!"
           @click="onSubmit"
         >
-          新建无团组
+          <SettingFilled />
+          设置
         </a-button>
       </a-col>
     </a-row>
@@ -37,10 +35,13 @@
 <script setup lang="ts">
 import { defineProps, reactive } from 'vue';
 import type { UnwrapRef } from 'vue';
+import { SettingFilled } from '@ant-design/icons-vue';
 
 const props = defineProps({
   addTeam: Function, // 表头
+  updateNoTeamNum: Function,
 });
+const isFirstClick = ref<boolean>(true);
 const formRef = ref();
 const rules = {
   num: [
@@ -77,8 +78,18 @@ function onSubmit() {
   formRef.value
     .validate()
     .then(() => {
-      console.log('values', formState, toRaw(formState));
-      props.addTeam({ ...toRaw(formState), isNoTeam: true });
+      if (isFirstClick.value) {
+        props.addTeam({
+          ...toRaw(formState),
+          dispatchUnits: '-------',
+          dataSources: '-------',
+          urgentType: '--------',
+        });
+        isFirstClick.value = false;
+      }
+      else {
+        props.updateNoTeamNum(formState.num);
+      }
     })
     .catch((error) => {
       console.log('error', error);
@@ -93,8 +104,14 @@ function onSubmit() {
   background: linear-gradient(209deg, #90ecff 2%, #006af5 69%);
   box-sizing: border-box;
   border: 2px solid #89f7ff;
-  padding: 0px 15px;
+  padding: 0px 7px;
   color: white;
   height: 32px;
+}
+::v-deep(.ant-form-item) {
+  label {
+    color: #fff !important;
+    font-size: 16px;
+  }
 }
 </style>

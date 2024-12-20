@@ -28,6 +28,12 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/pages/bigScreen/workstationStatus/index.vue'),
   },
   {
+    path: '/addBatch', // 添加批次
+    name: 'AddBatch',
+    component: () => import('@/pages/bigScreen/addBatch/index.vue'),
+  },
+
+  {
     path: '/detail',
     name: 'detail',
     component: () => import('@/pages/bigScreen/detail/index.vue'),

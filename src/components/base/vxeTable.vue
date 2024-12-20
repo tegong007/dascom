@@ -6,7 +6,8 @@
         class="mytable-style"
         :keep-source="true"
         height="auto"
-        auto-resize border
+        auto-resize
+        border
         :edit-config="editConfig"
         :row-class-name="rowClassName"
         :header-cell-class-name="headerCellClassName"
@@ -40,11 +41,13 @@
           field="action"
           title="操作"
           width="140"
+          align="center"
         >
           <template #default="{ row }">
-            <vxe-button mode="text" status="error" @click="removeRow(row)">
-              删除
-            </vxe-button>
+            <div class="flex justify-around">
+              <a class="color-[#89F7FF]" @click="showRow(row)">编辑</a>
+              <a class="color-red" @click="removeRow(row)">删除</a>
+            </div>
           </template>
         </vxe-column>
       </vxe-table>
@@ -65,10 +68,13 @@ const props = defineProps({
   seq: Boolean, // 序号
   rowDelect: Boolean, // 行删除
   isEdit: Boolean, // 是否可以编辑
+  showRow: Function,
   funArr: Array,
 });
 
 const tableRef = ref();
+const oldRow = ref(); // 点击的行
+const firstRow = ref(); // 第一行
 function activeCellMethod({ row, column, columnIndex }) {
   console.log(row, column);
   if (row.isNoTeam) {
@@ -83,10 +89,11 @@ function activeCellMethod({ row, column, columnIndex }) {
 const editConfig = reactive({
   trigger: 'click',
   mode: 'cell',
-  showStatus: true,
+  // showStatus: true,
   enabled: props.isEdit,
   beforeEditMethod: activeCellMethod,
 });
+// 勾选点击
 function selectChangeEvent({ checked }) {
   const $table = tableRef.value;
   if ($table) {
@@ -94,7 +101,60 @@ function selectChangeEvent({ checked }) {
     console.log(checked ? '勾选事件' : '取消事件', records);
   }
 }
+// 在前面添加
+async function addEvent(record: object) {
+  const $table = tableRef.value;
+  if ($table) {
+    const { row: newRow } = await $table.insert(record);
+    $table.setEditRow(newRow);
+    firstRow.value = newRow;
+  }
+}
+// 在后面添加
+async function pushEvent(record: object) {
+  const $table = tableRef.value;
+  if ($table) {
+    const { row: newRow } = await $table.insertAt(record, -1);
+    $table.setEditRow(newRow);
+  }
+}
+// 删除单行
+async function removeRow(row: any) {
+  const $table = tableRef.value;
+  if ($table) {
+    $table.remove(row);
+  }
+}
 
+// 回显
+async function showRow(row: any) {
+  // 传递
+  await props.showRow(row);
+  oldRow.value = row;
+  // row.name = `Name_${new Date().getTime()}`
+}
+// 根据点击数据修改行
+function updateRow(newRow: object) {
+  oldRow.value.num = newRow.num;
+  oldRow.value.dispatchUnits = newRow.dispatchUnits;
+  oldRow.value.dataSources = newRow.dataSources;
+  oldRow.value.urgentType = newRow.urgentType;
+}
+function updateFirstRow(num: number) {
+  firstRow.value.num = num;
+}
+
+// 获取表格数据
+function exportEvent() {
+  const $table = tableRef.value;
+  if ($table) {
+    const insertRecords = $table.getInsertRecords();
+    console.log(
+      '🚀 ~ file: vxeTable.vue:165 ~ exportEvent ~ insertRecords:',
+      insertRecords,
+    );
+  }
+}
 // const sortConfig = ref<VxeTablePropTypes.SortConfig<RowVO>>({
 //    multiple: true,
 // });
@@ -141,36 +201,13 @@ const cellClassName: VxeTablePropTypes.CellClassName<any> = ({
 //     fun(selectRecords); // VxeUI.modal.alert(`${selectRecords.length}条数据`);
 //   }
 // }
-async function pushEvent(record: object) {
-  const $table = tableRef.value;
-  if ($table) {
-    // const record = {
-    //   name: `Name_${new Date().getTime()}`,
-    // };
-    const { row: newRow } = await $table.insertAt(record, -1);
-    $table.setEditRow(newRow);
-  }
-}
-async function removeRow(row: aby) {
-  const $table = tableRef.value;
-  if ($table) {
-    $table.remove(row);
-  }
-}
 
-function exportEvent() {
-  const $table = tableRef.value;
-  if ($table) {
-    const insertRecords = $table.getInsertRecords();
-    console.log(
-      '🚀 ~ file: vxeTable.vue:165 ~ exportEvent ~ insertRecords:',
-      insertRecords,
-    );
-  }
-}
 defineExpose({
   pushEvent,
   exportEvent,
+  addEvent,
+  updateRow,
+  updateFirstRow,
 });
 </script>
 
@@ -181,8 +218,8 @@ defineExpose({
   //   font-family: siyuan;
   /* 滚动条样式 */
   ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: 11px;
+    height: 11px;
     // border-left: 3px solid #7ff3fd;
   }
   ::-webkit-scrollbar-thumb {
@@ -191,7 +228,11 @@ defineExpose({
     border-radius: 2px;
   }
   ::-webkit-scrollbar-track {
-    background-image: linear-gradient(to bottom, rgba(0, 140, 255, 0.329) 0%, rgba(255, 255, 255, 0.205) 100%);
+    // background-image: linear-gradient(
+    //   to bottom,
+    //   rgba(0, 140, 255, 0.329) 0%,
+    //   rgba(255, 255, 255, 0.205) 100%
+    // );
   }
   /* 表头样式 */
   thead {
