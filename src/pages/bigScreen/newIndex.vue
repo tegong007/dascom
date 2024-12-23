@@ -2,7 +2,7 @@
   <div class="bg h-100vh flex flex-col items-center text-[18px] text-white">
     <bigScreenHeader />
     <div
-      class="absolute top-3em h1.6em flex items-center justify-center rounded-2xl bg-[#919195b0] p-x-15"
+      class="absolute top-3.1em h1.6em flex items-center justify-center rounded-2xl bg-[#919195b0] p-x-15"
     >
       <span class="text-[1.1em]">当前批次号：20241010，证本数：1000，待生产数：100，成功数：888，失败数：12，挂起数：0</span>
     </div>
@@ -27,7 +27,7 @@
     </div>
 
     <a-row
-      class="relative top-[5.3vh] h-33.7% w-full p-l-3em p-r-1.5em"
+      class="relative top-[4.3vh] h-33.7% w-full p-l-3em p-r-1.5em"
       :gutter="[8, 0]"
     >
       <a-col flex="1">
@@ -69,7 +69,7 @@
       class="groupBtn absolute bottom-0 h8em w-full flex items-center justify-center gap-20"
     >
       <div class="flex">
-        <TheButton title="批次查询" />
+        <TheButton title="批次查询" @click="$goto('BatchList')" />
       </div>
       <span class="h-50% w-2px bg-[#8BB2FF]" />
       <div class="flex gap-20">
@@ -78,7 +78,6 @@
           @click="goto('SetPage', { currentModel: 0 })"
         />
         <TheButton title="设备维护" @click="$goto('MainTain')" />
-        <TheButton title="添加批次" @click="$goto('AddBatch')" />
         <!-- <div
             class="startBtn h-6em w-10em transition-transform duration-300 hover:scale-115"
             @click="setDocOpen(true)"
@@ -92,6 +91,7 @@
   <TheModal
     :open="open"
     :handle-ok="reset"
+    :warn-icon="true"
     :handle-cancel="handleCancel"
     :title="modal"
   />
@@ -170,14 +170,17 @@ function setOpen(value: boolean) {
 const data = ref({
   model4: [
     {
-      name: '良本证本数量',
-      num: 0,
-      position: 'error',
+      item: '待生产良本数',
+      value: 100,
+      hangingNum: 2,
     },
     {
-      name: '废本证本数量',
-      num: 0,
-      position: 'normal',
+      item: '良本证本数量',
+      value: 0,
+    },
+    {
+      item: '废本证本数量',
+      value: 0,
     },
   ],
   model3: {

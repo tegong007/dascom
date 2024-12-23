@@ -190,7 +190,7 @@ function pageChange({ pageSize, currentPage }) {
   pageVO.currentPage = currentPage;
   pageVO.pageSize = pageSize;
   // handlePageData();
-}
+};
 
 // 前端分页
 // const handlePageData = () => {

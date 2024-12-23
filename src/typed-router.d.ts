@@ -19,11 +19,14 @@ declare module 'vue-router/auto-routes' {
    */
   export interface RouteNamedMap {
     '/bigScreen/': RouteRecordInfo<'/bigScreen/', '/bigScreen', Record<never, never>, Record<never, never>>,
-    '/bigScreen/addBatch/': RouteRecordInfo<'/bigScreen/addBatch/', '/bigScreen/addBatch', Record<never, never>, Record<never, never>>,
-    '/bigScreen/addBatch/notearm-form': RouteRecordInfo<'/bigScreen/addBatch/notearm-form', '/bigScreen/addBatch/notearm-form', Record<never, never>, Record<never, never>>,
-    '/bigScreen/addBatch/team-form': RouteRecordInfo<'/bigScreen/addBatch/team-form', '/bigScreen/addBatch/team-form', Record<never, never>, Record<never, never>>,
-    '/bigScreen/addBatch/updateBatch': RouteRecordInfo<'/bigScreen/addBatch/updateBatch', '/bigScreen/addBatch/updateBatch', Record<never, never>, Record<never, never>>,
+    '/bigScreen/batch/addBatch/': RouteRecordInfo<'/bigScreen/batch/addBatch/', '/bigScreen/batch/addBatch', Record<never, never>, Record<never, never>>,
+    '/bigScreen/batch/addBatch/modal/successModal': RouteRecordInfo<'/bigScreen/batch/addBatch/modal/successModal', '/bigScreen/batch/addBatch/modal/successModal', Record<never, never>, Record<never, never>>,
+    '/bigScreen/batch/addBatch/modal/updateModal': RouteRecordInfo<'/bigScreen/batch/addBatch/modal/updateModal', '/bigScreen/batch/addBatch/modal/updateModal', Record<never, never>, Record<never, never>>,
+    '/bigScreen/batch/addBatch/notearm-form': RouteRecordInfo<'/bigScreen/batch/addBatch/notearm-form', '/bigScreen/batch/addBatch/notearm-form', Record<never, never>, Record<never, never>>,
+    '/bigScreen/batch/addBatch/team-form': RouteRecordInfo<'/bigScreen/batch/addBatch/team-form', '/bigScreen/batch/addBatch/team-form', Record<never, never>, Record<never, never>>,
     '/bigScreen/batch/list/': RouteRecordInfo<'/bigScreen/batch/list/', '/bigScreen/batch/list', Record<never, never>, Record<never, never>>,
+    '/bigScreen/batch/list/batchInfo': RouteRecordInfo<'/bigScreen/batch/list/batchInfo', '/bigScreen/batch/list/batchInfo', Record<never, never>, Record<never, never>>,
+    '/bigScreen/batch/list/team-form': RouteRecordInfo<'/bigScreen/batch/list/team-form', '/bigScreen/batch/list/team-form', Record<never, never>, Record<never, never>>,
     '/bigScreen/detail/': RouteRecordInfo<'/bigScreen/detail/', '/bigScreen/detail', Record<never, never>, Record<never, never>>,
     '/bigScreen/detail/camerTable': RouteRecordInfo<'/bigScreen/detail/camerTable', '/bigScreen/detail/camerTable', Record<never, never>, Record<never, never>>,
     '/bigScreen/detail/certificateTable': RouteRecordInfo<'/bigScreen/detail/certificateTable', '/bigScreen/detail/certificateTable', Record<never, never>, Record<never, never>>,

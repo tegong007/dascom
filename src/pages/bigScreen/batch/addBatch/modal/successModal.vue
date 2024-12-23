@@ -16,8 +16,21 @@
           class="h-[10em] w-[10em]"
           alt=""
         >
+        <img
+          v-if="props.successIcon"
+          src="@/assets/image/success.png"
+          class="h-[10em] w-[10em]"
+          alt=""
+        >
         <span class="text-[30px] color-[#627384] font-bold">
           &nbsp;&nbsp; {{ props.title }}</span>
+        <div
+          class="scoll-bar mt10px h-full w-80% overflow-y-auto rounded-[8px] bg-white p-10 text-[24px] color-[#627384] font-bold"
+        >
+          <div>批次号:</div>
+          <div>团组:</div>
+          <div>总人数:</div>
+        </div>
       </div>
     </div>
     <template #footer>
@@ -44,6 +57,7 @@ const props = defineProps({
   handleOk: Function,
   title: String,
   warnIcon: Boolean,
+  successIcon: Boolean,
   handleCancel: Function,
 });
 </script>

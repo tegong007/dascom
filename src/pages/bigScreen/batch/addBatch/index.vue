@@ -10,19 +10,26 @@
         <MyTable
           ref="tableRef"
           :seq="true"
-          :row-delect="true"
+          page-name="AddBatch"
           :show-row="showRow"
           :colums="colums"
         />
       </main>
     </div>
-    <TheModal
-      ref="modalRef"
+    <UpdateModal
+      ref="updateRef"
       :open="open"
       :handle-ok="() => setOpen(false)"
       :handle-cancel="() => setOpen(false)"
       :title="modal"
       :handle-update="handleUpdate"
+    />
+    <SuceessModal
+      :open="successOpen"
+      :success-icon="true"
+      :handle-ok="() => setSuccessOpen(false)"
+      :handle-cancel="() => setSuccessOpen(false)"
+      :title="successTitle"
     />
     <!-- 下边按钮 -->
     <div
@@ -48,17 +55,23 @@ import {
   dispatchUnitsOptions,
   urgencyOptions,
 } from './option';
-import TheModal from './updateBatch.vue';
+import UpdateModal from './modal/updateModal.vue';
+import SuceessModal from './modal/successModal.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 import TheButton from '@/components/base/TheButton.vue';
 import MyTable from '@/components/base/vxeTable.vue';
 
 const modal = ref('编辑团组');
+const successTitle = ref('批次添加成功，是否查看详情?');
 const open = ref<boolean>(false);
+const successOpen = ref<boolean>(true);
 const tableRef = ref(null);
-const modalRef = ref(null);
+const updateRef = ref(null);
 function setOpen(value: boolean) {
   open.value = value;
+}
+function setSuccessOpen(value: boolean) {
+  successOpen.value = value;
 }
 const colums = ref([
   {
@@ -100,9 +113,9 @@ function addTeam(record: object) {
 // 收到通知打开弹窗
 async function showRow(record: object) {
   setOpen(true);
-  if (modalRef.value) {
+  if (updateRef.value) {
     // 弹窗要修改的值
-    await modalRef.value.updateForm(record);
+    await updateRef.value.updateForm(record);
   }
 }
 // 修改成功关闭弹窗

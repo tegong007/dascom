@@ -18,7 +18,7 @@
         is-del="props.isDel"
         @checkbox-change="selectChangeEvent"
       >
-        <vxe-column v-if="props.checkbox" type="checkbox" width="60" />
+        <vxe-column v-if="props.checkbox" type="checkbox" width="43" />
         <vxe-column v-if="props.seq" type="seq" width="70" align="center" />
         <vxe-column
           v-for="(item, index) in props.colums"
@@ -37,7 +37,7 @@
           align="center"
         />
         <vxe-column
-          v-if="props.rowDelect"
+          v-if="props.pageName === 'AddBatch'"
           field="action"
           title="操作"
           width="140"
@@ -47,6 +47,22 @@
             <div class="flex justify-around">
               <a class="color-[#89F7FF]" @click="showRow(row)">编辑</a>
               <a class="color-red" @click="removeRow(row)">删除</a>
+            </div>
+          </template>
+        </vxe-column>
+        <vxe-column
+          v-if="props.pageName === 'BatchList'"
+          field="action"
+          title="操作"
+          width="140"
+          fixed="right"
+          align="center"
+        >
+          <template #default="{ row }">
+            <div class="flex items-center justify-start gap-10">
+              <a class="color-[#89F7FF]">查看详情</a>
+              <a v-if="row.status === 2" class="color-[#89F7FF]">挂起</a>
+              <a v-if="row.status === 3" class="color-[#89F7FF]">恢复</a>
             </div>
           </template>
         </vxe-column>
@@ -66,7 +82,7 @@ const props = defineProps({
   keyField: String, // 主键
   checkbox: Boolean, // 复选框
   seq: Boolean, // 序号
-  rowDelect: Boolean, // 行删除
+  pageName: String, // 行删除
   isEdit: Boolean, // 是否可以编辑
   showRow: Function,
   funArr: Array,
@@ -75,6 +91,7 @@ const props = defineProps({
 const tableRef = ref();
 const oldRow = ref(); // 点击的行
 const firstRow = ref(); // 第一行
+const checkedRow = ref(); // 选中的数据
 function activeCellMethod({ row, column, columnIndex }) {
   console.log(row, column);
   if (row.isNoTeam) {
@@ -98,6 +115,7 @@ function selectChangeEvent({ checked }) {
   const $table = tableRef.value;
   if ($table) {
     const records = $table.getCheckboxRecords();
+    checkedRow.value = records;
     console.log(checked ? '勾选事件' : '取消事件', records);
   }
 }
@@ -149,10 +167,7 @@ function exportEvent() {
   const $table = tableRef.value;
   if ($table) {
     const insertRecords = $table.getInsertRecords();
-    console.log(
-      '🚀 ~ file: vxeTable.vue:165 ~ exportEvent ~ insertRecords:',
-      insertRecords,
-    );
+    return insertRecords;
   }
 }
 // const sortConfig = ref<VxeTablePropTypes.SortConfig<RowVO>>({
@@ -208,6 +223,7 @@ defineExpose({
   addEvent,
   updateRow,
   updateFirstRow,
+  checkedRow,
 });
 </script>
 
@@ -215,6 +231,7 @@ defineExpose({
 ::v-deep(.mytable-style) {
   // max-width: 400px;
   font-size: 16px;
+  box-sizing: border-box;
   //   font-family: siyuan;
   /* 滚动条样式 */
   ::-webkit-scrollbar {
@@ -281,6 +298,8 @@ defineExpose({
   border-top: none;
   border-left: none;
   color: #fff;
+  box-sizing: border-box;
+  background: #ffffff17;
 }
 
 /* 固定列样式 */
@@ -308,16 +327,12 @@ defineExpose({
 ::v-deep(.vxe-table--render-default .vxe-table--fixed-left-wrapper) {
   background-color: unset;
 }
-//分页
-::v-deep(.vxe-pager) {
-  background-color: unset;
-  color: #fff;
-  .vxe-pager--jump-next,
-  .vxe-pager--jump-prev,
-  .vxe-pager--next-btn,
-  .vxe-pager--num-btn,
-  .vxe-pager--prev-btn {
-    background-color: unset;
-  }
+//最后一个小方块
+::v-deep(.mytable-style [class~='col--last'][class~='col--fixed']) {
+  border-right: 0 !important;
+  background: #ffffff;
+}
+::v-deep(.mytable-style .col--gutter) {
+  background: rgba(255, 255, 255, 0.2);
 }
 </style>

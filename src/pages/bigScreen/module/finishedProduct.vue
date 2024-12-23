@@ -5,13 +5,27 @@
         <span class="m-x-10px text-2.5em font-[youshe]">04</span>
         <span class="ml-10 text-[1.5em] color-[#CFDEF1]">成品证本收集</span>
       </div>
-      <div class="sum absolute top-[3.5em] w-full flex flex-col flex-1">
-        <div v-for="item in props.data" :key="item.name" class="flex flex-col flex-1 items-center">
-          <div class="mt-10 text-[1.5em] color-[#CFDEF1]">
-            {{ item.name }}
+      <div
+        class="sum absolute top-[3.2em] box-border w-full flex flex-col flex-1 gap-10 p-x-20"
+      >
+        <div
+          v-for="item in props.data"
+          :key="item.item"
+          class="box box-border flex flex-col flex-1 items-center p-t-7"
+        >
+          <div class="text-[1.5em] color-[#CFDEF1]">
+            {{ item.item }}
           </div>
-          <div class="mt10 text-4em font-[youshe]">
-            <CountTo :start-val="0" :end-val="item.num" :duration="1500" />
+          <div class="m-t-8 text-[2em] line-height-none font-[youshe]">
+            <CountTo :start-val="0" :end-val="item.value" :duration="1500" />
+            <CountTo
+              v-if="item.hangingNum"
+              :start-val="0"
+              prefix="-"
+              suffix="(挂起)"
+              :end-val="item.hangingNum"
+              :duration="1500"
+            />
           </div>
         </div>
       </div>
@@ -33,7 +47,13 @@ const props = defineProps({
   background-size: 100% 100%;
   background-repeat: 'no-repeat';
   .sum {
-    height: calc(100% - 3.5em);
+    height: calc(100% - 4.5em);
+    .box {
+      opacity: 1;
+      box-sizing: border-box;
+      border: 3px solid;
+      border-image: linear-gradient(180deg, #89f7ff 0%, rgba(0, 237, 255, 0.46) 100%) 3;
+    }
   }
 }
 </style>

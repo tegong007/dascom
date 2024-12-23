@@ -43,6 +43,7 @@
                   <a-select
                     v-model:value="formState.dispatchUnits"
                     placeholder="请选择派遣单位"
+                    :disabled="formState.dispatchUnits === '-------'"
                   >
                     <a-select-option
                       v-for="option in dispatchUnitsOptions"
@@ -59,6 +60,7 @@
                   <a-select
                     v-model:value="formState.dataSources"
                     placeholder="请选择数据来源"
+                    :disabled="formState.dispatchUnits === '-------'"
                   >
                     <a-select-option
                       v-for="option in dataSourcesOptions"
@@ -75,6 +77,7 @@
                   <a-select
                     v-model:value="formState.urgentType"
                     placeholder="请选择加急类型"
+                    :disabled="formState.dispatchUnits === '-------'"
                   >
                     <a-select-option
                       v-for="option in urgencyOptions"
@@ -114,7 +117,7 @@ import {
   dataSourcesOptions,
   dispatchUnitsOptions,
   urgencyOptions,
-} from './option';
+} from '../option.js';
 
 const props = defineProps({
   open: Boolean,

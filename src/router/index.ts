@@ -30,7 +30,12 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/addBatch', // 添加批次
     name: 'AddBatch',
-    component: () => import('@/pages/bigScreen/addBatch/index.vue'),
+    component: () => import('@/pages/bigScreen/batch/addBatch/index.vue'),
+  },
+  {
+    path: '/batchList', // 批次列表
+    name: 'BatchList',
+    component: () => import('@/pages/bigScreen/batch/list/index.vue'),
   },
 
   {

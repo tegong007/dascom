@@ -3,8 +3,8 @@
     <div class="w-full flex items-center justify-center">
       <span class="title text-[38px] color-[#fff] font-[youshe]">数字孪生平台</span>
     </div>
-    <div class="top-1em w-full flex items-center justify-center">
-      <span class="text-[2.5em] font-[youshe]">{{ props.title }}</span>
+    <div class="mt10 w-full flex items-center justify-center">
+      <span class="text-[2.2em] font-[youshe]">{{ props.title }}</span>
     </div>
 
     <a-flex
@@ -22,6 +22,7 @@
     <TheModal
       :open="open"
       :handle-ok="ok"
+      :warn-icon="true"
       :handle-cancel="() => setOpen(false)"
       :title="modal"
     />
@@ -45,7 +46,6 @@ function showQuitModal() {
 }
 function setOpen(value: boolean) {
   open.value = value;
-  modal.value = '是否停止？';
 }
 // 手动停止
 async function ok() {
