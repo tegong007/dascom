@@ -2,24 +2,32 @@
   <div class="bg h-100vh flex flex-col items-center text-[18px] text-white">
     <bigScreenHeader title="批次列表" />
     <div
-      class="absolute top-70 box-border h-85vh w90% flex flex-col items-center justify-between p-2em p-b-0"
+      class="absolute top-70 box-border h-85vh w90% flex flex-col items-center gap-20 p-2em p-b-0"
     >
       <BatchInfo />
       <div class="relative w-full">
         <TeamForm />
-        <a-space wrap class="absolute right-10 top-[20px]">
+        <a-space :size="20" class="absolute right-10 top-[20px]">
+          <a-button
+            type="primary"
+            class="btn flex items-center hover:text-[#89f7ff]!"
+          >
+            <img
+              src="@/assets/image/bigScreen/btn/huifu.svg"
+              class="mr5 w12px"
+            >
+            重新生产
+          </a-button>
           <a-button
             type="primary"
             class="btn flex items-center hover:text-[#89f7ff]!"
             @click="rowAction('stop')"
           >
+            <img
+              src="@/assets/image/bigScreen/btn/guaqi.svg"
+              class="mr5 w12px"
+            >
             挂起
-          </a-button>
-          <a-button
-            type="primary"
-            class="btn flex items-center hover:text-[#89f7ff]!"
-          >
-            恢复
           </a-button>
         </a-space>
       </div>
@@ -171,7 +179,7 @@ function rowAction(type: string) {
       modal.value
         = `是否${type}` === 'stop'
           ? '挂起'
-          : `恢复${checkedRow.value.length}条数据?`;
+          : `重新生产${checkedRow.value.length}条数据?`;
       open.value = true;
     }
   });
@@ -190,7 +198,7 @@ function pageChange({ pageSize, currentPage }) {
   pageVO.currentPage = currentPage;
   pageVO.pageSize = pageSize;
   // handlePageData();
-};
+}
 
 // 前端分页
 // const handlePageData = () => {

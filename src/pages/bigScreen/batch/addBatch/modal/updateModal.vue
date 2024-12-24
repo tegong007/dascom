@@ -117,7 +117,7 @@ import {
   dataSourcesOptions,
   dispatchUnitsOptions,
   urgencyOptions,
-} from '../option.js';
+} from '../../option.js';
 
 const props = defineProps({
   open: Boolean,

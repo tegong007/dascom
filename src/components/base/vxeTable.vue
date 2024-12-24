@@ -54,15 +54,18 @@
           v-if="props.pageName === 'BatchList'"
           field="action"
           title="操作"
-          width="140"
+          width="170"
           fixed="right"
           align="center"
         >
           <template #default="{ row }">
             <div class="flex items-center justify-start gap-10">
-              <a class="color-[#89F7FF]">查看详情</a>
+              <a
+                class="color-[#89F7FF]"
+                @click="$goto('BatchDetail', { BatchId: row.batchId })"
+              >查看详情</a>
               <a v-if="row.status === 2" class="color-[#89F7FF]">挂起</a>
-              <a v-if="row.status === 3" class="color-[#89F7FF]">恢复</a>
+              <a v-if="row.status === 3" class="color-[#89F7FF]">重新生产</a>
             </div>
           </template>
         </vxe-column>

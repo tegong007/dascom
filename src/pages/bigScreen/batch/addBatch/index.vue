@@ -2,7 +2,7 @@
   <div class="bg h-100vh flex flex-col items-center text-[18px] text-white">
     <bigScreenHeader />
     <div
-      class="absolute top-50 box-border h-800px w90% flex flex-col items-center justify-between p-2em p-b-0"
+      class="absolute top-50 box-border h-800px w90% flex flex-col items-center gap-10 p-2em p-b-0"
     >
       <teamForm :add-team="addTeam" />
       <noTeamForm :add-team="addNoTeam" :update-no-team-num="updateNoTeamNum" />
@@ -48,13 +48,13 @@
 </template>
 
 <script lang="ts" setup>
-import teamForm from './team-form.vue';
-import noTeamForm from './notearm-form.vue';
 import {
   dataSourcesOptions,
   dispatchUnitsOptions,
   urgencyOptions,
-} from './option';
+} from '../option';
+import teamForm from './team-form.vue';
+import noTeamForm from './notearm-form.vue';
 import UpdateModal from './modal/updateModal.vue';
 import SuceessModal from './modal/successModal.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';

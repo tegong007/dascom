@@ -9,13 +9,10 @@
     >
       <a-row :gutter="[0, 0]" class="w-full" justify="space-evenly">
         <a-col :span="5">
-          <a-form-item label="组团人数" name="num">
-            <a-input-number
-              v-model:value="formState.num"
-              placeholder="请输入1-20组团人数"
-              class="w-full"
-              :min="1"
-              :max="20"
+          <a-form-item label="团组号" name="teamId">
+            <a-input
+              v-model:value="formState.teamId"
+              placeholder="请输入团组号"
             />
           </a-form-item>
         </a-col>
@@ -73,8 +70,8 @@
             class="btn flex items-center hover:text-[#89f7ff]!"
             @click="onSubmit"
           >
-            <PlusCircleFilled />
-            添加团组
+            <SearchOutlined />
+            查询
           </a-button>
         </a-col>
       </a-row>
@@ -85,8 +82,7 @@
 <script setup lang="ts">
 import { defineProps, reactive } from 'vue';
 import type { UnwrapRef } from 'vue';
-import { PlusCircleFilled } from '@ant-design/icons-vue';
-
+import { SearchOutlined } from '@ant-design/icons-vue';
 import {
   dataSourcesOptions,
   dispatchUnitsOptions,
@@ -97,38 +93,15 @@ const props = defineProps({
   addTeam: Function, // 表头
 });
 const formRef = ref();
-const rules = {
-  num: [
-    {
-      required: true,
-      message: '请输入1-20组团人数',
-      trigger: 'change',
-      type: 'number',
-    },
-    {
-      validator: (rule, value): Promise<void> => {
-        return new Promise((resolve, reject) => {
-          if (value !== undefined && !Number.isInteger(value)) {
-            reject(new Error('请输入正整数'));
-          }
-          else {
-            resolve();
-          }
-        });
-      },
-      trigger: 'blur',
-    },
-  ],
-};
 interface FormState {
-  num: number;
+  teamId: string;
   dispatchUnits: string;
   dataSources: string;
   urgentType: string;
   // timeRange: RangeValue;
 }
 const formState: UnwrapRef<FormState> = reactive({
-  num: 1,
+  teamId: '',
   dispatchUnits: '1',
   dataSources: '1',
   urgentType: 'none',

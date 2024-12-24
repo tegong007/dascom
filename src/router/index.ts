@@ -39,14 +39,9 @@ const routes: Array<RouteRecordRaw> = [
   },
 
   {
-    path: '/detail',
-    name: 'detail',
-    component: () => import('@/pages/bigScreen/detail/index.vue'),
-  },
-  {
-    path: '/detail-history',
-    name: 'detailHistory',
-    component: () => import('@/pages/bigScreen/detail/history/index.vue'),
+    path: '/batchDetail',
+    name: 'BatchDetail',
+    component: () => import('@/pages/bigScreen/batch/detail/index.vue'),
   },
 
   // 单本
