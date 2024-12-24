@@ -4,58 +4,30 @@
       ref="formRef"
       layout="inline"
       :model="formState"
-      :rules="rules"
       class="w-full rounded-[8px] bg-[#ffffff34] p-x-10 p-y-20"
     >
-      <a-row :gutter="[0, 0]" class="w-full" justify="space-evenly">
+      <a-row :gutter="[0, 0]" class="w-full">
         <a-col :span="5">
-          <a-form-item label="团组号" name="teamId">
+          <a-form-item label="证本号" name="docID">
             <a-input
-              v-model:value="formState.teamId"
-              placeholder="请输入团组号"
+              v-model:value="formState.docID"
+              placeholder="请输入证本号"
             />
           </a-form-item>
         </a-col>
         <a-col :span="5">
-          <a-form-item label="派遣单位" name="dispatchUnits">
-            <a-select
-              v-model:value="formState.dispatchUnits"
-              placeholder="请选择派遣单位"
-            >
-              <a-select-option
-                v-for="option in dispatchUnitsOptions"
-                :key="option.value"
-                :value="option.value"
-              >
-                {{ option.label }}
-              </a-select-option>
-            </a-select>
+          <a-form-item label="证本名" name="docName">
+            <a-input
+              v-model:value="formState.docName"
+              placeholder="请输入证本名"
+            />
           </a-form-item>
         </a-col>
         <a-col :span="5">
-          <a-form-item label="数据来源" name="dataSources">
-            <a-select
-              v-model:value="formState.dataSources"
-              placeholder="请选择数据来源"
-            >
+          <a-form-item label="状态" name="status">
+            <a-select v-model:value="formState.status">
               <a-select-option
-                v-for="option in dataSourcesOptions"
-                :key="option.value"
-                :value="option.value"
-              >
-                {{ option.label }}
-              </a-select-option>
-            </a-select>
-          </a-form-item>
-        </a-col>
-        <a-col :span="5">
-          <a-form-item label="加急类型" name="urgentType">
-            <a-select
-              v-model:value="formState.urgentType"
-              placeholder="请选择加急类型"
-            >
-              <a-select-option
-                v-for="option in urgencyOptions"
+                v-for="option in BatchStatusOptions"
                 :key="option.value"
                 :value="option.value"
               >
@@ -83,28 +55,23 @@
 import { defineProps, reactive } from 'vue';
 import type { UnwrapRef } from 'vue';
 import { SearchOutlined } from '@ant-design/icons-vue';
-import {
-  dataSourcesOptions,
-  dispatchUnitsOptions,
-  urgencyOptions,
-} from '../option';
+
+import { BatchStatusOptions } from '@/pages/bigScreen/batch/option.ts';
 // 确保路径确
 const props = defineProps({
   addTeam: Function, // 表头
 });
 const formRef = ref();
 interface FormState {
-  teamId: string;
-  dispatchUnits: string;
-  dataSources: string;
-  urgentType: string;
+  docName: string;
+  docID: string;
+  status: number;
   // timeRange: RangeValue;
 }
 const formState: UnwrapRef<FormState> = reactive({
-  teamId: '',
-  dispatchUnits: '1',
-  dataSources: '1',
-  urgentType: 'none',
+  docName: '',
+  docID: '',
+  status: null,
 });
 
 function onSubmit() {

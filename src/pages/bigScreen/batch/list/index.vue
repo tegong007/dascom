@@ -75,7 +75,7 @@
 <script lang="ts" setup>
 import TeamForm from './team-form.vue';
 import BatchInfo from './batchInfo.vue';
-import { BatchStatusOptions } from './option';
+import { BatchStatusOptions } from '@/pages/bigScreen/batch/option.ts';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 import TheButton from '@/components/base/TheButton.vue';
 import MyTable from '@/components/base/vxeTable.vue';
