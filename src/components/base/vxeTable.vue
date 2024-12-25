@@ -15,7 +15,6 @@
         :column-config="{ resizable: true }"
         :row-config="{ keyField: props.keyField, isHover: true }"
         :data="props.data"
-        is-del="props.isDel"
         @checkbox-change="selectChangeEvent"
       >
         <vxe-column v-if="props.checkbox" type="checkbox" width="43" />

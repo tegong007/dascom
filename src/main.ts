@@ -29,7 +29,7 @@ async function bootstrap() {
   app.component('CountTo', CountTo);
   // 页面跳转
   app.config.globalProperties.$goto = function (page: string, query?: any) {
-    router.push({ name: page, query });
+    page === '-1' ? router.go(-1) : router.push({ name: page, query });
   };
   // await setupRouter(app);
   app.mount('#app').$nextTick(() => {

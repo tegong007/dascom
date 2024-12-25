@@ -9,8 +9,20 @@
         15:10:10，生产：2024-12-12 15:10:10，完成：2024-12-12 15:10:10</span>
       <TeamForm />
       <main class="box-border h78% w-full flex">
-        <div class="card-box box-border h-full w-250px">
-          <TeamCard :items="items" />
+        <div class="card-box box-border h-full w-250px p-l-10 p-t-10">
+          团组列表
+          <TeamCard
+            :items="items"
+            :check-row="checkRow"
+            :set-check-row="setCheckRow"
+          />
+          <vxe-pager
+            v-model:current-page="pageVO.currentPage"
+            v-model:page-size="pageVO.pageSize"
+            :total="pageVO.total"
+            :layouts="['PrevPage', 'Jump', 'PageCount', 'NextPage']"
+            @page-change="pageChangeEvent"
+          />
         </div>
         <div class="doc-box box-border h-full flex-1">
           <Doc />
@@ -25,6 +37,7 @@
     >
       <div class="flex gap-20">
         <TheButton title="返回首页" @click="$goto('BigScreen')" />
+        <TheButton title="返回" @click="$goto('-1')" />
       </div>
     </div>
   </div>
@@ -32,6 +45,7 @@
 
 <script lang="ts" setup>
 import { useRoute } from 'vue-router';
+import { reactive } from 'vue';
 import TeamForm from './team/team-form.vue';
 import TeamCard from './team/team-card.vue';
 import Doc from './team/doc/index.vue';
@@ -40,6 +54,7 @@ import bigScreenHeader from '@/components/bigScreen/header.vue';
 
 const route = useRoute();
 const batchId = ref<string>('');
+const checkRow = ref([]); // 选中的数据
 onMounted(() => {
   nextTick(() => {
     const query = route.query;
@@ -50,41 +65,29 @@ onMounted(() => {
     );
   });
 });
+function setCheckRow(arr: Array) {
+  console.log('🚀 ~ file: index.vue:69 ~ setCheckRow ~ arr:', arr);
+  checkRow.value = arr;
+}
+const pageVO = reactive({
+  currentPage: 1,
+  pageSize: 10,
+  total: 150,
+});
+function pageChangeEvent() {
+  console.log(
+    `分页事件：第 ${pageVO.currentPage} 页，每页  ${pageVO.pageSize} 条`,
+  );
+}
+
 const items = ref([
   {
-    id: '01',
-    teamName: '13112206029',
-    teamId: '118',
-    currentCertificate: '123',
-    tStartTime: '2024.11.20',
+    teamId: '13112206029',
+    seq: '1',
   },
   {
-    id: '02',
-    teamName: '13112206029',
-    teamId: '119',
-    currentCertificate: '123',
-    tStartTime: '2024.11.20',
-  },
-  {
-    id: '03',
-    teamName: '13112206029',
-    teamId: '120',
-    currentCertificate: '123',
-    tStartTime: '2024.11.20',
-  },
-  {
-    id: '04',
-    teamName: '13112206029',
-    teamId: '121',
-    currentCertificate: '123',
-    tStartTime: '2024.11.20',
-  },
-  {
-    id: '05',
-    teamName: '13112206029',
-    teamId: '122',
-    currentCertificate: '123',
-    tStartTime: '2024.11.20',
+    teamId: '13112206029',
+    seq: '2',
   },
 ]);
 </script>
@@ -110,6 +113,17 @@ const items = ref([
     box-sizing: border-box;
     border: 3px solid;
     border-image: linear-gradient(180deg, #89f7ff 0%, rgba(0, 237, 255, 0.46) 100%) 3;
+    ::v-deep(.vxe-pager) {
+      background-color: unset;
+      color: #fff;
+      .vxe-pager--jump-next,
+      .vxe-pager--jump-prev,
+      .vxe-pager--next-btn,
+      .vxe-pager--num-btn,
+      .vxe-pager--prev-btn {
+        background-color: unset;
+      }
+    }
   }
   .doc-box {
     background: linear-gradient(359deg, rgba(113, 175, 252, 0.5) 1%, rgba(0, 142, 255, 0.5) 96%);

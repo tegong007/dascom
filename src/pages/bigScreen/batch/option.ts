@@ -49,7 +49,7 @@ export const urgencyOptions: OptionType[] = [
 // 定义批次状态类型
 export const BatchStatusOptions: BatchOptionType[] = [
   {
-    value: Number.NaN,
+    value: null,
     label: '全部', // 已经在流水线上进行生产
   },
   {
