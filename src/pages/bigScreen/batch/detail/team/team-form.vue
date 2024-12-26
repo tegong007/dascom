@@ -101,9 +101,9 @@ interface FormState {
 }
 const formState: UnwrapRef<FormState> = reactive({
   teamId: '',
-  dispatchUnits: '1',
-  dataSources: '1',
-  urgentType: 'none',
+  dispatchUnits: 1,
+  dataSources: 1,
+  urgentType: 0,
 });
 
 function onSubmit() {

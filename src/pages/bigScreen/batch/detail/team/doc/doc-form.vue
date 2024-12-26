@@ -1,13 +1,8 @@
 <template>
   <div class="w-full">
-    <a-form
-      ref="formRef"
-      layout="inline"
-      :model="formState"
-      class="w-full rounded-[8px] bg-[#ffffff34] p-x-10 p-y-20"
-    >
-      <a-row :gutter="[0, 0]" class="w-full">
-        <a-col :span="5">
+    <a-form ref="formRef" :model="formState" class="w-full">
+      <a-row :gutter="[10, 0]">
+        <a-col :span="6">
           <a-form-item label="证本号" name="docID">
             <a-input
               v-model:value="formState.docID"
@@ -15,7 +10,7 @@
             />
           </a-form-item>
         </a-col>
-        <a-col :span="5">
+        <a-col :span="6">
           <a-form-item label="证本名" name="docName">
             <a-input
               v-model:value="formState.docName"
@@ -24,7 +19,7 @@
           </a-form-item>
         </a-col>
         <a-col :span="5">
-          <a-form-item label="状态" name="status">
+          <a-form-item label="证本状态" name="status">
             <a-select v-model:value="formState.status">
               <a-select-option
                 v-for="option in BatchStatusOptions"

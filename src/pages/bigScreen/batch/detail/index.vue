@@ -24,11 +24,25 @@
             @page-change="pageChangeEvent"
           />
         </div>
-        <div class="doc-box box-border h-full flex-1">
+        <div class="doc-box box-border h-full flex-1 overflow-hidden">
           <Doc />
         </div>
-        <div class="info-box box-border h-full w-250px">
-          1
+        <div
+          class="info-box box-border h-full w-250px flex flex-col items-center p-y-20 text-[24px] color-[#CFDEF1]"
+        >
+          团组信息
+          <div class="w-full flex flex-col flex-1 justify-around">
+            <div
+              v-for="item in info"
+              :key="item.label"
+              class="w-full flex flex-col items-center"
+            >
+              <span class="text-18px">{{
+                (checkRow.length > 1 ? '多' : '') + item.label
+              }}</span>
+              <span class="mt15">{{ item.value }}</span>
+            </div>
+          </div>
         </div>
       </main>
     </div>
@@ -46,6 +60,12 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router';
 import { reactive } from 'vue';
+import {
+  dataSourcesOptions,
+  dispatchUnitsOptions,
+  findLabelByValue,
+  urgencyOptions,
+} from '../option';
 import TeamForm from './team/team-form.vue';
 import TeamCard from './team/team-card.vue';
 import Doc from './team/doc/index.vue';
@@ -55,6 +75,20 @@ import bigScreenHeader from '@/components/bigScreen/header.vue';
 const route = useRoute();
 const batchId = ref<string>('');
 const checkRow = ref([]); // 选中的数据
+const info = ref([
+  {
+    label: '派遣单位',
+  },
+  {
+    label: '数据来源',
+  },
+  {
+    label: '加急类型',
+  },
+  {
+    label: '团组人数',
+  },
+]);
 onMounted(() => {
   nextTick(() => {
     const query = route.query;
@@ -65,9 +99,31 @@ onMounted(() => {
     );
   });
 });
-function setCheckRow(arr: Array) {
-  console.log('🚀 ~ file: index.vue:69 ~ setCheckRow ~ arr:', arr);
+function setCheckRow(arr: Array<any>) {
   checkRow.value = arr;
+  console.log(
+    '🚀 ~ file: index.vue:109 ~ setCheckRow ~ info.value:',
+    info.value,
+  );
+  info.value[0].value = findLabelByValue(
+    dispatchUnitsOptions,
+    checkRow.value[0]?.dispatchUnits,
+  );
+  info.value[1].value = findLabelByValue(
+    dataSourcesOptions,
+    checkRow.value[0]?.dataSources,
+  );
+  info.value[2].value = findLabelByValue(
+    urgencyOptions,
+    checkRow.value[0]?.urgentType,
+  );
+  let allnum = 0;
+  checkRow.value.map((item) => {
+    allnum += Number(item.num);
+    return allnum;
+  });
+  info.value[3].value = allnum;
+  console.log('🚀 ~ file: index.vue:122 ~ setCheckRow ~ allnum:', allnum);
 }
 const pageVO = reactive({
   currentPage: 1,
@@ -84,10 +140,18 @@ const items = ref([
   {
     teamId: '13112206029',
     seq: '1',
+    num: 1,
+    dispatchUnits: 1,
+    dataSources: 1,
+    urgentType: 1,
   },
   {
     teamId: '13112206029',
     seq: '2',
+    num: 4,
+    dispatchUnits: 1,
+    dataSources: 0,
+    urgentType: 1,
   },
 ]);
 </script>
