@@ -138,12 +138,12 @@ function pageChangeEvent() {
 
 const items = ref([
   {
-    teamId: '13112206029',
-    seq: '1',
-    num: 1,
-    dispatchUnits: 1,
-    dataSources: 1,
-    urgentType: 1,
+    teamId: '13112206029', // 团id
+    seq: '1', // 序号
+    num: 1, // 团人数
+    dispatchUnits: 1, // 派遣单位
+    dataSources: 1, // 数据来源
+    urgentType: 1, // 加急类型
   },
   {
     teamId: '13112206029',

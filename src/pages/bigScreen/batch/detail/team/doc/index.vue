@@ -28,13 +28,16 @@
         page-name="BatchList"
       />
     </main>
-    <vxe-pager
-      v-model:current-page="pageVO.currentPage"
-      v-model:page-size="pageVO.pageSize"
-      class="z-99 w-full"
-      :total="pageVO.total"
-      @page-change="pageChange"
-    />
+    <div class="z-99 flex items-center justify-between">
+      <span>生产总数：1000，良本数：990，废本数：8，待生产数：2</span>
+      <vxe-pager
+        v-model:current-page="pageVO.currentPage"
+        v-model:page-size="pageVO.pageSize"
+        :total="pageVO.total"
+        @page-change="pageChange"
+      />
+    </div>
+
     <TheModal
       :open="open"
       :handle-ok="() => setOpen(false)"
@@ -113,7 +116,13 @@ const colums = ref([
     width: 200,
   },
 ]);
-
+// const info = ref({
+//   totalNum: 100, //生产总数
+//   waitingNum: 50, //待生产数
+//   productNum: 40, //待生产数
+//   hangUpNum: 0, //待生产数
+//   obsoleteNum: 1, //废本数
+// });
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
