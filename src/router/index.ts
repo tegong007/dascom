@@ -20,7 +20,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/mainTain', // 维护
     name: 'MainTain',
-    component: () => import('../pages/bigScreen/mainTain.vue'),
+    component: () => import('@/pages/bigScreen/mainTain/index.vue'),
   },
   {
     path: '/workstationStatus', // 工位状态

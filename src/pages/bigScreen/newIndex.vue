@@ -75,7 +75,7 @@
       <div class="flex gap-20">
         <TheButton
           title="设备设置"
-          @click="$goto('SetPage', { currentModel: 0 })"
+          @click="$goto('SetPage', { currentModel: 'haocai' })"
         />
         <TheButton title="设备维护" @click="$goto('MainTain')" />
         <!-- <div
