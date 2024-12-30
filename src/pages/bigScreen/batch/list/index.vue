@@ -8,10 +8,7 @@
       <div class="relative w-full">
         <TeamForm />
         <a-space :size="20" class="absolute right-10 top-[20px]">
-          <a-button
-            type="primary"
-            class="btn flex items-center hover:text-[#89f7ff]!"
-          >
+          <a-button type="primary" class="btn flex items-center">
             <img
               src="@/assets/image/bigScreen/btn/huifu.svg"
               class="mr5 w12px"
@@ -20,7 +17,7 @@
           </a-button>
           <a-button
             type="primary"
-            class="btn flex items-center hover:text-[#89f7ff]!"
+            class="btn flex items-center"
             @click="rowAction('stop')"
           >
             <img
@@ -220,16 +217,7 @@ function setOpen(value: boolean) {
   background-image: url('@/assets/image/bigScreen/bg-none.png');
   background-size: 100% 100%;
   background-repeat: 'no-repeat';
-  .btn {
-    border-radius: 6px;
-    opacity: 1;
-    background: linear-gradient(209deg, #90ecff 2%, #006af5 69%);
-    box-sizing: border-box;
-    border: 2px solid #89f7ff;
-    padding: 0px 7px;
-    color: white;
-    height: 32px;
-  }
+
   //分页
   ::v-deep(.vxe-pager) {
     background-color: unset;

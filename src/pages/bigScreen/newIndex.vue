@@ -75,9 +75,12 @@
       <div class="flex gap-20">
         <TheButton
           title="设备设置"
-          @click="$goto('SetPage', { currentModel: 'haocai' })"
+          @click="$goto('SetPage', { currentModel: 'sort' })"
         />
-        <TheButton title="设备维护" @click="$goto('MainTain')" />
+        <TheButton
+          title="设备维护"
+          @click="$goto('MainTain', { currentModel: 'haocai' })"
+        />
         <!-- <div
             class="startBtn h-6em w-10em transition-transform duration-300 hover:scale-115"
             @click="setDocOpen(true)"
@@ -394,6 +397,7 @@ async function stopInterval() {
 .siyuan {
   font-family: 'siyuan';
 }
+
 .bg {
   background-image: url('../../assets/image/bigScreen/bg.png');
   background-size: 100% 100%;
@@ -401,11 +405,6 @@ async function stopInterval() {
   .light {
     text-shadow: 0px 0px 8px #ffffff;
   }
-  // .machine{
-  //     background-image: url("../../assets/image/bigScreen/machine.png");
-  // background-size: 100% 100%;
-  // background-repeat: "no-repeat";
-  // }
   .groupBtn {
     div {
       background-size: 100% 100%;

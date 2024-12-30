@@ -69,9 +69,9 @@ import TheButton from '@/components/base/TheButton.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 // const { t } = useI18n();
 definePage({
-  name: 'SetPage',
+  name: 'MainTain',
   meta: {
-    title: '设置页',
+    title: '维护页',
   },
 });
 const route = useRoute();

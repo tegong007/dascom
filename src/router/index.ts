@@ -15,7 +15,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/setPage', // 设置
     name: 'SetPage',
-    component: () => import('../pages/bigScreen/setting/index.vue'),
+    component: () => import('@/pages/bigScreen/setting/index.vue'),
   },
   {
     path: '/mainTain', // 维护
@@ -25,7 +25,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/workstationStatus', // 工位状态
     name: 'WorkstationStatus',
-    component: () => import('@/pages/bigScreen/workstationStatus/index.vue'),
+    component: () => import('../pages/bigScreen/workstationStatus/index.vue'),
   },
   {
     path: '/addBatch', // 添加批次

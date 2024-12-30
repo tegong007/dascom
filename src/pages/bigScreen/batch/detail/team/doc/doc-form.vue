@@ -83,16 +83,6 @@ function onSubmit() {
 </script>
 
 <style lang="scss" scoped>
-.btn {
-  border-radius: 6px;
-  opacity: 1;
-  background: linear-gradient(209deg, #90ecff 2%, #006af5 69%);
-  box-sizing: border-box;
-  border: 2px solid #89f7ff;
-  padding: 0px 7px;
-  color: white;
-  height: 32px;
-}
 ::v-deep(.ant-form-item) {
   label {
     color: #fff !important;

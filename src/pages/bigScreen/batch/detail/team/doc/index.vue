@@ -2,16 +2,13 @@
   <div class="relative box-border wh-full flex flex-col p-x-20 p-t-20">
     <DocForm />
     <a-space :size="20" class="absolute right-20 top-[20px]">
-      <a-button
-        type="primary"
-        class="btn flex items-center hover:text-[#89f7ff]!"
-      >
+      <a-button type="primary" class="btn flex items-center">
         <img src="@/assets/image/bigScreen/btn/huifu.svg" class="mr5 w12px">
         重新生产
       </a-button>
       <a-button
         type="primary"
-        class="btn flex items-center hover:text-[#89f7ff]!"
+        class="btn flex items-center"
         @click="rowAction('stop')"
       >
         <img src="@/assets/image/bigScreen/btn/guaqi.svg" class="mr5 w12px">
@@ -195,16 +192,6 @@ function setOpen(value: boolean) {
 </script>
 
 <style lang="scss" scoped>
-.btn {
-  border-radius: 6px;
-  opacity: 1;
-  background: linear-gradient(209deg, #90ecff 2%, #006af5 69%);
-  box-sizing: border-box;
-  border: 2px solid #89f7ff;
-  padding: 0px 7px;
-  color: white;
-  height: 32px;
-}
 //分页
 ::v-deep(.vxe-pager) {
   background-color: unset;
