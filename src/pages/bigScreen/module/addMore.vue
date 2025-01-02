@@ -11,13 +11,13 @@
         <div v-for="(item, index) in props.data.items" :key="index">
           <div class="w-full flex flex-col items-center">
             <div class="mt-5 text-[1em] color-[#CFDEF1]">
-              {{ item.name }}
+              {{ item.item }}
             </div>
             <div class="mt8 text-2em font-[youshe]">
               <CountTo
                 :start-val="0"
                 separator
-                :end-val="item.num"
+                :end-val="item.value"
                 :duration="Math.floor(Math.random() * 2000) + 1000"
               />
             </div>

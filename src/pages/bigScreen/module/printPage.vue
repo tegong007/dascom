@@ -3,10 +3,10 @@
     <a-flex justify="center" align="center">
       <div class="absolute left-0 top-0 h-3em w100% flex items-center">
         <span class="m-x-0.3em text-2.5em font-[youshe]">02</span>
-        <span class="title ml-10 text-[1.5em] color-[#CFDEF1]">主副页打印</span>
+        <span class="ml-10 text-[1.5em] color-[#CFDEF1]">主副页打印</span>
       </div>
       <div
-        class="absolute top-[3.5em] h-[4.8em] w-90% flex justify-center gap-50"
+        class="absolute top-[3.3em] h-[4.8em] w-90% flex justify-center gap-50"
       >
         <div v-for="(item, index) in props.data.items" :key="index">
           <!-- <div
@@ -18,13 +18,13 @@
           > -->
           <div class="w-full flex flex-col items-center">
             <div class="mt-5 text-[1em] color-[#CFDEF1]">
-              {{ item.name }}
+              {{ item.item }}
             </div>
             <div class="mt8 text-2em font-[youshe]">
               <CountTo
                 :start-val="0"
                 separator
-                :end-val="item.num"
+                :end-val="item.value"
                 :duration="Math.floor(Math.random() * 2000) + 1000"
               />
             </div>
@@ -64,7 +64,7 @@ const props = defineProps({
   .table-data {
     height: calc(100% - 8.3em);
     .scroll-table {
-      height: calc(100% - 10em);
+      height: calc(100% - 11em);
     }
   }
 }

@@ -19,10 +19,10 @@
     <Vue3SeamlessScroll
       :list="props.data"
       class="scroll"
-      direction="down"
+      direction="up"
       :step="0.5"
       :hover="true"
-      :limit-scroll-num="7"
+      :limit-scroll-num="6"
       :is-watch="true"
       :single-height="0"
       :single-width="0"
@@ -31,16 +31,16 @@
     >
       <div v-for="(item, i) in props.data" :key="i" class="countContent w-full">
         <div class="descr">
-          {{ item.no }}
+          {{ item.seq }}
         </div>
         <div class="descr">
           {{ item.docID }}
         </div>
         <div class="descr">
-          {{ item.position }}
+          {{ getWorkstationName(item.position) }}
         </div>
         <div class="descr">
-          {{ item.operTime }}
+          {{ item.time }}
         </div>
       </div>
     </Vue3SeamlessScroll>
@@ -49,6 +49,7 @@
 
 <script setup lang="ts">
 import { Vue3SeamlessScroll } from 'vue3-seamless-scroll';
+import { getWorkstationName } from '@/utils/workstationDefinitions';
 
 const props = defineProps({
   data: Array,
@@ -65,7 +66,7 @@ const props = defineProps({
 
   color: #ffffff;
   .scroll {
-    max-height: 145px;
+    max-height: 120px;
     // min-height: 145px;
     min-height: 13.5vh;
     overflow: hidden;

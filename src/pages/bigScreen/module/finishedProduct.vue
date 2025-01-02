@@ -9,7 +9,7 @@
         class="sum absolute top-[3.2em] box-border w-full flex flex-col flex-1 gap-10 p-x-20"
       >
         <div
-          v-for="item in props.data"
+          v-for="item in props.data.items"
           :key="item.item"
           class="box box-border flex flex-col flex-1 items-center p-t-7"
         >
@@ -37,7 +37,7 @@
 import { CountTo } from 'vue3-count-to';
 
 const props = defineProps({
-  data: Array,
+  data: Object,
 });
 </script>
 

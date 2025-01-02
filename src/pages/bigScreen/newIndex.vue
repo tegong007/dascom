@@ -12,7 +12,7 @@
     >
       <div
         class="m-t-10vh h-[124px] w-[271px] flex items-center justify-center rounded-[30px] bg-[#0000007a]"
-        @click="goto('detail')"
+        @click="$goto('WorkstationStatus')"
       >
         <span
           class="cursor-default border-1 border-[#fff] rounded-[30px] bg-[#00000049] p-10 text-[36px] font-[youshe]"
@@ -31,7 +31,7 @@
       :gutter="[8, 0]"
     >
       <a-col flex="1">
-        <FinishedProductBg class="wh-full" :data="data.model4" />
+        <FinishedProductBg class="wh-full" :data="finishedProduct" />
       </a-col>
       <a-col flex="5">
         <a-row justify="space-between" class="wh-full pl-16" :gutter="[16, 0]">
@@ -41,13 +41,14 @@
             :span="8"
             class="group"
           >
-            <span
+            <!-- <span
               class="absolute right-20 top-10 z-88 cursor-default border-1 border-[#fff] rounded-[30px] bg-[#00000049] p-6 text-[18px] font-[youshe] opacity-0 group-hover:opacity-100"
-              @click="goto('SetPage', { currentModel: item })"
-            >查看证本</span>
-            <AddMore v-if="item === 2" class="wh-full" :data="data.model3" />
-            <Print v-if="item === 1" class="wh-full" :data="data.model2" />
-            <Start v-if="item === 0" class="wh-full" :data="data.model1" />
+              @click="$goto('SetPage', { currentModel: item })"
+              >查看证本</span
+            > -->
+            <Start v-if="item === 0" class="wh-full" :data="blankCheck" />
+            <Print v-if="item === 1" class="wh-full" :data="mainPrint" />
+            <AddMore v-if="item === 2" class="wh-full" :data="additionPrint" />
           </a-col>
         </a-row>
       </a-col>
@@ -91,8 +92,8 @@
     <contextHolder />
   </div>
 
-  <TheModal
-    :open="open"
+  <!-- <TheModal
+     :open="open"
     :handle-ok="reset"
     :warn-icon="true"
     :handle-cancel="handleCancel"
@@ -103,280 +104,89 @@
     :handle-ok="startInterval"
     :handle-cancel="handleCancel"
     :title="docCount"
-  />
+  /> -->
 </template>
 
 <script setup lang="ts">
-import type { NotificationPlacement } from 'ant-design-vue';
-import { notification } from 'ant-design-vue';
-import { useAppStore } from '../../store/index';
+// import type { NotificationPlacement } from 'ant-design-vue';
+// import { notification } from 'ant-design-vue';
+// import { useAppStore } from '../../store/index';
 import FinishedProductBg from './module/finishedProduct.vue';
 import AddMore from './module/addMore.vue';
 import Print from './module/printPage.vue';
 import Start from './module/startPage.vue';
 import TheButton from '@/components/base/TheButton.vue';
-import { lineGetDocStatus, startOrStopPrintTask } from '@/apis/webApi';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
-import { getWorkstationName } from '@/utils/workstationDefinitions';
-import TheModal from '@/components/modal/TheModal.vue';
-import docCountModal from '@/components/modal/docCountModal.vue';
+import useCustomTimer from '@/utils/useCustomTimer';
+import { getHomeList } from '@/apis/proApi';
 
-// 防抖+定時
-import { throttle } from '@/utils/throttle.js';
+const { start, stop } = useCustomTimer();
+// import TheModal from '@/components/modal/TheModal.vue';
+// import docCountModal from '@/components/modal/docCountModal.vue';
 // 加載中
-const appStore = useAppStore();
-const [api, contextHolder] = notification.useNotification();
-function openNotify(
-  placement: NotificationPlacement,
-  msg: any,
-  success?: string,
-) {
-  return openNotification(placement, msg, success);
-}
-function openNotification(
-  placement: NotificationPlacement,
-  msg: any,
-  success?: string,
-) {
-  success
-    ? api.success({
-      message: '成功',
-      description: ` ${msg}`,
-      placement,
-    })
-    : api.error({
-      message: '错误信息',
-      description: ` ${msg}`,
-      placement,
-    });
-}
-const intervalRef = ref<number | null>(null); // 定时器
-const stoping = ref(false);
+// const appStore = useAppStore();
+// const [api, contextHolder] = notification.useNotification();
+// function openNotify(
+//   placement: NotificationPlacement,
+//   msg: any,
+//   success?: string,
+// ) {
+//   return openNotification(placement, msg, success);
+// }
+// function openNotification(
+//   placement: NotificationPlacement,
+//   msg: any,
+//   success?: string,
+// ) {
+//   success
+//     ? api.success({
+//         message: '成功',
+//         description: ` ${msg}`,
+//         placement,
+//       })
+//     : api.error({
+//         message: '错误信息',
+//         description: ` ${msg}`,
+//         placement,
+//       });
+// }
 const modal = ref('');
-// 停止二次確認
 const open = ref<boolean>(false);
-const docOpen = ref<boolean>(false);
-const docCount = ref(window.docCount);
-function handleCancel() {
-  setOpen(false);
-  // setDocOpen(false);
-}
 function setOpen(value: boolean) {
   open.value = value;
   modal.value = '确认停止？';
 }
-// function setDocOpen(value: boolean) {
-//   docOpen.value = value;
-// }
-
-// 假数据
-const data = ref({
-  model4: [
-    {
-      item: '待生产良本数',
-      value: 100,
-      hangingNum: 2,
-    },
-    {
-      item: '良本证本数量',
-      value: 0,
-    },
-    {
-      item: '废本证本数量',
-      value: 0,
-    },
-  ],
-  model3: {
-    items: [
-      {
-        name: '成功数',
-        num: 99,
-        position: 'error',
-      },
-      {
-        name: '失败数',
-        num: 99,
-        position: 'normal',
-      },
-    ],
-
-    // periodDataList: [],
-  },
-  model2: {
-    items: [
-      {
-        name: '成功数',
-        num: 99,
-        position: 'error',
-      },
-      {
-        name: '失败数',
-        num: 99,
-        position: 'normal',
-      },
-    ],
-  },
-  model1: {
-    items: [
-      {
-        name: '成功数',
-        num: 99,
-        position: 'error',
-      },
-      {
-        name: '失败数',
-        num: 99,
-        position: 'normal',
-      },
-      {
-        name: '空白本余量',
-        num: 99,
-        position: 'normal',
-      },
-    ],
-  },
+const blankCheck = ref({});
+const mainPrint = ref({});
+const additionPrint = ref({});
+const finishedProduct = ref({});
+onActivated(() => {
+  getDataPage();
 });
-
-//  开始任务后开始定时器
-async function startInterval(newDocCount: number) {
-  window.electronAPI.setConfig('docCount', newDocCount);
-  docCount.value = newDocCount;
-  // flowData.value = [];
-  const startTaskStatus = await startTask();
-  if (startTaskStatus) {
-    // canClick.value = false;
-    // 开启定时器，每隔1.5秒访问一次
-    intervalRef.value = setInterval(
-      throttle(distributeData, 1000),
-      1000,
-    ) as unknown as number;
-    // intervalRef.value = setInterval(throttle(updateNums, 3000), 3000) as unknown as number;
-  }
-}
-async function distributeData() {
-  if (!stoping.value) {
-    try {
-      const docData = await lineGetDocStatus();
-      if (docData.respData) {
-        // 初始化数组
-        const Model1 = [];
-        const Model2 = [];
-        const Model3 = [];
-        const FinishedGoods = [];
-        const ObsoleteGoods = [];
-        // 分发数据到相应的数组
-        docData.respData.forEach((item) => {
-          const description
-            = getWorkstationName(item.position) || item.position;
-          const newItem = { ...item, position: description };
-
-          if (
-            newItem.position.startsWith('模组一')
-            && !newItem.position.includes('废品仓')
-          ) {
-            Model1.push({ ...newItem });
-          }
-          else if (
-            newItem.position.startsWith('模组二')
-            && !newItem.position.includes('废品仓')
-          ) {
-            Model2.push({ ...newItem });
-          }
-          else if (
-            newItem.position.startsWith('模组三')
-            && !newItem.position.includes('废品仓')
-          ) {
-            Model3.push({ ...newItem });
-          }
-          else if (newItem.position.includes('成品仓')) {
-            FinishedGoods.push({ ...newItem, no: FinishedGoods.length + 1 });
-          }
-          else if (newItem.position.includes('废品仓')) {
-            ObsoleteGoods.push({ ...newItem, no: ObsoleteGoods.length + 1 });
-          }
-        });
-        data.value.model4[0].num = FinishedGoods.length;
-        data.value.model4[1].num = ObsoleteGoods.length;
-        data.value.model3.periodDataList = Model3.sort(
-          (a, b) => new Date(b.operTime) - new Date(a.operTime),
-        ).map((item, index) => ({ ...item, no: index + 1 }));
-
-        data.value.model2.periodDataList = Model2.sort(
-          (a, b) => new Date(b.operTime) - new Date(a.operTime),
-        ).map((item, index) => ({ ...item, no: index + 1 }));
-
-        data.value.model1.periodDataList = Model1.sort(
-          (a, b) => new Date(b.operTime) - new Date(a.operTime),
-        ).map((item, index) => ({ ...item, no: index + 1 }));
-      }
-
-      stoping.value = false;
-    }
-    catch (error) {
-      await stopInterval();
-      openNotify('bottomRight', error);
-      stoping.value = true;
-    }
-    finally {
-      appStore.setSpinning(false);
-    }
-  }
-}
-
-//  开始任务调度
-async function startTask() {
-  // imgIndex.value = 0;
-  stoping.value = false;
-  appStore.setSpinning(true);
+onDeactivated(() => {
+  stop();
+});
+async function getDataPage() {
   try {
-    // await startOrStopPrintTask({ operate: 1 });
-    await startOrStopPrintTask({
-      operate: 0,
-      taskData: { docCount: docCount.value },
-    });
-    return true;
+    const data = await getHomeList();
+    if (data.respData) {
+      blankCheck.value = data.respData.blankCheck;
+      mainPrint.value = data.respData.mainPrint;
+      additionPrint.value = data.respData.additionPrint;
+      finishedProduct.value = data.respData.finishedProduct;
+    }
+    startGetDataPage();
   }
   catch (error) {
-    error;
-    openNotify('bottomRight', '执行打印任务失败');
-    // await stopInterval();
-    appStore.setSpinning(false);
+    console.log('🚀 ~ file: newIndex.vue:182 ~ getDataPage ~ error:', error);
+    stop();
   }
-  return false;
-}
-//
-
-// 手动停止
-async function reset() {
-  if (modal.value === '确认退出系统？') {
-    window.electron.send('quit-app');
-  }
-
-  open.value = false;
-  // flowData.value = [];
-  await stopInterval();
-  // flowData.value.unshift({ position: 'stop', stop: true });
-  // imgIndex.value = 0;
 }
 
-//  清除定时器
-async function stopInterval() {
-  if (intervalRef.value !== null) {
-    appStore.setSpinning(true);
-    clearInterval(intervalRef.value);
-    try {
-      await startOrStopPrintTask({ operate: 1 });
-    }
-    catch (error) {
-      error;
-      openNotify('bottomRight', '任务停止失败');
-    }
-    finally {
-      // canClick.value = true;
-      intervalRef.value = null;
-      appStore.setSpinning(false);
-    }
-  }
+async function startGetDataPage() {
+  start(async () => {
+    await getDataPage();
+  }, 1);
 }
 // 初始化
 // async function init() {

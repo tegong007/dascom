@@ -35,7 +35,7 @@
           :seq="true"
           :colums="colums"
           :checkbox="true"
-          :data="mockData"
+          :data="tableData"
           page-name="BatchList"
         />
       </main>
@@ -77,7 +77,10 @@ import bigScreenHeader from '@/components/bigScreen/header.vue';
 import TheButton from '@/components/base/TheButton.vue';
 import MyTable from '@/components/base/vxeTable.vue';
 import TheModal from '@/components/modal/TheModal.vue';
+import useCustomTimer from '@/utils/useCustomTimer';
+import { getBatchPage } from '@/apis/proApi';
 
+const { start, stop } = useCustomTimer();
 const pageVO = reactive({
   total: 20,
   currentPage: 1,
@@ -94,7 +97,7 @@ function formatterStatus({ cellValue }: any) {
 const colums = ref([
   {
     title: '批次号',
-    field: 'batchId',
+    field: 'batchID',
     width: 150,
   },
   {
@@ -141,27 +144,7 @@ const colums = ref([
   },
 ]);
 
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-function getMockData() {
-  const data = [];
-  for (let i = 0; i < 20; i++) {
-    // 假设我们需要10条数据
-    data.push({
-      batchId: `BATCH-${getRandomInt(1000, 9999)}`,
-      docNum: getRandomInt(1, 1000),
-      productNum: getRandomInt(1, 1000),
-      obsoleteNum: getRandomInt(0, 100),
-      hangUpNum: getRandomInt(0, 100),
-      waitingNum: getRandomInt(0, 100),
-      status: getRandomInt(0, 5), // 状态字段生成0到5的随机数
-      receiveTime: `2024-01-${getRandomInt(1, 28)} ${getRandomInt(0, 23)}:${getRandomInt(0, 59)}`,
-    });
-  }
-  return data;
-}
-const mockData = ref(getMockData());
+const tableData = ref([]);
 function rowAction(type: string) {
   if (tableRef.value && tableRef.value.checkedRow) {
     if (checkedRow.value) {
@@ -194,21 +177,44 @@ function pageChange({ pageSize, currentPage }) {
   }
   pageVO.currentPage = currentPage;
   pageVO.pageSize = pageSize;
-  // handlePageData();
+  getDataPage();
 }
 
-// 前端分页
-// const handlePageData = () => {
-//   setTimeout(() => {
-//     const { pageSize, currentPage } = pageVO;
-//     mockData.value = mockData.value.slice(
-//       (currentPage - 1) * pageSize,
-//       currentPage * pageSize,
-//     );
-//   }, 100);
-// };
 function setOpen(value: boolean) {
   open.value = value;
+}
+
+onActivated(() => {
+  getDataPage();
+});
+onDeactivated(() => {
+  stop();
+});
+async function getDataPage() {
+  try {
+    const params = {
+      page: pageVO.currentPage,
+      rowPerPage: pageVO.pageSize,
+    };
+    const data = await getBatchPage(params);
+    if (data.respData) {
+      tableData.value = data.respData.batchInfo;
+      pageVO.currentPage = data.respData.page;
+      pageVO.total = data.respData.totalRows;
+      pageVO.pageSize = data.respData.rowPerPage;
+    }
+    startGetDataPage();
+  }
+  catch (error) {
+    console.log('🚀 ~ file: index.vue:206 ~ getDataPage ~ error:', error);
+    stop();
+  }
+}
+
+async function startGetDataPage() {
+  start(async () => {
+    await getDataPage();
+  }, 1);
 }
 </script>
 

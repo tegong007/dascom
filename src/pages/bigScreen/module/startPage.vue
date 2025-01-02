@@ -6,7 +6,7 @@
         <span class="ml-10 text-[1.5em] color-[#CFDEF1]">空白本余量</span>
       </div>
       <div
-        class="absolute top-[3.5em] h-4.8em w-90% flex justify-center gap-50"
+        class="absolute top-[3.3em] h-4.8em w-90% flex justify-center gap-50"
       >
         <div v-for="(item, index) in props.data.items" :key="index">
           <div
@@ -21,7 +21,7 @@
             class="w-full flex flex-col items-center"
           >
             <div class="mt-5 text-[1em] color-[#CFDEF1]">
-              {{ item.name }}
+              {{ item.item }}
             </div>
             <div class="mt8 text-2em font-[youshe]">
               <!-- <CountTo
@@ -31,7 +31,7 @@
                 suffix="%"
                 :duration="Math.floor(Math.random() * 2000) + 1000"
               /> -->
-              {{ item.num }}
+              {{ item.value }}
             </div>
           </div>
         </div>
