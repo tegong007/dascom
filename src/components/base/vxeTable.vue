@@ -61,7 +61,7 @@
             <div class="flex items-center justify-start gap-10">
               <a
                 class="color-[#89F7FF]"
-                @click="$goto('BatchDetail', { BatchId: row.batchId })"
+                @click="$goto('BatchDetail', { BatchId: row.batchID })"
               >查看详情</a>
               <a v-if="row.status === 2" class="color-[#89F7FF]">挂起</a>
               <a v-if="row.status === 3" class="color-[#89F7FF]">重新生产</a>
@@ -156,8 +156,8 @@ async function showRow(row: any) {
 // 根据点击数据修改行
 function updateRow(newRow: object) {
   oldRow.value.num = newRow.num;
-  oldRow.value.dispatchUnits = newRow.dispatchUnits;
-  oldRow.value.dataSources = newRow.dataSources;
+  oldRow.value.dispatchUnit = newRow.dispatchUnit;
+  oldRow.value.dataSource = newRow.dataSource;
   oldRow.value.urgentType = newRow.urgentType;
 }
 function updateFirstRow(num: number) {

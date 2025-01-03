@@ -6,10 +6,13 @@
       class="m-t-15 box-border flex flex-col flex-1 color-[#CFDEF1]"
     >
       <a-flex justify="space-between" align="center" class="w-250px">
-        <span class="text-[16.72px]">{{ item.title }}模块</span>
-        <span
-          class="border-2 border-[#89f7ff] p-x-15 p-y-5 text-[16.72px] color-[#89f7ff]"
-        >刷新状态</span>
+        <span class="text-[16.72px]">{{ item.moduleName }}</span>
+        <div
+          class="cursor-pointer border-2 border-[#89f7ff] p-x-15 p-y-5 text-[16.72px] color-[#89f7ff] hover:bg-[#89f7ff38]"
+          @click="refresh(index)"
+        >
+          刷新状态
+        </div>
       </a-flex>
       <a-flex
         align="center"
@@ -17,30 +20,57 @@
         wrap="wrap"
       >
         <div
-          v-for="(data, index) in item.data"
-          :key="index"
+          v-for="(data, dataIndex) in item.items"
+          :key="dataIndex"
           class="box-border h-150px w-350px border-2 p-5 line-height-normal"
           :class="getBoxClass(data.status)"
         >
           <div class="mb5 text-[16px]">
-            {{ data.title }}工位
+            {{ data.item }}
           </div>
-          <a-row>
+          <a-row v-if="data.item === '发本工位'">
             <a-col :span="12" class="text-[14px]">
-              本批次发本数：{{ data.num }}
+              本批次发本数：{{ data.number }}
             </a-col>
             <a-col :span="12" class="text-[14px]">
-              历史发本总数：{{ data.historyNum }}
-            </a-col>
-          </a-row>
-          <a-row>
-            <a-col :span="12" class="text-[14px]">
-              历史成功总数：{{ data.num }}
-            </a-col>
-            <a-col :span="12" class="text-[14px]">
-              历史失败总数：{{ data.historyNum }}
+              历史发本数：{{ data.historyNum }}
             </a-col>
           </a-row>
+          <a-row v-else-if="data.item === '废本仓工位'">
+            <a-col :span="12" class="text-[14px]">
+              本批次失败数：{{ data.failNum }}
+            </a-col>
+            <a-col :span="12" class="text-[14px]">
+              历史失败总数：{{ data.historyFailNum }}
+            </a-col>
+          </a-row>
+          <a-row v-else-if="data.item === '良本仓工位'">
+            <a-col :span="12" class="text-[14px]">
+              本批次成功数：{{ data.successNum }}
+            </a-col>
+            <a-col :span="12" class="text-[14px]">
+              历史成功总数：{{ data.historySuccessNum }}
+            </a-col>
+          </a-row>
+          <div v-else>
+            <a-row>
+              <a-col :span="12" class="text-[14px]">
+                本批次失败数：{{ data.failNum }}
+              </a-col>
+              <a-col :span="12" class="text-[14px]">
+                本批次成功数：{{ data.successNum }}
+              </a-col>
+            </a-row>
+            <a-row>
+              <a-col :span="12" class="text-[14px]">
+                历史失败总数：{{ data.historyFailNum }}
+              </a-col>
+              <a-col :span="12" class="text-[14px]">
+                历史成功总数：{{ data.historySuccessNum }}
+              </a-col>
+            </a-row>
+          </div>
+
           <div class="mt5 text-[14px]" :class="getTextClass(data.status)">
             状态：{{
               data.status === 'normal' ? '正常' : `异常` + `，${data.msg}`
@@ -53,179 +83,61 @@
 </template>
 
 <script setup lang="ts">
-const items = [
-  {
-    title: '空白本检测',
-    data: [
-      {
-        title: '发本',
-        num: 111, // 发本数
-        success: 100, // 本次成功
-        fail: 11, // 本次失败
-        historyNum: 222, // 历史发本
-        historySuccess: 200, // 历史成功
-        historyFail: 22, // 历史失败
-        // 还有 良本，废本
-        status: 'normal',
-        msg: '',
-      },
-      {
-        title: '空白本OCR',
-        num: 111, // 发本数
-        success: 100, // 本次成功
-        fail: 11, // 本次失败
-        historyNum: 222, // 历史发本
-        historySuccess: 200, // 历史成功
-        historyFail: 22, // 历史 失败
-        status: 'error',
-        msg: '失败原因',
-      },
-      {
-        title: '空白本OCR',
-        num: 111, // 发本数
-        success: 100, // 本次成功
-        fail: 11, // 本次失败
-        historyNum: 222, // 历史发本
-        historySuccess: 200, // 历史成功
-        historyFail: 22, // 历史 失败
-        status: 'error',
-        msg: '失败原因',
-      },
+import { getPositionCard } from '@/apis/proApi';
+import useCustomTimer from '@/utils/useCustomTimer';
 
-      {
-        title: '空白本OCR',
-        num: 111, // 发本数
-        success: 100, // 本次成功
-        fail: 11, // 本次失败
-        historyNum: 222, // 历史发本
-        historySuccess: 200, // 历史成功
-        historyFail: 22, // 历史 失败
-        status: 'standby',
-        msg: '失败原因',
-      },
-      // --还有两个状态，以此类推
-    ],
-  },
-  {
-    title: '主副页打印',
-    data: [
-      {
-        title: '发本',
-        num: 111, // 发本数
-        success: 100, // 本次成功
-        fail: 11, // 本次失败
-        historyNum: 222, // 历史发本
-        historySuccess: 200, // 历史成功
-        historyFail: 22, // 历史失败
-        status: 'normal',
-        msg: '',
-      },
-      {
-        title: '空白本OCR',
-        num: 111, // 发本数
-        success: 100, // 本次成功
-        fail: 11, // 本次失败
-        historyNum: 222, // 历史发本
-        historySuccess: 200, // 历史成功
-        historyFail: 22, // 历史 失败
-        status: 'error',
-        msg: '失败原因',
-      },
-      {
-        title: '空白本OCR',
-        num: 111, // 发本数
-        success: 100, // 本次成功
-        fail: 11, // 本次失败
-        historyNum: 222, // 历史发本
-        historySuccess: 200, // 历史成功
-        historyFail: 22, // 历史 失败
-        status: 'error',
-        msg: '失败原因',
-      },
-      {
-        title: '空白本OCR',
-        num: 111, // 发本数
-        success: 100, // 本次成功
-        fail: 11, // 本次失败
-        historyNum: 222, // 历史发本
-        historySuccess: 200, // 历史成功
-        historyFail: 22, // 历史 失败
-        status: 'error',
-        msg: '失败原因',
-      },
-      // --还有两个状态，以此类推
-    ],
-  },
-  {
-    title: '加注页打印',
-    data: [
-      {
-        title: '发本',
-        num: 111, // 发本数
-        success: 100, // 本次成功
-        fail: 11, // 本次失败
-        historyNum: 222, // 历史发本
-        historySuccess: 200, // 历史成功
-        historyFail: 22, // 历史失败
-        status: 'normal',
-        msg: '',
-      },
-      {
-        title: '成品收集',
-        num: 111, // 发本数
-        success: 100, // 本次成功
-        fail: 11, // 本次失败
-        historyNum: 222, // 历史发本
-        historySuccess: 200, // 历史成功
-        historyFail: 22, // 历史 失败
-        status: 'error',
-        msg: '失败原因',
-      },
-      // --还有两个状态，以此类推
-    ],
-  },
-  {
-    title: '成品收集',
-    data: [
-      {
-        title: '发本',
-        num: 111, // 发本数
-        success: 100, // 本次成功
-        fail: 11, // 本次失败
-        historyNum: 222, // 历史发本
-        historySuccess: 200, // 历史成功
-        historyFail: 22, // 历史失败
-        status: 'normal',
-        msg: '',
-      },
-      {
-        title: '空白本OCR',
-        num: 111, // 发本数
-        success: 100, // 本次成功
-        fail: 11, // 本次失败
-        historyNum: 222, // 历史发本
-        historySuccess: 200, // 历史成功
-        historyFail: 22, // 历史 失败
-        status: 'error',
-        msg: '失败原因',
-      },
-      // --还有两个工位状态，以此类推
-    ],
-  },
-];
+const { start, stop } = useCustomTimer();
+const items = ref([]);
+onActivated(() => {
+  getDataPage();
+});
+onDeactivated(() => {
+  stop();
+});
+async function getDataPage() {
+  try {
+    const data = await getPositionCard({ moduleID: 0 });
+    if (data.respData) {
+      items.value = data.respData;
+    }
+    startGetDataPage();
+  }
+  catch (error) {
+    console.log('🚀 ~ file: newIndex.vue:182 ~ getDataPage ~ error:', error);
+    stop();
+  }
+}
+
+async function startGetDataPage() {
+  start(async () => {
+    await getDataPage();
+  }, 2);
+}
+
+async function refresh(index: number) {
+  const data = await getPositionCard({ moduleID: index + 1 });
+  if (data.respData) {
+    console.log(
+      '🚀 ~ file: card.vue:68 ~ getDataPage ~ data.respData:',
+      data.respData,
+    );
+    items.value[index] = data.respData;
+  }
+}
+
 function getBoxClass(status: string) {
   let boxClass = '';
   const borderColor = {
-    error: 'border-[#C7080B]',
-    normal: 'border-[#89f7ff]',
-    standby: 'border-[#CBCBCB]',
-    warning: 'border-[#FFB55B]',
+    3: 'border-[#C7080B]',
+    1: 'border-[#89f7ff]',
+    0: 'border-[#CBCBCB]',
+    2: 'border-[#FFB55B]',
   };
   const bgColor = {
-    error: 'bg-[#FF0000]/[0.27]',
-    normal: 'bg-[#FFFFFF]/[0.09]',
-    standby: 'bg-[#CBCBCB]/[0.2]',
-    warning: 'bg-[#FF920D]/[0.37]',
+    3: 'bg-[#FF0000]/[0.27]',
+    1: 'bg-[#FFFFFF]/[0.09]',
+    0: 'bg-[#CBCBCB]/[0.2]',
+    2: 'bg-[#FF920D]/[0.37]',
   };
   boxClass = `${borderColor[status]} ${bgColor[status]}`;
   return boxClass;
@@ -233,10 +145,10 @@ function getBoxClass(status: string) {
 function getTextClass(status: string) {
   let textClass = '';
   const textColor = {
-    error: 'color-[#FF0000]',
-    normal: 'color-[#CFDEF1]',
-    standby: 'color-[#DDDDDD]',
-    warning: 'color-[#FFB55B]',
+    3: 'color-[#FF0000]',
+    1: 'color-[#CFDEF1]',
+    0: 'color-[#DDDDDD]',
+    2: 'color-[#FFB55B]',
   };
   textClass = textColor[status];
   return textClass;

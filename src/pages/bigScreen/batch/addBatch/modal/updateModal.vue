@@ -39,14 +39,14 @@
                 </a-form-item>
               </a-col>
               <a-col :span="12">
-                <a-form-item label="派遣单位" name="dispatchUnits">
+                <a-form-item label="派遣单位" name="dispatchUnit">
                   <a-select
-                    v-model:value="formState.dispatchUnits"
+                    v-model:value="formState.dispatchUnit"
                     placeholder="请选择派遣单位"
-                    :disabled="formState.dispatchUnits === '-------'"
+                    :disabled="formState.dispatchUnit === '-------'"
                   >
                     <a-select-option
-                      v-for="option in dispatchUnitsOptions"
+                      v-for="option in dispatchUnitOptions"
                       :key="option.value"
                       :value="option.value"
                     >
@@ -56,14 +56,14 @@
                 </a-form-item>
               </a-col>
               <a-col :span="12">
-                <a-form-item label="数据来源" name="dataSources">
+                <a-form-item label="数据来源" name="dataSource">
                   <a-select
-                    v-model:value="formState.dataSources"
+                    v-model:value="formState.dataSource"
                     placeholder="请选择数据来源"
-                    :disabled="formState.dispatchUnits === '-------'"
+                    :disabled="formState.dispatchUnit === '-------'"
                   >
                     <a-select-option
-                      v-for="option in dataSourcesOptions"
+                      v-for="option in dataSourceOptions"
                       :key="option.value"
                       :value="option.value"
                     >
@@ -77,7 +77,7 @@
                   <a-select
                     v-model:value="formState.urgentType"
                     placeholder="请选择加急类型"
-                    :disabled="formState.dispatchUnits === '-------'"
+                    :disabled="formState.dispatchUnit === '-------'"
                   >
                     <a-select-option
                       v-for="option in urgencyOptions"
@@ -114,8 +114,8 @@
 import { defineExpose, defineProps } from 'vue';
 import type { UnwrapRef } from 'vue';
 import {
-  dataSourcesOptions,
-  dispatchUnitsOptions,
+  dataSourceOptions,
+  dispatchUnitOptions,
   urgencyOptions,
 } from '../../option.js';
 
@@ -130,8 +130,8 @@ const props = defineProps({
 const formRef = ref();
 interface FormState {
   num: number;
-  dispatchUnits: string;
-  dataSources: string;
+  dispatchUnit: string;
+  dataSource: string;
   urgentType: string;
   // timeRange: RangeValue;
 }
@@ -160,8 +160,8 @@ const rules = {
 };
 const formState: UnwrapRef<FormState> = reactive({
   num: 1,
-  dispatchUnits: 1,
-  dataSources: 1,
+  dispatchUnit: 1,
+  dataSource: 1,
   urgentType: null,
 });
 function handleCancel() {
@@ -182,8 +182,8 @@ function onSubmit() {
 // 弹窗表单收到要修改的值
 function updateForm(row: object) {
   formState.num = row.num;
-  formState.dispatchUnits = row.dispatchUnits;
-  formState.dataSources = row.dataSources;
+  formState.dispatchUnit = row.dispatchUnit;
+  formState.dataSource = row.dataSource;
   formState.urgentType = row.urgentType;
 }
 defineExpose({

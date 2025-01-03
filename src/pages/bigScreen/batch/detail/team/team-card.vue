@@ -33,7 +33,7 @@
       <div
         class="box-border h-full flex flex-1 items-center border-2 border-[#89F7FF] p-l-5"
       >
-        {{ `${item.seq}---${item.teamId}` }}
+        {{ `${item.seq}---${item.groupID}` }}
       </div>
     </section>
   </div>
@@ -47,9 +47,10 @@ const props = defineProps({
   checkRow: Array,
   setCheckRow: Function,
 });
-const items = ref(props.items);
-const isAllCheck = ref<boolean>(false);
 
+const items = ref([]);
+
+const isAllCheck = ref<boolean>(false);
 function changeAllCheck() {
   isAllCheck.value = !isAllCheck.value;
   items.value?.map((item) => {
@@ -60,13 +61,18 @@ function changeAllCheck() {
 function changeItemCheck(item: object) {
   item.checked = !item.checked;
 }
-
-// 使用 watch 函数来观察 items 数组的变化
+watch(
+  () => props.items,
+  () => {
+    items.value = props.items;
+  },
+  { deep: true, immediate: true },
+);
 watch(
   items,
   (newItems) => {
     // 遍历 newItems 数组，获取所有 checked 属性为 true 的对象
-    const checkRow = newItems.filter(item => item.checked);
+    const checkRow = newItems?.filter(item => item.checked);
     if (checkRow.length === 0) {
       isAllCheck.value = false;
     }

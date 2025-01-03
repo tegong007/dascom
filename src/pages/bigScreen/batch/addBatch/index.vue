@@ -49,8 +49,8 @@
 
 <script lang="ts" setup>
 import {
-  dataSourcesOptions,
-  dispatchUnitsOptions,
+  dataSourceOptions,
+  dispatchUnitOptions,
   urgencyOptions,
 } from '../option';
 import teamForm from './team-form.vue';
@@ -77,13 +77,13 @@ function setSuccessOpen(value: boolean) {
 const colums = ref([
   {
     title: '派遣单位',
-    field: 'dispatchUnits',
-    options: dispatchUnitsOptions,
+    field: 'dispatchUnit',
+    options: dispatchUnitOptions,
   },
   {
     title: '数据来源',
-    field: 'dataSources',
-    options: dataSourcesOptions,
+    field: 'dataSource',
+    options: dataSourceOptions,
   },
   {
     title: '加急类型',

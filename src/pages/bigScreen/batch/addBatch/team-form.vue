@@ -20,13 +20,13 @@
           </a-form-item>
         </a-col>
         <a-col :span="5">
-          <a-form-item label="派遣单位" name="dispatchUnits">
+          <a-form-item label="派遣单位" name="dispatchUnit">
             <a-select
-              v-model:value="formState.dispatchUnits"
+              v-model:value="formState.dispatchUnit"
               placeholder="请选择派遣单位"
             >
               <a-select-option
-                v-for="option in dispatchUnitsOptions"
+                v-for="option in dispatchUnitOptions"
                 :key="option.value"
                 :value="option.value"
               >
@@ -36,13 +36,13 @@
           </a-form-item>
         </a-col>
         <a-col :span="5">
-          <a-form-item label="数据来源" name="dataSources">
+          <a-form-item label="数据来源" name="dataSource">
             <a-select
-              v-model:value="formState.dataSources"
+              v-model:value="formState.dataSource"
               placeholder="请选择数据来源"
             >
               <a-select-option
-                v-for="option in dataSourcesOptions"
+                v-for="option in dataSourceOptions"
                 :key="option.value"
                 :value="option.value"
               >
@@ -88,8 +88,8 @@ import type { UnwrapRef } from 'vue';
 import { PlusCircleFilled } from '@ant-design/icons-vue';
 
 import {
-  dataSourcesOptions,
-  dispatchUnitsOptions,
+  dataSourceOptions,
+  dispatchUnitOptions,
   urgencyOptions,
 } from '../option';
 // 确保路径确
@@ -122,15 +122,15 @@ const rules = {
 };
 interface FormState {
   num: number;
-  dispatchUnits: string;
-  dataSources: string;
+  dispatchUnit: string;
+  dataSource: string;
   urgentType: string;
   // timeRange: RangeValue;
 }
 const formState: UnwrapRef<FormState> = reactive({
   num: 1,
-  dispatchUnits: 1,
-  dataSources: 1,
+  dispatchUnit: 1,
+  dataSource: 1,
   urgentType: 0,
 });
 

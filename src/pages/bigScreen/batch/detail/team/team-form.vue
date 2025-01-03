@@ -16,35 +16,19 @@
           </a-form-item>
         </a-col>
         <a-col :span="5">
-          <a-form-item label="派遣单位" name="dispatchUnits">
-            <a-select
-              v-model:value="formState.dispatchUnits"
-              placeholder="请选择派遣单位"
-            >
-              <a-select-option
-                v-for="option in dispatchUnitsOptions"
-                :key="option.value"
-                :value="option.value"
-              >
-                {{ option.label }}
-              </a-select-option>
-            </a-select>
+          <a-form-item label="派遣单位" name="dispatchUnit">
+            <a-input
+              v-model:value="formState.dispatchUnit"
+              placeholder="请输入派遣单位"
+            />
           </a-form-item>
         </a-col>
         <a-col :span="5">
-          <a-form-item label="数据来源" name="dataSources">
-            <a-select
-              v-model:value="formState.dataSources"
-              placeholder="请选择数据来源"
-            >
-              <a-select-option
-                v-for="option in dataSourcesOptions"
-                :key="option.value"
-                :value="option.value"
-              >
-                {{ option.label }}
-              </a-select-option>
-            </a-select>
+          <a-form-item label="数据来源" name="dataSource">
+            <a-input
+              v-model:value="formState.dataSource"
+              placeholder="请输入数据来源"
+            />
           </a-form-item>
         </a-col>
         <a-col :span="5">
@@ -82,27 +66,23 @@
 import { defineProps, reactive } from 'vue';
 import type { UnwrapRef } from 'vue';
 import { SearchOutlined } from '@ant-design/icons-vue';
-import {
-  dataSourcesOptions,
-  dispatchUnitsOptions,
-  urgencyOptions,
-} from '../../option';
+import { urgencyOptions } from '../../option';
 // 确保路径确
 const props = defineProps({
-  addTeam: Function, // 表头
+  setSearchForm: Function, // 表头
 });
 const formRef = ref();
 interface FormState {
   teamId: string;
-  dispatchUnits: string;
-  dataSources: string;
-  urgentType: string;
+  dispatchUnit: string;
+  dataSource: string;
+  urgentType: number;
   // timeRange: RangeValue;
 }
 const formState: UnwrapRef<FormState> = reactive({
   teamId: '',
-  dispatchUnits: 1,
-  dataSources: 1,
+  dispatchUnit: '',
+  dataSource: '',
   urgentType: 0,
 });
 
@@ -111,7 +91,7 @@ function onSubmit() {
     .validate()
     .then(() => {
       // console.log('values', formState, toRaw(formState));
-      props.addTeam(toRaw(formState));
+      props.setSearchForm(toRaw(formState));
     })
     .catch((error) => {
       console.log('error', error);

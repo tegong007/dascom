@@ -7,7 +7,7 @@
       <span>批次号：20241113，
         生产总数：1000，良本数：990，废本数：8，待生产数：2，状态：生产中，接收：2024-12-12
         15:10:10，生产：2024-12-12 15:10:10，完成：2024-12-12 15:10:10</span>
-      <TeamForm />
+      <TeamForm :set-search-form="setSearchForm" />
       <main class="box-border h78% w-full flex">
         <div class="card-box box-border h-full w-250px p-l-10 p-t-10">
           团组列表
@@ -60,21 +60,20 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router';
 import { reactive } from 'vue';
-import {
-  dataSourcesOptions,
-  dispatchUnitsOptions,
-  findLabelByValue,
-  urgencyOptions,
-} from '../option';
+import { findLabelByValue, urgencyOptions } from '../option';
 import TeamForm from './team/team-form.vue';
 import TeamCard from './team/team-card.vue';
 import Doc from './team/doc/index.vue';
 import TheButton from '@/components/base/TheButton.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
-
+import { getGroupPage } from '@/apis/proApi';
+// import useCustomTimer from '@/utils/useCustomTimer';
+// const { start, stop } = useCustomTimer();
 const route = useRoute();
 const batchId = ref<string>('');
 const checkRow = ref([]); // 选中的数据
+const items = ref([]);
+const searchForm = ref({});
 const info = ref([
   {
     label: '派遣单位',
@@ -89,30 +88,15 @@ const info = ref([
     label: '团组人数',
   },
 ]);
-onMounted(() => {
-  nextTick(() => {
-    const query = route.query;
-    batchId.value = query.BatchId;
-    console.log(
-      '🚀 ~ file: index.vue:40 ~ nextTick ~ query.batchId:',
-      query.BatchId,
-    );
-  });
+onActivated(async () => {
+  const query = route.query;
+  batchId.value = query.BatchId;
+  await getGroupData();
 });
 function setCheckRow(arr: Array<any>) {
   checkRow.value = arr;
-  console.log(
-    '🚀 ~ file: index.vue:109 ~ setCheckRow ~ info.value:',
-    info.value,
-  );
-  info.value[0].value = findLabelByValue(
-    dispatchUnitsOptions,
-    checkRow.value[0]?.dispatchUnits,
-  );
-  info.value[1].value = findLabelByValue(
-    dataSourcesOptions,
-    checkRow.value[0]?.dataSources,
-  );
+  info.value[0].value = checkRow.value[0]?.dispatchUnit;
+  info.value[1].value = checkRow.value[0]?.dataSource;
   info.value[2].value = findLabelByValue(
     urgencyOptions,
     checkRow.value[0]?.urgentType,
@@ -123,12 +107,11 @@ function setCheckRow(arr: Array<any>) {
     return allnum;
   });
   info.value[3].value = allnum;
-  console.log('🚀 ~ file: index.vue:122 ~ setCheckRow ~ allnum:', allnum);
 }
 const pageVO = reactive({
   currentPage: 1,
-  pageSize: 10,
-  total: 150,
+  pageSize: 12,
+  total: 0,
 });
 function pageChangeEvent() {
   console.log(
@@ -136,24 +119,28 @@ function pageChangeEvent() {
   );
 }
 
-const items = ref([
-  {
-    teamId: '13112206029', // 团id
-    seq: '1', // 序号
-    num: 1, // 团人数
-    dispatchUnits: 1, // 派遣单位
-    dataSources: 1, // 数据来源
-    urgentType: 1, // 加急类型
-  },
-  {
-    teamId: '13112206029',
-    seq: '2',
-    num: 4,
-    dispatchUnits: 1,
-    dataSources: 0,
-    urgentType: 0,
-  },
-]);
+async function getGroupData() {
+  const params = {
+    batchID: batchId.value,
+    page: pageVO.currentPage,
+    rowPerPage: pageVO.pageSize,
+  };
+  try {
+    const data = await getGroupPage(params);
+    if (data.respData) {
+      items.value = data.respData.groupInfo;
+      pageVO.currentPage = data.respData.page;
+      pageVO.total = data.respData.totalRows;
+      pageVO.pageSize = data.respData.rowPerPage;
+    }
+  }
+  catch (error) {
+    error;
+  }
+}
+function setSearchForm(formValue: object) {
+  searchForm.value = formValue;
+}
 </script>
 
 <style scoped lang="less">

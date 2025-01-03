@@ -81,8 +81,8 @@ function onSubmit() {
       if (isFirstClick.value) {
         props.addTeam({
           ...toRaw(formState),
-          dispatchUnits: '-------',
-          dataSources: '-------',
+          dispatchUnit: '-------',
+          dataSource: '-------',
           urgentType: '--------',
         });
         isFirstClick.value = false;

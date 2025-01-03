@@ -3,7 +3,7 @@ export interface OptionType {
   label: string;
 }
 // 定义派遣单位的数组
-export const dispatchUnitsOptions: OptionType[] = [
+export const dispatchUnitOptions: OptionType[] = [
   {
     value: 0,
     label: '无',
@@ -21,7 +21,7 @@ export const dispatchUnitsOptions: OptionType[] = [
     label: '中国交通公司',
   },
 ];
-export const dataSourcesOptions: OptionType[] = [
+export const dataSourceOptions: OptionType[] = [
   {
     value: 0,
     label: '无',
