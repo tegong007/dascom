@@ -186,7 +186,7 @@ async function getDataPage() {
 async function startGetDataPage() {
   start(async () => {
     await getDataPage();
-  }, 1);
+  }, 2);
 }
 // 初始化
 // async function init() {

@@ -64,9 +64,10 @@ import MyTable from '@/components/base/vxeTable.vue';
 const modal = ref('编辑团组');
 const successTitle = ref('批次添加成功，是否查看详情?');
 const open = ref<boolean>(false);
-const successOpen = ref<boolean>(true);
+const successOpen = ref<boolean>(false);
 const tableRef = ref(null);
 const updateRef = ref(null);
+const isAddNoTeam = ref<boolean>(false);
 function setOpen(value: boolean) {
   open.value = value;
 }
@@ -97,6 +98,7 @@ const colums = ref([
 ]);
 function addNoTeam(record: object) {
   if (tableRef.value) {
+    isAddNoTeam.value = true;
     tableRef.value.addEvent(record);
   }
 }
@@ -124,11 +126,20 @@ function handleUpdate(record: object) {
   if (tableRef.value) {
     tableRef.value.updateRow(record);
   }
-  // 告诉表格要修改值！
 }
 async function addBatch() {
   if (tableRef.value) {
-    tableRef.value.exportEvent();
+    const insertData = tableRef.value.exportEvent();
+    if (!insertData.length) {
+      return;
+    }
+    if (!isAddNoTeam.value) {
+      insertData.unshift({ num: 0 });
+    }
+    console.log(
+      '🚀 ~ file: index.vue:132 ~ addBatch ~ insertData:',
+      insertData,
+    );
   }
 }
 </script>

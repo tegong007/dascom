@@ -160,9 +160,9 @@ const rules = {
 };
 const formState: UnwrapRef<FormState> = reactive({
   num: 1,
-  dispatchUnits: '1',
-  dataSources: '1',
-  urgentType: 'none',
+  dispatchUnits: 1,
+  dataSources: 1,
+  urgentType: null,
 });
 function handleCancel() {
   formRef.value.resetFields();

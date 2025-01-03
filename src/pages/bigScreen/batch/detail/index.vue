@@ -151,7 +151,7 @@ const items = ref([
     num: 4,
     dispatchUnits: 1,
     dataSources: 0,
-    urgentType: 1,
+    urgentType: 0,
   },
 ]);
 </script>
