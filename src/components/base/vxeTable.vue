@@ -93,7 +93,6 @@ const props = defineProps({
 const tableRef = ref();
 const oldRow = ref(); // 点击的行
 const firstRow = ref(); // 第一行
-const checkedRow = ref(); // 选中的数据
 function activeCellMethod({ row, column, columnIndex }) {
   console.log(row, column);
   if (row.isNoTeam) {
@@ -117,7 +116,8 @@ function selectChangeEvent({ checked }) {
   const $table = tableRef.value;
   if ($table) {
     const records = $table.getCheckboxRecords();
-    checkedRow.value = records;
+    // console.log("🚀 ~ file: vxeTable.vue:121 ~ selectChangeEvent ~ records:", records)
+    // checkedRow.value = records;
     console.log(checked ? '勾选事件' : '取消事件', records);
   }
 }
@@ -211,21 +211,22 @@ const cellClassName: VxeTablePropTypes.CellClassName<any> = ({
 //     $table.setCheckboxRow(rows, checked);
 //   }
 // }
-// function getSelectEvent(fun: any) {
-//   const $table = tableRef.value;
-//   if ($table) {
-//     const selectRecords = $table.getCheckboxRecords();
-//     fun(selectRecords); // VxeUI.modal.alert(`${selectRecords.length}条数据`);
-//   }
-// }
+function getSelectEvent() {
+  const $table = tableRef.value;
+  if ($table) {
+    const selectRecords = $table.getCheckboxRecords();
+    return selectRecords;
+    // fun(selectRecords); // VxeUI.modal.alert(`${selectRecords.length}条数据`);
+  }
+}
 
 defineExpose({
   pushEvent,
   exportEvent,
   addEvent,
   updateRow,
+  getSelectEvent,
   updateFirstRow,
-  checkedRow,
 });
 </script>
 

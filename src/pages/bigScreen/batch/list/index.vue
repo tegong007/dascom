@@ -6,13 +6,25 @@
     >
       <BatchInfo />
       <div class="relative w-full">
-        <TeamForm />
+        <TeamForm :set-search-form="setSearchForm" />
         <a-space :size="20" class="absolute right-10 top-[20px]">
-          <a-button type="primary" class="btn flex items-center">
+          <a-button
+            type="primary"
+            class="btn flex items-center"
+            @click="getDataPage"
+          >
             <img
               src="@/assets/image/bigScreen/btn/huifu.svg"
-              class="mr5 w12px"
+              class="mr7 w12px"
             >
+            刷新
+          </a-button>
+          <a-button
+            type="primary"
+            class="btn flex items-center"
+            @click="rowAction('reset')"
+          >
+            <RollbackOutlined />
             重新生产
           </a-button>
           <a-button
@@ -22,7 +34,7 @@
           >
             <img
               src="@/assets/image/bigScreen/btn/guaqi.svg"
-              class="mr5 w12px"
+              class="m-r-7 w12px"
             >
             挂起
           </a-button>
@@ -50,7 +62,7 @@
     <!-- 下边按钮 -->
     <TheModal
       :open="open"
-      :handle-ok="() => setOpen(false)"
+      :handle-ok="() => operate()"
       :warn-icon="true"
       :handle-cancel="() => setOpen(false)"
       :title="modal"
@@ -66,10 +78,12 @@
         <TheButton title="返回首页" @click="$goto('BigScreen')" />
       </div>
     </div>
+    <Notification ref="notifyRef" />
   </div>
 </template>
 
 <script lang="ts" setup>
+import { RollbackOutlined } from '@ant-design/icons-vue';
 import TeamForm from './team-form.vue';
 import BatchInfo from './batchInfo.vue';
 import { BatchStatusOptions } from '@/pages/bigScreen/batch/option.ts';
@@ -77,10 +91,11 @@ import bigScreenHeader from '@/components/bigScreen/header.vue';
 import TheButton from '@/components/base/TheButton.vue';
 import MyTable from '@/components/base/vxeTable.vue';
 import TheModal from '@/components/modal/TheModal.vue';
-import useCustomTimer from '@/utils/useCustomTimer';
-import { getBatchPage } from '@/apis/proApi';
+import Notification from '@/components/base/notification.vue';
+// import useCustomTimer from '@/utils/useCustomTimer';
+import { getBatchOperate, getBatchPage } from '@/apis/proApi';
 
-const { start, stop } = useCustomTimer();
+// const { start, stop } = useCustomTimer();
 const pageVO = reactive({
   total: 20,
   currentPage: 1,
@@ -88,12 +103,12 @@ const pageVO = reactive({
 });
 const checkedRow = ref([]);
 const tableRef = ref(null);
+const notifyRef = ref(null);
+const searchForm = ref({});
 const open = ref<boolean>(false);
 const modal = ref('');
-function formatterStatus({ cellValue }: any) {
-  const item = BatchStatusOptions.find(item => item.value === cellValue);
-  return item ? item.label : cellValue;
-}
+const isReset = ref(0);
+const tableData = ref([]);
 const colums = ref([
   {
     title: '批次号',
@@ -143,16 +158,18 @@ const colums = ref([
     width: 200,
   },
 ]);
+function setSearchForm(formValue: object) {
+  searchForm.value = formValue;
+  getDataPage();
+}
 
-const tableData = ref([]);
 function rowAction(type: string) {
-  if (tableRef.value && tableRef.value.checkedRow) {
-    if (checkedRow.value) {
-      checkedRow.value.push(tableRef.value.checkedRow);
-    }
-    else {
-      checkedRow.value = tableRef.value.checkedRow;
-    }
+  console.log('🚀 ~ file: index.vue:167 ~ rowAction ~ type:', type === 'stop');
+  modal.value = type;
+  if (tableRef.value && tableRef.value.getSelectEvent()) {
+    checkedRow.value = tableRef.value
+      .getSelectEvent()
+      .map(item => item.batchID);
   }
   nextTick(() => {
     if (checkedRow.value.length) {
@@ -160,9 +177,14 @@ function rowAction(type: string) {
         = `是否${type}` === 'stop'
           ? '挂起'
           : `重新生产${checkedRow.value.length}条数据?`;
+      isReset.value = type === 'stop' ? 0 : 1;
       open.value = true;
     }
   });
+}
+function formatterStatus({ cellValue }: any) {
+  const item = BatchStatusOptions.find(item => item.value === cellValue);
+  return item ? item.label : cellValue;
 }
 // 分页
 function pageChange({ pageSize, currentPage }) {
@@ -184,15 +206,40 @@ function setOpen(value: boolean) {
   open.value = value;
 }
 
+async function operate() {
+  try {
+    await getBatchOperate({
+      batchID: checkedRow.value,
+      operate: isReset.value,
+    });
+    notifyRef.value?.openNotify(
+      'bottomRight',
+      `${isReset.value ? '重新生产' : '挂起'}操作成功`,
+      true,
+    );
+  }
+  catch (error) {
+    error;
+    notifyRef.value?.openNotify(
+      'bottomRight',
+      `${isReset.value ? '重新生产' : '挂起'}操作失败`,
+    );
+  }
+  finally {
+    setOpen(false);
+  }
+}
+
 onActivated(() => {
   getDataPage();
 });
 onDeactivated(() => {
-  stop();
+  // stop();
 });
 async function getDataPage() {
   try {
     const params = {
+      ...searchForm.value,
       page: pageVO.currentPage,
       rowPerPage: pageVO.pageSize,
     };
@@ -203,19 +250,19 @@ async function getDataPage() {
       pageVO.total = data.respData.totalRows;
       pageVO.pageSize = data.respData.rowPerPage;
     }
-    startGetDataPage();
+    // startGetDataPage();
   }
   catch (error) {
     console.log('🚀 ~ file: index.vue:206 ~ getDataPage ~ error:', error);
-    stop();
+    // stop();
   }
 }
 
-async function startGetDataPage() {
-  start(async () => {
-    await getDataPage();
-  }, 1);
-}
+// async function startGetDataPage() {
+//   start(async () => {
+//     await getDataPage();
+//   }, 1);
+// }
 </script>
 
 <style scoped lang="less">

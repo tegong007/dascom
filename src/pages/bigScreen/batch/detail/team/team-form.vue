@@ -90,8 +90,13 @@ function onSubmit() {
   formRef.value
     .validate()
     .then(() => {
-      // console.log('values', formState, toRaw(formState));
-      props.setSearchForm(toRaw(formState));
+      const filteredForm = Object.fromEntries(
+        Object.entries(toRaw(formState)).filter(
+          ([_key, value]) =>
+            value !== null && value !== undefined && value !== '',
+        ),
+      );
+      props.setSearchForm(filteredForm);
     })
     .catch((error) => {
       console.log('error', error);

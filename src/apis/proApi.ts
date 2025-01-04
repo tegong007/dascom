@@ -16,7 +16,7 @@ export function getBatchPage(data: any) {
   const api = `${v1}/tss/get-batch`;
   return request.post(api, data);
 }
-// 批次--- 获取批次列表
+// 批次--- 批次操作
 export function getBatchOperate(data: any) {
   const api = `${v1}/tss/batch-operate`;
   return request.post(api, data);

@@ -3,7 +3,11 @@
     <DocForm />
     <a-space :size="20" class="absolute right-20 top-[20px]">
       <a-button type="primary" class="btn flex items-center">
-        <img src="@/assets/image/bigScreen/btn/huifu.svg" class="mr5 w12px">
+        <img src="@/assets/image/bigScreen/btn/huifu.svg" class="mr7 w12px">
+        刷新
+      </a-button>
+      <a-button type="primary" class="btn flex items-center">
+        <RollbackOutlined />
         重新生产
       </a-button>
       <a-button
@@ -11,7 +15,7 @@
         class="btn flex items-center"
         @click="rowAction('stop')"
       >
-        <img src="@/assets/image/bigScreen/btn/guaqi.svg" class="mr5 w12px">
+        <img src="@/assets/image/bigScreen/btn/guaqi.svg" class="m-r-7 w12px">
         挂起
       </a-button>
     </a-space>

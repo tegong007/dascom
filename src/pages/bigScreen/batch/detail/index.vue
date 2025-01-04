@@ -19,6 +19,7 @@
           <vxe-pager
             v-model:current-page="pageVO.currentPage"
             v-model:page-size="pageVO.pageSize"
+            class="z99"
             :total="pageVO.total"
             :layouts="['PrevPage', 'Jump', 'PageCount', 'NextPage']"
             @page-change="pageChangeEvent"
@@ -113,14 +114,16 @@ const pageVO = reactive({
   pageSize: 12,
   total: 0,
 });
-function pageChangeEvent() {
+async function pageChangeEvent() {
   console.log(
     `分页事件：第 ${pageVO.currentPage} 页，每页  ${pageVO.pageSize} 条`,
   );
+  await getGroupData();
 }
 
 async function getGroupData() {
   const params = {
+    ...searchForm.value,
     batchID: batchId.value,
     page: pageVO.currentPage,
     rowPerPage: pageVO.pageSize,
@@ -140,6 +143,7 @@ async function getGroupData() {
 }
 function setSearchForm(formValue: object) {
   searchForm.value = formValue;
+  getGroupData();
 }
 </script>
 

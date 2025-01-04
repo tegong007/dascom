@@ -59,7 +59,7 @@ import { SearchOutlined } from '@ant-design/icons-vue';
 import { BatchStatusOptions } from '@/pages/bigScreen/batch/option.ts';
 // 确保路径确
 const props = defineProps({
-  addTeam: Function, // 表头
+  setSearchForm: Function, // 表头
 });
 const formRef = ref();
 interface FormState {
@@ -78,8 +78,13 @@ function onSubmit() {
   formRef.value
     .validate()
     .then(() => {
-      // console.log('values', formState, toRaw(formState));
-      props.addTeam(toRaw(formState));
+      const filteredForm = Object.fromEntries(
+        Object.entries(toRaw(formState)).filter(
+          ([_key, value]) =>
+            value !== null && value !== undefined && value !== '',
+        ),
+      );
+      props.setSearchForm(filteredForm);
     })
     .catch((error) => {
       console.log('error', error);
