@@ -2,7 +2,11 @@
   <div class="relative box-border wh-full flex flex-col p-x-20 p-t-20">
     <DocForm :set-search-form="setSearchForm" />
     <a-space :size="20" class="absolute right-20 top-[20px]">
-      <a-button type="primary" class="btn flex items-center">
+      <a-button
+        type="primary"
+        class="btn flex items-center"
+        @click="getDataPage()"
+      >
         <img src="@/assets/image/bigScreen/btn/huifu.svg" class="mr7 w12px">
         刷新
       </a-button>
@@ -246,7 +250,7 @@ function setSearchForm(formValue: object) {
 async function operate() {
   try {
     await getDocOperate({
-      batchID: checkedRow.value,
+      docID: checkedRow.value,
       operate: isReset.value,
     });
     notifyRef.value?.openNotify(
@@ -254,6 +258,7 @@ async function operate() {
       `${isReset.value ? '重新生产' : '挂起'}操作成功`,
       true,
     );
+    getDataPage();
   }
   catch (error) {
     error;
@@ -305,11 +310,9 @@ function rowAction(type: string) {
   }
   nextTick(() => {
     if (checkedRow.value.length) {
-      modal.value
-        = `是否${
-          type === 'stop' ? '挂起' : '重新生产'
-        }${checkedRow.value.length
-        }条数据?`;
+      modal.value = `是否${type === 'stop' ? '挂起' : '重新生产'}${
+        checkedRow.value.length
+      }条数据?`;
       isReset.value = type === 'stop' ? 0 : 1;
       open.value = true;
     }
