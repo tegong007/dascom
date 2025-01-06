@@ -17,24 +17,29 @@
         :data="props.data"
         @checkbox-change="selectChangeEvent"
       >
+        <!-- 复选框 -->
         <vxe-column v-if="props.checkbox" type="checkbox" width="43" />
-        <vxe-column v-if="props.seq" type="seq" width="70" align="center" />
+        <!-- 序号 -->
+        <vxe-column v-if="props.seq" type="seq" width="60" align="center" />
         <vxe-column
           v-for="(item, index) in props.colums"
           :key="index"
           :field="item.field"
           :title="item.title"
+          :cell-render="item.imgUrlCellRender"
           :formatter="item.formatter"
-          :edit-render="{
-            name: item.options ? 'select' : 'input',
-            options: item.options,
-          }"
-          show-header-overflow
           :width="item.width"
+          show-header-overflow
           show-overflow="title"
           show-footer-overflow
           align="center"
         />
+        <!-- 可编辑 :edit-render="{
+            name: item.options ? 'select' : 'input',
+            options: item.options,
+          }" -->
+
+        <!-- 操作 -->
         <vxe-column
           v-if="props.pageName === 'AddBatch'"
           field="action"
@@ -62,9 +67,27 @@
               <a
                 class="color-[#89F7FF]"
                 @click="$goto('BatchDetail', { BatchId: row.batchID })"
-              >查看详情</a>
+              >详情</a>
               <a v-if="row.status === 2" class="color-[#89F7FF]">挂起</a>
               <a v-if="row.status === 3" class="color-[#89F7FF]">重新生产</a>
+            </div>
+          </template>
+        </vxe-column>
+        <vxe-column
+          v-if="props.pageName === 'docList'"
+          field="action"
+          title="操作"
+          width="170"
+          fixed="right"
+          align="center"
+        >
+          <template #default="{ row }">
+            <div class="flex items-center justify-start gap-10">
+              <a v-if="row.status === 1" class="color-[#89F7FF]">挂起</a>
+              <a
+                v-if="row.status !== 1 || row.status !== 0"
+                class="color-[#89F7FF]"
+              >重新生产</a>
             </div>
           </template>
         </vxe-column>
@@ -75,7 +98,6 @@
 
 <script lang="ts" setup>
 import type { VxeTablePropTypes } from 'vxe-table';
-// import type { VxePagerEvents } from 'vxe-pc-ui';
 import { defineExpose, defineProps } from 'vue';
 
 const props = defineProps({

@@ -164,19 +164,18 @@ function setSearchForm(formValue: object) {
 }
 
 function rowAction(type: string) {
-  console.log('🚀 ~ file: index.vue:167 ~ rowAction ~ type:', type === 'stop');
   modal.value = type;
-  if (tableRef.value && tableRef.value.getSelectEvent()) {
-    checkedRow.value = tableRef.value
-      .getSelectEvent()
-      .map(item => item.batchID);
+  const newCheckRow = tableRef.value.getSelectEvent();
+  if (tableRef.value && newCheckRow) {
+    checkedRow.value = newCheckRow.map(item => item.batchID);
   }
   nextTick(() => {
     if (checkedRow.value.length) {
       modal.value
-        = `是否${type}` === 'stop'
-          ? '挂起'
-          : `重新生产${checkedRow.value.length}条数据?`;
+        = `是否${
+          type === 'stop' ? '挂起' : '重新生产'
+        }${checkedRow.value.length
+        }条数据?`;
       isReset.value = type === 'stop' ? 0 : 1;
       open.value = true;
     }

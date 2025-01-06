@@ -10,17 +10,9 @@
             />
           </a-form-item>
         </a-col>
-        <a-col :span="6">
-          <a-form-item label="证本名" name="docName">
-            <a-input
-              v-model:value="formState.docName"
-              placeholder="请输入证本名"
-            />
-          </a-form-item>
-        </a-col>
         <a-col :span="5">
-          <a-form-item label="证本状态" name="status">
-            <a-select v-model:value="formState.status">
+          <a-form-item label="证本状态" name="docStatus">
+            <a-select v-model:value="formState.docStatus">
               <a-select-option
                 v-for="option in BatchStatusOptions"
                 :key="option.value"
@@ -52,29 +44,34 @@ import type { UnwrapRef } from 'vue';
 import { SearchOutlined } from '@ant-design/icons-vue';
 
 import { BatchStatusOptions } from '@/pages/bigScreen/batch/option.ts';
-// 确保路径确
+
 const props = defineProps({
-  addTeam: Function, // 表头
+  setSearchForm: Function,
 });
 const formRef = ref();
 interface FormState {
   docName: string;
   docID: string;
-  status: number;
+  docStatus: number;
   // timeRange: RangeValue;
 }
 const formState: UnwrapRef<FormState> = reactive({
   docName: '',
   docID: '',
-  status: null,
+  docStatus: null,
 });
 
 function onSubmit() {
   formRef.value
     .validate()
     .then(() => {
-      // console.log('values', formState, toRaw(formState));
-      props.addTeam(toRaw(formState));
+      const filteredForm = Object.fromEntries(
+        Object.entries(toRaw(formState)).filter(
+          ([_key, value]) =>
+            value !== null && value !== undefined && value !== '',
+        ),
+      );
+      props.setSearchForm(filteredForm);
     })
     .catch((error) => {
       console.log('error', error);

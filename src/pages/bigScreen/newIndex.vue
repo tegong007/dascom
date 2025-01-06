@@ -19,11 +19,6 @@
         >点击查看详情
         </span>
       </div>
-      <!-- <img
-          src="@/assets/image/bigScreen/machine.png"
-          class="h-21.8em w-87.5em border-8 border-sky-500"
-          @click="goto('detail')"
-        /> -->
     </div>
 
     <a-row
@@ -59,11 +54,6 @@
     >
       <TheButton title="暂停进本" @click="setOpen(true)" />
       <TheButton title="全线急停" class="mt2em" />
-      <!-- <TheButton
-        title="新增批次"
-        class="mt2em"
-        @click="setAddBatchOpen(true)"
-      /> -->
     </div>
     <!-- 下边按钮 -->
     <div
@@ -82,35 +72,12 @@
           title="设备维护"
           @click="$goto('MainTain', { currentModel: 'haocai' })"
         />
-        <!-- <div
-            class="startBtn h-6em w-10em transition-transform duration-300 hover:scale-115"
-            @click="setDocOpen(true)"
-          />
-         -->
       </div>
     </div>
-    <contextHolder />
   </div>
-
-  <!-- <TheModal
-     :open="open"
-    :handle-ok="reset"
-    :warn-icon="true"
-    :handle-cancel="handleCancel"
-    :title="modal"
-  />
-  <docCountModal
-    :open="docOpen"
-    :handle-ok="startInterval"
-    :handle-cancel="handleCancel"
-    :title="docCount"
-  /> -->
 </template>
 
 <script setup lang="ts">
-// import type { NotificationPlacement } from 'ant-design-vue';
-// import { notification } from 'ant-design-vue';
-// import { useAppStore } from '../../store/index';
 import FinishedProductBg from './module/finishedProduct.vue';
 import AddMore from './module/addMore.vue';
 import Print from './module/printPage.vue';
@@ -121,35 +88,6 @@ import useCustomTimer from '@/utils/useCustomTimer';
 import { getHomeList } from '@/apis/proApi';
 
 const { start, stop } = useCustomTimer();
-// import TheModal from '@/components/modal/TheModal.vue';
-// import docCountModal from '@/components/modal/docCountModal.vue';
-// 加載中
-// const appStore = useAppStore();
-// const [api, contextHolder] = notification.useNotification();
-// function openNotify(
-//   placement: NotificationPlacement,
-//   msg: any,
-//   success?: string,
-// ) {
-//   return openNotification(placement, msg, success);
-// }
-// function openNotification(
-//   placement: NotificationPlacement,
-//   msg: any,
-//   success?: string,
-// ) {
-//   success
-//     ? api.success({
-//         message: '成功',
-//         description: ` ${msg}`,
-//         placement,
-//       })
-//     : api.error({
-//         message: '错误信息',
-//         description: ` ${msg}`,
-//         placement,
-//       });
-// }
 const modal = ref('');
 const open = ref<boolean>(false);
 function setOpen(value: boolean) {

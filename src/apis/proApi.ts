@@ -11,6 +11,7 @@ export function getPositionCard(data: any) {
   const api = `${v1}/tss/position-status`;
   return request.post(api, data);
 }
+
 // 批次--- 获取批次列表
 export function getBatchPage(data: any) {
   const api = `${v1}/tss/get-batch`;
@@ -24,5 +25,21 @@ export function getBatchOperate(data: any) {
 // 批次---团组信息查询
 export function getGroupPage(data: any) {
   const api = `${v1}/tss/get-group`;
+  return request.post(api, data);
+}
+
+// 证本---证本详细信息查询
+export function getDocDetailPage(data: any) {
+  const api = `${v1}/tss/doc-detail`;
+  return request.post(api, data);
+}
+// 证本---证本统计信息查询
+export function getDocStatistics(data: any) {
+  const api = `${v1}/tss/doc-statistics`;
+  return request.post(api, data);
+}
+// 证本---证本批量操作
+export function getDocOperate(data: any) {
+  const api = `${v1}/tss/doc-operate`;
   return request.post(api, data);
 }

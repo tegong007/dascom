@@ -1,12 +1,16 @@
 <template>
   <div class="relative box-border wh-full flex flex-col p-x-20 p-t-20">
-    <DocForm />
+    <DocForm :set-search-form="setSearchForm" />
     <a-space :size="20" class="absolute right-20 top-[20px]">
       <a-button type="primary" class="btn flex items-center">
         <img src="@/assets/image/bigScreen/btn/huifu.svg" class="mr7 w12px">
         刷新
       </a-button>
-      <a-button type="primary" class="btn flex items-center">
+      <a-button
+        type="primary"
+        class="btn flex items-center"
+        @click="rowAction('reset')"
+      >
         <RollbackOutlined />
         重新生产
       </a-button>
@@ -25,12 +29,16 @@
         :seq="true"
         :colums="colums"
         :checkbox="true"
-        :data="mockData"
-        page-name="BatchList"
+        :data="tableData"
+        page-name="docList"
       />
     </main>
     <div class="z-99 flex items-center justify-between">
-      <span>生产总数：1000，良本数：990，废本数：8，待生产数：2</span>
+      <span>生产总数：{{ statisticsData.docNum }}，良本数：{{
+        statisticsData.productNum
+      }}，废本数：{{ statisticsData.obsoleteNum }}，待生产数：{{
+        statisticsData.waitingNum
+      }}，挂起数：{{ statisticsData.hangUpNum }}</span>
       <vxe-pager
         v-model:current-page="pageVO.currentPage"
         v-model:page-size="pageVO.pageSize"
@@ -41,125 +49,268 @@
 
     <TheModal
       :open="open"
-      :handle-ok="() => setOpen(false)"
+      :handle-ok="() => operate()"
       :warn-icon="true"
       :handle-cancel="() => setOpen(false)"
       :title="modal"
     />
+    <Notification ref="notifyRef" />
   </div>
 </template>
 
 <script setup lang="ts">
+import { RollbackOutlined } from '@ant-design/icons-vue';
 import DocForm from './doc-form.vue';
-import { BatchStatusOptions } from '@/pages/bigScreen/batch/option.ts';
+import { findLabelByValue } from '@/pages/bigScreen/batch/option.ts';
 import MyTable from '@/components/base/vxeTable.vue';
 import TheModal from '@/components/modal/TheModal.vue';
+import Notification from '@/components/base/notification.vue';
+import { getWorkstationName } from '@/utils/workstationDefinitions';
+import {
+  getDocDetailPage,
+  getDocOperate,
+  getDocStatistics,
+} from '@/apis/proApi';
+
+const props = defineProps({
+  checkRow: Array,
+});
 
 const pageVO = reactive({
   total: 20,
   currentPage: 1,
   pageSize: 10,
 });
+const searchForm = ref({});
 const checkedRow = ref([]);
+const notifyRef = ref(null);
+const groupID = ref([]);
+const tableData = ref([]);
+const statisticsData = ref({
+  docNum: 0,
+  hangUpNum: 0,
+  obsoleteNum: 0,
+  productNum: 0,
+  waitingNum: 0,
+});
 const tableRef = ref(null);
+const isReset = ref(0);
 const open = ref<boolean>(false);
 const modal = ref('');
-function formatterStatus({ cellValue }: any) {
-  const item = BatchStatusOptions.find(item => item.value === cellValue);
-  return item ? item.label : cellValue;
+const imgShow = {
+  name: 'VxeImage',
+  props: {
+    width: 80,
+    height: 80,
+    maskClosable: true,
+  },
+};
+function formatterValue({ cellValue, column }: any) {
+  switch (column.field) {
+    case 'position':
+      return getWorkstationName(cellValue);
+    case 'type':
+      return findLabelByValue('docTypesOptions', cellValue);
+    case 'docStatus':
+      return findLabelByValue('docStatusOptions', cellValue);
+    case 'cnObsvType':
+      return findLabelByValue('cnObsvTypeOptions', cellValue);
+    default:
+      break;
+  }
 }
+
 const colums = ref([
   {
     title: '批次号',
-    field: 'batchId',
+    field: 'batchID',
+    width: 120,
+  },
+  {
+    title: '证本号',
+    field: 'docID',
+    width: 120,
+  },
+  {
+    title: '当前工位',
+    field: 'position',
+    formatter: formatterValue,
     width: 150,
-  },
-  {
-    title: '证本数',
-    field: 'docNum',
-  },
-  {
-    title: '良本数',
-    field: 'productNum',
-  },
-  {
-    title: '废本数',
-    field: 'obsoleteNum',
-  },
-  {
-    title: '待生产数',
-    field: 'hangUpNum',
-  },
-  {
-    title: '挂起数',
-    field: 'waitingNum',
   },
   {
     title: '状态',
-    field: 'status',
-    formatter: formatterStatus,
-    width: 150,
-    // isTip: true,
+    field: 'docStatus',
+    formatter: formatterValue,
+    width: 100,
   },
   {
-    title: '接收时间',
-    field: 'receiveTime',
+    title: '证本类型',
+    field: 'type',
+    formatter: formatterValue,
+    width: 120,
+  },
+  {
+    title: '姓(中)',
+    field: 'cnSurname',
+    width: 70,
+  },
+  {
+    title: '名(中)',
+    field: 'cnGivenName',
+    width: 70,
+  },
+  {
+    title: '人像',
+    field: 'photo',
+    width: 100,
+    imgUrlCellRender: imgShow,
+  },
+  {
+    title: '加注类型',
+    field: 'cnObsvType',
+    formatter: formatterValue,
+    width: 150,
+  },
+  {
+    title: '机读码1',
+    field: 'mrz1',
     width: 200,
   },
   {
-    title: '开始生产时间',
+    title: '机读码2',
+    field: 'mrz2',
+    width: 200,
+  },
+  {
+    title: '空白本照片',
+    field: 'blankDocPic',
+    width: 120,
+    imgUrlCellRender: imgShow,
+  },
+  {
+    title: '激光前定位照片',
+    field: 'laserPicLocation',
+    width: 140,
+    imgUrlCellRender: imgShow,
+  },
+  {
+    title: '激光后质检照片',
+    field: 'laserPicCheck',
+    width: 140,
+    imgUrlCellRender: imgShow,
+  },
+  {
+    title: '喷墨前定位照片(主)',
+    field: 'mainUVPicLocation',
+    width: 160,
+    imgUrlCellRender: imgShow,
+  },
+  {
+    title: '喷墨后质检照片(主)',
+    field: 'mainUVPicCheck',
+    width: 160,
+    imgUrlCellRender: imgShow,
+  },
+  {
+    title: '喷墨前定位照片(加)',
+    field: 'additionUVPicLocation',
+    width: 160,
+    imgUrlCellRender: imgShow,
+  },
+  {
+    title: '喷墨前定位照片(加)',
+    field: 'additionUVPicCheck',
+    width: 160,
+    imgUrlCellRender: imgShow,
+  },
+  {
+    title: '废本原因',
+    field: 'obsoleteReason',
+    width: 120,
+  },
+  {
+    title: '开始时间',
     field: 'startTime',
     width: 200,
   },
   {
-    title: '完成时间',
-    field: 'finishTime',
+    title: '结束时间',
+    field: 'endTime',
     width: 200,
   },
 ]);
-// const info = ref({
-//   totalNum: 100, //生产总数
-//   waitingNum: 50, //待生产数
-//   productNum: 40, //待生产数
-//   hangUpNum: 0, //待生产数
-//   obsoleteNum: 1, //废本数
-// });
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+function setSearchForm(formValue: object) {
+  searchForm.value = formValue;
+  getDataPage();
 }
-function getMockData() {
-  const data = [];
-  for (let i = 0; i < 20; i++) {
-    // 假设我们需要10条数据
-    data.push({
-      batchId: `BATCH-${getRandomInt(1000, 9999)}`,
-      docNum: getRandomInt(1, 1000),
-      productNum: getRandomInt(1, 1000),
-      obsoleteNum: getRandomInt(0, 100),
-      hangUpNum: getRandomInt(0, 100),
-      waitingNum: getRandomInt(0, 100),
-      status: getRandomInt(0, 5), // 状态字段生成0到5的随机数
-      receiveTime: `2024-01-${getRandomInt(1, 28)} ${getRandomInt(0, 23)}:${getRandomInt(0, 59)}`,
+async function operate() {
+  try {
+    await getDocOperate({
+      batchID: checkedRow.value,
+      operate: isReset.value,
     });
+    notifyRef.value?.openNotify(
+      'bottomRight',
+      `${isReset.value ? '重新生产' : '挂起'}操作成功`,
+      true,
+    );
   }
-  return data;
+  catch (error) {
+    error;
+    notifyRef.value?.openNotify(
+      'bottomRight',
+      `${isReset.value ? '重新生产' : '挂起'}操作失败`,
+    );
+  }
+  finally {
+    setOpen(false);
+  }
 }
-const mockData = ref(getMockData());
+
+async function getDataPage() {
+  try {
+    const params = {
+      ...searchForm.value,
+      groupID: groupID.value,
+      page: pageVO.currentPage,
+      rowPerPage: pageVO.pageSize,
+    };
+    const data = await getDocDetailPage(params);
+    const statistics = await getDocStatistics({ groupID: groupID.value });
+    if (data.respData) {
+      tableData.value = data.respData.docInfo;
+      pageVO.currentPage = data.respData.page;
+      pageVO.total = data.respData.totalRows;
+      pageVO.pageSize = data.respData.rowPerPage;
+    }
+    if (statistics.respData) {
+      statisticsData.value.docNum = statistics.respData.docNum;
+      statisticsData.value.hangUpNum = statistics.respData.hangUpNum;
+      statisticsData.value.obsoleteNum = statistics.respData.obsoleteNum;
+      statisticsData.value.productNum = statistics.respData.productNum;
+      statisticsData.value.waitingNum = statistics.respData.waitingNum;
+    }
+    // startGetDataPage();
+  }
+  catch (error) {
+    console.log('🚀 ~ file: index.vue:206 ~ getDataPage ~ error:', error);
+    // stop();
+  }
+}
 function rowAction(type: string) {
-  if (tableRef.value && tableRef.value.checkedRow) {
-    if (checkedRow.value) {
-      checkedRow.value.push(tableRef.value.checkedRow);
-    }
-    else {
-      checkedRow.value = tableRef.value.checkedRow;
-    }
+  modal.value = type;
+  const newCheckRow = tableRef.value.getSelectEvent();
+  if (tableRef.value && newCheckRow) {
+    checkedRow.value = newCheckRow.map(item => item.docID);
   }
   nextTick(() => {
     if (checkedRow.value.length) {
       modal.value
-        = `是否${type}` === 'stop'
-          ? '挂起'
-          : `重新生产${checkedRow.value.length}条数据?`;
+        = `是否${
+          type === 'stop' ? '挂起' : '重新生产'
+        }${checkedRow.value.length
+        }条数据?`;
+      isReset.value = type === 'stop' ? 0 : 1;
       open.value = true;
     }
   });
@@ -177,22 +328,25 @@ function pageChange({ pageSize, currentPage }) {
   }
   pageVO.currentPage = currentPage;
   pageVO.pageSize = pageSize;
-  // handlePageData();
+  getDataPage();
 }
 
-// 前端分页
-// const handlePageData = () => {
-//   setTimeout(() => {
-//     const { pageSize, currentPage } = pageVO;
-//     mockData.value = mockData.value.slice(
-//       (currentPage - 1) * pageSize,
-//       currentPage * pageSize,
-//     );
-//   }, 100);
-// };
 function setOpen(value: boolean) {
   open.value = value;
 }
+watch(
+  () => props.checkRow,
+  () => {
+    if (props.checkRow?.length) {
+      groupID.value = props.checkRow.map(item => item.groupID);
+      getDataPage();
+    }
+  },
+  { deep: true, immediate: true },
+);
+onDeactivated(() => {
+  tableData.value = [];
+});
 </script>
 
 <style lang="scss" scoped>

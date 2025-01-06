@@ -26,7 +26,7 @@
           />
         </div>
         <div class="doc-box box-border h-full flex-1 overflow-hidden">
-          <Doc />
+          <Doc :check-row="checkRow" />
         </div>
         <div
           class="info-box box-border h-full w-250px flex flex-col items-center p-y-20 text-[24px] color-[#CFDEF1]"
@@ -61,7 +61,7 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router';
 import { reactive } from 'vue';
-import { findLabelByValue, urgencyOptions } from '../option';
+import { findLabelByValue } from '../option';
 import TeamForm from './team/team-form.vue';
 import TeamCard from './team/team-card.vue';
 import Doc from './team/doc/index.vue';
@@ -99,7 +99,7 @@ function setCheckRow(arr: Array<any>) {
   info.value[0].value = checkRow.value[0]?.dispatchUnit;
   info.value[1].value = checkRow.value[0]?.dataSource;
   info.value[2].value = findLabelByValue(
-    urgencyOptions,
+    'urgencyOptions',
     checkRow.value[0]?.urgentType,
   );
   let allnum = 0;
@@ -145,6 +145,9 @@ function setSearchForm(formValue: object) {
   searchForm.value = formValue;
   getGroupData();
 }
+onDeactivated(() => {
+  checkRow.value = [];
+});
 </script>
 
 <style scoped lang="less">

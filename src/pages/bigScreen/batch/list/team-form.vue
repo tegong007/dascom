@@ -57,9 +57,9 @@ import type { UnwrapRef } from 'vue';
 import { SearchOutlined } from '@ant-design/icons-vue';
 
 import { BatchStatusOptions } from '@/pages/bigScreen/batch/option.ts';
-// 确保路径确
+
 const props = defineProps({
-  setSearchForm: Function, // 表头
+  setSearchForm: Function,
 });
 const formRef = ref();
 interface FormState {
