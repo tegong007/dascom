@@ -4,9 +4,15 @@
     <div
       class="absolute top-70 box-border h-85vh w90% flex flex-col items-center gap-20 p-2em p-b-0"
     >
-      <span>批次号：20241113，
-        生产总数：1000，良本数：990，废本数：8，待生产数：2，状态：生产中，接收：2024-12-12
-        15:10:10，生产：2024-12-12 15:10:10，完成：2024-12-12 15:10:10</span>
+      <span>批次号：{{ statisticsData.batchId }}， 生产总数：{{
+        statisticsData.docNum
+      }}，良本数：{{ statisticsData.productNum }}，废本数：{{
+        statisticsData.obsoleteNum
+      }}，待生产数：{{ statisticsData.waitingNum }}，状态：{{
+        statisticsData.status
+      }}，接收：{{ statisticsData.receiveTime }}，生产：{{
+        statisticsData.startTime
+      }}，完成：{{ statisticsData.finishTime }}</span>
       <TeamForm :set-search-form="setSearchForm" />
       <main class="box-border h78% w-full flex">
         <div class="card-box box-border h-full w-250px p-l-10 p-t-10">
@@ -75,6 +81,19 @@ const batchId = ref<string>('');
 const checkRow = ref([]); // 选中的数据
 const items = ref([]);
 const searchForm = ref({});
+const statisticsData = ref({
+  batchId: '468468465465465',
+  status: '',
+  docNum: 15646546512654156,
+  batchNum: 0,
+  hangUpNum: 0,
+  obsoleteNum: 0,
+  productNum: 0,
+  waitingNum: 0,
+  receiveTime: '',
+  startTime: '',
+  finishTime: '',
+});
 const info = ref([
   {
     label: '派遣单位',

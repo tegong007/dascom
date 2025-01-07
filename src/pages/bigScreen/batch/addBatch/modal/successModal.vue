@@ -27,9 +27,9 @@
         <div
           class="scoll-bar mt10px h-full w-80% overflow-y-auto rounded-[8px] bg-white p-10 text-[24px] color-[#627384] font-bold"
         >
-          <div>批次号:</div>
-          <div>团组:</div>
-          <div>总人数:</div>
+          <div>批次号：{{ props.data?.batchID }}</div>
+          <div>团组个数：{{ props.data?.groupNum }}</div>
+          <div>总人数：{{ props.data?.totalPeopleNum }}</div>
         </div>
       </div>
     </div>
@@ -41,7 +41,12 @@
         />
         <div
           class="okBtn h-110px w-220px transition-transform duration-300 hover:scale-115"
-          @click="handleOk"
+          @click="
+            () => {
+              props.handleOk();
+              $goto('BatchDetail', { BatchId: props.data?.batchID });
+            }
+          "
         />
       </a-flex>
     </template>
@@ -59,6 +64,7 @@ const props = defineProps({
   warnIcon: Boolean,
   successIcon: Boolean,
   handleCancel: Function,
+  data: Object,
 });
 </script>
 

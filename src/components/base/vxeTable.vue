@@ -164,6 +164,7 @@ async function pushEvent(record: object) {
 async function removeRow(row: any) {
   const $table = tableRef.value;
   if ($table) {
+    console.log('🚀 ~ file: vxeTable.vue:171 ~ removeRow ~ row:');
     $table.remove(row);
   }
 }
@@ -249,6 +250,7 @@ defineExpose({
   updateRow,
   getSelectEvent,
   updateFirstRow,
+  removeRow,
 });
 </script>
 

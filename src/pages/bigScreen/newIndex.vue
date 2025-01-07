@@ -4,7 +4,13 @@
     <div
       class="absolute top-3.1em h1.6em flex items-center justify-center rounded-2xl bg-[#919195b0] p-x-15"
     >
-      <span class="text-[1.1em]">当前批次号：20241010，证本数：1000，待生产数：100，成功数：888，失败数：12，挂起数：0</span>
+      <span class="text-[1.1em]">当前批次号：{{ statisticsData.batchID }}，证本数：{{
+        statisticsData.docNum
+      }}，待生产数：{{ statisticsData.waitingNum }}，良本数：{{
+        statisticsData.productNum
+      }}，废本数：{{ statisticsData.obsoleteNum }}，挂起数：{{
+        statisticsData.hangUpNum
+      }}</span>
     </div>
 
     <div
@@ -52,8 +58,11 @@
     <div
       class="groupBtn absolute right-35 top-150 h-100vh flex flex-col items-center justify-center"
     >
-      <TheButton title="暂停进本" @click="setOpen(true)" />
-      <TheButton title="全线急停" class="mt2em" />
+      <TheButton
+        :title="machineStatus !== 1 ? '开始进本' : '继续进本'"
+        @click="setModal(machineStatus !== 1 ? 0 : 1)"
+      />
+      <TheButton title="全线急停" class="mt2em" @click="setModal(2)" />
     </div>
     <!-- 下边按钮 -->
     <div
@@ -74,6 +83,14 @@
         />
       </div>
     </div>
+    <TheModal
+      :open="open"
+      :handle-ok="() => controlMachine()"
+      :warn-icon="true"
+      :handle-cancel="() => setOpen(false)"
+      :title="modal"
+    />
+    <Notification ref="notifyRef" />
   </div>
 </template>
 
@@ -85,19 +102,34 @@ import Start from './module/startPage.vue';
 import TheButton from '@/components/base/TheButton.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 import useCustomTimer from '@/utils/useCustomTimer';
-import { getHomeList } from '@/apis/proApi';
+import Notification from '@/components/base/notification.vue';
+import {
+  getBatchStatistics,
+  getHomeList,
+  setControlMachine,
+} from '@/apis/proApi';
 
 const { start, stop } = useCustomTimer();
 const modal = ref('');
 const open = ref<boolean>(false);
 function setOpen(value: boolean) {
   open.value = value;
-  modal.value = '确认停止？';
 }
+const notifyRef = ref(null);
 const blankCheck = ref({});
 const mainPrint = ref({});
+const control = ref(null);
 const additionPrint = ref({});
+const machineStatus = ref(null);
 const finishedProduct = ref({});
+const statisticsData = ref({
+  batchID: '',
+  docNum: 0,
+  hangUpNum: 0,
+  obsoleteNum: 0,
+  productNum: 0,
+  waitingNum: 0,
+});
 onActivated(() => {
   getDataPage();
 });
@@ -107,11 +139,16 @@ onDeactivated(() => {
 async function getDataPage() {
   try {
     const data = await getHomeList();
+    const statistics = await getBatchStatistics({ batchID: 'current' });
     if (data.respData) {
       blankCheck.value = data.respData.blankCheck;
       mainPrint.value = data.respData.mainPrint;
       additionPrint.value = data.respData.additionPrint;
       finishedProduct.value = data.respData.finishedProduct;
+      machineStatus.value = data.respData.status;
+    }
+    if (statistics.respData) {
+      statisticsData.value = { ...statistics.respData };
     }
     startGetDataPage();
   }
@@ -126,6 +163,51 @@ async function startGetDataPage() {
     await getDataPage();
   }, 2);
 }
+function setModal(value: number) {
+  control.value = value;
+  switch (value) {
+    case 0:
+      modal.value = '确认开始进本？';
+      break;
+    case 1:
+      modal.value = '确认继续进本？';
+      break;
+    case 2:
+      modal.value = '确认全线急停？';
+      break;
+    default:
+      break;
+  }
+  setOpen(true);
+}
+async function controlMachine() {
+  let tips = '';
+  switch (control.value) {
+    case 0:
+      tips = '开始进本';
+      break;
+    case 1:
+      tips = '继续进本';
+      break;
+    case 2:
+      tips = '全线急停';
+      break;
+    default:
+      break;
+  }
+  try {
+    await setControlMachine({ control: control.value });
+    notifyRef.value?.openNotify('bottomRight', `${tips}操作成功`, true);
+  }
+  catch (error) {
+    error;
+    notifyRef.value?.openNotify('bottomRight', `${tips}操作失败`);
+  }
+  finally {
+    setOpen(false);
+  }
+}
+
 // 初始化
 // async function init() {
 //   try {

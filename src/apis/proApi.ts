@@ -6,6 +6,11 @@ export function getHomeList() {
   const api = `${v1}/tss/produce-status`;
   return request.post(api);
 }
+// 首页---生产设备控制
+export function setControlMachine(data: any) {
+  const api = `${v1}/tss/machine-control`;
+  return request.post(api, data);
+}
 // 工位状态---工位状态查询
 export function getPositionCard(data: any) {
   const api = `${v1}/tss/position-status`;
@@ -25,6 +30,11 @@ export function getBatchOperate(data: any) {
 // 批次---团组信息查询
 export function getGroupPage(data: any) {
   const api = `${v1}/tss/get-group`;
+  return request.post(api, data);
+}
+// 批次---批次统计信息查询
+export function getBatchStatistics(data: any) {
+  const api = `${v1}/tss/batch-statistics`;
   return request.post(api, data);
 }
 

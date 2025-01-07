@@ -289,11 +289,9 @@ async function getDataPage() {
       pageVO.pageSize = data.respData.rowPerPage;
     }
     if (statistics.respData) {
-      statisticsData.value.docNum = statistics.respData.docNum;
-      statisticsData.value.hangUpNum = statistics.respData.hangUpNum;
-      statisticsData.value.obsoleteNum = statistics.respData.obsoleteNum;
-      statisticsData.value.productNum = statistics.respData.productNum;
-      statisticsData.value.waitingNum = statistics.respData.waitingNum;
+      statisticsData.value = {
+        ...statistics.respData,
+      };
     }
     // startGetDataPage();
   }

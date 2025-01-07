@@ -27,6 +27,7 @@
     <SuceessModal
       :open="successOpen"
       :success-icon="true"
+      :data="showSuccessData"
       :handle-ok="() => setSuccessOpen(false)"
       :handle-cancel="() => setSuccessOpen(false)"
       :title="successTitle"
@@ -41,7 +42,7 @@
       <!-- <span class="h-50% w-2px bg-[#8BB2FF]" /> -->
       <div class="flex gap-20">
         <TheButton title="返回首页" @click="$goto('BigScreen')" />
-        <TheButton title="添加批次" @click="addBatch" />
+        <TheButton title="添加批次" @click="AddBatch()" />
       </div>
     </div>
   </div>
@@ -60,6 +61,7 @@ import SuceessModal from './modal/successModal.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 import TheButton from '@/components/base/TheButton.vue';
 import MyTable from '@/components/base/vxeTable.vue';
+import { addBatch } from '@/apis/testApi';
 
 const modal = ref('编辑团组');
 const successTitle = ref('批次添加成功，是否查看详情?');
@@ -67,6 +69,7 @@ const open = ref<boolean>(false);
 const successOpen = ref<boolean>(false);
 const tableRef = ref(null);
 const updateRef = ref(null);
+const showSuccessData = ref({});
 const isAddNoTeam = ref<boolean>(false);
 function setOpen(value: boolean) {
   open.value = value;
@@ -127,7 +130,7 @@ function handleUpdate(record: object) {
     tableRef.value.updateRow(record);
   }
 }
-async function addBatch() {
+async function AddBatch() {
   if (tableRef.value) {
     const insertData = tableRef.value.exportEvent();
     if (!insertData.length) {
@@ -136,10 +139,17 @@ async function addBatch() {
     if (!isAddNoTeam.value) {
       insertData.unshift({ num: 0 });
     }
-    console.log(
-      '🚀 ~ file: index.vue:132 ~ addBatch ~ insertData:',
-      insertData,
-    );
+    try {
+      const { respData } = await addBatch({ groups: insertData });
+      if (respData) {
+        showSuccessData.value = { ...respData };
+        setSuccessOpen(true);
+        tableRef.value.removeRow();
+      }
+    }
+    catch (error) {
+      error;
+    }
   }
 }
 </script>
