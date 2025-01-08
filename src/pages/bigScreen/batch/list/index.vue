@@ -93,7 +93,7 @@ import MyTable from '@/components/base/vxeTable.vue';
 import TheModal from '@/components/modal/TheModal.vue';
 import Notification from '@/components/base/notification.vue';
 // import useCustomTimer from '@/utils/useCustomTimer';
-import { getBatchOperate, getBatchPage } from '@/apis/proApi';
+import { batchModule } from '@/apis/proApi';
 
 // const { start, stop } = useCustomTimer();
 const pageVO = reactive({
@@ -205,7 +205,7 @@ function setOpen(value: boolean) {
 
 async function operate() {
   try {
-    await getBatchOperate({
+    await batchModule.getBatchOperate({
       batchID: checkedRow.value,
       operate: isReset.value,
     });
@@ -241,7 +241,7 @@ async function getDataPage() {
       page: pageVO.currentPage,
       rowPerPage: pageVO.pageSize,
     };
-    const data = await getBatchPage(params);
+    const data = await batchModule.getBatchPage(params);
     if (data.respData) {
       tableData.value = data.respData.batchInfo;
       pageVO.currentPage = data.respData.page;

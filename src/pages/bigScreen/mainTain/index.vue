@@ -10,6 +10,7 @@
             v-model:value="currentModel"
             class="bg-color h-full w-full"
             button-style="outline"
+            @change="labelChange"
           >
             <a-radio-button
               v-for="(item, index) in options"
@@ -34,7 +35,7 @@
             v-if="currentModel === 'haocai'"
             class="wh-full flex flex-col flex-1"
           >
-            <Consumables />
+            <Consumables :current-model="currentModel" />
           </section>
 
           <!-- <section v-if="currentModel === '1'">
@@ -86,18 +87,21 @@ onMounted(() => {
 const options = [
   { label: `耗材`, value: 'haocai' },
   { label: `整机`, value: '0' },
-  { label: `空白本校验`, value: '0' },
+  { label: `空白本校验`, value: '5' },
   { label: `主副页打印`, value: '1' },
   { label: `加注打印`, value: '2' },
   { label: `成本证本收集`, value: '3' },
   { label: `模块测试`, value: '4' },
 ];
 
-// // 使用 watch 监视 divRef 值的变化
+// 使用 watch 监视 divRef 值的变化
 // watch(query.currentModel, (newValue) => {
-//   console.log("🚀 ~ file: index.vue:85 ~ watch ~ newValue:", newValue);
+//   console.log('🚀 ~ file: index.vue:85 ~ watch ~ newValue:', newValue);
 //   currentModel.value = newValue;
 // });
+function labelChange(value) {
+  currentModel.value = value.target.value;
+}
 </script>
 
 <style scoped lang="less">

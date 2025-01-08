@@ -1,55 +1,45 @@
 import request from '@/plugins/request';
 // 后端服务
 const v1 = window.serverAddress ?? 'http://localhost:6101/';
-// 首页---任务管理服务HTTP接口
-export function getHomeList() {
-  const api = `${v1}/tss/produce-status`;
-  return request.post(api);
-}
-// 首页---生产设备控制
-export function setControlMachine(data: any) {
-  const api = `${v1}/tss/machine-control`;
-  return request.post(api, data);
-}
-// 工位状态---工位状态查询
-export function getPositionCard(data: any) {
-  const api = `${v1}/tss/position-status`;
-  return request.post(api, data);
-}
+const homeModule = {
+  getHomeList: () => request.post(`${v1}/tss/produce-status`),
+  setControlMachine: (data: any) =>
+    request.post(`${v1}/tss/machine-control`, data),
+};
+// 工位状态模块
+const positionModule = {
+  getPositionCard: (data: any) =>
+    request.post(`${v1}/tss/position-status`, data),
+};
 
-// 批次--- 获取批次列表
-export function getBatchPage(data: any) {
-  const api = `${v1}/tss/get-batch`;
-  return request.post(api, data);
-}
-// 批次--- 批次操作
-export function getBatchOperate(data: any) {
-  const api = `${v1}/tss/batch-operate`;
-  return request.post(api, data);
-}
-// 批次---团组信息查询
-export function getGroupPage(data: any) {
-  const api = `${v1}/tss/get-group`;
-  return request.post(api, data);
-}
-// 批次---批次统计信息查询
-export function getBatchStatistics(data: any) {
-  const api = `${v1}/tss/batch-statistics`;
-  return request.post(api, data);
-}
+// 批次模块
+const batchModule = {
+  getBatchPage: (data: any) => request.post(`${v1}/tss/get-batch`, data),
+  getBatchOperate: (data: any) => request.post(`${v1}/tss/batch-operate`, data),
+  getGroupPage: (data: any) => request.post(`${v1}/tss/get-group`, data),
+  getBatchStatistics: (data: any) =>
+    request.post(`${v1}/tss/batch-statistics`, data),
+};
 
-// 证本---证本详细信息查询
-export function getDocDetailPage(data: any) {
-  const api = `${v1}/tss/doc-detail`;
-  return request.post(api, data);
-}
-// 证本---证本统计信息查询
-export function getDocStatistics(data: any) {
-  const api = `${v1}/tss/doc-statistics`;
-  return request.post(api, data);
-}
-// 证本---证本批量操作
-export function getDocOperate(data: any) {
-  const api = `${v1}/tss/doc-operate`;
-  return request.post(api, data);
-}
+// 证本模块
+const documentModule = {
+  getDocDetailPage: (data: any) => request.post(`${v1}/tss/doc-detail`, data),
+  getDocStatistics: (data: any) =>
+    request.post(`${v1}/tss/doc-statistics`, data),
+  getDocOperate: (data: any) => request.post(`${v1}/tss/doc-operate`, data),
+};
+
+// 维护页面
+const mainTainModule = {
+  consumables: {
+    getLnkRemainder: () => request.post(`${v1}/tss/get-ink-remainder`),
+  },
+};
+
+export {
+  homeModule,
+  positionModule,
+  batchModule,
+  documentModule,
+  mainTainModule,
+};

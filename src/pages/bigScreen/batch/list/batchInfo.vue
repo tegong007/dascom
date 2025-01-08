@@ -17,9 +17,11 @@
 </template>
 
 <script setup lang="ts">
-// import useCustomTimer from '@/utils/useCustomTimer';
-// const { start, stop } = useCustomTimer();
-// import { getHomeList } from '@/apis/proApi';
+import useCustomTimer from '@/utils/useCustomTimer';
+import { batchModule } from '@/apis/proApi';
+
+const { start, stop } = useCustomTimer();
+
 const items = ref([
   {
     item: '批次',
@@ -47,35 +49,36 @@ const items = ref([
   },
 ]);
 
-// onActivated(() => {
-//   getDataPage();
-// });
-// onDeactivated(() => {
-//   stop();
-// });
-// async function getDataPage() {
-//   try {
-//     const data = await getHomeList();
-//     if (data.respData) {
-//       items.value[0].value = data.respData.batchNum;
-//      items.value[1].value  = data.respData.docNum;
-//      items.value[2].value = data.respData.productNum;
-//    items.value[3].value  = data.respData.obsoleteNum;
-//    items.value[4].value  = data.respData.waitingNum;
-//    items.value[5].value  = data.respData.hangUpNum;
-//     }
-//     startGetDataPage();
-//   } catch (error) {
-//     console.log('🚀 ~ file: newIndex.vue:182 ~ getDataPage ~ error:', error);
-//     stop();
-//   }
-// }
+onActivated(() => {
+  getDataPage();
+});
+onDeactivated(() => {
+  stop();
+});
+async function getDataPage() {
+  try {
+    const data = await batchModule.getBatchStatistics({ batchID: 'all' });
+    if (data.respData) {
+      items.value[0].value = data.respData.batchNum;
+      items.value[1].value = data.respData.docNum;
+      items.value[2].value = data.respData.productNum;
+      items.value[3].value = data.respData.obsoleteNum;
+      items.value[4].value = data.respData.waitingNum;
+      items.value[5].value = data.respData.hangUpNum;
+    }
+    startGetDataPage();
+  }
+  catch (error) {
+    error;
+    stop();
+  }
+}
 
-// async function startGetDataPage() {
-//   start(async () => {
-//     await getDataPage();
-//   }, 2);
-// }
+async function startGetDataPage() {
+  start(async () => {
+    await getDataPage();
+  }, 2);
+}
 </script>
 
 <style lang="scss" scoped></style>

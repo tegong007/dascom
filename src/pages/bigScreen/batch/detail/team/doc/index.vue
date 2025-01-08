@@ -70,11 +70,7 @@ import MyTable from '@/components/base/vxeTable.vue';
 import TheModal from '@/components/modal/TheModal.vue';
 import Notification from '@/components/base/notification.vue';
 import { getWorkstationName } from '@/utils/workstationDefinitions';
-import {
-  getDocDetailPage,
-  getDocOperate,
-  getDocStatistics,
-} from '@/apis/proApi';
+import { documentModule } from '@/apis/proApi';
 
 const props = defineProps({
   checkRow: Array,
@@ -249,7 +245,7 @@ function setSearchForm(formValue: object) {
 }
 async function operate() {
   try {
-    await getDocOperate({
+    await documentModule.getDocOperate({
       docID: checkedRow.value,
       operate: isReset.value,
     });
@@ -280,8 +276,10 @@ async function getDataPage() {
       page: pageVO.currentPage,
       rowPerPage: pageVO.pageSize,
     };
-    const data = await getDocDetailPage(params);
-    const statistics = await getDocStatistics({ groupID: groupID.value });
+    const data = await documentModule.getDocDetailPage(params);
+    const statistics = await documentModule.getDocStatistics({
+      groupID: groupID.value,
+    });
     if (data.respData) {
       tableData.value = data.respData.docInfo;
       pageVO.currentPage = data.respData.page;

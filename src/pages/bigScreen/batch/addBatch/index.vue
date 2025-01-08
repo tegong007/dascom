@@ -41,7 +41,8 @@
       </div> -->
       <!-- <span class="h-50% w-2px bg-[#8BB2FF]" /> -->
       <div class="flex gap-20">
-        <TheButton title="返回首页" @click="$goto('BigScreen')" />
+        <!-- <TheButton title="返回首页" @click="$goto('BigScreen')" /> -->
+        <TheButton title="返回" @click="$goto('-1')" />
         <TheButton title="添加批次" @click="AddBatch()" />
       </div>
     </div>

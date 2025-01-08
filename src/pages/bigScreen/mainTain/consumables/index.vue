@@ -6,7 +6,7 @@
       class="h-full flex p-y-20"
     >
       <div class="h-full flex-col flex-1">
-        <span class="text-[28px] color-[#CFDEF1]">{{ moduleItems.keyCN }}油墨余量</span>
+        <span class="text-[28px] color-[#CFDEF1]">{{ moduleItems.moduleName }}油墨余量</span>
         <div class="flex">
           <div
             v-for="(item, index) in moduleItems.items"
@@ -36,7 +36,7 @@
         >
           <span> 预计打印证本数</span>
           <span class="text-[26px] color-white font-[youshe]">{{
-            moduleItems.remainingNum
+            moduleItems.remainDocNum
           }}</span>
         </div>
       </div>
@@ -56,36 +56,44 @@
 </template>
 
 <script setup lang="ts">
+import { watch } from 'vue';
+import { mainTainModule } from '@/apis/proApi';
+import useCustomTimer from '@/utils/useCustomTimer';
+
+const props = defineProps({
+  currentModel: String,
+});
+const { start, stop } = useCustomTimer();
 const modulesData = ref([
   {
-    key: 'mainPrint',
-    keyCN: '主副页模块',
+    moduleID: 1,
+    moduleName: '主副页模块',
     yellow: 50, // 黄色
     magenta: 40, // 洋红
     cyan: 30, // 青色
     black: 40, // 黑色
     varnish: 100, // 光油
-    Invisible_red: 30, // 隐形红
-    Invisible_green: 50, // 隐形绿
-    Invisible_blue: 80, // 隐形蓝
+    invisibleRed: 30, // 隐形红
+    invisibleGreen: 50, // 隐形绿
+    invisibleBlue: 80, // 隐形蓝
     missingMsg: '黑色缺失', // 缺失提示
     lowMsg: '洋红低于10%', // 将近提示
-    remainingNum: 154186551, // 预计打印证本数
+    remainDocNum: 154186551, // 预计打印证本数
   },
   {
-    key: 'additionPrint',
-    keyCN: '加注页模块',
+    moduleID: 2,
+    moduleName: '加注页模块',
     yellow: 50,
     magenta: 40,
     cyan: 30,
     black: 40,
     varnish: 100,
-    Invisible_red: 30,
-    Invisible_green: 50,
-    Invisible_blue: 80,
+    invisibleRed: 30,
+    invisibleGreen: 50,
+    invisibleBlue: 80,
     missingMsg: '黑色缺失',
     lowMsg: '洋红低于10%',
-    remainingNum: 12, // 预计打印证本数
+    remainDocNum: 12, // 预计打印证本数
   },
 ]);
 
@@ -94,11 +102,11 @@ const colorMap = {
   yellow: '#FFFF0024',
   magenta: '#FF00FF50',
   cyan: '#00FFFF50',
-  black: '#96969680',
+  black: '#00000030',
   varnish: '#A8A8A840',
-  Invisible_red: '#FF000024',
-  Invisible_green: '#00FF0030',
-  Invisible_blue: '#0000FF30',
+  invisibleRed: '#FF000024',
+  invisibleGreen: '#00FF0030',
+  invisibleBlue: '#0000FF20',
 };
 
 // 将英文名称映射到中文
@@ -108,9 +116,9 @@ const colorNameMap = {
   cyan: '青色',
   black: '黑色',
   varnish: '光油',
-  Invisible_red: '隐形红',
-  Invisible_green: '隐形绿',
-  Invisible_blue: '隐形蓝',
+  invisibleRed: '隐形红',
+  invisibleGreen: '隐形绿',
+  invisibleBlue: '隐形蓝',
 };
 
 // 计算属性，用于生成所有模块的 items 数组
@@ -127,15 +135,58 @@ const itemsForAllModules = computed(() => {
     });
     // 返回一个包含模块信息和颜色项数组的对象
     return {
-      key: module.key,
-      keyCN: module.keyCN,
+      moduleID: module.moduleID,
+      moduleName: module.moduleName,
       items,
       missingMsg: module.missingMsg,
       lowMsg: module.lowMsg,
-      remainingNum: module.remainingNum,
+      remainDocNum: module.remainDocNum,
     };
   });
 });
+
+async function getDataPage() {
+  try {
+    const data = await mainTainModule.consumables.getLnkRemainder();
+
+    if (data.respData) {
+      console.log(
+        '🚀 ~ file: index.vue:155 ~ getDataPage ~ data.respData:',
+        data.respData,
+      );
+      modulesData.value = data.respData;
+    }
+
+    startGetDataPage();
+  }
+  catch (error) {
+    error;
+    stop();
+  }
+}
+
+async function startGetDataPage() {
+  start(async () => {
+    await getDataPage();
+  }, 2);
+}
+
+// watch(props.currentModel, (newValue) => {
+//   console.log('🚀 ~ file: index.vue:85 ~ watch ~ newValue:', newValue);
+// });
+watch(
+  () => props.currentModel,
+  (newValue) => {
+    // console.log('🚀 ~ file: index.vue:177 ~ newValue:', newValue);
+    if (newValue === 'haocai') {
+      getDataPage();
+    }
+    else {
+      stop();
+    }
+  },
+  { deep: true, immediate: true },
+);
 </script>
 
 <style lang="scss" scoped>

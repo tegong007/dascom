@@ -138,8 +138,6 @@ function selectChangeEvent({ checked }) {
   const $table = tableRef.value;
   if ($table) {
     const records = $table.getCheckboxRecords();
-    // console.log("🚀 ~ file: vxeTable.vue:121 ~ selectChangeEvent ~ records:", records)
-    // checkedRow.value = records;
     console.log(checked ? '勾选事件' : '取消事件', records);
   }
 }
@@ -164,7 +162,6 @@ async function pushEvent(record: object) {
 async function removeRow(row: any) {
   const $table = tableRef.value;
   if ($table) {
-    console.log('🚀 ~ file: vxeTable.vue:171 ~ removeRow ~ row:');
     $table.remove(row);
   }
 }

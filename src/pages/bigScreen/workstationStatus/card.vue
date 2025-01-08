@@ -83,7 +83,7 @@
 </template>
 
 <script setup lang="ts">
-import { getPositionCard } from '@/apis/proApi';
+import { positionModule } from '@/apis/proApi';
 import useCustomTimer from '@/utils/useCustomTimer';
 
 const { start, stop } = useCustomTimer();
@@ -96,7 +96,7 @@ onDeactivated(() => {
 });
 async function getDataPage() {
   try {
-    const data = await getPositionCard({ moduleID: 0 });
+    const data = await positionModule.getPositionCard({ moduleID: 0 });
     if (data.respData) {
       items.value = data.respData;
     }

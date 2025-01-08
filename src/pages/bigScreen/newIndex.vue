@@ -103,11 +103,7 @@ import TheButton from '@/components/base/TheButton.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 import useCustomTimer from '@/utils/useCustomTimer';
 import Notification from '@/components/base/notification.vue';
-import {
-  getBatchStatistics,
-  getHomeList,
-  setControlMachine,
-} from '@/apis/proApi';
+import { batchModule, homeModule } from '@/apis/proApi';
 
 const { start, stop } = useCustomTimer();
 const modal = ref('');
@@ -138,8 +134,10 @@ onDeactivated(() => {
 });
 async function getDataPage() {
   try {
-    const data = await getHomeList();
-    const statistics = await getBatchStatistics({ batchID: 'current' });
+    const data = await homeModule.getHomeList();
+    const statistics = await batchModule.getBatchStatistics({
+      batchID: 'current',
+    });
     if (data.respData) {
       blankCheck.value = data.respData.blankCheck;
       mainPrint.value = data.respData.mainPrint;
@@ -153,7 +151,7 @@ async function getDataPage() {
     startGetDataPage();
   }
   catch (error) {
-    console.log('🚀 ~ file: newIndex.vue:182 ~ getDataPage ~ error:', error);
+    error;
     stop();
   }
 }
@@ -196,7 +194,7 @@ async function controlMachine() {
       break;
   }
   try {
-    await setControlMachine({ control: control.value });
+    await homeModule.setControlMachine({ control: control.value });
     notifyRef.value?.openNotify('bottomRight', `${tips}操作成功`, true);
   }
   catch (error) {

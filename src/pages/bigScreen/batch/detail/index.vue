@@ -4,7 +4,7 @@
     <div
       class="absolute top-70 box-border h-85vh w90% flex flex-col items-center gap-20 p-2em p-b-0"
     >
-      <span>批次号：{{ statisticsData.batchId }}， 生产总数：{{
+      <span>批次号：{{ statisticsData.batchID`` }}， 生产总数：{{
         statisticsData.docNum
       }}，良本数：{{ statisticsData.productNum }}，废本数：{{
         statisticsData.obsoleteNum
@@ -73,16 +73,17 @@ import TeamCard from './team/team-card.vue';
 import Doc from './team/doc/index.vue';
 import TheButton from '@/components/base/TheButton.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
-import { getGroupPage } from '@/apis/proApi';
-// import useCustomTimer from '@/utils/useCustomTimer';
-// const { start, stop } = useCustomTimer();
+import { batchModule } from '@/apis/proApi';
+import useCustomTimer from '@/utils/useCustomTimer';
+
+const { start, stop } = useCustomTimer();
 const route = useRoute();
 const batchId = ref<string>('');
 const checkRow = ref([]); // 选中的数据
 const items = ref([]);
 const searchForm = ref({});
 const statisticsData = ref({
-  batchId: '468468465465465',
+  batchID: '468468465465465',
   status: '',
   docNum: 15646546512654156,
   batchNum: 0,
@@ -108,11 +109,7 @@ const info = ref([
     label: '团组人数',
   },
 ]);
-onActivated(async () => {
-  const query = route.query;
-  batchId.value = query.BatchId;
-  await getGroupData();
-});
+
 function setCheckRow(arr: Array<any>) {
   checkRow.value = arr;
   info.value[0].value = checkRow.value[0]?.dispatchUnit;
@@ -148,7 +145,7 @@ async function getGroupData() {
     rowPerPage: pageVO.pageSize,
   };
   try {
-    const data = await getGroupPage(params);
+    const data = await batchModule.getGroupPage(params);
     if (data.respData) {
       items.value = data.respData.groupInfo;
       pageVO.currentPage = data.respData.page;
@@ -164,9 +161,38 @@ function setSearchForm(formValue: object) {
   searchForm.value = formValue;
   getGroupData();
 }
+
+onActivated(async () => {
+  const query = route.query;
+  batchId.value = query.BatchId;
+  await getGroupData();
+  await getBatchStatisticsInfo();
+});
 onDeactivated(() => {
+  stop();
   checkRow.value = [];
 });
+async function getBatchStatisticsInfo() {
+  try {
+    const data = await batchModule.getBatchStatistics({
+      batchID: batchId.value,
+    });
+    if (data.respData) {
+      statisticsData.value = { ...data.respData };
+    }
+    startGetDataPage();
+  }
+  catch (error) {
+    error;
+    stop();
+  }
+}
+
+async function startGetDataPage() {
+  start(async () => {
+    await getBatchStatisticsInfo();
+  }, 2);
+}
 </script>
 
 <style scoped lang="less">

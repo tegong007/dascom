@@ -15,6 +15,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/setPage', // 设置
     name: 'SetPage',
+    meta: { keepAlive: false },
     component: () => import('@/pages/bigScreen/setting/index.vue'),
   },
   {
