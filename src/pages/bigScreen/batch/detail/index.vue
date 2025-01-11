@@ -4,7 +4,7 @@
     <div
       class="absolute top-70 box-border h-85vh w90% flex flex-col items-center gap-20 p-2em p-b-0"
     >
-      <span>批次号：{{ statisticsData.batchID`` }}， 生产总数：{{
+      <span>批次号：{{ statisticsData.batchID }}， 生产总数：{{
         statisticsData.docNum
       }}，良本数：{{ statisticsData.productNum }}，废本数：{{
         statisticsData.obsoleteNum
