@@ -129,11 +129,11 @@ const colums = ref([
   },
   {
     title: '待生产数',
-    field: 'hangUpNum',
+    field: 'waitingNum',
   },
   {
     title: '挂起数',
-    field: 'waitingNum',
+    field: 'hangUpNum',
   },
   {
     title: '状态',

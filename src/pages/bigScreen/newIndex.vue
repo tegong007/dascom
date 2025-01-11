@@ -143,10 +143,10 @@ async function getDataPage() {
       mainPrint.value = data.respData.mainPrint;
       additionPrint.value = data.respData.additionPrint;
       finishedProduct.value = data.respData.finishedProduct;
-      machineStatus.value = data.respData.status;
     }
     if (statistics.respData) {
       statisticsData.value = { ...statistics.respData };
+      machineStatus.value = statistics.respData.status;
     }
     startGetDataPage();
   }
