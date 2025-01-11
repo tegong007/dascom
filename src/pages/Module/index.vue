@@ -14,7 +14,7 @@
         <div
           class="title relative z-10 h-[50px] w-full flex items-center justify-between bg-[#fff]/[0.2] pl-[20px] font-bold"
         >
-          <span class="text-[20px]"> {{ $t("home.preview") }}</span>
+          <span class="text-[20px]"> {{ $t('home.preview') }}</span>
         </div>
         <div
           class="relative h-full w-full flex flex-col items-center justify-evenly"
@@ -27,7 +27,7 @@
               v-if="imgIndex === 0"
               class="absolute z-[999] text-[80px] font-bold"
             >
-              {{ $t("home.preparePrint") }}</span>
+              {{ $t('home.preparePrint') }}</span>
             <a-image
               v-if="imgIndex !== 0"
               :src="imgStatus[imgIndex]"
@@ -44,7 +44,7 @@
           <div
             class="title relative z-10 h-[50px] w-full flex items-center justify-between bg-[#fff]/[0.2] pl-[20px] font-bold"
           >
-            <span class="text-[20px]"> {{ $t("home.printInformation") }}</span>
+            <span class="text-[20px]"> {{ $t('home.printInformation') }}</span>
           </div>
           <div
             class="info-box scrollable-box w-full overflow-auto p-[20px] leading-[25px]"
@@ -57,7 +57,7 @@
             class="printBtn relative h-full w-[63%] flex items-center justify-center"
           >
             <span class="relative text-[50px] font-bold">
-              {{ $t("home.printCrtificateBtn") }}</span>
+              {{ $t('home.printCrtificateBtn') }}</span>
             <div
               :class="
                 `${canClick ? 'bg-[#fff]/[0]  cursor-pointer hover:bg-[#fff]/[0.3]  active:bg-[#000]/[0.4]' : 'bg-[#000]/[0.4] pointer-events-none'}`
@@ -70,7 +70,7 @@
             class="stopBtn relative h-full w-[35%] flex items-center justify-center"
           >
             <span class="relative text-[50px] font-bold">
-              {{ $t("home.stopBtn") }}</span>
+              {{ $t('home.stopBtn') }}</span>
             <div
               :class="
                 `${!canClick ? 'bg-[#fff]/[0]  cursor-pointer hover:bg-[#fff]/[0.3]  active:bg-[#000]/[0.4]' : 'bg-[#000]/[0.4] pointer-events-none'}`
@@ -92,7 +92,7 @@ import { notification } from 'ant-design-vue';
 import { useAppStore } from '../../store/index';
 import InfoLog from './info.vue';
 import TheHeader from '@/components/TheHeader.vue';
-import TheModal from '@/components/TheModal.vue';
+import TheModal from '@/components/modal/TheModal.vue';
 import { getDocStatus, startOrStopPrintTask } from '@/apis/webApi';
 import { throttle } from '@/utils/throttle.js';
 import readyImg from '@/assets/image/ready.png';
@@ -102,7 +102,9 @@ import laser2Img from '@/assets/image/laser2.png';
 import lnkjetImg from '@/assets/image/lnkjet.png';
 
 const [api, contextHolder] = notification.useNotification();
-const openNotify = (placement: NotificationPlacement, msg: any) => openNotification(placement, msg);
+function openNotify(placement: NotificationPlacement, msg: any) {
+  return openNotification(placement, msg);
+}
 function openNotification(placement: NotificationPlacement, msg: any) {
   api.error({
     message: '错误信息',
@@ -124,7 +126,7 @@ interface T {
   imgData?: string;
   error?: boolean; // 任务失败的标识
   showDivider?: string; // 分界线的标识
-  stop?: boolean;// 用户手动停止
+  stop?: boolean; // 用户手动停止
 }
 const appStore = useAppStore();
 
@@ -169,12 +171,17 @@ async function getStatus() {
       };
 
       if (JSON.stringify(currentObj.value) !== JSON.stringify(formatData)) {
-        currentObj.value = JSON.parse(JSON.stringify(formatData));// 深拷贝，只拷贝当前的
-        LeftTitle(formatData.status);// 标题
-        changeImg(formatData.status);// 图片
+        currentObj.value = JSON.parse(JSON.stringify(formatData)); // 深拷贝，只拷贝当前的
+        LeftTitle(formatData.status); // 标题
+        changeImg(formatData.status); // 图片
         // 分割线
-        if (flowData.value.length && (flowData.value[0]?.status.match(/M\d+/)[0] !== formatData.status.match(/M\d+/)[0])) {
-          formatData.showDivider = moduleMap[flowData.value[0]?.status.match(/M\d+/)[0]];
+        if (
+          flowData.value.length
+          && flowData.value[0]?.status.match(/M\d+/)[0]
+          !== formatData.status.match(/M\d+/)[0]
+        ) {
+          formatData.showDivider
+            = moduleMap[flowData.value[0]?.status.match(/M\d+/)[0]];
         }
 
         // 数据流

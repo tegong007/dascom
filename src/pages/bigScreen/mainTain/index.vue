@@ -52,7 +52,15 @@
       class="groupBtn absolute bottom-0 h8em w-full flex items-center justify-center gap-20"
     >
       <div class="flex gap-20">
-        <TheButton title="返回首页" @click="$goto('BigScreen')" />
+        <TheButton
+          title="返回首页"
+          @click="
+            () => {
+              setCurrentModel('');
+              $goto('BigScreen');
+            }
+          "
+        />
       </div>
     </div>
   </div>
@@ -77,7 +85,7 @@ definePage({
 });
 const route = useRoute();
 const currentModel = ref<string>('haocai');
-onMounted(() => {
+onActivated(() => {
   nextTick(() => {
     const query = route.query;
     currentModel.value = query.currentModel;
@@ -100,7 +108,10 @@ const options = [
 //   currentModel.value = newValue;
 // });
 function labelChange(value) {
-  currentModel.value = value.target.value;
+  setCurrentModel(value?.target.value);
+}
+function setCurrentModel(value: string) {
+  currentModel.value = value;
 }
 </script>
 

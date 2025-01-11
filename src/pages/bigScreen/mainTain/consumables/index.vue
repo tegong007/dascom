@@ -150,10 +150,6 @@ async function getDataPage() {
     const data = await mainTainModule.consumables.getLnkRemainder();
 
     if (data.respData) {
-      console.log(
-        '🚀 ~ file: index.vue:155 ~ getDataPage ~ data.respData:',
-        data.respData,
-      );
       modulesData.value = data.respData;
     }
 
@@ -164,7 +160,9 @@ async function getDataPage() {
     stop();
   }
 }
-
+onDeactivated(() => {
+  stop();
+});
 async function startGetDataPage() {
   start(async () => {
     await getDataPage();

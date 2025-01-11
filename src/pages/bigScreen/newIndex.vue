@@ -59,8 +59,17 @@
       class="groupBtn absolute right-35 top-150 h-100vh flex flex-col items-center justify-center"
     >
       <TheButton
-        :title="machineStatus !== 1 ? '开始进本' : '继续进本'"
-        @click="setModal(machineStatus !== 1 ? 0 : 1)"
+        :title="machineStatus === 0 ? '暂停进本' : '开始进本'"
+        :disable="
+          machineStatus === 3 || machineStatus === 4 || machineStatus === 5
+            ? true
+            : false
+        "
+        @click="
+          machineStatus === 3 || machineStatus === 4 || machineStatus === 5
+            ? null
+            : setModal(machineStatus === 0 ? 1 : 0)
+        "
       />
       <TheButton title="全线急停" class="mt2em" @click="setModal(2)" />
     </div>
@@ -104,8 +113,10 @@ import bigScreenHeader from '@/components/bigScreen/header.vue';
 import useCustomTimer from '@/utils/useCustomTimer';
 import Notification from '@/components/base/notification.vue';
 import { batchModule, homeModule } from '@/apis/proApi';
+import { useAppStore } from '@/store/index';
 
 const { start, stop } = useCustomTimer();
+
 const modal = ref('');
 const open = ref<boolean>(false);
 function setOpen(value: boolean) {
@@ -168,7 +179,7 @@ function setModal(value: number) {
       modal.value = '确认开始进本？';
       break;
     case 1:
-      modal.value = '确认继续进本？';
+      modal.value = '确认暂停进本？';
       break;
     case 2:
       modal.value = '确认全线急停？';
@@ -185,7 +196,7 @@ async function controlMachine() {
       tips = '开始进本';
       break;
     case 1:
-      tips = '继续进本';
+      tips = '暂停进本';
       break;
     case 2:
       tips = '全线急停';
@@ -194,6 +205,7 @@ async function controlMachine() {
       break;
   }
   try {
+    useAppStore().setSpinning(true);
     await homeModule.setControlMachine({ control: control.value });
     notifyRef.value?.openNotify('bottomRight', `${tips}操作成功`, true);
   }
@@ -203,6 +215,7 @@ async function controlMachine() {
   }
   finally {
     setOpen(false);
+    useAppStore().setSpinning(false);
   }
 }
 

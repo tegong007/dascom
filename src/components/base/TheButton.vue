@@ -3,7 +3,12 @@
     class="h-3.7em w-8.6em flex items-center justify-center transition-transform duration-300 hover:scale-115"
   > -->
   <div
-    class="h-70px w-150px flex items-center justify-center transition-transform duration-300 hover:scale-115"
+    class="h-70px w-150px flex items-center justify-center"
+    :class="
+      props.disable
+        ? 'cursor-not-allowed'
+        : 'transition-transform duration-300 hover:scale-115'
+    "
   >
     <span>{{ props.title }}</span>
   </div>
@@ -12,6 +17,7 @@
 <script lang="ts" setup>
 const props = defineProps({
   title: String, // 表头
+  disable: Boolean,
 });
 </script>
 
