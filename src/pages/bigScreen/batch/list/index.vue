@@ -48,6 +48,7 @@
           :colums="colums"
           :checkbox="true"
           :data="tableData"
+          :rowfun="rowAction"
           page-name="BatchList"
         />
       </main>
@@ -163,11 +164,13 @@ function setSearchForm(formValue: object) {
   getDataPage();
 }
 
-function rowAction(type: string) {
+function rowAction(type: string, batchID: string) {
   modal.value = type;
-  const newCheckRow = tableRef.value.getSelectEvent();
+  const newCheckRow = !batchID ? tableRef.value.getSelectEvent() : [batchID];
   if (tableRef.value && newCheckRow) {
-    checkedRow.value = newCheckRow.map(item => item.batchID);
+    checkedRow.value = !batchID
+      ? newCheckRow.map(item => item.batchID)
+      : newCheckRow;
   }
   nextTick(() => {
     if (checkedRow.value.length) {

@@ -35,6 +35,7 @@
         :checkbox="true"
         :data="tableData"
         page-name="docList"
+        :rowfun="rowAction"
       />
     </main>
     <div class="z-99 flex items-center justify-between">
@@ -298,11 +299,13 @@ async function getDataPage() {
     // stop();
   }
 }
-function rowAction(type: string) {
+function rowAction(type: string, docID: string) {
   modal.value = type;
-  const newCheckRow = tableRef.value.getSelectEvent();
+  const newCheckRow = !docID ? tableRef.value.getSelectEvent() : [docID];
   if (tableRef.value && newCheckRow) {
-    checkedRow.value = newCheckRow.map(item => item.docID);
+    checkedRow.value = !docID
+      ? newCheckRow.map(item => item.docID)
+      : newCheckRow;
   }
   nextTick(() => {
     if (checkedRow.value.length) {

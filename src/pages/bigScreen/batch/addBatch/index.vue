@@ -5,7 +5,11 @@
       class="absolute top-50 box-border h-800px w90% flex flex-col items-center gap-10 p-2em p-b-0"
     >
       <teamForm :add-team="addTeam" />
-      <noTeamForm :add-team="addNoTeam" :update-no-team-num="updateNoTeamNum" />
+      <noTeamForm
+        :add-team="addNoTeam"
+        :update-no-team-num="updateNoTeamNum"
+        :addor-edit-no-team="addorEditNoTeam"
+      />
       <main class="box-border h-580px w-full">
         <MyTable
           ref="tableRef"
@@ -72,6 +76,8 @@ const tableRef = ref(null);
 const updateRef = ref(null);
 const showSuccessData = ref({});
 const isAddNoTeam = ref<boolean>(false);
+const addorEditNoTeam = ref('add'); // 添加还是编辑
+
 function setOpen(value: boolean) {
   open.value = value;
 }
@@ -102,8 +108,9 @@ const colums = ref([
 ]);
 function addNoTeam(record: object) {
   if (tableRef.value) {
-    isAddNoTeam.value = true;
     tableRef.value.addEvent(record);
+    isAddNoTeam.value = true;
+    addorEditNoTeam.value = 'edit';
   }
 }
 function updateNoTeamNum(num: number) {
@@ -138,6 +145,7 @@ async function AddBatch() {
       return;
     }
     if (!isAddNoTeam.value) {
+      // 如果没有添加过，补一条数据
       insertData.unshift({ num: 0 });
     }
     try {
@@ -146,6 +154,8 @@ async function AddBatch() {
         showSuccessData.value = { ...respData };
         setSuccessOpen(true);
         tableRef.value.removeRow();
+        isAddNoTeam.value = false;
+        addorEditNoTeam.value = 'add';
       }
     }
     catch (error) {

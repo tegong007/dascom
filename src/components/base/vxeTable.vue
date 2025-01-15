@@ -68,8 +68,16 @@
                 class="color-[#89F7FF]"
                 @click="$goto('BatchDetail', { BatchId: row.batchID })"
               >详情</a>
-              <a v-if="row.status === 2" class="color-[#89F7FF]">挂起</a>
-              <a v-if="row.status === 3" class="color-[#89F7FF]">重新生产</a>
+              <a
+                v-if="row.status === 2"
+                class="color-[#89F7FF]"
+                @click="props.rowfun('stop', row.batchID)"
+              >挂起</a>
+              <a
+                v-if="row.status === 3"
+                class="color-[#89F7FF]"
+                @click="props.rowfun('reset', row.batchID)"
+              >重新生产</a>
             </div>
           </template>
         </vxe-column>
@@ -83,10 +91,15 @@
         >
           <template #default="{ row }">
             <div class="flex items-center justify-start gap-10">
-              <a v-if="row.status === 1" class="color-[#89F7FF]">挂起</a>
+              <a
+                v-if="row.status === 1"
+                class="color-[#89F7FF]"
+                @click="props.rowfun('stop', row.docID)"
+              >挂起</a>
               <a
                 v-if="row.status !== 1 || row.status !== 0"
                 class="color-[#89F7FF]"
+                @click="props.rowfun('reset', row.docID)"
               >重新生产</a>
             </div>
           </template>
@@ -109,7 +122,7 @@ const props = defineProps({
   pageName: String, // 行删除
   isEdit: Boolean, // 是否可以编辑
   showRow: Function,
-  funArr: Array,
+  rowfun: Function,
 });
 
 const tableRef = ref();

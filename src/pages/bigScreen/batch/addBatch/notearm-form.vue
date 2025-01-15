@@ -40,8 +40,8 @@ import { SettingFilled } from '@ant-design/icons-vue';
 const props = defineProps({
   addTeam: Function, // 表头
   updateNoTeamNum: Function,
+  addorEditNoTeam: String,
 });
-const isFirstClick = ref<boolean>(true);
 const formRef = ref();
 const rules = {
   num: [
@@ -78,14 +78,17 @@ function onSubmit() {
   formRef.value
     .validate()
     .then(() => {
-      if (isFirstClick.value) {
+      console.log(
+        '🚀 ~ file: notearm-form.vue:81 ~ .then ~ props.isAddNoTeam:',
+        props.addorEditNoTeam,
+      );
+      if (props.addorEditNoTeam === 'add') {
         props.addTeam({
           ...toRaw(formState),
           dispatchUnit: '-------',
           dataSource: '-------',
           urgentType: '--------',
         });
-        isFirstClick.value = false;
       }
       else {
         props.updateNoTeamNum(formState.num);
