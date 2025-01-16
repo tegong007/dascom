@@ -8,9 +8,9 @@
     >
       <a-row :gutter="[0, 0]" class="w-full" justify="space-evenly">
         <a-col :span="5">
-          <a-form-item label="团组号" name="teamId">
+          <a-form-item label="团组号" name="groupID">
             <a-input
-              v-model:value="formState.teamId"
+              v-model:value="formState.groupID"
               placeholder="请输入团组号"
             />
           </a-form-item>
@@ -73,17 +73,17 @@ const props = defineProps({
 });
 const formRef = ref();
 interface FormState {
-  teamId: string;
+  groupID: string;
   dispatchUnit: string;
   dataSource: string;
   urgentType: number;
   // timeRange: RangeValue;
 }
 const formState: UnwrapRef<FormState> = reactive({
-  teamId: '',
+  groupID: '',
   dispatchUnit: '',
   dataSource: '',
-  urgentType: 0,
+  urgentType: null,
 });
 
 function onSubmit() {

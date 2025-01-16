@@ -18,9 +18,20 @@
         @checkbox-change="selectChangeEvent"
       >
         <!-- 复选框 -->
-        <vxe-column v-if="props.checkbox" type="checkbox" width="43" />
+        <vxe-column
+          v-if="props.checkbox"
+          type="checkbox"
+          width="43"
+          fixed="left"
+        />
         <!-- 序号 -->
-        <vxe-column v-if="props.seq" type="seq" width="60" align="center" />
+        <vxe-column
+          v-if="props.seq"
+          type="seq"
+          width="60"
+          align="center"
+          fixed="left"
+        />
         <vxe-column
           v-for="(item, index) in props.colums"
           :key="index"
@@ -288,7 +299,6 @@ defineExpose({
     //   rgba(255, 255, 255, 0.205) 100%
     // );
   }
-  /* 表头样式 */
   thead {
     background: transparent;
   }

@@ -32,7 +32,7 @@
           />
         </div>
         <div class="doc-box box-border h-full flex-1 overflow-hidden">
-          <Doc :check-row="checkRow" />
+          <Doc :check-row="checkRow" :batch-i-d="statisticsData.batchID" />
         </div>
         <div
           class="info-box box-border h-full w-250px flex flex-col items-center p-y-20 text-[24px] color-[#CFDEF1]"

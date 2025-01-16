@@ -100,7 +100,7 @@ import { batchModule } from '@/apis/proApi';
 const pageVO = reactive({
   total: 20,
   currentPage: 1,
-  pageSize: 10,
+  pageSize: 5,
 });
 const checkedRow = ref([]);
 const tableRef = ref(null);

@@ -13,7 +13,7 @@
     >
     <span> 序号：{{ index + 1 }} </span>
     <!-- <span> 团组名：{{ item.teamName }} </span> -->
-    <span>团组编号：{{ item.teamId }}</span>
+    <span>团组编号：{{ item.groupID }}</span>
     <!-- <span>制证数：{{ item.currentCertificate }}</span> -->
     <!-- <span> 开始制证时间：{{ item.tStartTime }}</span> -->
   </div>
@@ -30,7 +30,7 @@ const selectedIndex = ref(0); // 默认选中第一项
 
 function selectItem(item: any, index: number) {
   selectedIndex.value = index;
-  props.handleClick(item.teamId);
+  props.handleClick(item.groupID);
 }
 </script>
 

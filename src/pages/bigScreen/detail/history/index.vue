@@ -37,7 +37,7 @@
             <a-col :span="6">
               <a-form-item label="团组号">
                 <a-input
-                  v-model:value="formState.teamId"
+                  v-model:value="formState.groupID"
                   placeholder="请输入团组号"
                 />
               </a-form-item>
@@ -169,7 +169,7 @@ function goto(page: string) {
 // const timeRange = ref<RangeValue>();
 interface FormState {
   batchId: string;
-  teamId: string;
+  groupID: string;
   docId: string;
   docStatus: string;
   timeRange: RangeValue;

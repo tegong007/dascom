@@ -78,10 +78,6 @@ function onSubmit() {
   formRef.value
     .validate()
     .then(() => {
-      console.log(
-        '🚀 ~ file: notearm-form.vue:81 ~ .then ~ props.isAddNoTeam:',
-        props.addorEditNoTeam,
-      );
       if (props.addorEditNoTeam === 'add') {
         props.addTeam({
           ...toRaw(formState),

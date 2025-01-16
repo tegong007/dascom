@@ -135,7 +135,7 @@ const colums = ref([
   },
   {
     title: '团组号',
-    field: 'teamId',
+    field: 'groupID',
     width: 150,
   },
   {

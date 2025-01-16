@@ -17,7 +17,7 @@
     </section>
     <section
       v-for="item in items"
-      :key="item.teamId"
+      :key="item"
       class="mt10 box-border h-30px flex items-center gap-10 text-[16px]"
     >
       <div

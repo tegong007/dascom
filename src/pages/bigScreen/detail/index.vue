@@ -74,7 +74,7 @@ const leftColums = ref([
   },
   {
     title: '团组号',
-    field: 'teamId',
+    field: 'groupID',
     width: 150,
   },
   {
@@ -147,48 +147,48 @@ const items = ref([
   {
     id: '01',
     teamName: '13112206029',
-    teamId: '118',
+    groupID: '118',
     currentCertificate: '123',
     tStartTime: '2024.11.20',
   },
   {
     id: '02',
     teamName: '13112206029',
-    teamId: '119',
+    groupID: '119',
     currentCertificate: '123',
     tStartTime: '2024.11.20',
   },
   {
     id: '03',
     teamName: '13112206029',
-    teamId: '120',
+    groupID: '120',
     currentCertificate: '123',
     tStartTime: '2024.11.20',
   },
   {
     id: '04',
     teamName: '13112206029',
-    teamId: '121',
+    groupID: '121',
     currentCertificate: '123',
     tStartTime: '2024.11.20',
   },
   {
     id: '05',
     teamName: '13112206029',
-    teamId: '122',
+    groupID: '122',
     currentCertificate: '123',
     tStartTime: '2024.11.20',
   },
 ]);
 
-const chooseTeamId = ref('');
+const choosegroupID = ref('');
 
 function goto(page: string) {
   router.push({ name: page });
 }
 function getChooseId(id: string) {
   console.log('🚀 ~ file: index.vue:55 ~ getChooseId ~ id:', id);
-  chooseTeamId.value = id ?? '';
+  choosegroupID.value = id ?? '';
 }
 async function getData() {
   // console.log('🚀 ~ file: team-card.vue:70 ~ selectedIndex:', selectedIndex);

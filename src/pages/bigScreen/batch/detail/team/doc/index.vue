@@ -75,6 +75,7 @@ import { documentModule } from '@/apis/proApi';
 
 const props = defineProps({
   checkRow: Array,
+  batchID: String,
 });
 
 const pageVO = reactive({
@@ -273,6 +274,7 @@ async function getDataPage() {
   try {
     const params = {
       ...searchForm.value,
+      batchID: props.batchID,
       groupID: groupID.value,
       page: pageVO.currentPage,
       rowPerPage: pageVO.pageSize,
