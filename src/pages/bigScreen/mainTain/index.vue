@@ -69,10 +69,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import Process from '@/pages/bigScreen/setting/startSet/process.vue';
-import Reader from '@/pages/bigScreen/setting/startSet/reader.vue';
-import TrunLine from '@/pages/bigScreen/setting/startSet/turnline.vue';
-import OnlyTest from '@/pages/bigScreen/setting/onlyTest/index.vue';
+import Process from '@/pages/bigScreen/mainTain/startSet/process.vue';
+import Reader from '@/pages/bigScreen/mainTain/startSet/reader.vue';
+import TrunLine from '@/pages/bigScreen/mainTain/startSet/turnline.vue';
+import OnlyTest from '@/pages/bigScreen/mainTain/onlyTest/index.vue';
 import Consumables from '@/pages/bigScreen/mainTain/consumables/index.vue';
 import TheButton from '@/components/base/TheButton.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';

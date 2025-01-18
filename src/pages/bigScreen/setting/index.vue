@@ -85,12 +85,12 @@ onMounted(() => {
 // console.log(query); // 这里应该能获取到查询参数
 const options = [
   { label: `软件设置`, value: 'sort' },
-  { label: `整机`, value: '0' },
-  { label: `空白本校验`, value: '0' },
-  { label: `主副页打印`, value: '1' },
-  { label: `加注打印`, value: '2' },
-  { label: `成本证本收集`, value: '3' },
-  { label: `模块测试`, value: '4' },
+  // { label: `整机`, value: '0' },
+  // { label: `空白本校验`, value: '0' },
+  // { label: `主副页打印`, value: '1' },
+  // { label: `加注打印`, value: '2' },
+  // { label: `成本证本收集`, value: '3' },
+  // { label: `模块测试`, value: '4' },
 ];
 
 // // 使用 watch 监视 divRef 值的变化

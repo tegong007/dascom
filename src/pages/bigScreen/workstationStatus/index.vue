@@ -3,7 +3,7 @@
     <bigScreenHeader title="工位状态" />
     <main class="relative h-20px w-full">
       <div class="absolute top-0 w-full text-center text-[20px]">
-        当前批次号:20145645564687486486
+        当前批次号:{{ batchID }}
       </div>
       <div class="absolute right-20">
         <!-- 状态标识 -->
@@ -38,9 +38,18 @@
 </template>
 
 <script setup lang="ts">
+import { useRoute } from 'vue-router';
 import Card from './card.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 
+const route = useRoute();
+const batchID = ref<string>('');
+onMounted(() => {
+  nextTick(() => {
+    const query = route.query;
+    batchID.value = query.batchID;
+  });
+});
 const items = [
   {
     color: 'bg-[#C7080B]',

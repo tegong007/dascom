@@ -1,9 +1,10 @@
 <template>
   <div class="wh-full">
+    <!-- 初始阶段 -->
     <div class="bg-[#fff]/[0.4] p-y-5px p-l-0.5em">
       <span>初始阶段</span>
     </div>
-    <section class="p-l-3em p-t-2em">
+    <section class="p-l-3em p-t-1em">
       <div class="text-[18px]">
         手动送本：
       </div>
@@ -23,7 +24,7 @@
         初始化
       </a-button>
     </section>
-    <section class="p-l-3em p-t-2em">
+    <section class="p-l-3em p-t-1em">
       <div class="text-[18px]">
         传输速度
       </div>
@@ -39,10 +40,11 @@
         保存
       </a-button>
     </section>
-    <div class="m-t-2em bg-[#fff]/[0.4] p-y-5px p-l-0.5em">
+    <!-- 执行任务 -->
+    <div class="m-t-1.5em bg-[#fff]/[0.4] p-y-5px p-l-0.5em">
       <span>执行任务</span>
     </div>
-    <section class="p-l-3em p-t-2em">
+    <section class="p-l-3em p-t-1em">
       <div class="text-[18px]">
         任务执行：
       </div>
@@ -86,6 +88,50 @@
         停止
       </a-button>
     </section>
+    <!-- 卡槽操作 -->
+    <div class="m-t-1.5em bg-[#fff]/[0.4] p-y-5px p-l-0.5em">
+      <span>卡槽操作</span>
+    </div>
+    <section class="p-l-3em p-t-1em">
+      <div class="text-[18px]">
+        卡槽1：
+      </div>
+      <br>
+      <a-button
+        type="link"
+        class="btn hover:text-[#89f7ff]!"
+        @click="grooveOperate(0, 1)"
+      >
+        夹紧
+      </a-button>
+      <a-button
+        type="link"
+        class="btn ml10 hover:text-[#89f7ff]!"
+        @click="grooveOperate(0, 0)"
+      >
+        松开
+      </a-button>
+    </section>
+    <section class="p-l-3em p-t-1em">
+      <div class="text-[18px]">
+        卡槽2：
+      </div>
+      <br>
+      <a-button
+        type="link"
+        class="btn hover:text-[#89f7ff]!"
+        @click="grooveOperate(1, 1)"
+      >
+        夹紧
+      </a-button>
+      <a-button
+        type="link"
+        class="btn ml10 hover:text-[#89f7ff]!"
+        @click="grooveOperate(1, 0)"
+      >
+        松开
+      </a-button>
+    </section>
     <contextHolder />
   </div>
 </template>
@@ -93,7 +139,11 @@
 <script lang="ts" setup>
 import type { NotificationPlacement } from 'ant-design-vue';
 import { notification } from 'ant-design-vue';
-import { getApiTransfer, initMachine, startOrStopPrintTask } from '@/apis/webApi';
+import {
+  getApiTransfer,
+  initMachine,
+  startOrStopPrintTask,
+} from '@/apis/webApi';
 import { useAppStore } from '@/store/index';
 
 const appStore = useAppStore();
@@ -173,7 +223,7 @@ async function openTask() {
     openNotify('bottomRight', '开启任务成功', 'success');
   }
   catch (error) {
-    console.log('🚀 ~ file: index.vue:133 ~ openTask ~ error:', error);
+    error;
     openNotify('bottomRight', '开启任务失败');
     isStop.value = !isStop.value;
   }
@@ -188,12 +238,27 @@ async function stopTask() {
     await startOrStopPrintTask({ operate: 1 });
   }
   catch (error) {
-    console.log('🚀 ~ file: index.vue:140 ~ stopTask ~ error:', error);
+    error;
     openNotify('bottomRight', '任务停止失败');
     isStop.value = !isStop.value;
   }
   finally {
     appStore.setSpinning(false);
+  }
+}
+async function grooveOperate(grooveID: number, operate: number) {
+  try {
+    // await sendDoc();
+    const params = {
+      transURI: `/doc-machine/groove-operate`,
+      paraIn: { grooveID, operate },
+    };
+    await getApiTransfer(params);
+    openNotify('bottomRight', '操作成功', 'success');
+  }
+  catch (error) {
+    error;
+    openNotify('bottomRight', '操作失败');
   }
 }
 </script>

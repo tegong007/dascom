@@ -18,7 +18,7 @@
     >
       <div
         class="m-t-10vh h-[124px] w-[271px] flex items-center justify-center rounded-[30px] bg-[#0000007a]"
-        @click="$goto('WorkstationStatus')"
+        @click="$goto('WorkstationStatus', { batchID: statisticsData.batchID })"
       >
         <span
           class="cursor-default border-1 border-[#fff] rounded-[30px] bg-[#00000049] p-10 text-[36px] font-[youshe]"
