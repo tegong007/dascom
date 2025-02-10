@@ -99,7 +99,7 @@
       :handle-cancel="() => setOpen(false)"
       :title="modal"
     />
-    <Notification ref="notifyRef" />
+    <contextHolder />
   </div>
 </template>
 
@@ -111,7 +111,7 @@ import Start from './module/startPage.vue';
 import TheButton from '@/components/base/TheButton.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 import useCustomTimer from '@/utils/useCustomTimer';
-import Notification from '@/components/base/notification.vue';
+import { contextHolder, openNotify } from '@/components/base/useNotification';
 import { batchModule, homeModule } from '@/apis/proApi';
 import { useAppStore } from '@/store/index';
 
@@ -122,7 +122,6 @@ const open = ref<boolean>(false);
 function setOpen(value: boolean) {
   open.value = value;
 }
-const notifyRef = ref(null);
 const blankCheck = ref({});
 const mainPrint = ref({});
 const control = ref(null);
@@ -207,11 +206,11 @@ async function controlMachine() {
   try {
     useAppStore().setSpinning(true);
     await homeModule.setControlMachine({ control: control.value });
-    notifyRef.value?.openNotify('bottomRight', `${tips}操作成功`, true);
+    openNotify('bottomRight', `${tips}操作成功`, true);
   }
   catch (error) {
     error;
-    notifyRef.value?.openNotify('bottomRight', `${tips}操作失败`);
+    openNotify('bottomRight', `${tips}操作失败`);
   }
   finally {
     setOpen(false);
@@ -254,3 +253,4 @@ async function controlMachine() {
   }
 }
 </style>
+@/components/base/useNotification

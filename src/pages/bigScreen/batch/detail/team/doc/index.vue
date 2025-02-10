@@ -59,7 +59,7 @@
       :handle-cancel="() => setOpen(false)"
       :title="modal"
     />
-    <Notification ref="notifyRef" />
+    <contextHolder />
   </div>
 </template>
 
@@ -69,7 +69,7 @@ import DocForm from './doc-form.vue';
 import { findLabelByValue } from '@/pages/bigScreen/batch/option.ts';
 import MyTable from '@/components/base/vxeTable.vue';
 import TheModal from '@/components/modal/TheModal.vue';
-import Notification from '@/components/base/notification.vue';
+import { contextHolder, openNotify } from '@/components/base/useNotification';
 import { getWorkstationName } from '@/utils/workstationDefinitions';
 import { documentModule } from '@/apis/proApi';
 
@@ -85,7 +85,6 @@ const pageVO = reactive({
 });
 const searchForm = ref({});
 const checkedRow = ref([]);
-const notifyRef = ref(null);
 const groupID = ref([]);
 const tableData = ref([]);
 const statisticsData = ref({
@@ -251,7 +250,7 @@ async function operate() {
       docID: checkedRow.value,
       operate: isReset.value,
     });
-    notifyRef.value?.openNotify(
+    openNotify(
       'bottomRight',
       `${isReset.value ? '重新生产' : '挂起'}操作成功`,
       true,
@@ -260,10 +259,7 @@ async function operate() {
   }
   catch (error) {
     error;
-    notifyRef.value?.openNotify(
-      'bottomRight',
-      `${isReset.value ? '重新生产' : '挂起'}操作失败`,
-    );
+    openNotify('bottomRight', `${isReset.value ? '重新生产' : '挂起'}操作失败`);
   }
   finally {
     setOpen(false);
@@ -367,3 +363,4 @@ onDeactivated(() => {
   }
 }
 </style>
+@/components/base/useNotification

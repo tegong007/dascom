@@ -79,7 +79,7 @@
         <TheButton title="返回首页" @click="$goto('BigScreen')" />
       </div>
     </div>
-    <Notification ref="notifyRef" />
+    <contextHolder />
   </div>
 </template>
 
@@ -92,8 +92,7 @@ import bigScreenHeader from '@/components/bigScreen/header.vue';
 import TheButton from '@/components/base/TheButton.vue';
 import MyTable from '@/components/base/vxeTable.vue';
 import TheModal from '@/components/modal/TheModal.vue';
-import Notification from '@/components/base/notification.vue';
-// import useCustomTimer from '@/utils/useCustomTimer';
+import { contextHolder, openNotify } from '@/components/base/useNotification';
 import { batchModule } from '@/apis/proApi';
 
 // const { start, stop } = useCustomTimer();
@@ -104,7 +103,6 @@ const pageVO = reactive({
 });
 const checkedRow = ref([]);
 const tableRef = ref(null);
-const notifyRef = ref(null);
 const searchForm = ref({});
 const open = ref<boolean>(false);
 const modal = ref('');
@@ -212,7 +210,7 @@ async function operate() {
       batchID: checkedRow.value,
       operate: isReset.value,
     });
-    notifyRef.value?.openNotify(
+    openNotify(
       'bottomRight',
       `${isReset.value ? '重新生产' : '挂起'}操作成功`,
       true,
@@ -221,10 +219,7 @@ async function operate() {
   }
   catch (error) {
     error;
-    notifyRef.value?.openNotify(
-      'bottomRight',
-      `${isReset.value ? '重新生产' : '挂起'}操作失败`,
-    );
+    openNotify('bottomRight', `${isReset.value ? '重新生产' : '挂起'}操作失败`);
   }
   finally {
     setOpen(false);
@@ -286,3 +281,4 @@ async function getDataPage() {
   }
 }
 </style>
+@/components/base/useNotification

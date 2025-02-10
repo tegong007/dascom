@@ -2,7 +2,7 @@
   <div
     class="bg h-100vh w-full flex flex-col items-center text-[18px] text-white"
   >
-    <bigScreenHeader title="维护" />
+    <bigScreenHeader title="设置" />
     <div class="h-100% w-full flex flex-col text-white">
       <div class="bg-color m-x-4em h-87% flex border-[4px] border-[#3F89DD]">
         <div class="h-full w-[10%] flex flex-col">

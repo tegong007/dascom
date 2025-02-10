@@ -27,23 +27,27 @@
             v-if="currentModel === '0'"
             class="wh-full flex flex-col flex-1"
           >
-            <Process />
+            <!-- <Process />
             <Reader />
-            <TrunLine />
+            <TrunLine /> -->
+            <OnlyTest />
           </section>
           <section
             v-if="currentModel === 'haocai'"
-            class="wh-full flex flex-col flex-1"
+            class="scoll-bar wh-full flex flex-col flex-1"
           >
             <Consumables :current-model="currentModel" />
+          </section>
+          <section
+            v-if="currentModel !== 'haocai' && currentModel !== '0'"
+            class="scoll-bar wh-full flex flex-col flex-1"
+          >
+            <moduleTest :current-model="currentModel" />
           </section>
 
           <!-- <section v-if="currentModel === '1'">
             <Print />
           </section> -->
-          <section v-if="currentModel === '4'">
-            <OnlyTest />
-          </section>
         </div>
       </div>
     </div>
@@ -69,11 +73,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import Process from '@/pages/bigScreen/mainTain/startSet/process.vue';
-import Reader from '@/pages/bigScreen/mainTain/startSet/reader.vue';
-import TrunLine from '@/pages/bigScreen/mainTain/startSet/turnline.vue';
 import OnlyTest from '@/pages/bigScreen/mainTain/onlyTest/index.vue';
 import Consumables from '@/pages/bigScreen/mainTain/consumables/index.vue';
+import moduleTest from '@/pages/bigScreen/mainTain/moduleTest/index.vue';
 import TheButton from '@/components/base/TheButton.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 // const { t } = useI18n();
@@ -95,11 +97,10 @@ onActivated(() => {
 const options = [
   { label: `耗材`, value: 'haocai' },
   { label: `整机`, value: '0' },
-  { label: `空白本校验`, value: '5' },
-  { label: `主副页打印`, value: '1' },
-  { label: `加注打印`, value: '2' },
-  { label: `成本证本收集`, value: '3' },
-  { label: `模块测试`, value: '4' },
+  { label: `空白本校验`, value: 'blankCheck' },
+  { label: `主副页打印`, value: 'mainPrint' },
+  { label: `加注打印`, value: 'additionPrint' },
+  { label: `成本证本收集`, value: 'finishedProduct' },
 ];
 
 // 使用 watch 监视 divRef 值的变化
@@ -149,5 +150,19 @@ function setCurrentModel(value: string) {
   z-index: 1;
   color: #ffffff;
   background: #ffffff2c;
+}
+
+::v-deep.scoll-bar {
+  overflow-y: auto;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  // border-left: 3px solid #7ff3fd;
+}
+::-webkit-scrollbar-thumb {
+  // background-color: #ffffff38;
+  background-color: #ffffff69;
+  border-radius: 5px;
 }
 </style>
