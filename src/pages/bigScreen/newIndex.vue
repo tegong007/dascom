@@ -88,7 +88,7 @@
         />
         <TheButton
           title="设备维护"
-          @click="$goto('MainTain', { currentModel: 'haocai' })"
+          @click="$goto('MainTain', { currentModel: '5' })"
         />
       </div>
     </div>

@@ -7,13 +7,29 @@
       <div
         v-for="(laser, index) in props.data"
         :key="index"
-        class="w280px p-l-3em p-t-1em"
+        class="max-w280px p-l-3em p-t-1em"
       >
         <div class="text-[18px]">
           {{ laser.laserName }}：
         </div>
 
         <a-space wrap class="mt10 flex justify-between">
+          <div v-for="(item, itemIndex) in laser.printItems" :key="itemIndex">
+            <span class="ml20">{{ item.label }}：</span>
+            <a-select
+              v-model:value="item.value"
+              size="large"
+              class="ml25 w-100px"
+            >
+              <a-select-option
+                v-for="(option, optionIndex) in item.option"
+                :key="optionIndex"
+                :value="option.value"
+              >
+                {{ option.label }}
+              </a-select-option>
+            </a-select>
+          </div>
           <a-button
             type="link"
             class="btn hover:text-[#89f7ff]!"

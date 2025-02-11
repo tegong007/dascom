@@ -33,13 +33,13 @@
             <OnlyTest />
           </section>
           <section
-            v-if="currentModel === 'haocai'"
+            v-if="currentModel === '5'"
             class="scoll-bar wh-full flex flex-col flex-1"
           >
             <Consumables :current-model="currentModel" />
           </section>
           <section
-            v-if="currentModel !== 'haocai' && currentModel !== '0'"
+            v-if="currentModel !== '5' && currentModel !== '0'"
             class="scoll-bar wh-full flex flex-col flex-1"
           >
             <moduleTest :current-model="currentModel" />
@@ -86,7 +86,7 @@ definePage({
   },
 });
 const route = useRoute();
-const currentModel = ref<string>('haocai');
+const currentModel = ref<string>('5');
 onActivated(() => {
   nextTick(() => {
     const query = route.query;
@@ -95,19 +95,14 @@ onActivated(() => {
 });
 // console.log(query); // 这里应该能获取到查询参数
 const options = [
-  { label: `耗材`, value: 'haocai' },
+  { label: `耗材`, value: '5' },
   { label: `整机`, value: '0' },
-  { label: `空白本校验`, value: 'blankCheck' },
-  { label: `主副页打印`, value: 'mainPrint' },
-  { label: `加注打印`, value: 'additionPrint' },
-  { label: `成本证本收集`, value: 'finishedProduct' },
+  { label: `空白本校验`, value: '1' },
+  { label: `主副页打印`, value: '2' },
+  { label: `加注打印`, value: '3' },
+  { label: `成本证本收集`, value: '4' },
 ];
 
-// 使用 watch 监视 divRef 值的变化
-// watch(query.currentModel, (newValue) => {
-//   console.log('🚀 ~ file: index.vue:85 ~ watch ~ newValue:', newValue);
-//   currentModel.value = newValue;
-// });
 function labelChange(value) {
   setCurrentModel(value?.target.value);
 }

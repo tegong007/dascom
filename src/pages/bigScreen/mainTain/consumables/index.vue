@@ -175,8 +175,7 @@ async function startGetDataPage() {
 watch(
   () => props.currentModel,
   (newValue) => {
-    // console.log('🚀 ~ file: index.vue:177 ~ newValue:', newValue);
-    if (newValue === 'haocai') {
+    if (newValue === '5') {
       getDataPage();
     }
     else {

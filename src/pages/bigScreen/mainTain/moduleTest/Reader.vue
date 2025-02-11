@@ -14,7 +14,7 @@
         </div>
         <br>
         <a-input
-          v-model:value="reader.valueModel"
+          v-model:value="reader.value"
           size="large"
           placeholder="读卡器数据"
         />
@@ -22,7 +22,7 @@
           <a-button
             type="link"
             class="btn hover:text-[#89f7ff]!"
-            @click="readTest(reader.valueModel)"
+            @click="transfer('/ips-r/read-test-data', index)"
           >
             读测试数据
           </a-button>
@@ -45,17 +45,34 @@
 
 <script lang="ts" setup>
 import { contextHolder, openNotify } from '@/components/base/useNotification';
+import { getApiTransfer } from '@/apis/webApi';
 
 const props = defineProps({
   data: Object,
+  updateItem: Function,
 });
 // 定义按钮点击事件
 function showSuccessNotification() {
   openNotify('topRight', '这是一条成功通知', true);
 }
-
-function readTest(value: string) {
-  console.log('🚀 ~ readTest ~ value:', value);
+async function transfer(url, index) {
+  try {
+    const params = {
+      transURI: url,
+      paraIn: {
+        deviceIndex: props.data.deviceIndex,
+      },
+    };
+    const data = await getApiTransfer(params);
+    if (data.rslts) {
+      props.updateItem('readers', index, data.rslts.data);
+    }
+    // openNotify('bottomRight', '手动送本成功', true);
+  }
+  catch (error) {
+    error;
+    openNotify('bottomRight', '读测试数据失败');
+  }
 }
 </script>
 

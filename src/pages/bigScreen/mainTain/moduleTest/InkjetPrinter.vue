@@ -1,20 +1,126 @@
 <template>
-  <div class="wh-full">
+  <div class="w-full">
     <div class="bg-[#fff]/[0.4] p-y-5px p-l-0.5em">
       <span>喷墨机</span>
     </div>
-    <section class="flex flex-wrap gap-20">
+    <div class="w-full flex flex-wrap gap-20">
       <div
-        v-for="(InkjetPrinter, index) in props.data"
+        v-for="(uvPrinters, index) in props.data"
         :key="index"
-        class="w450px p-l-3em p-t-1em"
+        class="w-full p-l-3em p-t-1em"
       >
         <div class="text-[18px]">
-          {{ InkjetPrinter.InkjetPrinterName }}：
+          {{ uvPrinters.printerName }}：
         </div>
-        <br>
+        <main class="w-full flex items-end justify-start gap-50">
+          <!-- 位置 -->
+          <section>
+            <div class="mt-10 w-full flex flex-col items-end gap-10">
+              <div
+                v-for="(item, itemIndex) in uvPrinters.positionItems"
+                :key="itemIndex"
+                class="text-[18px]"
+              >
+                {{ item.label }}：
+                <a-select
+                  v-if="item.label !== '目标位置'"
+                  v-model:value="item.value"
+                  size="large"
+                  class="m-r-10 w-150px"
+                >
+                  <a-select-option
+                    v-for="(option, optionIndex) in item.option"
+                    :key="optionIndex"
+                    :value="option.value"
+                  >
+                    {{ option.label }}
+                  </a-select-option>
+                </a-select>
+                <a-input
+                  v-else
+                  v-model:value="item.value"
+                  size="large"
+                  placeholder=""
+                  suffix="mm"
+                  class="m-r-10 w-150px"
+                />
+              </div>
+            </div>
+            <a-space wrap class="mt10 flex justify-evenly">
+              <a-button type="link" class="btn hover:text-[#89f7ff]!">
+                复位
+              </a-button>
+              <a-button type="link" class="btn hover:text-[#89f7ff]!">
+                移动
+              </a-button>
+            </a-space>
+          </section>
+
+          <!-- 清洗 -->
+          <section>
+            <div class="mt-10 w-full flex flex-col items-end gap-10">
+              <div
+                v-for="(item, itemIndex) in uvPrinters.cleanItems"
+                :key="itemIndex"
+                class="text-[18px]"
+              >
+                {{ item.label }}：
+                <a-select
+                  v-model:value="item.value"
+                  size="large"
+                  class="m-r-10 w-150px"
+                >
+                  <a-select-option
+                    v-for="(option, optionIndex) in item.option"
+                    :key="optionIndex"
+                    :value="option.value"
+                  >
+                    {{ option.label }}
+                  </a-select-option>
+                </a-select>
+              </div>
+            </div>
+            <a-space wrap class="mt10 flex justify-center">
+              <a-button type="link" class="btn hover:text-[#89f7ff]!">
+                清洗
+              </a-button>
+            </a-space>
+          </section>
+          <!-- 打印平台 -->
+          <section>
+            <div class="mt-10 w-full flex flex-col items-center gap-10">
+              <div
+                v-for="(item, itemIndex) in uvPrinters.printItems"
+                :key="itemIndex"
+                class="text-[18px]"
+              >
+                {{ item.label }}：
+                <a-select
+                  v-model:value="item.value"
+                  size="large"
+                  class="m-r-10 w-150px"
+                >
+                  <a-select-option
+                    v-for="(option, optionIndex) in item.option"
+                    :key="optionIndex"
+                    :value="option.value"
+                  >
+                    {{ option.label }}
+                  </a-select-option>
+                </a-select>
+              </div>
+            </div>
+            <a-space wrap class="mt10 flex justify-center">
+              <a-button type="link" class="btn hover:text-[#89f7ff]!">
+                打印测试页
+              </a-button>
+            </a-space>
+          </section>
+        </main>
       </div>
-    </section>
+
+      <!-- 打印平台 -->
+    </div>
     <!-- <contextHolder /> -->
   </div>
 </template>

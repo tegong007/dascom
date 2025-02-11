@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full pb30px">
+  <div class="w-full pb20px">
     <div class="bg-[#fff]/[0.4] p-y-5px p-l-0.5em">
       <span>摄像头</span>
     </div>
@@ -7,13 +7,25 @@
       <div
         v-for="(camera, index) in props.data"
         :key="index"
-        class="p-l-3em p-t-1em"
+        class="max-w250px p-l-3em p-t-1em"
       >
         <div class="text-[18px]">
           {{ camera.cameraName }}：
-          <a-button type="link" class="btn hover:text-[#89f7ff]!">
+          <a-button
+            type="link"
+            class="btn hover:text-[#89f7ff]!"
+            @click="() => setVisible(true)"
+          >
             拍照
           </a-button>
+          <a-image
+            class="hidden"
+            :preview="{
+              visible,
+              onVisibleChange: setVisible,
+            }"
+            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+          />
         </div>
       </div>
     </section>
@@ -26,6 +38,10 @@
 const props = defineProps({
   data: Object,
 });
+const visible = ref<boolean>(false);
+function setVisible(value): void {
+  visible.value = value;
+}
 // 定义按钮点击事件
 // const showSuccessNotification = () => {
 //   openNotify('topRight', '这是一条成功通知', true);
