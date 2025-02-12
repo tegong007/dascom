@@ -3,73 +3,64 @@
     <div class="bg-[#fff]/[0.4] p-y-5px p-l-0.5em">
       <span>位置调整</span>
     </div>
-    <section class="flex flex-wrap gap-20">
+    <section class="w-full">
       <div
-        v-for="(positon, index) in setItem"
+        v-for="(setItem, index) in setItems"
         :key="index"
-        class="max-w300px p-l-3em p-t-1em"
+        class="w-full flex flex-wrap gap-20 p-l-3em p-t-1em"
       >
-        <div class="text-[18px]">
-          {{ positon.name }}：
+        <!-- <div class="text-[18px]">{{ setItem.printerName }}：</div> -->
+        <div class="w-full flex flex-wrap gap-30">
           <div
-            v-for="(item, itemIndex) in positon.printItems"
+            v-for="(item, itemIndex) in setItem.positionItems"
             :key="itemIndex"
-            class="mt-10"
+            class="flex flex-col gap-10"
           >
-            {{ item.label }}：
-            <a-select
-              v-model:value="item.value"
-              size="large"
-              class="ml w-100px"
-            >
-              <a-select-option
-                v-for="(option, optionIndex) in item.option"
-                :key="optionIndex"
-                :value="option.value"
-              >
-                {{ option.label }}
-              </a-select-option>
-            </a-select>
-          </div>
-          <div class="mt10 w-full flex flex-col items-end gap-10">
+            <span class="ml20">{{ item.label }}：</span>
             <div
-              v-for="(item, itemIndex) in positon.positionItems"
-              :key="itemIndex"
-              class="text-[18px]"
+              v-for="(optionItem, optionIndex) in item.option"
+              :key="optionIndex"
+              class="flex items-center"
             >
-              {{ item.label }}：
+              {{ optionItem.label }}:
               <a-input-number
-                v-model:value="item.value"
+                v-model:value="optionItem.value"
                 size="large"
                 :step="0.01"
-                class="m-r-10 w-150px"
+                class="m-x-10 w-150px"
                 addon-after="mm"
               />
             </div>
-          </div>
-          <div class="mt10 flex justify-evenly">
-            <a-button
-              type="link"
-              class="btn hover:text-[#89f7ff]!"
-              @click="
-                getPlatformConfig(positon.deviceIndex, positon.printItems)
-              "
-            >
-              读取
-            </a-button>
-            <a-button
-              type="link"
-              class="btn hover:text-[#89f7ff]!"
-              @click="
-                setPlatformConfig(
-                  positon.deviceIndex,
-                  positon.printItems,
-                  positon.positionItems,
-                )
-              "
-            >
-              设置
-            </a-button>
+            <div class="mt10 flex justify-evenly">
+              <a-button
+                type="link"
+                class="btn hover:text-[#89f7ff]!"
+                @click="
+                  getPlatformConfig(
+                    setItem.deviceIndex,
+                    item.platform,
+                    index,
+                    itemIndex,
+                  )
+                "
+              >
+                读取
+              </a-button>
+              <a-button
+                type="link"
+                class="btn hover:text-[#89f7ff]!"
+                @click="
+                  setPlatformConfig(
+                    setItem.deviceIndex,
+                    item.platform,
+                    index,
+                    itemIndex,
+                  )
+                "
+              >
+                设置
+              </a-button>
+            </div>
           </div>
         </div>
       </div>
@@ -82,11 +73,12 @@
 import { contextHolder, openNotify } from '@/components/base/useNotification';
 import { getApiTransfer } from '@/apis/webApi';
 import { useAppStore } from '@/store/index';
+import { settingMoule } from '@/apis/proApi';
 
 const props = defineProps({
   currentModel: String,
 });
-const setItem = ref([
+const setItems = ref([
   {
     name: '喷墨打印平台1',
     deviceIndex: 'M2-UV-1',
@@ -149,27 +141,37 @@ const setItem = ref([
   },
 ]);
 
-async function getPlatformConfig(deviceIndex, arr, index) {
+async function getPlatformConfig(
+  deviceIndex,
+  platform,
+  itemIndex,
+  platformIndex,
+) {
   const objs = [
     {
       deviceIndex,
-      platform: Number(arr[0].value),
+      platform: Number(platform),
     },
   ];
-  transfer('/uvpdps/get-platform-config', objs, index);
+  transfer('/uvpdps/get-platform-config', objs, itemIndex, platformIndex);
 }
-async function setPlatformConfig(deviceIndex, arr, positionItems) {
+async function setPlatformConfig(
+  deviceIndex,
+  platform,
+  itemIndex,
+  platformIndex,
+) {
   const objs = [
     {
       deviceIndex,
-      platform: Number(arr[0].value),
-      x: positionItems[0].value,
-      y: positionItems[1].value,
+      platform: Number(platform),
+      x: setItems.value[itemIndex].positionItems[platformIndex].option[0].value,
+      y: setItems.value[itemIndex].positionItems[platformIndex].option[1].value,
     },
   ];
   transfer('/uvpdps/set-platform-config', objs, null);
 }
-async function transfer(url, objs, index) {
+async function transfer(url, objs, itemIndex, platformIndex) {
   try {
     useAppStore().setSpinning(true);
     const params = {
@@ -184,8 +186,10 @@ async function transfer(url, objs, index) {
     }
     else {
       if (url === '/uvpdps/get-platform-config') {
-        setItem.value[index].positionItems[0].value = data.rslts[0].x;
-        setItem.value[index].positionItems[1].value = data.rslts[0].y;
+        setItems.value[itemIndex].positionItems[platformIndex].option[0].value
+          = data.rslts[0].x;
+        setItems.value[itemIndex].positionItems[platformIndex].option[1].value
+          = data.rslts[0].y;
       }
       openNotify('bottomRight', '操作成功', true);
     }
@@ -198,19 +202,21 @@ async function transfer(url, objs, index) {
     useAppStore().setSpinning(false);
   }
 }
-// async function getData(newValue: string) {
-//   const data = await mainTainModule.getDevice({ moduleID: Number(newValue) });
-//   if (data.respData) {
-//     item.value = data.respData;
-//   } else {
-//     item.value = {};
-//   }
-// }
+async function getData(newValue: string) {
+  const data = await settingMoule.getSettingItem({
+    moduleID: Number(newValue),
+  });
+  if (data.respData) {
+    setItems.value = data.respData.uvPrinters;
+  }
+  else {
+    item.value = {};
+  }
+}
 watch(
   () => props.currentModel,
   (newValue) => {
-    console.log('🚀 ~ newValue:', newValue);
-    // getData(newValue);
+    getData(newValue);
   },
   { deep: true, immediate: true },
 );

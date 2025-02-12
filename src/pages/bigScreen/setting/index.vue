@@ -56,7 +56,7 @@ import Set from './set.vue';
 import Sort from '@/pages/bigScreen/setting/sort/index.vue';
 import TheButton from '@/components/base/TheButton.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
-// const { t } = useI18n();
+
 definePage({
   name: 'Setting',
   meta: {

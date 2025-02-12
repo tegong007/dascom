@@ -35,37 +35,17 @@ const mainTainModule = {
   consumables: {
     getLnkRemainder: () => request.post(`${v1}/tss/get-ink-remainder`),
   },
-
-  readers: {
-    readTestData: (data: any) =>
-      request.post(`${v1}/ips-r/read-test-data`, data),
-    readCardUid: (data: any) => request.post(`${v1}/ips-r/read-card-uid`, data),
-    writeTestData: (data: any) =>
-      request.post(`${v1}/ips-r/write-test-data`, data),
-  },
-  cameras: {
-    cameraWork: (data: any) => request.post(`${v1}/ips-c/camera-work`, data),
-  },
-  lasers: {
-    previewLaser: (data: any) => request.post(`${v1}/lpdps/preview`, data),
-    printLaser: (data: any) => request.post(`${v1}/lpdps/print`, data),
-    redLight: (data: any) => request.post(`${v1}/lpdps/red-light`, data),
-    emergencyStop: (data: any) =>
-      request.post(`${v1}/lpdps/emergency-stop`, data),
-  },
-  uvPrinters: {
-    motoReposition: (data: any) =>
-      request.post(`${v1}/uvpdps/moto-reposition`, data),
-    motoMove: (data: any) => request.post(`${v1}/uvpdps/moto-move`, data),
-    cleanHead: (data: any) => request.post(`${v1}/uvpdps/clean-head`, data),
-    printTest: (data: any) => request.post(`${v1}/lpdps/print`, data),
-  },
 };
-
+// 设置页面
+const settingMoule = {
+  getSettingItem: (data: any) =>
+    request.post(`${v1}/tss/get-setting-item`, data),
+};
 export {
   homeModule,
   positionModule,
   batchModule,
   documentModule,
   mainTainModule,
+  settingMoule,
 };
