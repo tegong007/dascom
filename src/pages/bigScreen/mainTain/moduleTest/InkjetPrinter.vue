@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full">
+  <div class="box-border w-full pb20">
     <div class="bg-[#fff]/[0.4] p-y-5px p-l-0.5em">
       <span>喷墨机</span>
     </div>
@@ -36,24 +36,46 @@
                     {{ option.label }}
                   </a-select-option>
                 </a-select>
-                <a-input
-                  v-else
+                <!-- <a-input
+
                   v-model:value="item.value"
                   size="large"
                   placeholder=""
                   suffix="mm"
                   class="m-r-10 w-150px"
+                /> -->
+                <a-input-number
+                  v-else
+                  v-model:value="item.value"
+                  size="large"
+                  :step="0.01"
+                  class="m-r-10 w-150px"
+                  addon-after="mm"
                 />
               </div>
             </div>
-            <a-space wrap class="mt10 flex justify-evenly">
-              <a-button type="link" class="btn hover:text-[#89f7ff]!">
+            <div class="mt10 flex justify-evenly">
+              <a-button
+                type="link"
+                class="btn hover:text-[#89f7ff]!"
+                @click="
+                  transfer('/uvpdps/moto-reposition', [
+                    { deviceIndex: uvPrinters.deviceIndex },
+                  ])
+                "
+              >
                 复位
               </a-button>
-              <a-button type="link" class="btn hover:text-[#89f7ff]!">
+              <a-button
+                type="link"
+                class="btn hover:text-[#89f7ff]!"
+                @click="
+                  motoMove(uvPrinters.deviceIndex, uvPrinters.positionItems)
+                "
+              >
                 移动
               </a-button>
-            </a-space>
+            </div>
           </section>
 
           <!-- 清洗 -->
@@ -80,11 +102,17 @@
                 </a-select>
               </div>
             </div>
-            <a-space wrap class="mt10 flex justify-center">
-              <a-button type="link" class="btn hover:text-[#89f7ff]!">
+            <div class="mt10 flex justify-center">
+              <a-button
+                type="link"
+                class="btn hover:text-[#89f7ff]!"
+                @click="
+                  cleanHead(uvPrinters.deviceIndex, uvPrinters.cleanItems)
+                "
+              >
                 清洗
               </a-button>
-            </a-space>
+            </div>
           </section>
           <!-- 打印平台 -->
           <section>
@@ -111,33 +139,85 @@
               </div>
             </div>
             <a-space wrap class="mt10 flex justify-center">
-              <a-button type="link" class="btn hover:text-[#89f7ff]!">
+              <a-button
+                type="link"
+                class="btn hover:text-[#89f7ff]!"
+                @click="print(uvPrinters.deviceIndex, uvPrinters.printItems)"
+              >
                 打印测试页
               </a-button>
             </a-space>
           </section>
         </main>
       </div>
-
-      <!-- 打印平台 -->
     </div>
-    <!-- <contextHolder /> -->
+    <contextHolder />
   </div>
 </template>
 
 <script lang="ts" setup>
-// import { openNotify, contextHolder } from '@/components/base/useNotification';
+import { contextHolder, openNotify } from '@/components/base/useNotification';
+import { getApiTransfer } from '@/apis/webApi';
+import { useAppStore } from '@/store/index';
+
 const props = defineProps({
   data: Object,
 });
-// // 定义按钮点击事件
-// const showSuccessNotification = () => {
-//   openNotify('topRight', '这是一条成功通知', true);
-// };
-
-// const readTest = (value: string) => {
-//   console.log('🚀 ~ readTest ~ value:', value);
-// };
+async function motoMove(deviceIndex, arr) {
+  const objs = [
+    {
+      deviceIndex,
+      headID: Number(arr[0].value),
+      intension: Number(arr[1].value),
+    },
+  ];
+  transfer('/uvpdps/clean-head', objs);
+}
+async function cleanHead(deviceIndex, arr) {
+  const objs = [
+    {
+      deviceIndex,
+      axisType: Number(arr[0].value),
+      target: Number(arr[1].value),
+    },
+  ];
+  transfer('/uvpdps/moto-move', objs);
+}
+async function print(deviceIndex, arr) {
+  const objs = [
+    {
+      deviceIndex,
+      platform: Number(arr[0].value),
+      isUseData: false,
+    },
+  ];
+  transfer('/uvpdps/print', objs);
+}
+async function transfer(url, objs) {
+  try {
+    useAppStore().setSpinning(true);
+    const params = {
+      transURI: url,
+      paraIn: {
+        objs,
+      },
+    };
+    const data = await getApiTransfer(params);
+    if (data.rslts[0].code !== 0) {
+      openNotify('bottomRight', data.rslts[0].msg);
+    }
+    else {
+      openNotify('bottomRight', '操作成功', true);
+    }
+  }
+  catch (error) {
+    error;
+    openNotify('bottomRight', '操作失败');
+  }
+  finally {
+    useAppStore().setSpinning(false);
+  }
+}
 </script>
 
 <style scoped>
@@ -153,5 +233,8 @@ const props = defineProps({
 }
 ::v-deep(.ant-select-selection-item) {
   font-size: 16px;
+}
+::v-deep(.ant-input-number-group-addon) {
+  background: #fff;
 }
 </style>

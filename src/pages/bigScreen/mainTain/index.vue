@@ -4,7 +4,9 @@
   >
     <bigScreenHeader title="维护" />
     <div class="h-100% w-full flex flex-col text-white">
-      <div class="bg-color m-x-4em h-87% flex border-[4px] border-[#3F89DD]">
+      <div
+        class="bg-color m-x-4em h-87% max-h-900px flex border-[4px] border-[#3F89DD]"
+      >
         <div class="h-full w-[10%] flex flex-col">
           <a-radio-group
             v-model:value="currentModel"
@@ -22,7 +24,9 @@
             </a-radio-button>
           </a-radio-group>
         </div>
-        <div class="wh-full border-l-[4px] border-[#3F89DD]">
+        <div
+          class="box-border wh-full overflow-hidden border-l-[4px] border-[#3F89DD]"
+        >
           <section
             v-if="currentModel === '0'"
             class="wh-full flex flex-col flex-1"
@@ -34,15 +38,19 @@
           </section>
           <section
             v-if="currentModel === '5'"
-            class="scoll-bar wh-full flex flex-col flex-1"
+            class="scoll-bar box-border wh-full flex flex-col flex-1"
           >
             <Consumables :current-model="currentModel" />
           </section>
           <section
-            v-if="currentModel !== '5' && currentModel !== '0'"
-            class="scoll-bar wh-full flex flex-col flex-1"
+            v-if="
+              currentModel !== '5'
+                && currentModel !== '0'
+                && currentModel !== ''
+            "
+            class="scoll-bar box-border wh-full flex flex-col flex-1"
           >
-            <moduleTest :current-model="currentModel" />
+            <ModuleTest :current-model="currentModel" />
           </section>
 
           <!-- <section v-if="currentModel === '1'">
@@ -75,7 +83,7 @@ import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import OnlyTest from '@/pages/bigScreen/mainTain/onlyTest/index.vue';
 import Consumables from '@/pages/bigScreen/mainTain/consumables/index.vue';
-import moduleTest from '@/pages/bigScreen/mainTain/moduleTest/index.vue';
+import ModuleTest from '@/pages/bigScreen/mainTain/moduleTest/index.vue';
 import TheButton from '@/components/base/TheButton.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 // const { t } = useI18n();

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full pb20px">
+  <div class="box-border w-full">
     <div class="bg-[#fff]/[0.4] p-y-5px p-l-0.5em">
       <span>摄像头</span>
     </div>
@@ -14,38 +14,65 @@
           <a-button
             type="link"
             class="btn hover:text-[#89f7ff]!"
-            @click="() => setVisible(true)"
+            @click="() => transfer(camera.deviceIndex)"
           >
             拍照
           </a-button>
-          <a-image
-            class="hidden"
-            :preview="{
-              visible,
-              onVisibleChange: setVisible,
-            }"
-            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-          />
         </div>
       </div>
+      <a-image
+        class="hidden"
+        :preview="{
+          visible,
+          onVisibleChange: setVisible,
+        }"
+        :src="`data:image/png;base64,${path}`"
+      />
     </section>
-    <!-- <contextHolder /> -->
+    <contextHolder />
   </div>
 </template>
 
 <script lang="ts" setup>
-// import { openNotify, contextHolder } from '@/components/base/useNotification';
+import { contextHolder, openNotify } from '@/components/base/useNotification';
+import { getApiTransfer } from '@/apis/webApi';
+import { useAppStore } from '@/store/index';
+
 const props = defineProps({
   data: Object,
 });
 const visible = ref<boolean>(false);
+const path = ref('');
 function setVisible(value): void {
   visible.value = value;
 }
-// 定义按钮点击事件
-// const showSuccessNotification = () => {
-//   openNotify('topRight', '这是一条成功通知', true);
-// };
+async function transfer(deviceIndex) {
+  try {
+    useAppStore().setSpinning(true);
+    const params = {
+      transURI: '/ips-c/camera-work',
+      paraIn: {
+        objs: [{ deviceIndex }],
+      },
+    };
+    const data = await getApiTransfer(params);
+    if (data.rslts[0].code !== 0) {
+      openNotify('bottomRight', data.rslts[0].msg);
+    }
+    else {
+      path.value = data.rslts[0].imgData;
+      setVisible(true);
+      openNotify('bottomRight', '操作成功', true);
+    }
+  }
+  catch (error) {
+    error;
+    openNotify('bottomRight', '操作失败');
+  }
+  finally {
+    useAppStore().setSpinning(false);
+  }
+}
 </script>
 
 <style scoped>

@@ -1,13 +1,13 @@
 <template>
-  <div class="w-full pb30px">
+  <div class="box-border w-full">
     <div class="bg-[#fff]/[0.4] p-y-5px p-l-0.5em">
-      <span>读卡器</span>
+      <span>读写器</span>
     </div>
-    <section class="flex flex-wrap gap-20">
+    <section class="box-border flex flex-wrap gap-20">
       <div
         v-for="(reader, index) in props.data"
         :key="index"
-        class="w450px p-l-3em p-t-1em"
+        class="box-border w450px p-l-3em p-t-1em"
       >
         <div class="text-[18px]">
           {{ reader.readerName }}：
@@ -18,25 +18,38 @@
           size="large"
           placeholder="读卡器数据"
         />
-        <a-space wrap class="mt10 flex justify-between">
+        <div class="mt10 box-border flex justify-between">
           <a-button
             type="link"
             class="btn hover:text-[#89f7ff]!"
-            @click="transfer('/ips-r/read-test-data', index)"
+            @click="
+              transfer('/ips-r/read-test-data', index, reader.deviceIndex)
+            "
           >
             读测试数据
           </a-button>
           <a-button
             type="link"
             class="btn hover:text-[#89f7ff]!"
-            @click="showSuccessNotification"
+            @click="transfer('/ips-r/read-card-uid', index, reader.deviceIndex)"
           >
             读卡UID
           </a-button>
-          <a-button type="link" class="btn hover:text-[#89f7ff]!">
+          <a-button
+            type="link"
+            class="btn hover:text-[#89f7ff]!"
+            @click="
+              transfer(
+                '/ips-r/write-test-data',
+                index,
+                reader.deviceIndex,
+                reader.value,
+              )
+            "
+          >
             写入测试数据
           </a-button>
-        </a-space>
+        </div>
       </div>
     </section>
     <contextHolder />
@@ -46,32 +59,44 @@
 <script lang="ts" setup>
 import { contextHolder, openNotify } from '@/components/base/useNotification';
 import { getApiTransfer } from '@/apis/webApi';
+import { useAppStore } from '@/store/index';
 
 const props = defineProps({
   data: Object,
   updateItem: Function,
 });
-// 定义按钮点击事件
-function showSuccessNotification() {
-  openNotify('topRight', '这是一条成功通知', true);
-}
-async function transfer(url, index) {
+
+async function transfer(url, index, deviceIndex, inputData) {
   try {
+    useAppStore().setSpinning(true);
     const params = {
       transURI: url,
       paraIn: {
-        deviceIndex: props.data.deviceIndex,
+        objs: [{ deviceIndex, data: inputData }],
       },
     };
     const data = await getApiTransfer(params);
-    if (data.rslts) {
-      props.updateItem('readers', index, data.rslts.data);
+    if (data.rslts[0].code === 0) {
+      props.updateItem(
+        'readers',
+        index,
+        url === '/ips-r/read-test-data'
+          ? data.rslts[0].data
+          : data.rslts[0].cardUid,
+      );
     }
-    // openNotify('bottomRight', '手动送本成功', true);
+    else {
+      openNotify('bottomRight', data.rslts[0].msg);
+      props.updateItem('readers', index, undefined);
+    }
   }
   catch (error) {
     error;
-    openNotify('bottomRight', '读测试数据失败');
+    openNotify('bottomRight', '操作失败');
+    props.updateItem('readers', index, undefined);
+  }
+  finally {
+    useAppStore().setSpinning(false);
   }
 }
 </script>

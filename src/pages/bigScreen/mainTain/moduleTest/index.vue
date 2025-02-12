@@ -1,5 +1,5 @@
 <template>
-  <div class="wh-full">
+  <div class="box-border wh-full flex flex-col gap-30">
     <Reader
       v-if="item.readers"
       :data="item.readers"
@@ -41,21 +41,14 @@ const item = ref({
       deviceIndex: 'M3-Reader-1',
       value: '',
     },
-    {
-      readerName: '读卡器2',
-      deviceIndex: 'M3-Reader-1',
-      value: '',
-    },
+
   ],
   cameras: [
     {
       cameraName: '摄像头1',
       deviceIndex: 'M3-Reader-1',
     },
-    {
-      cameraName: '摄像头1',
-      deviceIndex: 'M3-Reader-1',
-    },
+
   ],
   lasers: [
     {
@@ -78,26 +71,7 @@ const item = ref({
         },
       ],
     },
-    {
-      laserName: '激光器2',
-      deviceIndex: 'M3-Reader-1',
-      printItems: [
-        {
-          label: '打印平台',
-          option: [
-            {
-              value: '1',
-              label: '1',
-            },
-            {
-              value: '2',
-              label: '2',
-            },
-          ],
-          value: '2',
-        },
-      ],
-    },
+
   ],
   uvPrinters: [
     {
@@ -192,21 +166,16 @@ async function getData(newValue: string) {
   const data = await mainTainModule.getDevice({ moduleID: Number(newValue) });
   if (data.respData) {
     item.value = data.respData;
-    // Object.assign(item, data.respData);
   }
-  // console.log('🚀 ~ data:', item);
+  else {
+    item.value = {};
+  }
 }
 
 watch(
   () => props.currentModel,
   (newValue) => {
-    console.log('🚀 ~ newValue:', newValue);
     getData(newValue);
-    // if (newValue === 'haocai') {
-    // //   getDataPage();
-    // } else {
-    //   stop();
-    // }
   },
   { deep: true, immediate: true },
 );
