@@ -13,7 +13,7 @@
           {{ laser.laserName }}：
         </div>
 
-        <div class="flex flex-wrap justify-between gap-10">
+        <div class="mt10 flex flex-wrap justify-between gap-10">
           <div v-for="(item, itemIndex) in laser.printItems" :key="itemIndex">
             <span class="ml20">{{ item.label }}：</span>
             <a-select

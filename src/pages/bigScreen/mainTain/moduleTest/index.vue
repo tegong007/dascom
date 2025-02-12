@@ -1,5 +1,5 @@
 <template>
-  <div class="box-border wh-full flex flex-col gap-30">
+  <div class="box-border wh-full flex flex-col gap-20">
     <Reader
       v-if="item.readers"
       :data="item.readers"
@@ -41,14 +41,12 @@ const item = ref({
       deviceIndex: 'M3-Reader-1',
       value: '',
     },
-
   ],
   cameras: [
     {
       cameraName: '摄像头1',
       deviceIndex: 'M3-Reader-1',
     },
-
   ],
   lasers: [
     {
@@ -71,7 +69,6 @@ const item = ref({
         },
       ],
     },
-
   ],
   uvPrinters: [
     {

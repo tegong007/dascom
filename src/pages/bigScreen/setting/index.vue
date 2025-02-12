@@ -23,14 +23,6 @@
         </div>
         <div class="wh-full border-l-[4px] border-[#3F89DD]">
           <section
-            v-if="currentModel === '0'"
-            class="wh-full flex flex-col flex-1"
-          >
-            <Process />
-            <Reader />
-            <TrunLine />
-          </section>
-          <section
             v-if="currentModel === 'sort'"
             class="wh-full flex flex-col flex-1"
           >
@@ -40,8 +32,8 @@
           <!-- <section v-if="currentModel === '1'">
             <Print />
           </section> -->
-          <section v-if="currentModel === '4'">
-            <OnlyTest />
+          <section v-if="currentModel === '2' || currentModel === '3'">
+            <Set :current-model="currentModel" />
           </section>
         </div>
       </div>
@@ -60,11 +52,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
+import Set from './set.vue';
 import Sort from '@/pages/bigScreen/setting/sort/index.vue';
-import Process from '@/pages/bigScreen/setting/startSet/process.vue';
-import Reader from '@/pages/bigScreen/setting/startSet/reader.vue';
-import TrunLine from '@/pages/bigScreen/setting/startSet/turnline.vue';
-import OnlyTest from '@/pages/bigScreen/setting/onlyTest/index.vue';
 import TheButton from '@/components/base/TheButton.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 // const { t } = useI18n();
@@ -87,8 +76,8 @@ const options = [
   { label: `软件设置`, value: 'sort' },
   // { label: `整机`, value: '0' },
   // { label: `空白本校验`, value: '0' },
-  // { label: `主副页打印`, value: '1' },
-  // { label: `加注打印`, value: '2' },
+  { label: `主副页设置`, value: '2' },
+  { label: `加注页设置`, value: '3' },
   // { label: `成本证本收集`, value: '3' },
   // { label: `模块测试`, value: '4' },
 ];

@@ -36,14 +36,6 @@
                     {{ option.label }}
                   </a-select-option>
                 </a-select>
-                <!-- <a-input
-
-                  v-model:value="item.value"
-                  size="large"
-                  placeholder=""
-                  suffix="mm"
-                  class="m-r-10 w-150px"
-                /> -->
                 <a-input-number
                   v-else
                   v-model:value="item.value"
@@ -168,7 +160,7 @@ async function motoMove(deviceIndex, arr) {
     {
       deviceIndex,
       headID: Number(arr[0].value),
-      intension: Number(arr[1].value),
+      intension: arr[1].value,
     },
   ];
   transfer('/uvpdps/clean-head', objs);
