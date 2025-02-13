@@ -128,6 +128,11 @@ const colums = ref([
     width: 120,
   },
   {
+    title: '识别号',
+    field: 'recID',
+    width: 120,
+  },
+  {
     title: '证本号',
     field: 'docID',
     width: 120,
@@ -247,7 +252,8 @@ function setSearchForm(formValue: object) {
 async function operate() {
   try {
     await documentModule.getDocOperate({
-      docID: checkedRow.value,
+      recID: checkedRow.value,
+      batchID: props.batchID,
       operate: isReset.value,
     });
     openNotify(
@@ -277,6 +283,7 @@ async function getDataPage() {
     };
     const data = await documentModule.getDocDetailPage(params);
     const statistics = await documentModule.getDocStatistics({
+      batchID: props.batchID,
       groupID: groupID.value,
     });
     if (data.respData) {
@@ -297,12 +304,12 @@ async function getDataPage() {
     // stop();
   }
 }
-function rowAction(type: string, docID: string) {
+function rowAction(type: string, recID: string) {
   modal.value = type;
-  const newCheckRow = !docID ? tableRef.value.getSelectEvent() : [docID];
+  const newCheckRow = !recID ? tableRef.value.getSelectEvent() : [recID];
   if (tableRef.value && newCheckRow) {
-    checkedRow.value = !docID
-      ? newCheckRow.map(item => item.docID)
+    checkedRow.value = !recID
+      ? newCheckRow.map(item => item.recID)
       : newCheckRow;
   }
   nextTick(() => {

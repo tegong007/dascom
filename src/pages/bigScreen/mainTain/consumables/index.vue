@@ -1,7 +1,7 @@
 <template>
   <div class="box-border wh-full flex flex-col p-x-20 divide-y">
     <section
-      v-for="(moduleItems, moduleIndex) in itemsForAllModules"
+      v-for="(moduleItems, moduleIndex) in modulesData"
       :key="moduleIndex"
       class="h-full flex p-y-20"
     >
@@ -9,26 +9,26 @@
         <span class="text-[28px] color-[#CFDEF1]">{{ moduleItems.moduleName }}油墨余量</span>
         <div class="flex">
           <div
-            v-for="(item, index) in moduleItems.items"
+            v-for="(item, index) in moduleItems.inkObjects"
             :key="index"
             class="h240px flex flex-col flex-1 items-center justify-around"
           >
             <div class="h25px w25px">
               <img
-                v-if="item.value <= 30"
+                v-if="item.isLow"
                 src="@/assets/image/bigScreen/btn/warning.svg"
               >
             </div>
 
             <a-progress
               class="relative left-4 w80% rotate-270"
-              :trail-color="item.trailColor"
-              :stroke-color="item.strokeColor"
-              :percent="item.value"
+              :trail-color="colorMap[item.inkName]"
+              :stroke-color="colorMap[item.inkName].slice(0, -2)"
+              :percent="item.remainder"
               :size="[40, 60]"
               :show-info="false"
             />
-            <span>{{ item.name }}</span>
+            <span>{{ item.inkName }}</span>
           </div>
         </div>
         <div
@@ -66,84 +66,156 @@ const props = defineProps({
 const { start, stop } = useCustomTimer();
 const modulesData = ref([
   {
-    moduleID: 1,
-    moduleName: '主副页模块',
-    yellow: 50, // 黄色
-    magenta: 40, // 洋红
-    cyan: 30, // 青色
-    black: 40, // 黑色
-    varnish: 100, // 光油
-    invisibleRed: 30, // 隐形红
-    invisibleGreen: 50, // 隐形绿
-    invisibleBlue: 80, // 隐形蓝
-    missingMsg: '黑色缺失', // 缺失提示
-    lowMsg: '洋红低于10%', // 将近提示
-    remainDocNum: 154186551, // 预计打印证本数
+    inkObjects: [
+      {
+        inkName: '黄色',
+        isLow: false,
+        isMiss: false,
+        remainder: 100,
+      },
+      {
+        inkName: '洋红色',
+        isLow: false,
+        isMiss: false,
+        remainder: 100,
+      },
+      {
+        inkName: '青色',
+        isLow: false,
+        isMiss: false,
+        remainder: 100,
+      },
+      {
+        inkName: '黑色',
+        isLow: false,
+        isMiss: false,
+        remainder: 100,
+      },
+      {
+        inkName: '光油',
+        isLow: false,
+        isMiss: false,
+        remainder: 100,
+      },
+      {
+        inkName: '隐形红',
+        isLow: false,
+        isMiss: false,
+        remainder: 100,
+      },
+      {
+        inkName: '隐形绿',
+        isLow: false,
+        isMiss: false,
+        remainder: 100,
+      },
+      {
+        inkName: '隐形蓝',
+        isLow: false,
+        isMiss: false,
+        remainder: 100,
+      },
+    ],
+    lowMsg: '',
+    missingMsg: '',
+    moduleID: 2,
+    moduleName: '主副页打印模块',
+    remainDocNum: 999,
   },
   {
-    moduleID: 2,
-    moduleName: '加注页模块',
-    yellow: 50,
-    magenta: 40,
-    cyan: 30,
-    black: 40,
-    varnish: 100,
-    invisibleRed: 30,
-    invisibleGreen: 50,
-    invisibleBlue: 80,
-    missingMsg: '黑色缺失',
-    lowMsg: '洋红低于10%',
-    remainDocNum: 12, // 预计打印证本数
+    inkObjects: [
+      {
+        inkName: '黄色',
+        isLow: false,
+        isMiss: false,
+        remainder: 100,
+      },
+      {
+        inkName: '洋红色',
+        isLow: false,
+        isMiss: false,
+        remainder: 100,
+      },
+      {
+        inkName: '青色',
+        isLow: false,
+        isMiss: false,
+        remainder: 100,
+      },
+      {
+        inkName: '黑色',
+        isLow: false,
+        isMiss: false,
+        remainder: 100,
+      },
+      {
+        inkName: '光油',
+        isLow: false,
+        isMiss: false,
+        remainder: 100,
+      },
+      {
+        inkName: '隐形红',
+        isLow: false,
+        isMiss: false,
+        remainder: 100,
+      },
+      {
+        inkName: '隐形绿',
+        isLow: false,
+        isMiss: false,
+        remainder: 100,
+      },
+      {
+        inkName: '隐形蓝',
+        isLow: false,
+        isMiss: false,
+        remainder: 100,
+      },
+    ],
+    lowMsg: '',
+    missingMsg: '',
+    moduleID: 3,
+    moduleName: '加注页打印模块',
+    remainDocNum: 999,
   },
 ]);
 
 // 颜色的 trailColor 和 strokeColor 映射
 const colorMap = {
-  yellow: '#FFFF0024',
-  magenta: '#FF00FF50',
-  cyan: '#00FFFF50',
-  black: '#00000030',
-  varnish: '#A8A8A840',
-  invisibleRed: '#FF000024',
-  invisibleGreen: '#00FF0030',
-  invisibleBlue: '#0000FF20',
-};
-
-// 将英文名称映射到中文
-const colorNameMap = {
-  yellow: '黄色',
-  magenta: '洋红',
-  cyan: '青色',
-  black: '黑色',
-  varnish: '光油',
-  invisibleRed: '隐形红',
-  invisibleGreen: '隐形绿',
-  invisibleBlue: '隐形蓝',
+  黄色: '#FFFF0024',
+  洋红色: '#FF00FF50',
+  青色: '#00FFFF50',
+  黑色: '#00000030',
+  光油: '#A8A8A840',
+  隐形红: '#FF000024',
+  隐形绿: '#00FF0030',
+  隐形蓝: '#0000FF20',
 };
 
 // 计算属性，用于生成所有模块的 items 数组
-const itemsForAllModules = computed(() => {
-  return modulesData.value.map((module) => {
-    const items = Object.keys(colorMap).map((key) => {
-      const englishKey = key;
-      return {
-        name: colorNameMap[englishKey], // 显示英文名称
-        trailColor: colorMap[englishKey],
-        strokeColor: colorMap[englishKey].slice(0, -2),
-        value: module[englishKey],
-      };
-    });
-    // 返回一个包含模块信息和颜色项数组的对象
-    return {
-      moduleID: module.moduleID,
-      moduleName: module.moduleName,
-      items,
-      missingMsg: module.missingMsg,
-      lowMsg: module.lowMsg,
-      remainDocNum: module.remainDocNum,
-    };
-  });
-});
+// const itemsForAllModules = computed(() => {
+//   return modulesData.value.map((module) => {
+//     const items = Object.keys(colorMap).map((key) => {
+//       const englishKey = key;
+//       return {
+//         name: colorNameMap[englishKey], // 显示英文名称
+//         trailColor: colorMap[englishKey],
+//         strokeColor: colorMap[englishKey].slice(0, -2),
+//         value: module[englishKey],
+//       };
+//     });
+//     // 返回一个包含模块信息和颜色项数组的对象
+//     return {
+//       moduleID: module.moduleID,
+//       moduleName: module.moduleName,
+//       items,
+//       missingMsg: module.missingMsg,
+//       lowMsg: module.lowMsg,
+//       remainDocNum: module.remainDocNum,
+//     };
+//   });
+// });
 
 async function getDataPage() {
   try {
