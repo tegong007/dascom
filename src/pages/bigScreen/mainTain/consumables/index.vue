@@ -220,25 +220,25 @@ const colorMap = {
 async function getDataPage() {
   try {
     const data = await mainTainModule.consumables.getLnkRemainder();
-
     if (data.respData) {
       modulesData.value = data.respData;
     }
-
-    startGetDataPage();
+    if (props.currentModel === '5') {
+      startGetDataPage();
+    }
+    else {
+      stop();
+    }
   }
   catch (error) {
     error;
     stop();
   }
 }
-onDeactivated(() => {
-  stop();
-});
 async function startGetDataPage() {
   start(async () => {
     await getDataPage();
-  }, 2);
+  }, 5);
 }
 
 // watch(props.currentModel, (newValue) => {

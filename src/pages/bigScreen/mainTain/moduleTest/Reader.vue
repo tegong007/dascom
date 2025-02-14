@@ -57,6 +57,7 @@
 </template>
 
 <script lang="ts" setup>
+import { App } from 'ant-design-vue';
 import { contextHolder, openNotify } from '@/components/base/useNotification';
 import { getApiTransfer } from '@/apis/webApi';
 import { useAppStore } from '@/store/index';
@@ -65,7 +66,7 @@ const props = defineProps({
   data: Object,
   updateItem: Function,
 });
-
+const { notification } = App.useApp();
 async function transfer(url, index, deviceIndex, inputData) {
   try {
     useAppStore().setSpinning(true);
@@ -92,7 +93,11 @@ async function transfer(url, index, deviceIndex, inputData) {
   }
   catch (error) {
     error;
-    openNotify('bottomRight', '操作失败');
+    notification.error({
+      message: `错误信息`,
+      description: '操作失败',
+      placement: 'bottomRight',
+    });
     props.updateItem('readers', index, undefined);
   }
   finally {

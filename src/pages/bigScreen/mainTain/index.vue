@@ -37,7 +37,7 @@
             <OnlyTest />
           </section>
           <section
-            v-if="currentModel === '5'"
+            v-show="currentModel === '5'"
             class="scoll-bar box-border wh-full flex flex-col flex-1"
           >
             <Consumables :current-model="currentModel" />
@@ -94,7 +94,7 @@ definePage({
   },
 });
 const route = useRoute();
-const currentModel = ref<string>('5');
+const currentModel = ref<string>('');
 onActivated(() => {
   nextTick(() => {
     const query = route.query;
