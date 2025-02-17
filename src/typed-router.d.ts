@@ -51,7 +51,6 @@ declare module 'vue-router/auto-routes' {
     '/bigScreen/mainTain/moduleTest/Reader': RouteRecordInfo<'/bigScreen/mainTain/moduleTest/Reader', '/bigScreen/mainTain/moduleTest/Reader', Record<never, never>, Record<never, never>>,
     '/bigScreen/mainTain/onlyTest/': RouteRecordInfo<'/bigScreen/mainTain/onlyTest/', '/bigScreen/mainTain/onlyTest', Record<never, never>, Record<never, never>>,
     '/bigScreen/mainTain/print/': RouteRecordInfo<'/bigScreen/mainTain/print/', '/bigScreen/mainTain/print', Record<never, never>, Record<never, never>>,
-    '/bigScreen/mainTain/test': RouteRecordInfo<'/bigScreen/mainTain/test', '/bigScreen/mainTain/test', Record<never, never>, Record<never, never>>,
     '/bigScreen/module/addMore': RouteRecordInfo<'/bigScreen/module/addMore', '/bigScreen/module/addMore', Record<never, never>, Record<never, never>>,
     '/bigScreen/module/finishedProduct': RouteRecordInfo<'/bigScreen/module/finishedProduct', '/bigScreen/module/finishedProduct', Record<never, never>, Record<never, never>>,
     '/bigScreen/module/printPage': RouteRecordInfo<'/bigScreen/module/printPage', '/bigScreen/module/printPage', Record<never, never>, Record<never, never>>,

@@ -130,7 +130,7 @@
                 </a-select>
               </div>
             </div>
-            <a-space wrap class="mt10 flex justify-center">
+            <div class="mt10 flex justify-center">
               <a-button
                 type="link"
                 class="btn hover:text-[#89f7ff]!"
@@ -138,7 +138,7 @@
               >
                 打印测试页
               </a-button>
-            </a-space>
+            </div>
           </section>
         </main>
       </div>
@@ -160,7 +160,7 @@ async function motoMove(deviceIndex, arr) {
     {
       deviceIndex,
       axisType: Number(arr[0].value),
-      intentargetsion: arr[1].value,
+      target: arr[1].value,
     },
   ];
   transfer('/uvpdps/moto-move', objs);

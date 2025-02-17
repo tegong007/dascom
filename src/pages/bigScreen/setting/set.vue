@@ -1,7 +1,15 @@
 <template>
   <div class="box-border w-full">
-    <div class="bg-[#fff]/[0.4] p-y-5px p-l-0.5em">
+    <div v-if="setItems.length" class="bg-[#fff]/[0.4] p-y-5px p-l-0.5em">
       <span>位置调整</span>
+      <a-popover>
+        <template #content>
+          <a-empty description="暂无提示图片" />
+        </template>
+        <!-- <a-button type="primary" shape="circle" :icon="h(SearchOutlined)" /> -->
+        <QuestionCircleOutlined style="margin-left: 10px" />
+        <!-- <a-button type="primary">Hover me</a-button> -->
+      </a-popover>
     </div>
     <section class="w-full">
       <div
@@ -70,6 +78,7 @@
 </template>
 
 <script lang="ts" setup>
+import { QuestionCircleOutlined } from '@ant-design/icons-vue';
 import { contextHolder, openNotify } from '@/components/base/useNotification';
 import { getApiTransfer } from '@/apis/webApi';
 import { useAppStore } from '@/store/index';
@@ -78,69 +87,7 @@ import { settingMoule } from '@/apis/proApi';
 const props = defineProps({
   currentModel: String,
 });
-const setItems = ref([
-  {
-    name: '喷墨打印平台1',
-    deviceIndex: 'M2-UV-1',
-    printItems: [
-      {
-        label: '打印平台',
-        option: [
-          {
-            value: '1',
-            label: '1',
-          },
-          {
-            value: '2',
-            label: '2',
-          },
-        ],
-        value: '1',
-      },
-    ],
-    positionItems: [
-      {
-        label: 'x轴',
-        value: '',
-      },
-      {
-        label: 'y轴',
-        value: '',
-      },
-    ],
-  },
-  {
-    name: '喷墨打印平台2',
-    deviceIndex: 'M3-Reader-1',
-    printItems: [
-      {
-        label: '打印平台',
-        option: [
-          {
-            value: '1',
-            label: '1',
-          },
-          {
-            value: '2',
-            label: '2',
-          },
-        ],
-        value: '1',
-      },
-    ],
-    positionItems: [
-      {
-        label: 'x轴',
-        value: '',
-      },
-      {
-        label: 'y轴',
-        value: '',
-      },
-    ],
-  },
-]);
-
+const setItems = ref([]);
 async function getPlatformConfig(
   deviceIndex,
   platform,

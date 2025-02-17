@@ -28,19 +28,17 @@ const indicator = h(LoadingOutlined, {
       },
     }"
   >
-    <a-app>
-      <a-spin
-        :spinning="appStore.spinning"
-        :indicator="indicator"
-        :tip="t('modal.loading')"
-      >
-        <router-view v-slot="{ Component, route: curRoute }">
-          <KeepAlive>
-            <component :is="Component" :key="curRoute.fullPath" />
-          </KeepAlive>
-        </router-view>
-      </a-spin>
-    </a-app>
+    <a-spin
+      :spinning="appStore.spinning"
+      :indicator="indicator"
+      :tip="t('modal.loading')"
+    >
+      <router-view v-slot="{ Component, route: curRoute }">
+        <KeepAlive>
+          <component :is="Component" :key="curRoute.fullPath" />
+        </KeepAlive>
+      </router-view>
+    </a-spin>
   </a-config-provider>
 </template>
 

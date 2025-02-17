@@ -3,63 +3,64 @@
     class="bg h-100vh w-full flex flex-col items-center text-[18px] text-white"
   >
     <bigScreenHeader title="维护" />
-    <div class="h-100% w-full flex flex-col text-white">
-      <div
-        class="bg-color m-x-4em h-87% max-h-900px flex border-[4px] border-[#3F89DD]"
-      >
-        <div class="h-full w-[10%] flex flex-col">
-          <a-radio-group
-            v-model:value="currentModel"
-            class="bg-color h-full w-full"
-            button-style="outline"
-            @change="labelChange"
-          >
-            <a-radio-button
-              v-for="(item, index) in options"
-              :key="index"
-              :value="item.value"
-              class="siyuan w-full flex cursor-pointer items-center justify-center border-0 bg-[#0000] py-[45px] text-[20px] text-white before:!w-0"
-            >
-              {{ item.label }}
-            </a-radio-button>
-          </a-radio-group>
-        </div>
+    <a-app class="h-100% w-full">
+      <div class="h-100% w-full flex flex-col text-white">
         <div
-          class="box-border wh-full overflow-hidden border-l-[4px] border-[#3F89DD]"
+          class="bg-color m-x-4em h-87% max-h-790px flex border-[4px] border-[#3F89DD]"
         >
-          <section
-            v-if="currentModel === '0'"
-            class="wh-full flex flex-col flex-1"
+          <div class="h-full w-[10%] flex flex-col">
+            <a-radio-group
+              v-model:value="currentModel"
+              class="bg-color h-full w-full"
+              button-style="outline"
+              @change="labelChange"
+            >
+              <a-radio-button
+                v-for="(item, index) in options"
+                :key="index"
+                :value="item.value"
+                class="siyuan w-full flex cursor-pointer items-center justify-center border-0 bg-[#0000] py-[45px] text-[20px] text-white before:!w-0"
+              >
+                {{ item.label }}
+              </a-radio-button>
+            </a-radio-group>
+          </div>
+          <div
+            class="box-border wh-full overflow-hidden border-l-[4px] border-[#3F89DD]"
           >
-            <!-- <Process />
+            <section
+              v-if="currentModel === '0'"
+              class="wh-full flex flex-col flex-1"
+            >
+              <!-- <Process />
             <Reader />
             <TrunLine /> -->
-            <OnlyTest />
-          </section>
-          <section
-            v-show="currentModel === '5'"
-            class="scoll-bar box-border wh-full flex flex-col flex-1"
-          >
-            <Consumables :current-model="currentModel" />
-          </section>
-          <section
-            v-if="
-              currentModel !== '5'
-                && currentModel !== '0'
-                && currentModel !== ''
-            "
-            class="scoll-bar box-border wh-full flex flex-col flex-1"
-          >
-            <ModuleTest :current-model="currentModel" />
-          </section>
+              <OnlyTest />
+            </section>
+            <section
+              v-show="currentModel === '5'"
+              class="scoll-bar box-border wh-full flex flex-col flex-1"
+            >
+              <Consumables :current-model="currentModel" />
+            </section>
+            <section
+              v-if="
+                currentModel !== '5'
+                  && currentModel !== '0'
+                  && currentModel !== ''
+              "
+              class="scoll-bar box-border wh-full flex flex-col flex-1"
+            >
+              <ModuleTest :current-model="currentModel" />
+            </section>
 
-          <!-- <section v-if="currentModel === '1'">
+            <!-- <section v-if="currentModel === '1'">
             <Print />
           </section> -->
+          </div>
         </div>
       </div>
-    </div>
-
+    </a-app>
     <div
       class="groupBtn absolute bottom-0 h8em w-full flex items-center justify-center gap-20"
     >

@@ -249,7 +249,7 @@ async function getDataPage() {
     // startGetDataPage();
   }
   catch (error) {
-    console.log('🚀 ~ file: index.vue:206 ~ getDataPage ~ error:', error);
+    error;
     // stop();
   }
 }
