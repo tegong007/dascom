@@ -169,11 +169,11 @@ async function cleanHead(deviceIndex, arr) {
   const objs = [
     {
       deviceIndex,
-      axisType: Number(arr[0].value),
-      target: Number(arr[1].value),
+      headID: Number(arr[0].value),
+      intension: Number(arr[1].value),
     },
   ];
-  transfer('/uvpdps/moto-move', objs);
+  transfer('/uvpdps/clean-head', objs);
 }
 async function print(deviceIndex, arr) {
   const objs = [
