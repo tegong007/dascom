@@ -52,13 +52,11 @@
         </div>
       </div>
     </section>
-    <contextHolder />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { App } from 'ant-design-vue';
-import { contextHolder, openNotify } from '@/components/base/useNotification';
 import { getApiTransfer } from '@/apis/webApi';
 import { useAppStore } from '@/store/index';
 
@@ -87,7 +85,11 @@ async function transfer(url, index, deviceIndex, inputData) {
       );
     }
     else {
-      openNotify('bottomRight', data.rslts[0].msg);
+      notification.error({
+        message: `错误信息`,
+        description: data.rslts[0].msg,
+        placement: 'bottomRight',
+      });
       props.updateItem('readers', index, undefined);
     }
   }
