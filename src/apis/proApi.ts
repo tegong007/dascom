@@ -35,6 +35,7 @@ const mainTainModule = {
   consumables: {
     getLnkRemainder: () => request.post(`${v1}/tss/get-ink-remainder`),
   },
+  getVersion: (data: any) => request.post(`${v1}/tss/get-version`, data),
 };
 // 设置页面
 const settingMoule = {

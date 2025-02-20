@@ -28,24 +28,25 @@
           <div
             class="box-border wh-full overflow-hidden border-l-[4px] border-[#3F89DD]"
           >
+            <!-- 整机测试 -->
             <section
               v-if="currentModel === '0'"
               class="wh-full flex flex-col flex-1"
             >
-              <!-- <Process />
-            <Reader />
-            <TrunLine /> -->
               <OnlyTest />
             </section>
+            <!-- 耗材 -->
             <section
               v-show="currentModel === '5'"
               class="scoll-bar box-border wh-full flex flex-col flex-1"
             >
               <Consumables :current-model="currentModel" />
             </section>
+            <!-- 四个模块 -->
             <section
               v-if="
                 currentModel !== '5'
+                  && currentModel !== '6'
                   && currentModel !== '0'
                   && currentModel !== ''
               "
@@ -53,10 +54,13 @@
             >
               <ModuleTest :current-model="currentModel" />
             </section>
-
-            <!-- <section v-if="currentModel === '1'">
-            <Print />
-          </section> -->
+            <!-- 版本信息 -->
+            <section
+              v-show="currentModel === '6'"
+              class="scoll-bar box-border wh-full flex flex-col flex-1"
+            >
+              <Version :current-model="currentModel" />
+            </section>
           </div>
         </div>
       </div>
@@ -87,6 +91,7 @@ import Consumables from '@/pages/bigScreen/mainTain/consumables/index.vue';
 import ModuleTest from '@/pages/bigScreen/mainTain/moduleTest/index.vue';
 import TheButton from '@/components/base/TheButton.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
+import Version from '@/pages/bigScreen/mainTain/version/index.vue';
 // const { t } = useI18n();
 definePage({
   name: 'MainTain',
@@ -110,6 +115,7 @@ const options = [
   { label: `主副页打印`, value: '2' },
   { label: `加注打印`, value: '3' },
   { label: `成本证本收集`, value: '4' },
+  { label: `版本信息`, value: '6' },
 ];
 
 function labelChange(value) {
