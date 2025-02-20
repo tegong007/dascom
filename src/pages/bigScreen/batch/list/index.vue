@@ -44,11 +44,11 @@
       <main class="box-border h70% w-full">
         <MyTable
           ref="tableRef"
-          :seq="true"
           :colums="colums"
           :checkbox="true"
           :data="tableData"
           :rowfun="rowAction"
+          key-field="batchID"
           page-name="BatchList"
         />
       </main>
@@ -99,9 +99,10 @@ import { batchModule } from '@/apis/proApi';
 const pageVO = reactive({
   total: 20,
   currentPage: 1,
-  pageSize: 5,
+  pageSize: 10,
 });
-const checkedRow = ref([]);
+const checkedRow = ref();
+const oldCheckedRow = ref([]);
 const tableRef = ref(null);
 const searchForm = ref({});
 const open = ref<boolean>(false);
@@ -109,6 +110,11 @@ const modal = ref('');
 const isReset = ref(0);
 const tableData = ref([]);
 const colums = ref([
+  {
+    title: '序号',
+    field: 'seq',
+    fixed: 'left',
+  },
   {
     title: '批次号',
     field: 'batchID',
@@ -159,6 +165,10 @@ const colums = ref([
 ]);
 function setSearchForm(formValue: object) {
   searchForm.value = formValue;
+  pageVO.currentPage = 1;
+  // 清空筛选
+  oldCheckedRow.value = [];
+  checkedRow.value = [];
   getDataPage();
 }
 
@@ -171,9 +181,14 @@ function rowAction(type: string, batchID: string) {
       : newCheckRow;
   }
   nextTick(() => {
-    if (checkedRow.value.length) {
+    if (checkedRow.value.length === 0 && oldCheckedRow.value.length === 0) {
+      openNotify('bottomRight', `您还没有选中数据`);
+    }
+    if (checkedRow.value.length || oldCheckedRow.value.length) {
+      const oldCheckBatchID = oldCheckedRow.value.map(item => item.batchID);
+      const allCheckRox = [...new Set([...checkedRow.value, ...oldCheckBatchID])];
       modal.value = `是否${type === 'stop' ? '挂起' : '重新生产'}${
-        checkedRow.value.length
+        allCheckRox.length
       }条数据?`;
       isReset.value = type === 'stop' ? 0 : 1;
       open.value = true;
@@ -186,18 +201,16 @@ function formatterStatus({ cellValue }: any) {
 }
 // 分页
 function pageChange({ pageSize, currentPage }) {
-  if (tableRef.value && tableRef.value.checkedRow) {
-    console.log('🚀 ~选中的数据', tableRef.value.checkedRow);
-    if (checkedRow.value) {
-      checkedRow.value.push(tableRef.value.checkedRow);
-    }
-    else {
-      checkedRow.value = tableRef.value.checkedRow;
-    }
-  }
+  oldCheckedRow.value = [
+    ...oldCheckedRow.value,
+    ...tableRef.value.getSelectEvent(),
+  ];
+
   pageVO.currentPage = currentPage;
   pageVO.pageSize = pageSize;
   getDataPage();
+  // 选回上一页的数据
+  tableRef.value.setSelectRow(oldCheckedRow.value, true);
 }
 
 function setOpen(value: boolean) {
@@ -206,8 +219,10 @@ function setOpen(value: boolean) {
 
 async function operate() {
   try {
+    const oldCheckBatchID = oldCheckedRow.value.map(item => item.batchID);
+    const allCheckRox = [...new Set([...checkedRow.value, ...oldCheckBatchID])];
     await batchModule.getBatchOperate({
-      batchID: checkedRow.value,
+      batchID: allCheckRox,
       operate: isReset.value,
     });
     openNotify(
@@ -246,7 +261,6 @@ async function getDataPage() {
       pageVO.total = data.respData.totalRows;
       pageVO.pageSize = data.respData.rowPerPage;
     }
-    // startGetDataPage();
   }
   catch (error) {
     error;
@@ -281,4 +295,3 @@ async function getDataPage() {
   }
 }
 </style>
-@/components/base/useNotification

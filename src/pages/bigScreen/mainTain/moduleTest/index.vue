@@ -30,142 +30,33 @@ import Camera from './Camera.vue';
 import Laser from './Laser.vue';
 import InkjetPrinter from './InkjetPrinter.vue';
 import { mainTainModule } from '@/apis/proApi';
+import { useAppStore } from '@/store/index';
 
 const props = defineProps({
   currentModel: String,
 });
-const item = ref({
-  readers: [
-    {
-      readerName: '读卡器1',
-      deviceIndex: 'M3-Reader-1',
-      value: '',
-    },
-  ],
-  cameras: [
-    {
-      cameraName: '摄像头1',
-      deviceIndex: 'M3-Reader-1',
-    },
-  ],
-  lasers: [
-    {
-      laserName: '激光器1',
-      deviceIndex: 'M3-Reader-1',
-      printItems: [
-        {
-          label: '打印平台',
-          option: [
-            {
-              value: '1',
-              label: '1',
-            },
-            {
-              value: '2',
-              label: '2',
-            },
-          ],
-          value: '1',
-        },
-      ],
-    },
-  ],
-  uvPrinters: [
-    {
-      printerName: '喷墨机1',
-      deviceIndex: 'M3-Reader-1',
-      positionItems: [
-        {
-          label: '轴选择',
-          option: [
-            {
-              value: 'x',
-              label: 'x轴',
-            },
-            {
-              value: 'y',
-              label: 'y轴',
-            },
-          ],
-          value: 'x',
-        },
-        {
-          label: '目标位置',
-          option: null,
-          value: '',
-        },
-      ],
-      cleanItems: [
-        {
-          label: '清洗组合',
-          option: [
-            {
-              value: 'H1H2H3H4',
-              label: '四头-全部',
-            },
-            {
-              value: 'H1H2',
-              label: '四头-H1H2',
-            },
-
-            {
-              value: 'H3H4',
-              label: '四头-H3H4',
-            },
-          ],
-          value: 'H1H2H3H4',
-        },
-        {
-          label: '清洗强度',
-          option: [
-            {
-              value: '0',
-              label: '清洗_弱',
-            },
-            {
-              value: '1',
-              label: '清洗_中',
-            },
-
-            {
-              value: '2',
-              label: '清洗_强',
-            },
-          ],
-          value: '2',
-        },
-      ],
-      printItems: [
-        {
-          label: '打印平台',
-          option: [
-            {
-              value: '1',
-              label: '1',
-            },
-            {
-              value: '2',
-              label: '2',
-            },
-          ],
-          value: '1',
-        },
-      ],
-    },
-  ],
-});
+const item = ref({});
 function handleUpdateItem(arrayName, index, value) {
   if (item.value[arrayName] && item.value[arrayName][index]) {
     item.value[arrayName][index].value = value;
   }
 }
 async function getData(newValue: string) {
-  const data = await mainTainModule.getDevice({ moduleID: Number(newValue) });
-  if (data.respData) {
-    item.value = data.respData;
+  try {
+    useAppStore().setSpinning(true);
+    const data = await mainTainModule.getDevice({ moduleID: Number(newValue) });
+    if (data.respData) {
+      item.value = data.respData;
+    }
+    else {
+      item.value = {};
+    }
   }
-  else {
-    item.value = {};
+  catch (error) {
+    error;
+  }
+  finally {
+    useAppStore().setSpinning(false);
   }
 }
 

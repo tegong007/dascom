@@ -150,14 +150,23 @@ async function transfer(url, objs, itemIndex, platformIndex) {
   }
 }
 async function getData(newValue: string) {
-  const data = await settingMoule.getSettingItem({
-    moduleID: Number(newValue),
-  });
-  if (data.respData) {
-    setItems.value = data.respData.uvPrinters;
+  try {
+    useAppStore().setSpinning(true);
+    const data = await settingMoule.getSettingItem({
+      moduleID: Number(newValue),
+    });
+    if (data.respData) {
+      setItems.value = data.respData.uvPrinters;
+    }
+    else {
+      item.value = {};
+    }
   }
-  else {
-    item.value = {};
+  catch (error) {
+    error;
+  }
+  finally {
+    useAppStore().setSpinning(false);
   }
 }
 watch(

@@ -59,6 +59,7 @@
 import { watch } from 'vue';
 import { mainTainModule } from '@/apis/proApi';
 import useCustomTimer from '@/utils/useCustomTimer';
+import { useAppStore } from '@/store/index';
 
 const props = defineProps({
   currentModel: String,
@@ -232,7 +233,10 @@ async function getDataPage() {
   }
   catch (error) {
     error;
-    stop();
+    // stop();
+  }
+  finally {
+    useAppStore().setSpinning(false);
   }
 }
 async function startGetDataPage() {
@@ -248,7 +252,9 @@ watch(
   () => props.currentModel,
   (newValue) => {
     if (newValue === '5') {
+      useAppStore().setSpinning(true);
       getDataPage();
+      // setTimeout(() => {}, 5000);
     }
     else {
       stop();

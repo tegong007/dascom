@@ -39,10 +39,6 @@ export const dataSourceOptions: OptionType[] = [
 // 加急类型
 export const urgencyOptions: OptionType[] = [
   {
-    value: null,
-    label: '全部', // 已经在流水线上进行生产
-  },
-  {
     value: 0,
     label: '普通',
   },

@@ -14,7 +14,6 @@
             v-model:value="formState.num"
             class="w-full"
             :min="1"
-            :max="20"
           />
         </a-form-item>
       </a-col>
@@ -47,7 +46,7 @@ const rules = {
   num: [
     {
       required: true,
-      message: '请输入1-20组团人数',
+      message: '请输入组团人数',
       trigger: 'change',
       type: 'number',
     },

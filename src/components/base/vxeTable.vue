@@ -6,8 +6,8 @@
         class="mytable-style"
         :keep-source="true"
         height="auto"
-        auto-resize
-        border
+
+        auto-resize reserve border
         :edit-config="editConfig"
         :row-class-name="rowClassName"
         :header-cell-class-name="headerCellClassName"
@@ -36,6 +36,7 @@
           v-for="(item, index) in props.colums"
           :key="index"
           :field="item.field"
+          :fixed="item.fixed"
           :title="item.title"
           :cell-render="item.imgUrlCellRender"
           :formatter="item.formatter"
@@ -108,7 +109,7 @@
                 @click="props.rowfun('stop', row.docID)"
               >挂起</a>
               <a
-                v-if="row.status !== 1 || row.status !== 0"
+                v-if="row.status !== 1 && row.status !== 0"
                 class="color-[#89F7FF]"
                 @click="props.rowfun('reset', row.docID)"
               >重新生产</a>
@@ -249,12 +250,12 @@ const cellClassName: VxeTablePropTypes.CellClassName<any> = ({
 
 // const loading = ref(false);
 // const tableData = ref<RowVO[]>();
-// function setSelectRow(rows, checked) {
-//   const $table = tableRef.value;
-//   if ($table) {
-//     $table.setCheckboxRow(rows, checked);
-//   }
-// }
+function setSelectRow(rows, checked) {
+  const $table = tableRef.value;
+  if ($table) {
+    $table.setCheckboxRow(rows, checked);
+  }
+}
 function getSelectEvent() {
   const $table = tableRef.value;
   if ($table) {
@@ -272,6 +273,7 @@ defineExpose({
   getSelectEvent,
   updateFirstRow,
   removeRow,
+  setSelectRow,
 });
 </script>
 

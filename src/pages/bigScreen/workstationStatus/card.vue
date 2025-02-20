@@ -104,7 +104,7 @@ async function getDataPage() {
   }
   catch (error) {
     console.log('🚀 ~ file: newIndex.vue:182 ~ getDataPage ~ error:', error);
-    stop();
+    // stop();
   }
 }
 
@@ -117,10 +117,6 @@ async function startGetDataPage() {
 async function refresh(index: number) {
   const data = await getPositionCard({ moduleID: index + 1 });
   if (data.respData) {
-    console.log(
-      '🚀 ~ file: card.vue:68 ~ getDataPage ~ data.respData:',
-      data.respData,
-    );
     items.value[index] = data.respData;
   }
 }

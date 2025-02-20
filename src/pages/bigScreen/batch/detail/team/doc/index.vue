@@ -30,12 +30,12 @@
     <main class="box-border h83% w-full">
       <MyTable
         ref="tableRef"
-        :seq="true"
         :colums="colums"
         :checkbox="true"
         :data="tableData"
-        page-name="docList"
         :rowfun="rowAction"
+        key-field="recID"
+        page-name="docList"
       />
     </main>
     <div class="z-99 flex items-center justify-between">
@@ -85,6 +85,7 @@ const pageVO = reactive({
 });
 const searchForm = ref({});
 const checkedRow = ref([]);
+const oldCheckedRow = ref([]);
 const groupID = ref([]);
 const tableData = ref([]);
 const statisticsData = ref({
@@ -122,6 +123,11 @@ function formatterValue({ cellValue, column }: any) {
 }
 
 const colums = ref([
+  {
+    title: '序号',
+    field: 'seq',
+    fixed: 'left',
+  },
   {
     title: '批次号',
     field: 'batchID',
@@ -247,12 +253,19 @@ const colums = ref([
 ]);
 function setSearchForm(formValue: object) {
   searchForm.value = formValue;
+  pageVO.currentPage = 1;
+  // 清空筛选
+  oldCheckedRow.value = [];
+  checkedRow.value = [];
   getDataPage();
 }
+
 async function operate() {
   try {
+    const oldCheckrecID = oldCheckedRow.value.map(item => item.recID);
+    const allCheckRox = [...new Set([...checkedRow.value, ...oldCheckrecID])];
     await documentModule.getDocOperate({
-      recID: checkedRow.value,
+      recID: allCheckRox,
       batchID: props.batchID,
       operate: isReset.value,
     });
@@ -313,9 +326,15 @@ function rowAction(type: string, recID: string) {
       : newCheckRow;
   }
   nextTick(() => {
-    if (checkedRow.value.length) {
+    if (checkedRow.value.length === 0 && oldCheckedRow.value.length === 0) {
+      openNotify('bottomRight', `您还没有选中数据`);
+    }
+
+    if (checkedRow.value.length || oldCheckedRow.value.length) {
+      const oldCheckrecID = oldCheckedRow.value.map(item => item.recID);
+      const allCheckRox = [...new Set([...checkedRow.value, ...oldCheckrecID])];
       modal.value = `是否${type === 'stop' ? '挂起' : '重新生产'}${
-        checkedRow.value.length
+        allCheckRox.length
       }条数据?`;
       isReset.value = type === 'stop' ? 0 : 1;
       open.value = true;
@@ -324,18 +343,16 @@ function rowAction(type: string, recID: string) {
 }
 // 分页
 function pageChange({ pageSize, currentPage }) {
-  if (tableRef.value && tableRef.value.checkedRow) {
-    console.log('🚀 ~选中的数据', tableRef.value.checkedRow);
-    if (checkedRow.value) {
-      checkedRow.value.push(tableRef.value.checkedRow);
-    }
-    else {
-      checkedRow.value = tableRef.value.checkedRow;
-    }
-  }
+  oldCheckedRow.value = [
+    ...oldCheckedRow.value,
+    ...tableRef.value.getSelectEvent(),
+  ];
+
   pageVO.currentPage = currentPage;
   pageVO.pageSize = pageSize;
   getDataPage();
+  // 选回上一页的数据
+  tableRef.value.setSelectRow(oldCheckedRow.value, true);
 }
 
 function setOpen(value: boolean) {
@@ -344,10 +361,10 @@ function setOpen(value: boolean) {
 watch(
   () => props.checkRow,
   () => {
-    if (props.checkRow?.length) {
-      groupID.value = props.checkRow.map(item => item.groupID);
-      getDataPage();
-    }
+    // if (props.checkRow?.length){
+    groupID.value = props.checkRow.map(item => item.groupID);
+    getDataPage();
+    // }
   },
   { deep: true, immediate: true },
 );

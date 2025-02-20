@@ -70,7 +70,7 @@ async function getDataPage() {
   }
   catch (error) {
     error;
-    stop();
+    // stop();
   }
 }
 

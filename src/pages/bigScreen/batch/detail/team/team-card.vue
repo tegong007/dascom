@@ -46,6 +46,7 @@ const props = defineProps({
   items: Array,
   checkRow: Array,
   setCheckRow: Function,
+  oldCheckedRow: Array,
 });
 
 const items = ref([]);
@@ -71,13 +72,47 @@ watch(
 watch(
   items,
   (newItems) => {
-    // 遍历 newItems 数组，获取所有 checked 属性为 true 的对象
-    const checkRow = newItems?.filter(item => item.checked);
-    if (checkRow.length === 0) {
-      isAllCheck.value = false;
-    }
-    props.setCheckRow(checkRow);
+    // 加上翻页数据的新选中数据
+    // 创建一个 Map，以 groupID 为键，存储 oldCheckedRow 中的项
+    const oldCheckedMap = new Map(
+      props.oldCheckedRow.map(item => [item.groupID, item]),
+    );
+
+    // 遍历 newItems，处理重复项和新增项
+    const resultArray = [];
+    newItems.forEach((item) => {
+      if (item.checked === false) {
+        // 如果 newItems 中的 checked 为 false，删除 oldCheckedMap 中对应的条目
+        oldCheckedMap.delete(item.groupID);
+      }
+      else if (item.checked === true) {
+        // 如果 newItems 中的 checked 为 true，保留该条目
+        oldCheckedMap.set(item.groupID, item); // 更新或添加到 Map 中
+      }
+    });
+
+    // 将 Map 中剩余的项（未被删除的）加入结果数组
+    oldCheckedMap.forEach((item) => {
+      if (item.checked) {
+        // 确保只添加 checked 为 true 的条目
+        resultArray.push(item);
+      }
+    });
+
+    // 重新打钩
+    newItems.forEach((sourceItem, index) => {
+      const targetItem = resultArray.find(
+        item => item.groupID === sourceItem.groupID,
+      );
+      if (targetItem) {
+        newItems[index] = targetItem; // 直接替换
+      }
+    });
+    // 当页勾选的数据=页数，即全选
+    isAllCheck.value = newItems.every(item => item.checked);
+    props.setCheckRow(resultArray);
   },
+
   { deep: true },
 ); // 使用 deep 选项来深度监听数组内部的变化
 </script>

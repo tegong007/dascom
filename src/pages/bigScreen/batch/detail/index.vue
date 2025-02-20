@@ -21,6 +21,7 @@
             :items="items"
             :check-row="checkRow"
             :set-check-row="setCheckRow"
+            :old-checked-row="oldCheckedRow"
           />
           <vxe-pager
             v-model:current-page="pageVO.currentPage"
@@ -80,6 +81,7 @@ const { start, stop } = useCustomTimer();
 const route = useRoute();
 const batchId = ref<string>('');
 const checkRow = ref([]); // 选中的数据
+const oldCheckedRow = ref([]); // 选中的数据
 const items = ref([]);
 const searchForm = ref({});
 const statisticsData = ref({
@@ -134,6 +136,12 @@ async function pageChangeEvent() {
   console.log(
     `分页事件：第 ${pageVO.currentPage} 页，每页  ${pageVO.pageSize} 条`,
   );
+  oldCheckedRow.value.push(...checkRow.value); // 将 checkRow 的内容追加到 oldCheckedRow
+  oldCheckedRow.value = [
+    ...new Map(
+      oldCheckedRow.value.map(item => [item.groupID, item]),
+    ).values(),
+  ];
   await getGroupData();
 }
 
@@ -171,6 +179,7 @@ onActivated(async () => {
 onDeactivated(() => {
   stop();
   checkRow.value = [];
+  oldCheckedRow.value = [];
 });
 async function getBatchStatisticsInfo() {
   try {
@@ -184,7 +193,7 @@ async function getBatchStatisticsInfo() {
   }
   catch (error) {
     error;
-    stop();
+    // stop();
   }
 }
 
