@@ -12,7 +12,7 @@
           <a-form-item label="组团人数" name="num">
             <a-input-number
               v-model:value="formState.num"
-              placeholder="请输入1-20组团人数"
+              placeholder="请输入组团人数"
               class="w-full"
               :min="1"
             />

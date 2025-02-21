@@ -72,9 +72,7 @@
           </div>
 
           <div class="mt5 text-[14px]" :class="getTextClass(data.status)">
-            状态：{{
-              data.status === 'normal' ? '正常' : `异常` + `，${data.msg}`
-            }}
+            状态：{{ data.msg }}
           </div>
         </div>
       </a-flex>

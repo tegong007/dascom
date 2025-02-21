@@ -14,7 +14,7 @@
           <a-form-item label="证本状态" name="docStatus">
             <a-select v-model:value="formState.docStatus">
               <a-select-option
-                v-for="option in BatchStatusOptions"
+                v-for="option in docStatusOptions"
                 :key="option.value"
                 :value="option.value"
               >
@@ -43,7 +43,7 @@ import { defineProps, reactive } from 'vue';
 import type { UnwrapRef } from 'vue';
 import { SearchOutlined } from '@ant-design/icons-vue';
 
-import { BatchStatusOptions } from '@/pages/bigScreen/batch/option.ts';
+import { docStatusOptions } from '@/pages/bigScreen/batch/option.ts';
 
 const props = defineProps({
   setSearchForm: Function,

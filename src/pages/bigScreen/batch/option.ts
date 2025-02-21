@@ -80,6 +80,10 @@ export const BatchStatusOptions: OptionType[] = [
 ];
 export const docStatusOptions: OptionType[] = [
   {
+    value: null,
+    label: '全部', // 已经在流水线上进行生产
+  },
+  {
     value: 0,
     label: '生产中', // 已经在流水线上进行生产
   },

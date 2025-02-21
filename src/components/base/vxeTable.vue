@@ -6,8 +6,9 @@
         class="mytable-style"
         :keep-source="true"
         height="auto"
-
-        auto-resize reserve border
+        auto-resize
+        reserve
+        border
         :edit-config="editConfig"
         :row-class-name="rowClassName"
         :header-cell-class-name="headerCellClassName"
@@ -135,6 +136,7 @@ const props = defineProps({
   isEdit: Boolean, // 是否可以编辑
   showRow: Function,
   rowfun: Function,
+  setAddorEditNoTeam: Function,
 });
 
 const tableRef = ref();
@@ -185,9 +187,13 @@ async function pushEvent(record: object) {
 }
 // 删除单行
 async function removeRow(row: any) {
+  console.log('🚀 ~ removeRow ~ row:', row);
   const $table = tableRef.value;
   if ($table) {
     $table.remove(row);
+    if (row.dataSource === '-------') {
+      props.setAddorEditNoTeam('add');
+    }
   }
 }
 

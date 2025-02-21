@@ -17,6 +17,7 @@
           page-name="AddBatch"
           :show-row="showRow"
           :colums="colums"
+          :set-addor-edit-no-team="setAddorEditNoTeam"
         />
       </main>
     </div>
@@ -77,6 +78,9 @@ const updateRef = ref(null);
 const showSuccessData = ref({});
 const isAddNoTeam = ref<boolean>(false);
 const addorEditNoTeam = ref('add'); // 添加还是编辑
+function setAddorEditNoTeam(value: string) {
+  addorEditNoTeam.value = value;
+}
 
 function setOpen(value: boolean) {
   open.value = value;
