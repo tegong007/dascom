@@ -34,6 +34,7 @@
         :checkbox="true"
         :data="tableData"
         :rowfun="rowAction"
+        :update-old-checked-row="updateOldCheckedRow"
         key-field="recID"
         page-name="docList"
       />
@@ -127,6 +128,7 @@ const colums = ref([
     title: '序号',
     field: 'seq',
     fixed: 'left',
+    width: 80,
   },
   {
     title: '批次号',
@@ -316,6 +318,22 @@ async function getDataPage() {
     console.log('🚀 ~ file: index.vue:206 ~ getDataPage ~ error:', error);
     // stop();
   }
+}
+// 取消的时候删掉这一行
+function updateOldCheckedRow(delectArr) {
+  let toDeleteIDs;
+  // 提取要删除的 batchID 列表
+  if (Array.isArray(delectArr)) {
+    toDeleteIDs = delectArr.map(item => item.recID);
+  }
+  else {
+    toDeleteIDs = [delectArr.recID];
+  }
+
+  // 使用 filter 方法过滤掉需要删除的元素
+  oldCheckedRow.value = oldCheckedRow.value.filter(
+    item => !toDeleteIDs.includes(item.recID),
+  );
 }
 function rowAction(type: string, recID: string) {
   modal.value = type;

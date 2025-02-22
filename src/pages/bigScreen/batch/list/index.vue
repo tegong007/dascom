@@ -48,6 +48,7 @@
           :checkbox="true"
           :data="tableData"
           :rowfun="rowAction"
+          :update-old-checked-row="updateOldCheckedRow"
           key-field="batchID"
           page-name="BatchList"
         />
@@ -171,6 +172,24 @@ function setSearchForm(formValue: object) {
   checkedRow.value = [];
   getDataPage();
 }
+// 取消的时候删掉这一行
+function updateOldCheckedRow(delectArr) {
+  let toDeleteIDs;
+  // 提取要删除的 batchID 列表
+  if (Array.isArray(delectArr)) {
+    toDeleteIDs = delectArr.map(item => item.batchID);
+  }
+  else {
+    toDeleteIDs = [delectArr.batchID];
+    console.log('🚀 ~ updateOldCheckedRow ~ toDeleteIDs:', toDeleteIDs);
+  }
+
+  // 使用 filter 方法过滤掉需要删除的元素
+  oldCheckedRow.value = oldCheckedRow.value.filter(
+    item => !toDeleteIDs.includes(item.batchID),
+  );
+  console.log('🚀 ~ updateOldCheckedRow ~ delectArr:', oldCheckedRow.value);
+}
 
 function rowAction(type: string, batchID: string) {
   modal.value = type;
@@ -186,7 +205,9 @@ function rowAction(type: string, batchID: string) {
     }
     if (checkedRow.value.length || oldCheckedRow.value.length) {
       const oldCheckBatchID = oldCheckedRow.value.map(item => item.batchID);
-      const allCheckRox = [...new Set([...checkedRow.value, ...oldCheckBatchID])];
+      const allCheckRox = [
+        ...new Set([...checkedRow.value, ...oldCheckBatchID]),
+      ];
       modal.value = `是否${type === 'stop' ? '挂起' : '重新生产'}${
         allCheckRox.length
       }条数据?`;
@@ -245,6 +266,11 @@ onActivated(() => {
   getDataPage();
 });
 onDeactivated(() => {
+  // 清空筛选
+  oldCheckedRow.value = [];
+  checkedRow.value = [];
+  tableData.value = [];
+
   // stop();
 });
 async function getDataPage() {

@@ -17,6 +17,7 @@
         :row-config="{ keyField: props.keyField, isHover: true }"
         :data="props.data"
         @checkbox-change="selectChangeEvent"
+        @checkbox-all="selectAllChangeEvent"
       >
         <!-- 复选框 -->
         <vxe-column
@@ -137,6 +138,7 @@ const props = defineProps({
   showRow: Function,
   rowfun: Function,
   setAddorEditNoTeam: Function,
+  updateOldCheckedRow: Function,
 });
 
 const tableRef = ref();
@@ -161,13 +163,30 @@ const editConfig = reactive({
   beforeEditMethod: activeCellMethod,
 });
 // 勾选点击
-function selectChangeEvent({ checked }) {
+function selectChangeEvent({ checked, row }) {
   const $table = tableRef.value;
   if ($table) {
+    if (!checked) {
+      console.log('🚀 ~ selectChangeEvent ~ row:', row);
+      props.updateOldCheckedRow(row);
+    }
     const records = $table.getCheckboxRecords();
     console.log(checked ? '勾选事件' : '取消事件', records);
   }
 }
+
+function selectAllChangeEvent({ checked }) {
+  const $table = tableRef.value;
+  if ($table) {
+    const records = $table.getCheckboxRecords();
+    if (!checked) {
+      // 删掉当页所有元素
+      props.updateOldCheckedRow(props.data);
+    }
+    console.log(checked ? '所有勾选事件' : '所有取消事件', records);
+  }
+}
+
 // 在前面添加
 async function addEvent(record: object) {
   const $table = tableRef.value;
@@ -187,7 +206,6 @@ async function pushEvent(record: object) {
 }
 // 删除单行
 async function removeRow(row: any) {
-  console.log('🚀 ~ removeRow ~ row:', row);
   const $table = tableRef.value;
   if ($table) {
     $table.remove(row);
