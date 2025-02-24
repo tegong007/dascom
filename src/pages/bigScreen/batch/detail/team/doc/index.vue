@@ -117,7 +117,7 @@ function formatterValue({ cellValue, column }: any) {
     case 'docStatus':
       return findLabelByValue('docStatusOptions', cellValue);
     case 'cnObsvType':
-      return findLabelByValue('cnObsvTypeOptions', cellValue);
+      return findLabelByValue('cnObsvTypeOptions', Number(cellValue));
     default:
       break;
   }

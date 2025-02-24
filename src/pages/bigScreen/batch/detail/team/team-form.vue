@@ -37,6 +37,9 @@
               v-model:value="formState.urgentType"
               placeholder="请选择加急类型"
             >
+              <a-select-option :value="null">
+                全部
+              </a-select-option>
               <a-select-option
                 v-for="option in urgencyOptions"
                 :key="option.value"

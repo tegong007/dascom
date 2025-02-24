@@ -118,7 +118,7 @@ function setCheckRow(arr: Array<any>) {
   info.value[1].value = checkRow.value[0]?.dataSource;
   info.value[2].value = findLabelByValue(
     'urgencyOptions',
-    checkRow.value[0]?.urgentType,
+    Number(checkRow.value[0]?.urgentType),
   );
   let allnum = 0;
   checkRow.value.map((item) => {

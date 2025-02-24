@@ -5,10 +5,6 @@ export interface OptionType {
 // 派遣单位
 export const dispatchUnitOptions: OptionType[] = [
   {
-    value: 0,
-    label: '无',
-  },
-  {
     value: 1,
     label: '中国电力公司',
   },
@@ -23,10 +19,6 @@ export const dispatchUnitOptions: OptionType[] = [
 ];
 // 数据来源
 export const dataSourceOptions: OptionType[] = [
-  {
-    value: 0,
-    label: '无',
-  },
   {
     value: 1,
     label: '外交部',
