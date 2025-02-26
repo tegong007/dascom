@@ -83,10 +83,12 @@
 <script setup lang="ts">
 import { positionModule } from '@/apis/proApi';
 import useCustomTimer from '@/utils/useCustomTimer';
+import { useAppStore } from '@/store/index';
 
 const { start, stop } = useCustomTimer();
 const items = ref([]);
 onActivated(() => {
+  useAppStore().setSpinning(true);
   getDataPage();
 });
 onDeactivated(() => {
@@ -103,6 +105,9 @@ async function getDataPage() {
   catch (error) {
     console.log('🚀 ~ file: newIndex.vue:182 ~ getDataPage ~ error:', error);
     // stop();
+  }
+  finally {
+    useAppStore().setSpinning(false);
   }
 }
 

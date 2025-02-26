@@ -86,7 +86,7 @@ async function transfer(url, index, deviceIndex, inputData) {
     }
     else {
       notification.error({
-        message: `错误信息`,
+        message: `错误`,
         description: data.rslts[0].msg,
         placement: 'bottomRight',
       });
@@ -96,7 +96,7 @@ async function transfer(url, index, deviceIndex, inputData) {
   catch (error) {
     error;
     notification.error({
-      message: `错误信息`,
+      message: `错误`,
       description: '操作失败',
       placement: 'bottomRight',
     });

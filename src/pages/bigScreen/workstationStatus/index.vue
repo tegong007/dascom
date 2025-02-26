@@ -5,7 +5,7 @@
       <div class="absolute top-0 w-full text-center text-[20px]">
         当前批次号:{{ batchID }}
       </div>
-      <div class="absolute right-20">
+      <div class="absolute right-150 top-[-5px]">
         <!-- 状态标识 -->
         <div class="w-400px flex justify-around">
           <div

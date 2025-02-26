@@ -78,13 +78,14 @@
 </template>
 
 <script lang="ts" setup>
-import { openNotify } from '@/components/base/useNotification';
+import { App } from 'ant-design-vue';
 import { getApiTransfer } from '@/apis/webApi';
 import { useAppStore } from '@/store/index';
 
 const props = defineProps({
   data: Object,
 });
+const { notification } = App.useApp();
 const visible = ref<boolean>(false);
 const path = ref('');
 function setVisible(value): void {
@@ -130,7 +131,11 @@ async function transfer(url, objs) {
     };
     const data = await getApiTransfer(params);
     if (data.rslts[0].code !== 0) {
-      openNotify('bottomRight', data.rslts[0].msg);
+      notification.error({
+        message: `错误`,
+        description: data.rslts[0].msg,
+        placement: 'bottomRight',
+      });
     }
     else {
       if (url === '/lpdps/preview') {
@@ -141,7 +146,11 @@ async function transfer(url, objs) {
   }
   catch (error) {
     error;
-    openNotify('bottomRight', '操作失败');
+    notification.error({
+      message: `错误`,
+      description: '操作失败',
+      placement: 'bottomRight',
+    });
   }
   finally {
     useAppStore().setSpinning(false);

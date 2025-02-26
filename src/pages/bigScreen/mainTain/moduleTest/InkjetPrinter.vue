@@ -148,13 +148,14 @@
 </template>
 
 <script lang="ts" setup>
-import { contextHolder, openNotify } from '@/components/base/useNotification';
+import { App } from 'ant-design-vue';
 import { getApiTransfer } from '@/apis/webApi';
 import { useAppStore } from '@/store/index';
 
 const props = defineProps({
   data: Object,
 });
+const { notification } = App.useApp();
 async function motoMove(deviceIndex, arr) {
   const objs = [
     {
@@ -196,15 +197,27 @@ async function transfer(url, objs) {
     };
     const data = await getApiTransfer(params);
     if (data.rslts[0].code !== 0) {
-      openNotify('bottomRight', data.rslts[0].msg);
+      notification.error({
+        message: `错误`,
+        description: data.rslts[0].msg,
+        placement: 'bottomRight',
+      });
     }
     else {
-      openNotify('bottomRight', '操作成功', true);
+      notification.success({
+        message: `错误`,
+        description: '操作成功',
+        placement: 'bottomRight',
+      });
     }
   }
   catch (error) {
     error;
-    openNotify('bottomRight', '操作失败');
+    notification.error({
+      message: `错误`,
+      description: '操作失败',
+      placement: 'bottomRight',
+    });
   }
   finally {
     useAppStore().setSpinning(false);
