@@ -27,23 +27,6 @@
             class="w-full rounded-[8px] bg-[#ffffff34] p-x-10 p-y-20"
           >
             <a-row :gutter="[20, 0]" class="w-full" justify="space-evenly">
-              <a-col :span="24">
-                <a-form-item label="是否团组" name="isTeam">
-                  <a-select
-                    v-model:value="formState.isTeam"
-                    placeholder="请选择派遣单位"
-                    @change="teamChange"
-                  >
-                    <a-select-option
-                      v-for="option in teamOptions"
-                      :key="option.value"
-                      :value="option.value"
-                    >
-                      {{ option.label }}
-                    </a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
               <a-col :span="12">
                 <a-form-item label="组团人数" name="num">
                   <a-input-number
@@ -132,7 +115,6 @@ import type { UnwrapRef } from 'vue';
 import {
   dataSourceOptions,
   dispatchUnitOptions,
-  teamOptions,
   urgencyOptions,
 } from '../../option.js';
 
@@ -176,24 +158,11 @@ const rules = {
   ],
 };
 const formState: UnwrapRef<FormState> = reactive({
-  isTeam: 1,
   num: 1,
   dispatchUnit: 1,
   dataSource: 1,
-  urgentType: 0,
+  urgentType: null,
 });
-function teamChange(value) {
-  if (!value) {
-    formState.dispatchUnit = '-------';
-    formState.dataSource = '-------';
-    formState.urgentType = '-------';
-  }
-  else {
-    formState.dispatchUnit = 1;
-    formState.dataSource = 1;
-    formState.urgentType = 0;
-  }
-}
 function handleCancel() {
   formRef.value.resetFields();
   props.handleCancel();
@@ -203,16 +172,10 @@ function onSubmit() {
   formRef.value
     .validate()
     .then(() => {
-      props.handleUpdate(
-        toRaw(formState),
-        props.title === '新增团组' ? 'add' : 'edit',
-      );
+      props.handleUpdate(toRaw(formState));
     })
     .catch((error) => {
       console.log('error', error);
-    })
-    .finally(() => {
-      formRef.value.resetFields();
     });
 }
 // 弹窗表单收到要修改的值

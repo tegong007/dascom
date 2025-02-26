@@ -119,7 +119,7 @@
 
     <div class="absolute bottom-0 h6em w-full flex items-center justify-center">
       <div
-        class="returnBtn h-8em w-13em transition-transform duration-300 hover:scale-115"
+        class="returnBtn h-8em w-13em transition-transform duration-300 hover:scale-105"
         @click="goto('-1')"
       />
     </div>

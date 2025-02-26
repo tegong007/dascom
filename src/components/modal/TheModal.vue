@@ -8,7 +8,10 @@
     force-render
     @ok="props.handleOk"
   >
-    <div class="delete-modal box-border h-[25em] p-t-50px">
+    <div
+      class="delete-modal box-border h-[25em] p-t-50px"
+      :style="{ height: `${props.height}px` }"
+    >
       <div class="h-full flex flex-col items-center justify-start">
         <img
           v-if="props.warnIcon"
@@ -16,18 +19,19 @@
           class="h-[10em] w-[10em]"
           alt=""
         >
-        <span class="text-[30px] color-[#627384] font-bold">
-          &nbsp;&nbsp; {{ props.title }}</span>
+        <div class="w-80% text-[30px] color-[#627384] font-bold">
+          &nbsp;&nbsp; {{ props.title }}
+        </div>
       </div>
     </div>
     <template #footer>
       <a-flex justify="center" align="center" class="pb-40px">
         <div
-          class="cancelBtn h-110px w-220px transition-transform duration-300 hover:scale-115"
+          class="cancelBtn h-100px w-200px transition-transform duration-300 hover:scale-105"
           @click="handleCancel"
         />
         <div
-          class="okBtn h-110px w-220px transition-transform duration-300 hover:scale-115"
+          class="okBtn h-100px w-200px transition-transform duration-300 hover:scale-105"
           @click="handleOk"
         />
       </a-flex>
@@ -45,6 +49,7 @@ const props = defineProps({
   title: String,
   warnIcon: Boolean,
   handleCancel: Function,
+  height: String,
 });
 </script>
 

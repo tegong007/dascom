@@ -49,6 +49,16 @@
         v-model:current-page="pageVO.currentPage"
         v-model:page-size="pageVO.pageSize"
         :total="pageVO.total"
+        :layouts="[
+          'Home',
+          'PrevPage',
+          'Jump',
+          'PageCount',
+          'NextPage',
+          'End',
+          'Sizes',
+          'Total',
+        ]"
         @page-change="pageChange"
       />
     </div>

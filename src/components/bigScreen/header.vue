@@ -15,46 +15,45 @@
       <span class="light relative">网络状态:已连接</span>
       <span class="light relative">{{ currentTime }}</span>
     </a-flex>
-    <CloseOutlined
+    <!-- <CloseOutlined
       class="absolute right-0em top-5 p-x-[1em] text-[25px] color-red hover:bg-[#f86e6e98] hover:color-white"
       @click="showQuitModal"
-    />
-    <TheModal
+    /> -->
+    <!-- <TheModal
       :open="open"
       :handle-ok="ok"
       :warn-icon="true"
       :handle-cancel="() => setOpen(false)"
       :title="modal"
-    />
+    /> -->
   </div>
 </template>
 
 <script lang="ts" setup>
-import { CloseOutlined } from '@ant-design/icons-vue';
 import useCustomTimer from '@/utils/useCustomTimer';
 import { formatDateTime } from '@/utils/time';
-import TheModal from '@/components/modal/TheModal.vue';
+// import TheModal from '@/components/modal/TheModal.vue';
 
 const props = defineProps({
   title: String,
 });
-const open = ref<boolean>(false);
-const modal = ref('');
-function showQuitModal() {
-  open.value = true;
-  modal.value = '是否退出系统？';
-}
-function setOpen(value: boolean) {
-  open.value = value;
-}
+// const open = ref<boolean>(false);
+// const modal = ref('');
+// function showQuitModal() {
+//   open.value = true;
+//   modal.value = '是否退出系统？';
+// }
+// function setOpen(value: boolean) {
+//   open.value = value;
+// }
 // 手动停止
-async function ok() {
-  if (modal.value === '是否退出系统？') {
-    window.electron.send('quit-app');
-  }
+// async function ok() {
+//   if (modal.value === '是否退出系统？') {
+//     window.electron.send('quit-app');
+//   }
 
-  open.value = false;
-}
+//   open.value = false;
+// }
 // 时间展示
 const currentTime = ref('2024-12-18 14:37:23');
 const { start } = useCustomTimer();

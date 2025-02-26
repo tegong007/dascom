@@ -2,26 +2,22 @@
   <div class="bg h-100vh flex flex-col items-center text-[18px] text-white">
     <bigScreenHeader />
     <div
-      class="absolute top-50 box-border h78% w90% flex flex-col items-center gap-10 p-2em p-b-0"
+      class="absolute top-50 box-border h-800px w90% flex flex-col items-center gap-10 p-2em p-b-0"
     >
-      <div class="w-full flex items-start">
-        <a-button
-          type="primary"
-          class="btn flex items-center hover:text-[#89f7ff]!"
-          @click="showRow(teamData, 'add')"
-        >
-          <PlusCircleFilled />
-          添加团组
-        </a-button>
-      </div>
-      <main class="box-border h-100% w-full">
+      <teamForm :add-team="addTeam" />
+      <noTeamForm
+        :add-team="addNoTeam"
+        :update-no-team-num="updateNoTeamNum"
+        :addor-edit-no-team="addorEditNoTeam"
+      />
+      <main class="box-border h-580px w-full">
         <MyTable
           ref="tableRef"
           :seq="true"
           page-name="AddBatch"
           :show-row="showRow"
           :colums="colums"
-          :set-addor-edit-no-team="setIsAddNoTeam"
+          :set-addor-edit-no-team="setAddorEditNoTeam"
         />
       </main>
     </div>
@@ -43,16 +39,11 @@
     />
     <TipModal
       :open="tipOpen"
-      :handle-ok="
-        () => {
-          isgoback ? gotolast() : setTipOpen(false);
-        }
-      "
+      :handle-ok="() => setTipOpen(false)"
       :handle-cancel="() => setTipOpen(false)"
-      :title="
-        isgoback ? '返回将失去填写的内容，确认返回？' : '是否确认添加批次？'
-      "
-      height="130"
+      title="是否确认添加批次？"
+      :height="130"
+      :handle-update="handleUpdate"
     />
 
     <!-- 下边按钮 -->
@@ -65,31 +56,31 @@
       <!-- <span class="h-50% w-2px bg-[#8BB2FF]" /> -->
       <div class="flex gap-20">
         <!-- <TheButton title="返回首页" @click="$goto('BigScreen')" /> -->
-        <TheButton title="返回" @click="handleTipModal(true)" />
+        <TheButton title="返回" @click="$goto('-1')" />
         <!-- <TheButton title="添加批次" @click="AddBatch()" /> -->
-        <TheButton title="添加批次" @click="handleTipModal(false)" />
+        <TheButton title="添加批次" @click="setTipOpen(true)" />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { PlusCircleFilled } from '@ant-design/icons-vue';
 import {
   dataSourceOptions,
   dispatchUnitOptions,
   findLabelByValue,
   urgencyOptions,
 } from '../option';
+import teamForm from './team-form.vue';
+import noTeamForm from './notearm-form.vue';
 import UpdateModal from './modal/updateModal.vue';
 import SuceessModal from './modal/successModal.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 import TheButton from '@/components/base/TheButton.vue';
 import MyTable from '@/components/base/vxeTable.vue';
 import TipModal from '@/components/modal/TheModal.vue';
-import router from '@/router/index.ts';
 
-const modal = ref('新增团组');
+const modal = ref('编辑团组');
 const successTitle = ref('批次添加成功，是否查看详情?');
 const open = ref<boolean>(false);
 const tipOpen = ref<boolean>(false);
@@ -98,14 +89,20 @@ const tableRef = ref(null);
 const updateRef = ref(null);
 const showSuccessData = ref({});
 const isAddNoTeam = ref<boolean>(false);
-const isgoback = ref(false);
-const teamData = {
-  isTeam: 1,
-  dispatchUnit: 1,
-  dataSource: 1,
-  urgentType: 0,
-  num: 1,
-};
+const addorEditNoTeam = ref('add'); // 添加还是编辑
+function setAddorEditNoTeam(value: string) {
+  addorEditNoTeam.value = value;
+}
+
+function setOpen(value: boolean) {
+  open.value = value;
+}
+function setTipOpen(value: boolean) {
+  tipOpen.value = value;
+}
+function setSuccessOpen(value: boolean) {
+  successOpen.value = value;
+}
 const colums = ref([
   {
     title: '派遣单位',
@@ -131,45 +128,10 @@ const colums = ref([
     // isTip: true,
   },
 ]);
-function setIsAddNoTeam(value: string) {
-  isAddNoTeam.value = value;
-}
-
-function setOpen(value: boolean) {
-  open.value = value;
-}
-function setTipOpen(value: boolean) {
-  tipOpen.value = value;
-}
-function setSuccessOpen(value: boolean) {
-  successOpen.value = value;
-}
-function handleTipModal(type: boolean) {
-  if (tableRef.value.exportEvent().length === 0) {
-    // if (type){
-    //   gotolast();
-    // } else {
-    //   return;
-    // }
-  }
-  else {
-    isgoback.value = type;
-    setTipOpen(true);
-  }
-}
-function gotolast() {
-  setTipOpen(false);
-  tableRef.value.removeRow();
-  router.go(-1);
-}
-
 function formatterValue({ cellValue, column }: any) {
-  if (cellValue === '-------') {
-    return cellValue;
-  }
   switch (column.field) {
     case 'dispatchUnit':
-      findLabelByValue('dispatchUnitOptions', cellValue);
+      return findLabelByValue('dispatchUnitOptions', cellValue);
     case 'dataSource':
       return findLabelByValue('dataSourceOptions', cellValue);
     case 'urgentType':
@@ -179,42 +141,36 @@ function formatterValue({ cellValue, column }: any) {
   }
 }
 
-// 收到通知打开弹窗
-async function showRow(record: object, type: string) {
-  setOpen(true);
-  if (type === 'add') {
-    modal.value = '新增团组';
+function addNoTeam(record: object) {
+  if (tableRef.value) {
+    tableRef.value.addEvent(record);
+    isAddNoTeam.value = true;
+    addorEditNoTeam.value = 'edit';
   }
+}
+function updateNoTeamNum(num: number) {
+  if (tableRef.value) {
+    tableRef.value.updateFirstRow(num);
+  }
+}
+function addTeam(record: object) {
+  if (tableRef.value) {
+    tableRef.value.pushEvent(record);
+  }
+}
+// 收到通知打开弹窗
+async function showRow(record: object) {
+  setOpen(true);
   if (updateRef.value) {
     // 弹窗要修改的值
     await updateRef.value.updateForm(record);
   }
 }
 // 修改成功关闭弹窗
-function handleUpdate(record: object, type: string) {
+function handleUpdate(record: object) {
   setOpen(false);
   if (tableRef.value) {
-    if (type === 'add') {
-      if (record.dataSource === '-------') {
-        console.log(
-          '🚀 ~ handleUpdate ~ isAddNoTeam.value:',
-          isAddNoTeam.value,
-        );
-        if (isAddNoTeam.value) {
-          tableRef.value.updateFirstRow(record.num);
-        }
-        else {
-          tableRef.value.addEvent(record);
-          isAddNoTeam.value = true;
-        }
-      }
-      else {
-        tableRef.value.pushEvent(record);
-      }
-    }
-    else {
-      tableRef.value.updateRow(record);
-    }
+    tableRef.value.updateRow(record);
   }
 }
 // async function AddBatch() {
@@ -234,6 +190,7 @@ function handleUpdate(record: object, type: string) {
 //         setSuccessOpen(true);
 //         tableRef.value.removeRow();
 //         isAddNoTeam.value = false;
+//         addorEditNoTeam.value = 'add';
 //       }
 //     } catch (error) {
 //       error;
@@ -243,16 +200,6 @@ function handleUpdate(record: object, type: string) {
 </script>
 
 <style scoped lang="less">
-.btn {
-  border-radius: 6px;
-  opacity: 1;
-  background: linear-gradient(209deg, #90ecff 2%, #006af5 69%);
-  box-sizing: border-box;
-  border: 2px solid #89f7ff;
-  padding: 0px 7px;
-  color: white;
-  height: 32px;
-}
 .bg {
   background-image: url('@/assets/image/bigScreen/bg-none.png');
   background-size: 100% 100%;

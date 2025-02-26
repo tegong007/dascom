@@ -58,6 +58,16 @@
         v-model:page-size="pageVO.pageSize"
         class="z-99 w-full"
         :total="pageVO.total"
+        :layouts="[
+          'Home',
+          'PrevPage',
+          'Jump',
+          'PageCount',
+          'NextPage',
+          'End',
+          'Sizes',
+          'Total',
+        ]"
         @page-change="pageChange"
       />
     </div>

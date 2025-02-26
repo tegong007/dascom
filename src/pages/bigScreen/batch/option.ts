@@ -2,6 +2,17 @@ export interface OptionType {
   value: string | number | null;
   label: string;
 }
+// 团组类型
+export const teamOptions: OptionType[] = [
+  {
+    value: 0,
+    label: '否',
+  },
+  {
+    value: 1,
+    label: '是',
+  },
+];
 // 派遣单位
 export const dispatchUnitOptions: OptionType[] = [
   {
@@ -162,6 +173,7 @@ export function getOptionsByName(
     dispatchUnitOptions,
     dataSourceOptions,
     urgencyOptions,
+    teamOptions,
     BatchStatusOptions,
     docStatusOptions,
     docTypesOptions,

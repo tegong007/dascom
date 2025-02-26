@@ -137,7 +137,7 @@ const props = defineProps({
   isEdit: Boolean, // 是否可以编辑
   showRow: Function,
   rowfun: Function,
-  setAddorEditNoTeam: Function,
+  setIsAddNoTeam: Function,
   updateOldCheckedRow: Function,
 });
 
@@ -210,7 +210,7 @@ async function removeRow(row: any) {
   if ($table) {
     $table.remove(row);
     if (row.dataSource === '-------') {
-      props.setAddorEditNoTeam('add');
+      props.setIsAddNoTeam(false);
     }
   }
 }
