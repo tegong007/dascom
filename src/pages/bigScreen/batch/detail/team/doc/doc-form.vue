@@ -7,6 +7,7 @@
             <a-input
               v-model:value="formState.docID"
               placeholder="请输入证本号"
+              :maxlength="30"
             />
           </a-form-item>
         </a-col>

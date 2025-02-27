@@ -12,6 +12,7 @@
             <a-input
               v-model:value="formState.groupID"
               placeholder="请输入团组号"
+              :maxlength="30"
             />
           </a-form-item>
         </a-col>
@@ -20,6 +21,7 @@
             <a-input
               v-model:value="formState.dispatchUnit"
               placeholder="请输入派遣单位"
+              :maxlength="30"
             />
           </a-form-item>
         </a-col>
@@ -28,6 +30,7 @@
             <a-input
               v-model:value="formState.dataSource"
               placeholder="请输入数据来源"
+              :maxlength="30"
             />
           </a-form-item>
         </a-col>
@@ -36,6 +39,7 @@
             <a-select
               v-model:value="formState.urgentType"
               placeholder="请选择加急类型"
+              :maxlength="30"
             >
               <a-select-option :value="null">
                 全部

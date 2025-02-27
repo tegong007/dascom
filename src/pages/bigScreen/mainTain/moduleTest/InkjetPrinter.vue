@@ -36,13 +36,24 @@
                     {{ option.label }}
                   </a-select-option>
                 </a-select>
-                <a-input-number
+                <!-- <a-input-number
                   v-else
                   v-model:value="item.value"
                   size="large"
                   :step="0.01"
                   class="m-r-10 w-150px"
                   addon-after="mm"
+                /> -->
+                <a-input
+                  v-else
+                  v-model:value="item.value"
+                  placeholder="(0-1200)"
+                  class="m-r-10 w-150px"
+                  size="large"
+                  addon-after="mm"
+                  :maxlength="4"
+                  @input="validateInput($event, index)"
+                  @blur="validateInput($event, index)"
                 />
               </div>
             </div>
@@ -143,7 +154,6 @@
         </main>
       </div>
     </div>
-    <contextHolder />
   </div>
 </template>
 
@@ -154,6 +164,7 @@ import { useAppStore } from '@/store/index';
 
 const props = defineProps({
   data: Object,
+  updateItem: Function,
 });
 const { notification } = App.useApp();
 async function motoMove(deviceIndex, arr) {
@@ -223,6 +234,27 @@ async function transfer(url, objs) {
     useAppStore().setSpinning(false);
   }
 }
+function validateInput(event, index) {
+  // 获取输入框的值
+  let value = event.target.value;
+  // 使用正则表达式限制输入为 0 到 1200 的正整数
+  value = value.replace(/\D/g, ''); // 移除所有非数字字符
+  event.target.value = value;
+  if (value === '') {
+    props.updateItem('uvPrinters', index, '0'); // 更新绑定值为空
+    event.target.value = 0;
+    return;
+  }
+  // 将输入值转换为整数
+  value = Number.parseInt(value, 10);
+
+  // 如果输入值大于1200，设置为1200
+  if (value > 1200) {
+    value = 1200;
+  }
+  props.updateItem('uvPrinters', index, value); // 更新绑定值
+  // event.target.value = value; // 更新输入框显示
+}
 </script>
 
 <style scoped>
@@ -239,7 +271,15 @@ async function transfer(url, objs) {
 ::v-deep(.ant-select-selection-item) {
   font-size: 16px;
 }
-::v-deep(.ant-input-number-group-addon) {
+::v-deep(.ant-input-group-addon) {
   background: #fff;
+}
+.is-invalid {
+  border-color: red; /* 输入框标红 */
+}
+.error-message {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 4px;
 }
 </style>

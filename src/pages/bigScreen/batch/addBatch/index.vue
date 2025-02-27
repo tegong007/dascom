@@ -21,7 +21,7 @@
           page-name="AddBatch"
           :show-row="showRow"
           :colums="colums"
-          :set-addor-edit-no-team="setIsAddNoTeam"
+          :set-is-add-no-team="setIsAddNoTeam"
         />
       </main>
     </div>
@@ -45,7 +45,7 @@
       :open="tipOpen"
       :handle-ok="
         () => {
-          isgoback ? gotolast() : setTipOpen(false);
+          isgoback ? gotolast() : AddBatch();
         }
       "
       :handle-cancel="() => setTipOpen(false)"
@@ -70,6 +70,7 @@
         <TheButton title="添加批次" @click="handleTipModal(false)" />
       </div>
     </div>
+    <contextHolder />
   </div>
 </template>
 
@@ -79,6 +80,7 @@ import {
   dataSourceOptions,
   dispatchUnitOptions,
   findLabelByValue,
+  teamOptions,
   urgencyOptions,
 } from '../option';
 import UpdateModal from './modal/updateModal.vue';
@@ -88,6 +90,9 @@ import TheButton from '@/components/base/TheButton.vue';
 import MyTable from '@/components/base/vxeTable.vue';
 import TipModal from '@/components/modal/TheModal.vue';
 import router from '@/router/index.ts';
+import { useAppStore } from '@/store/index';
+import { addBatch } from '@/apis/testApi';
+import { contextHolder, openNotify } from '@/components/base/useNotification';
 
 const modal = ref('新增团组');
 const successTitle = ref('批次添加成功，是否查看详情?');
@@ -107,6 +112,12 @@ const teamData = {
   num: 1,
 };
 const colums = ref([
+  {
+    title: '是否团组',
+    field: 'isTeam',
+    options: teamOptions,
+    formatter: formatterValue,
+  },
   {
     title: '派遣单位',
     field: 'dispatchUnit',
@@ -146,11 +157,7 @@ function setSuccessOpen(value: boolean) {
 }
 function handleTipModal(type: boolean) {
   if (tableRef.value.exportEvent().length === 0) {
-    // if (type){
-    //   gotolast();
-    // } else {
-    //   return;
-    // }
+    type && gotolast();
   }
   else {
     isgoback.value = type;
@@ -161,6 +168,7 @@ function gotolast() {
   setTipOpen(false);
   tableRef.value.removeRow();
   router.go(-1);
+  isAddNoTeam.value = false;
 }
 
 function formatterValue({ cellValue, column }: any) {
@@ -169,7 +177,9 @@ function formatterValue({ cellValue, column }: any) {
   }
   switch (column.field) {
     case 'dispatchUnit':
-      findLabelByValue('dispatchUnitOptions', cellValue);
+      return findLabelByValue('dispatchUnitOptions', cellValue);
+    case 'isTeam':
+      return findLabelByValue('teamOptions', cellValue);
     case 'dataSource':
       return findLabelByValue('dataSourceOptions', cellValue);
     case 'urgentType':
@@ -181,9 +191,17 @@ function formatterValue({ cellValue, column }: any) {
 
 // 收到通知打开弹窗
 async function showRow(record: object, type: string) {
+  const insertData = tableRef.value.exportEvent();
+  if (insertData.length >= 200) {
+    openNotify('bottomRight', `单次添加最多200条数据`);
+    return;
+  }
   setOpen(true);
   if (type === 'add') {
     modal.value = '新增团组';
+  }
+  else {
+    modal.value = '编辑团组';
   }
   if (updateRef.value) {
     // 弹窗要修改的值
@@ -196,10 +214,6 @@ function handleUpdate(record: object, type: string) {
   if (tableRef.value) {
     if (type === 'add') {
       if (record.dataSource === '-------') {
-        console.log(
-          '🚀 ~ handleUpdate ~ isAddNoTeam.value:',
-          isAddNoTeam.value,
-        );
         if (isAddNoTeam.value) {
           tableRef.value.updateFirstRow(record.num);
         }
@@ -217,29 +231,35 @@ function handleUpdate(record: object, type: string) {
     }
   }
 }
-// async function AddBatch() {
-//   if (tableRef.value) {
-//     const insertData = tableRef.value.exportEvent();
-//     if (!insertData.length) {
-//       return;
-//     }
-//     if (!isAddNoTeam.value) {
-//       // 如果没有添加过，补一条数据
-//       insertData.unshift({ num: 0 });
-//     }
-//     try {
-//       const { respData } = await addBatch({ groups: insertData });
-//       if (respData) {
-//         showSuccessData.value = { ...respData };
-//         setSuccessOpen(true);
-//         tableRef.value.removeRow();
-//         isAddNoTeam.value = false;
-//       }
-//     } catch (error) {
-//       error;
-//     }
-//   }
-// }
+async function AddBatch() {
+  setTipOpen(false);
+  if (tableRef.value) {
+    const insertData = tableRef.value.exportEvent();
+    if (!insertData.length) {
+      return;
+    }
+    if (!isAddNoTeam.value) {
+      // 如果没有添加过，补一条数据
+      insertData.unshift({ isTeam: 0, num: 0 });
+    }
+    try {
+      useAppStore().setSpinning(true);
+      const { respData } = await addBatch({ groups: insertData });
+      if (respData) {
+        showSuccessData.value = { ...respData };
+        setSuccessOpen(true);
+        tableRef.value.removeRow();
+        isAddNoTeam.value = false;
+      }
+    }
+    catch (error) {
+      error;
+    }
+    finally {
+      useAppStore().setSpinning(false);
+    }
+  }
+}
 </script>
 
 <style scoped lang="less">

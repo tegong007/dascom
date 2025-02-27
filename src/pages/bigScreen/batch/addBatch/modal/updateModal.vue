@@ -31,7 +31,8 @@
                 <a-form-item label="是否团组" name="isTeam">
                   <a-select
                     v-model:value="formState.isTeam"
-                    placeholder="请选择派遣单位"
+                    placeholder="请选择是否团组"
+                    :disabled="props.title !== '新增团组'"
                     @change="teamChange"
                   >
                     <a-select-option
@@ -46,11 +47,13 @@
               </a-col>
               <a-col :span="12">
                 <a-form-item label="组团人数" name="num">
-                  <a-input-number
+                  <a-input
                     v-model:value="formState.num"
-                    placeholder="请输入组团人数"
+                    placeholder="请输入数字（1-99）"
                     class="w-full"
-                    :min="1"
+                    :maxlength="2"
+                    @input="validateInput"
+                    @blur="validateInput"
                   />
                 </a-form-item>
               </a-col>
@@ -149,29 +152,17 @@ interface FormState {
   num: number;
   dispatchUnit: string;
   dataSource: string;
+  isTeam: string;
   urgentType: string;
   // timeRange: RangeValue;
 }
 const rules = {
   num: [
+    { required: true, message: '请输入组团人数', trigger: ['blur', 'change'] },
     {
-      required: true,
-      message: '请输入组团人数',
-      trigger: 'change',
-      type: 'number',
-    },
-    {
-      validator: (rule, value): Promise<void> => {
-        return new Promise((resolve, reject) => {
-          if (value !== undefined && !Number.isInteger(value)) {
-            reject(new Error('请输入正整数'));
-          }
-          else {
-            resolve();
-          }
-        });
-      },
-      trigger: 'blur',
+      pattern: /^[1-9]\d?$/,
+      message: '请输入1到99的正整数',
+      trigger: ['blur', 'change'],
     },
   ],
 };
@@ -194,6 +185,24 @@ function teamChange(value) {
     formState.urgentType = 0;
   }
 }
+function validateInput(event) {
+  // 获取输入框的值
+  let value = event.target.value;
+  // 使用正则表达式限制输入为1到99的正整数
+  const regex = /^[1-9]\d?$/; // 匹配1到99的正整数
+  // 如果输入不符合正则表达式，重置为上一次有效的值
+  if (!regex.test(value)) {
+    // 如果输入无效，清空输入框或设置为默认值
+    formState.num = value = '';
+  }
+  else {
+    // 如果输入有效，更新绑定的值
+    formState.num = value;
+  }
+
+  // 更新输入框的值
+  event.target.value = value;
+}
 function handleCancel() {
   formRef.value.resetFields();
   props.handleCancel();
@@ -207,12 +216,13 @@ function onSubmit() {
         toRaw(formState),
         props.title === '新增团组' ? 'add' : 'edit',
       );
+      formRef.value.resetFields();
     })
     .catch((error) => {
       console.log('error', error);
     })
     .finally(() => {
-      formRef.value.resetFields();
+      // formRef.value.resetFields();
     });
 }
 // 弹窗表单收到要修改的值
@@ -221,6 +231,7 @@ function updateForm(row: object) {
   formState.dispatchUnit = row.dispatchUnit;
   formState.dataSource = row.dataSource;
   formState.urgentType = row.urgentType;
+  formState.isTeam = row.isTeam;
 }
 defineExpose({
   updateForm,

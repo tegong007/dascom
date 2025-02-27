@@ -30,13 +30,23 @@
               :key="optionIndex"
               class="flex items-center"
             >
-              {{ optionItem.label }}:
+              {{ optionItem.label }}：
+              <!-- {{ optionItem.label }}:
               <a-input-number
                 v-model:value="optionItem.value"
                 size="large"
                 :step="0.01"
                 class="m-x-10 w-150px"
                 addon-after="mm"
+              /> -->
+              <a-input
+                v-model:value="optionItem.value"
+                placeholder="0-1200"
+                class="m-r-10 w-150px"
+                size="large"
+                addon-after="mm"
+                @input="validateInput($event, index, itemIndex, optionIndex)"
+                @blur="validateInput($event, index, itemIndex, optionIndex)"
               />
             </div>
             <div class="mt10 flex justify-evenly">
@@ -88,6 +98,28 @@ const props = defineProps({
   currentModel: String,
 });
 const setItems = ref([]);
+function validateInput(event, index, platformIndex, optionIndex) {
+  // 获取输入框的值
+  let value = event.target.value;
+  // 步骤1：移除非法字符（只允许数字和一个小数点）
+  value = value.replace(/[^0-9.]/g, '');
+  // 步骤2：确保只有一个有效的小数点
+  value = value.replace(/\.{2,}/g, '.'); // 替换多个小数点为一个
+  value = value.replace(/^\./, '0.'); // 如果以小数点开头，自动补0
+  // 步骤3：清除前导零（但保留小数部分）
+  value = value.replace(/^0+(\d)/, '$1'); // 移除前导零，但保留小数部分
+  // 步骤4：保留两位小数
+  value = value.replace(/(\.\d{2})\d+/, '$1'); // 保留两位小数
+  if (value > 1200.0) {
+    value = 1200.0;
+  }
+  if (value === '') {
+    value = 0;
+  }
+  event.target.value = value;
+  setItems.value[index].positionItems[platformIndex].option[optionIndex].value
+    = value;
+}
 async function getPlatformConfig(
   deviceIndex,
   platform,
@@ -192,7 +224,7 @@ watch(
 ::v-deep(.ant-select-selection-item) {
   font-size: 16px;
 }
-::v-deep(.ant-input-number-group-addon) {
+::v-deep(.ant-input-group-addon) {
   background: #fff;
 }
 </style>

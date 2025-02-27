@@ -7,7 +7,7 @@
     :class="
       props.disable
         ? 'cursor-not-allowed'
-        : 'transition-transform duration-300 hover:scale-105'
+        : 'transition-transform duration-300 hover:scale-105 cursor-pointer'
     "
   >
     <span>{{ props.title }}</span>

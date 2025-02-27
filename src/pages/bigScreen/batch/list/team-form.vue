@@ -12,6 +12,7 @@
             <a-input
               v-model:value="formState.batchID"
               placeholder="请输入批次号"
+              :maxlength="30"
             />
           </a-form-item>
         </a-col>
@@ -20,6 +21,7 @@
             <a-input
               v-model:value="formState.docID"
               placeholder="请输入证本号"
+              :maxlength="30"
             />
           </a-form-item>
         </a-col>

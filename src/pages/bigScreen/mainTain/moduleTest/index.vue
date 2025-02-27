@@ -18,7 +18,7 @@
     <InkjetPrinter
       v-if="item.uvPrinters"
       :data="item.uvPrinters"
-      @update-item="handleUpdateItem"
+      :update-item="handleUpdateItem"
     />
   </div>
 </template>
@@ -38,7 +38,12 @@ const props = defineProps({
 const item = ref({});
 function handleUpdateItem(arrayName, index, value) {
   if (item.value[arrayName] && item.value[arrayName][index]) {
-    item.value[arrayName][index].value = value;
+    if (arrayName === 'uvPrinters') {
+      item.value[arrayName][index].positionItems[1].value = value;
+    }
+    else {
+      item.value[arrayName][index].value = value;
+    }
   }
 }
 async function getData(newValue: string) {

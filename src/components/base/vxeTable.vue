@@ -63,7 +63,7 @@
         >
           <template #default="{ row }">
             <div class="flex justify-around">
-              <a class="color-[#89F7FF]" @click="showRow(row)">编辑</a>
+              <a class="color-[#89F7FF]" @click="showRow(row, 'edit')">编辑</a>
               <a class="color-red" @click="removeRow(row)">删除</a>
             </div>
           </template>
@@ -209,7 +209,7 @@ async function removeRow(row: any) {
   const $table = tableRef.value;
   if ($table) {
     $table.remove(row);
-    if (row.dataSource === '-------') {
+    if (row && row.dataSource === '-------') {
       props.setIsAddNoTeam(false);
     }
   }
@@ -225,6 +225,7 @@ async function showRow(row: any) {
 // 根据点击数据修改行
 function updateRow(newRow: object) {
   oldRow.value.num = newRow.num;
+  oldRow.value.isTeam = newRow.isTeam;
   oldRow.value.dispatchUnit = newRow.dispatchUnit;
   oldRow.value.dataSource = newRow.dataSource;
   oldRow.value.urgentType = newRow.urgentType;
