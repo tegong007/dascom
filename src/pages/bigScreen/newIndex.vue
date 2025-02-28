@@ -136,8 +136,11 @@ const statisticsData = ref({
   productNum: 0,
   waitingNum: 0,
 });
-onActivated(() => {
-  getDataPage();
+onActivated(async () => {
+  useAppStore().setSpinning(true);
+  await getDataPage();
+  useAppStore().setSpinning(false);
+  await startGetDataPage();
 });
 onDeactivated(() => {
   stop();
@@ -158,7 +161,7 @@ async function getDataPage() {
       statisticsData.value = { ...statistics.respData };
       machineStatus.value = statistics.respData.status;
     }
-    startGetDataPage();
+    // startGetDataPage();
   }
   catch (error) {
     error;
@@ -169,7 +172,7 @@ async function getDataPage() {
 async function startGetDataPage() {
   start(async () => {
     await getDataPage();
-  }, 2);
+  }, 5);
 }
 function setModal(value: number) {
   control.value = value;

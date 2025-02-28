@@ -197,11 +197,11 @@ function validateInput(event) {
   }
   else {
     // 如果输入有效，更新绑定的值
-    formState.num = value;
+    formState.num = Number(value);
   }
 
   // 更新输入框的值
-  event.target.value = value;
+  event.target.value = Number(value);
 }
 function handleCancel() {
   formRef.value.resetFields();

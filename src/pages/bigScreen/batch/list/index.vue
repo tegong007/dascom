@@ -218,7 +218,7 @@ function rowAction(type: string, batchID: string) {
       const allCheckRox = [
         ...new Set([...checkedRow.value, ...oldCheckBatchID]),
       ];
-      modal.value = `是否${type === 'stop' ? '挂起' : '重新生产'}${
+      modal.value = `可能含有不能${type === 'stop' ? '挂起' : '重新生产'}的数据，是否继续${type === 'stop' ? '挂起' : '重新生产'}${
         allCheckRox.length
       }条数据?`;
       isReset.value = type === 'stop' ? 0 : 1;

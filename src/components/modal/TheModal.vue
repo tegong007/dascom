@@ -19,7 +19,7 @@
           class="h-[10em] w-[10em]"
           alt=""
         >
-        <div class="w-80% text-[30px] color-[#627384] font-bold">
+        <div class="w-80% text-center text-[30px] color-[#627384] font-bold">
           &nbsp;&nbsp; {{ props.title }}
         </div>
       </div>

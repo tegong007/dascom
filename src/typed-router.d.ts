@@ -21,8 +21,6 @@ declare module 'vue-router/auto-routes' {
     '/bigScreen/batch/addBatch/': RouteRecordInfo<'/bigScreen/batch/addBatch/', '/bigScreen/batch/addBatch', Record<never, never>, Record<never, never>>,
     '/bigScreen/batch/addBatch/modal/successModal': RouteRecordInfo<'/bigScreen/batch/addBatch/modal/successModal', '/bigScreen/batch/addBatch/modal/successModal', Record<never, never>, Record<never, never>>,
     '/bigScreen/batch/addBatch/modal/updateModal': RouteRecordInfo<'/bigScreen/batch/addBatch/modal/updateModal', '/bigScreen/batch/addBatch/modal/updateModal', Record<never, never>, Record<never, never>>,
-    '/bigScreen/batch/addBatch/notearm-form': RouteRecordInfo<'/bigScreen/batch/addBatch/notearm-form', '/bigScreen/batch/addBatch/notearm-form', Record<never, never>, Record<never, never>>,
-    '/bigScreen/batch/addBatch/team-form': RouteRecordInfo<'/bigScreen/batch/addBatch/team-form', '/bigScreen/batch/addBatch/team-form', Record<never, never>, Record<never, never>>,
     '/bigScreen/batch/addBatch-old/': RouteRecordInfo<'/bigScreen/batch/addBatch-old/', '/bigScreen/batch/addBatch-old', Record<never, never>, Record<never, never>>,
     '/bigScreen/batch/addBatch-old/modal/successModal': RouteRecordInfo<'/bigScreen/batch/addBatch-old/modal/successModal', '/bigScreen/batch/addBatch-old/modal/successModal', Record<never, never>, Record<never, never>>,
     '/bigScreen/batch/addBatch-old/modal/updateModal': RouteRecordInfo<'/bigScreen/batch/addBatch-old/modal/updateModal', '/bigScreen/batch/addBatch-old/modal/updateModal', Record<never, never>, Record<never, never>>,

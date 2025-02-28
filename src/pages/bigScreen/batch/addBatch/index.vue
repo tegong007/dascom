@@ -4,7 +4,7 @@
     <div
       class="absolute top-50 box-border h78% w90% flex flex-col items-center gap-10 p-2em p-b-0"
     >
-      <div class="w-full flex items-start">
+      <div class="w-full flex items-center">
         <a-button
           type="primary"
           class="btn flex items-center hover:text-[#89f7ff]!"
@@ -12,7 +12,7 @@
         >
           <PlusCircleFilled />
           添加团组
-        </a-button>
+        </a-button>（只允许添加一个无团组）
       </div>
       <main class="box-border h-100% w-full">
         <MyTable
@@ -253,6 +253,7 @@ async function AddBatch() {
       }
     }
     catch (error) {
+      openNotify('bottomRight', `接口返回异常`);
       error;
     }
     finally {
