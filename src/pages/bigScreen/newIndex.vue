@@ -80,6 +80,9 @@
       <div class="flex">
         <TheButton title="批次查询" @click="$goto('BatchList')" />
       </div>
+      <div class="flex">
+        <TheButton title="证本查询" @click="$goto('docList')" />
+      </div>
       <span class="h-50% w-2px bg-[#8BB2FF]" />
       <div class="flex gap-20">
         <TheButton
@@ -138,7 +141,8 @@ const statisticsData = ref({
 });
 onActivated(async () => {
   useAppStore().setSpinning(true);
-  await getDataPage();
+  const end = await getDataPage();
+  !end && openNotify('bottomRight', `接口超时`);
   useAppStore().setSpinning(false);
   await startGetDataPage();
 });
@@ -161,10 +165,13 @@ async function getDataPage() {
       statisticsData.value = { ...statistics.respData };
       machineStatus.value = statistics.respData.status;
     }
+    return true;
+
     // startGetDataPage();
   }
   catch (error) {
     error;
+    return false;
     // stop();
   }
 }
@@ -256,4 +263,3 @@ async function controlMachine() {
   }
 }
 </style>
-@/components/base/useNotification

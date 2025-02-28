@@ -1,12 +1,12 @@
 <template>
   <div class="bg h-100vh flex flex-col items-center text-[18px] text-white">
-    <bigScreenHeader title="批次列表" />
+    <bigScreenHeader title="证本详情" />
     <div
       class="absolute top-70 box-border h-85vh w90% flex flex-col items-center gap-20 p-2em p-b-0"
     >
-      <BatchInfo />
+      <DocInfo />
       <div class="relative w-full">
-        <TeamForm :set-search-form="setSearchForm" />
+        <docForm :set-search-form="setSearchForm" />
         <a-space :size="20" class="absolute right-10 top-[20px]">
           <a-button
             type="primary"
@@ -96,9 +96,8 @@
 
 <script lang="ts" setup>
 import { RollbackOutlined } from '@ant-design/icons-vue';
-import TeamForm from './team-form.vue';
-import BatchInfo from './batchInfo.vue';
-import { BatchStatusOptions } from '@/pages/bigScreen/batch/option.ts';
+import docForm from './doc-form.vue';
+import DocInfo from './docInfo.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 import TheButton from '@/components/base/TheButton.vue';
 import MyTable from '@/components/base/vxeTable.vue';
@@ -125,55 +124,132 @@ const colums = ref([
     title: '序号',
     field: 'seq',
     fixed: 'left',
+    width: 80,
   },
   {
     title: '批次号',
     field: 'batchID',
+    width: 120,
+  },
+  {
+    title: '识别号',
+    field: 'recID',
+    width: 120,
+  },
+  {
+    title: '证本号',
+    field: 'docID',
+    width: 120,
+  },
+  {
+    title: '当前工位',
+    field: 'position',
+    formatter: formatterValue,
     width: 150,
-  },
-  {
-    title: '证本数',
-    field: 'docNum',
-  },
-  {
-    title: '良本数',
-    field: 'productNum',
-  },
-  {
-    title: '废本数',
-    field: 'obsoleteNum',
-  },
-  {
-    title: '待生产数',
-    field: 'waitingNum',
-  },
-  {
-    title: '挂起数',
-    field: 'hangUpNum',
   },
   {
     title: '状态',
-    field: 'status',
-    formatter: formatterStatus,
-    width: 150,
-    // isTip: true,
+    field: 'docStatus',
+    formatter: formatterValue,
+    width: 100,
   },
   {
-    title: '接收时间',
-    field: 'receiveTime',
+    title: '证本类型',
+    field: 'type',
+    formatter: formatterValue,
+    width: 120,
+  },
+  {
+    title: '姓(中)',
+    field: 'cnSurname',
+    width: 70,
+  },
+  {
+    title: '名(中)',
+    field: 'cnGivenName',
+    width: 70,
+  },
+  {
+    title: '人像',
+    field: 'photo',
+    width: 100,
+    imgUrlCellRender: imgShow,
+  },
+  {
+    title: '加注类型',
+    field: 'cnObsvType',
+    formatter: formatterValue,
+    width: 150,
+  },
+  {
+    title: '机读码1',
+    field: 'mrz1',
     width: 200,
   },
   {
-    title: '开始生产时间',
+    title: '机读码2',
+    field: 'mrz2',
+    width: 200,
+  },
+  {
+    title: '空白本照片',
+    field: 'blankDocPic',
+    width: 120,
+    imgUrlCellRender: imgShow,
+  },
+  {
+    title: '激光前定位照片',
+    field: 'laserPicLocation',
+    width: 140,
+    imgUrlCellRender: imgShow,
+  },
+  {
+    title: '激光后质检照片',
+    field: 'laserPicCheck',
+    width: 140,
+    imgUrlCellRender: imgShow,
+  },
+  {
+    title: '喷墨前定位照片(主)',
+    field: 'mainUVPicLocation',
+    width: 160,
+    imgUrlCellRender: imgShow,
+  },
+  {
+    title: '喷墨后质检照片(主)',
+    field: 'mainUVPicCheck',
+    width: 160,
+    imgUrlCellRender: imgShow,
+  },
+  {
+    title: '喷墨前定位照片(加)',
+    field: 'additionUVPicLocation',
+    width: 160,
+    imgUrlCellRender: imgShow,
+  },
+  {
+    title: '喷墨前定位照片(加)',
+    field: 'additionUVPicCheck',
+    width: 160,
+    imgUrlCellRender: imgShow,
+  },
+  {
+    title: '废本原因',
+    field: 'obsoleteReason',
+    width: 120,
+  },
+  {
+    title: '开始时间',
     field: 'startTime',
     width: 200,
   },
   {
-    title: '完成时间',
-    field: 'finishTime',
+    title: '结束时间',
+    field: 'endTime',
     width: 200,
   },
 ]);
+
 function setSearchForm(formValue: object) {
   searchForm.value = formValue;
   pageVO.currentPage = 1;
@@ -182,6 +258,31 @@ function setSearchForm(formValue: object) {
   checkedRow.value = [];
   getDataPage();
 }
+async function operate() {
+  try {
+    const oldCheckrecID = oldCheckedRow.value.map(item => item.recID);
+    const allCheckRox = [...new Set([...checkedRow.value, ...oldCheckrecID])];
+    await documentModule.getDocOperate({
+      recID: allCheckRox,
+      batchID: props.batchID,
+      operate: isReset.value,
+    });
+    openNotify(
+      'bottomRight',
+      `${isReset.value ? '重新生产' : '挂起'}操作成功`,
+      true,
+    );
+    getDataPage();
+  }
+  catch (error) {
+    error;
+    openNotify('bottomRight', `${isReset.value ? '重新生产' : '挂起'}操作失败`);
+  }
+  finally {
+    setOpen(false);
+  }
+}
+
 // 取消的时候删掉这一行
 function updateOldCheckedRow(delectArr) {
   let toDeleteIDs;
@@ -226,10 +327,10 @@ function rowAction(type: string, batchID: string) {
     }
   });
 }
-function formatterStatus({ cellValue }: any) {
-  const item = BatchStatusOptions.find(item => item.value === cellValue);
-  return item ? item.label : cellValue;
-}
+// function formatterStatus({ cellValue }: any) {
+//   const item = BatchStatusOptions.find((item) => item.value === cellValue);
+//   return item ? item.label : cellValue;
+// }
 // 分页
 function pageChange({ pageSize, currentPage }) {
   oldCheckedRow.value = [
@@ -246,30 +347,6 @@ function pageChange({ pageSize, currentPage }) {
 
 function setOpen(value: boolean) {
   open.value = value;
-}
-
-async function operate() {
-  try {
-    const oldCheckBatchID = oldCheckedRow.value.map(item => item.batchID);
-    const allCheckRox = [...new Set([...checkedRow.value, ...oldCheckBatchID])];
-    await batchModule.getBatchOperate({
-      batchID: allCheckRox,
-      operate: isReset.value,
-    });
-    openNotify(
-      'bottomRight',
-      `${isReset.value ? '重新生产' : '挂起'}操作成功`,
-      true,
-    );
-    getDataPage();
-  }
-  catch (error) {
-    error;
-    openNotify('bottomRight', `${isReset.value ? '重新生产' : '挂起'}操作失败`);
-  }
-  finally {
-    setOpen(false);
-  }
 }
 
 onActivated(() => {
@@ -292,7 +369,7 @@ async function getDataPage() {
     };
     const data = await batchModule.getBatchPage(params);
     if (data.respData) {
-      tableData.value = data.respData.batchInfo;
+      tableData.value = data.respData.DocInfo;
       pageVO.currentPage = data.respData.page;
       pageVO.total = data.respData.totalRows;
       pageVO.pageSize = data.respData.rowPerPage;
@@ -300,7 +377,6 @@ async function getDataPage() {
   }
   catch (error) {
     error;
-    openNotify('bottomRight', `接口超时`);
     // stop();
   }
 }

@@ -87,9 +87,11 @@ import { useAppStore } from '@/store/index';
 
 const { start, stop } = useCustomTimer();
 const items = ref([]);
-onActivated(() => {
+onActivated(async () => {
   useAppStore().setSpinning(true);
-  getDataPage();
+  await getDataPage();
+  startGetDataPage();
+  useAppStore().setSpinning(false);
 });
 onDeactivated(() => {
   stop();
@@ -100,14 +102,10 @@ async function getDataPage() {
     if (data.respData) {
       items.value = data.respData;
     }
-    startGetDataPage();
   }
   catch (error) {
     console.log('🚀 ~ file: newIndex.vue:182 ~ getDataPage ~ error:', error);
     // stop();
-  }
-  finally {
-    useAppStore().setSpinning(false);
   }
 }
 

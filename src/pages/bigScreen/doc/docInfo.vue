@@ -18,30 +18,30 @@
 
 <script setup lang="ts">
 import useCustomTimer from '@/utils/useCustomTimer';
-import { batchModule } from '@/apis/proApi';
+import { documentModule } from '@/apis/proApi';
 import { useAppStore } from '@/store/index';
 
 const { start, stop } = useCustomTimer();
 
 const items = ref([
   {
-    item: '批次',
+    item: '证本总',
     value: '215348',
   },
   {
-    item: '批次生产成功',
+    item: '成功',
     value: '215348',
   },
   {
-    item: '批次生产结束',
+    item: '废本',
     value: '215348',
   },
   {
-    item: '批次待生产',
+    item: '待生产',
     value: '215348',
   },
   {
-    item: '批次挂起',
+    item: '挂起',
     value: '215348',
   },
 ]);
@@ -56,11 +56,11 @@ onDeactivated(() => {
 });
 async function getDataPage() {
   try {
-    const data = await batchModule.getBatchStatistics({ batchID: 'all' });
+    const data = await documentModule.getDocStatistics({ isAll: 1 });
     if (data.respData) {
-      items.value[0].value = data.respData.batchNum;
-      items.value[1].value = data.respData.successNum;
-      items.value[2].value = data.respData.finishNum;
+      items.value[0].value = data.respData.docNum;
+      items.value[1].value = data.respData.productNum;
+      items.value[2].value = data.respData.obsoleteNum;
       items.value[4].value = data.respData.waitingNum;
       items.value[5].value = data.respData.hangUpNum;
     }

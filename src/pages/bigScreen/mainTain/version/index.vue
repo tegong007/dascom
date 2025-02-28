@@ -13,32 +13,52 @@
       >
         <div>{{ item.name }}：{{ item.version }}</div>
       </div>
+      <a-button class="btn" type="primary" @click="setSuccessOpen(true)">
+        退出系统
+      </a-button>
     </main>
+    <SuceessModal
+      :open="successOpen"
+      :success-icon="true"
+      :handle-ok="() => setSuccessOpen(false)"
+      :handle-cancel="() => setSuccessOpen(false)"
+      title="退出系统"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { useAppStore } from '@/store/index';
+import { App } from 'ant-design-vue';
+import SuceessModal from './successModal.vue';
 import { mainTainModule } from '@/apis/proApi';
 
 const props = defineProps({
   currentModel: String,
 });
-
+const { notification } = App.useApp();
+const successOpen = ref<boolean>(false);
+function setSuccessOpen(value: boolean) {
+  successOpen.value = value;
+}
 const items = ref([]);
 async function getData() {
   try {
-    useAppStore().setSpinning(true);
+    // useAppStore().setSpinning(true);
     const data = await mainTainModule.getVersion({ type: 0 });
     if (data.respData) {
       items.value = data.respData;
     }
   }
   catch (error) {
+    notification.error({
+      message: `错误`,
+      description: '接口超时',
+      placement: 'bottomRight',
+    });
     error;
   }
   finally {
-    useAppStore().setSpinning(false);
+    // useAppStore().setSpinning(false);
   }
 }
 watch(

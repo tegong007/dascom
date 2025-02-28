@@ -84,7 +84,7 @@ async function createWindow() {
     fullscreen: config.fullscreen, // 全屏
     autoHideMenuBar: true, // 隐藏工具栏
     center: true,
-    alwaysOnTop: true,
+    // alwaysOnTop: true,//置顶
     // useContentSize: true,
     webPreferences: {
       contextIsolation: true, // 隔离上下文

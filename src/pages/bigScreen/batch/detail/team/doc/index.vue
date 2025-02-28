@@ -263,6 +263,7 @@ const colums = ref([
     width: 200,
   },
 ]);
+
 function setSearchForm(formValue: object) {
   searchForm.value = formValue;
   pageVO.currentPage = 1;
@@ -305,11 +306,13 @@ async function getDataPage() {
       groupID: groupID.value,
       page: pageVO.currentPage,
       rowPerPage: pageVO.pageSize,
+      isAll: 0,
     };
     const data = await documentModule.getDocDetailPage(params);
     const statistics = await documentModule.getDocStatistics({
       batchID: props.batchID,
       groupID: groupID.value,
+      isAll: 0,
     });
     if (data.respData) {
       tableData.value = data.respData.docInfo;
@@ -361,7 +364,7 @@ function rowAction(type: string, recID: string) {
     if (checkedRow.value.length || oldCheckedRow.value.length) {
       const oldCheckrecID = oldCheckedRow.value.map(item => item.recID);
       const allCheckRox = [...new Set([...checkedRow.value, ...oldCheckrecID])];
-      modal.value = `是否${type === 'stop' ? '挂起' : '重新生产'}${
+      modal.value = `可能含有不能${type === 'stop' ? '挂起' : '重新生产'}的数据，是否继续${type === 'stop' ? '挂起' : '重新生产'}${
         allCheckRox.length
       }条数据?`;
       isReset.value = type === 'stop' ? 0 : 1;

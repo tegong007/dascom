@@ -44,6 +44,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'BatchDetail',
     component: () => import('@/pages/bigScreen/batch/detail/index.vue'),
   },
+  {
+    path: '/docList', // 证本列表
+    name: 'docList',
+    component: () => import('@/pages/bigScreen/doc/index.vue'),
+  },
 
   // 单本
   {

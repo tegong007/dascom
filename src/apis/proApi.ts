@@ -26,6 +26,7 @@ const documentModule = {
   getDocDetailPage: (data: any) => request.post(`${v1}/tss/doc-detail`, data),
   getDocStatistics: (data: any) =>
     request.post(`${v1}/tss/doc-statistics`, data),
+  getDocAllStatistics: () => request.post(`${v1}/tss/doc-allStatistics`),
   getDocOperate: (data: any) => request.post(`${v1}/tss/doc-operate`, data),
 };
 

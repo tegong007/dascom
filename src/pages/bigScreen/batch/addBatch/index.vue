@@ -83,8 +83,8 @@ import {
   teamOptions,
   urgencyOptions,
 } from '../option';
+import SuceessModal from '../../mainTain/version/successModal.vue';
 import UpdateModal from './modal/updateModal.vue';
-import SuceessModal from './modal/successModal.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 import TheButton from '@/components/base/TheButton.vue';
 import MyTable from '@/components/base/vxeTable.vue';
