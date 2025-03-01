@@ -103,9 +103,10 @@ import TheButton from '@/components/base/TheButton.vue';
 import MyTable from '@/components/base/vxeTable.vue';
 import TheModal from '@/components/modal/TheModal.vue';
 import { contextHolder, openNotify } from '@/components/base/useNotification';
-import { batchModule } from '@/apis/proApi';
+import { getWorkstationName } from '@/utils/workstationDefinitions';
+import { findLabelByValue } from '@/pages/bigScreen/batch/option.ts';
+import { documentModule } from '@/apis/proApi';
 
-// const { start, stop } = useCustomTimer();
 const pageVO = reactive({
   total: 20,
   currentPage: 1,
@@ -119,6 +120,14 @@ const open = ref<boolean>(false);
 const modal = ref('');
 const isReset = ref(0);
 const tableData = ref([]);
+const imgShow = {
+  name: 'VxeImage',
+  props: {
+    width: 80,
+    height: 80,
+    maskClosable: true,
+  },
+};
 const colums = ref([
   {
     title: '序号',
@@ -127,13 +136,18 @@ const colums = ref([
     width: 80,
   },
   {
+    title: '识别号',
+    field: 'recID',
+    width: 120,
+  },
+  {
     title: '批次号',
     field: 'batchID',
     width: 120,
   },
   {
-    title: '识别号',
-    field: 'recID',
+    title: '团组号',
+    field: 'groupID',
     width: 120,
   },
   {
@@ -141,6 +155,26 @@ const colums = ref([
     field: 'docID',
     width: 120,
   },
+  {
+    title: '派遣单位',
+    field: 'dispatchUnit',
+    formatter: formatterValue,
+    width: 130,
+  },
+  {
+    title: '数据来源',
+    field: 'dataSource',
+    formatter: formatterValue,
+    width: 130,
+  },
+
+  {
+    title: '加急程度',
+    field: 'urgentType',
+    formatter: formatterValue,
+    width: 100,
+  },
+
   {
     title: '当前工位',
     field: 'position',
@@ -249,6 +283,28 @@ const colums = ref([
     width: 200,
   },
 ]);
+function formatterValue({ cellValue, column }: any) {
+  switch (column.field) {
+    case 'position':
+      return getWorkstationName(cellValue);
+    case 'type':
+      return findLabelByValue('docTypesOptions', cellValue);
+    case 'docStatus':
+      return findLabelByValue('docStatusOptions', cellValue);
+    case 'cnObsvType':
+      return findLabelByValue('cnObsvTypeOptions', Number(cellValue));
+    case 'dispatchUnit':
+      return findLabelByValue('dispatchUnitOptions', cellValue);
+    case 'isTeam':
+      return findLabelByValue('teamOptions', cellValue);
+    case 'dataSource':
+      return findLabelByValue('dataSourceOptions', cellValue);
+    case 'urgentType':
+      return findLabelByValue('urgencyOptions', cellValue);
+    default:
+      break;
+  }
+}
 
 function setSearchForm(formValue: object) {
   searchForm.value = formValue;
@@ -264,7 +320,6 @@ async function operate() {
     const allCheckRox = [...new Set([...checkedRow.value, ...oldCheckrecID])];
     await documentModule.getDocOperate({
       recID: allCheckRox,
-      batchID: props.batchID,
       operate: isReset.value,
     });
     openNotify(
@@ -357,9 +412,9 @@ onDeactivated(() => {
   oldCheckedRow.value = [];
   checkedRow.value = [];
   tableData.value = [];
-
   // stop();
 });
+
 async function getDataPage() {
   try {
     const params = {
@@ -367,20 +422,21 @@ async function getDataPage() {
       page: pageVO.currentPage,
       rowPerPage: pageVO.pageSize,
     };
-    const data = await batchModule.getBatchPage(params);
+    const data = await documentModule.getDocDetailGeneral(params);
     if (data.respData) {
-      tableData.value = data.respData.DocInfo;
+      tableData.value = data.respData.docInfo;
       pageVO.currentPage = data.respData.page;
       pageVO.total = data.respData.totalRows;
       pageVO.pageSize = data.respData.rowPerPage;
     }
+    // startGetDataPage();
   }
   catch (error) {
     error;
+    openNotify('bottomRight', `接口超时`);
     // stop();
   }
 }
-
 // async function startGetDataPage() {
 //   start(async () => {
 //     await getDataPage();

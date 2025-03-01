@@ -62,11 +62,11 @@
     <template #footer>
       <a-flex justify="center" align="center" class="pb-40px">
         <div
-          class="cancelBtn h-110px w-220px transition-transform duration-300 hover:scale-105"
+          class="cancelBtn h-110px w-220px transition-transform duration-300 hover:scale-105 hover:cursor-pointer"
           @click="handleCancel"
         />
         <div
-          class="okBtn h-110px w-220px transition-transform duration-300 hover:scale-105"
+          class="okBtn h-110px w-220px transition-transform duration-300 hover:scale-105 hover:cursor-pointer"
           @click="onSubmit"
         />
       </a-flex>
@@ -124,7 +124,9 @@ function getBackgroundStyle(item) {
 function onSubmit() {
   formRef.value
     .validate()
-    .then(() => {})
+    .then(() => {
+      window.electron.send('quit-app');
+    })
     .catch((error) => {
       console.log('error', error);
       formRef.value.resetFields();

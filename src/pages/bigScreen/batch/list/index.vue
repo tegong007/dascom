@@ -105,7 +105,7 @@ import MyTable from '@/components/base/vxeTable.vue';
 import TheModal from '@/components/modal/TheModal.vue';
 import { contextHolder, openNotify } from '@/components/base/useNotification';
 import { batchModule } from '@/apis/proApi';
-
+import { useAppStore } from '@/store/index';
 // const { start, stop } = useCustomTimer();
 const pageVO = reactive({
   total: 20,
@@ -285,6 +285,7 @@ onDeactivated(() => {
 });
 async function getDataPage() {
   try {
+    useAppStore().setSpinning(true);
     const params = {
       ...searchForm.value,
       page: pageVO.currentPage,
@@ -302,6 +303,9 @@ async function getDataPage() {
     error;
     openNotify('bottomRight', `接口超时`);
     // stop();
+  }
+  finally {
+    useAppStore().setSpinning(false);
   }
 }
 

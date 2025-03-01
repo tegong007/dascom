@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import os from 'node:os';
 import fs from 'node:fs';
-import { BrowserWindow, app, ipcMain, shell } from 'electron';
+import { BrowserWindow, app, globalShortcut, ipcMain, shell } from 'electron';
 // const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -72,6 +72,9 @@ let win: BrowserWindow | null = null;
 const preload = path.join(__dirname, '../preload/index.mjs');
 const indexHtml = path.join(RENDERER_DIST, 'index.html');
 
+// 需要无效化的键位
+const keysDisabled = ['f11'];
+
 async function createWindow() {
   win = new BrowserWindow({
     title: 'Main window',
@@ -123,6 +126,13 @@ async function createWindow() {
       shell.openExternal(url);
     return { action: 'deny' };
   });
+  keysDisabled.map((key) => {
+    globalShortcut.register(key, () => {
+      console.log(key);
+    });
+    return null;
+  });
+
   // win.webContents.on('will-navigate', (event, url) => { }) #344
 }
 

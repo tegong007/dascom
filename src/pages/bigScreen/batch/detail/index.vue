@@ -10,9 +10,9 @@
         statisticsData.obsoleteNum
       }}，待生产数：{{ statisticsData.waitingNum }}，状态：{{
         statisticsData.status
-      }}，接收：{{ statisticsData.receiveTime }}，生产：{{
+      }}，接收时间：{{ statisticsData.receiveTime }}，生产时间：{{
         statisticsData.startTime
-      }}，完成：{{ statisticsData.finishTime }}</span>
+      }}，完成时间：{{ statisticsData.finishTime }}</span>
       <TeamForm :set-search-form="setSearchForm" />
       <main class="box-border h78% w-full flex">
         <div class="card-box box-border h-full w-250px p-l-10 p-t-10">
@@ -45,10 +45,10 @@
               :key="item.label"
               class="w-full flex flex-col items-center"
             >
-              <span class="text-18px">{{
-                (checkRow.length > 1 ? '多' : '') + item.label
+              <span class="text-18px">{{ item.label }}</span>
+              <span class="mt15">{{
+                checkRow.length > 1 ? `多${item.label}` : item.value
               }}</span>
-              <span class="mt15">{{ item.value }}</span>
             </div>
           </div>
         </div>

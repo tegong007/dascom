@@ -28,6 +28,8 @@ const documentModule = {
     request.post(`${v1}/tss/doc-statistics`, data),
   getDocAllStatistics: () => request.post(`${v1}/tss/doc-allStatistics`),
   getDocOperate: (data: any) => request.post(`${v1}/tss/doc-operate`, data),
+  getDocDetailGeneral: (data: any) => request.post(`${v1}/tss/doc-detail-general`, data),
+
 };
 
 // 维护页面

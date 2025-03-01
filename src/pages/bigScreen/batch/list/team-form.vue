@@ -16,7 +16,7 @@
             />
           </a-form-item>
         </a-col>
-        <a-col :span="5">
+        <!-- <a-col :span="5">
           <a-form-item label="证本号" name="docID">
             <a-input
               v-model:value="formState.docID"
@@ -24,7 +24,7 @@
               :maxlength="30"
             />
           </a-form-item>
-        </a-col>
+        </a-col> -->
         <a-col :span="5">
           <a-form-item label="状态" name="status">
             <a-select v-model:value="formState.status">
