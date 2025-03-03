@@ -179,8 +179,8 @@ async function setPassWord() {
         description: data.msg,
         placement: 'bottomRight',
       });
-      formRef.value.resetFields();
-      props.handleCancel();
+      // formRef.value.resetFields();
+      // props.handleCancel();
     }
   }
   catch (error) {

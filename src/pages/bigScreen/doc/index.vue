@@ -49,8 +49,8 @@
           :data="tableData"
           :rowfun="rowAction"
           :update-old-checked-row="updateOldCheckedRow"
-          key-field="batchID"
-          page-name="BatchList"
+          key-field="recID"
+          page-name="docList"
         />
       </main>
       <vxe-pager
@@ -110,7 +110,7 @@ import { documentModule } from '@/apis/proApi';
 const pageVO = reactive({
   total: 20,
   currentPage: 1,
-  pageSize: 202.20,
+  pageSize: 20,
 });
 const checkedRow = ref();
 const oldCheckedRow = ref([]);

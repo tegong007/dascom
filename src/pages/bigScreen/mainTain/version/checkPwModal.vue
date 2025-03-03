@@ -8,14 +8,19 @@
     force-render
     @ok="props.handleOk"
   >
-    <div class="delete-modal box-border h-[28em] p-t-50px">
+    <div class="delete-modal box-border h-[30em] p-t-50px">
       <div class="h-full flex flex-col items-center justify-start">
         <span class="text-[30px] color-[#627384] font-bold">
           &nbsp;&nbsp; {{ props.title }}</span>
         <div
-          class="scoll-bar mt10px h-full w-60% flex flex-col overflow-y-auto rounded-[8px] text-[24px] color-[#627384] font-bold"
+          class="scoll-bar w-60% flex flex-col overflow-y-auto rounded-[8px] text-[24px] color-[#627384] font-bold"
         >
-          <a-form ref="formRef" :model="formState" :rules="rules">
+          <a-form
+            ref="formRef"
+            class="mt15 h50px"
+            :model="formState"
+            :rules="rules"
+          >
             <a-form-item
               name="password"
               :rules="[{ validator: validateUsername }]"
@@ -35,7 +40,7 @@
             </a-form-item>
           </a-form>
           <main class="pw-bg w-full flex flex-1 flex-wrap p-7">
-            <div
+            <!-- <div
               v-for="(item, index) in [
                 1,
                 2,
@@ -54,7 +59,15 @@
               class="w33.3% cursor-pointer hover:brightness-105"
               :style="getBackgroundStyle(item)"
               @click="handleButtonClick(item)"
-            />
+            /> -->
+            <div
+              v-for="(item, index) in imgStatus"
+              :key="index"
+              class="box-border w33.3% cursor-pointer hover:brightness-105"
+              @click="handleButtonClick(item)"
+            >
+              <img :src="item" class="imgbtn h-full w-full">
+            </div>
           </main>
         </div>
       </div>
@@ -82,6 +95,19 @@ import { Md5 } from 'ts-md5';
 import { mainTainModule } from '@/apis/proApi';
 import { useAppStore } from '@/store/index';
 
+import btn1 from '@/assets/image/bigScreen/btn/1.png';
+import btn2 from '@/assets/image/bigScreen/btn/2.png';
+import btn3 from '@/assets/image/bigScreen/btn/3.png';
+import btn4 from '@/assets/image/bigScreen/btn/4.png';
+import btn5 from '@/assets/image/bigScreen/btn/5.png';
+import btn6 from '@/assets/image/bigScreen/btn/6.png';
+import btn7 from '@/assets/image/bigScreen/btn/7.png';
+import btn8 from '@/assets/image/bigScreen/btn/8.png';
+import btn9 from '@/assets/image/bigScreen/btn/9.png';
+import btnClear from '@/assets/image/bigScreen/btn/clear.png';
+import btn0 from '@/assets/image/bigScreen/btn/0.png';
+import btnDelect from '@/assets/image/bigScreen/btn/delect.png';
+
 const props = defineProps({
   open: Boolean,
   handleOk: Function,
@@ -91,6 +117,20 @@ const props = defineProps({
   handleCancel: Function,
   data: Object,
 });
+const imgStatus = [
+  btn1,
+  btn2,
+  btn3,
+  btn4,
+  btn5,
+  btn6,
+  btn7,
+  btn8,
+  btn9,
+  btnClear,
+  btn0,
+  btnDelect,
+];
 const password = ref<string>('');
 const formRef = ref();
 const { notification } = App.useApp();
@@ -112,20 +152,18 @@ function validateUsername() {
 const rules = {
   password: [{ validator: validateUsername }],
 };
-
-function getBackgroundStyle(item) {
-  // 定义统一的图片路径前缀
-  const prefix = '/src/assets/image/bigScreen/btn/';
-  // 根据 item 动态生成背景图片路径
-  const imagePath = `${prefix}${item}.png`;
-  // 返回内联样式
-  return {
-    backgroundImage: `url(${imagePath})`,
-    backgroundSize: '100% 100%', // 调整背景图片的大小
-    backgroundRepeat: 'no-repeat', // 调整背景图片的位置
-  };
-}
-
+// async function getBackgroundStyle(item) {
+//   // 定义统一的图片路径前缀
+//   const prefix = '@/assets/image/bigScreen/btn/';
+//   // 动态加载图片路径
+//   const imagePath = await import(`${prefix}${item}.png`);
+//   // 返回内联样式
+//   return {
+//     backgroundImage: `url(${imagePath.default})`,
+//     backgroundSize: '100% 100%',
+//     backgroundRepeat: 'no-repeat',
+//   };
+// }
 async function checkPassWord() {
   try {
     useAppStore().setSpinning(true);
@@ -278,5 +316,9 @@ function handleButtonClick(item: number | string) {
   background-image: url('@/assets/image/bigScreen/pwBG.png');
   background-size: 100% 100%;
   background-repeat: no-repeat;
+
+  // overflow: hidden;
+}
+.imgbtn {
 }
 </style>
