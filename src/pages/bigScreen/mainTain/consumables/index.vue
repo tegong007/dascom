@@ -60,6 +60,7 @@ import { watch } from 'vue';
 import { mainTainModule } from '@/apis/proApi';
 import useCustomTimer from '@/utils/useCustomTimer';
 import { useAppStore } from '@/store/index';
+import { openNotify } from '@/components/base/useNotification';
 
 const props = defineProps({
   currentModel: String,
@@ -224,15 +225,14 @@ async function getDataPage() {
     if (data.respData) {
       modulesData.value = data.respData;
     }
-    if (props.currentModel === '5') {
-      startGetDataPage();
-    }
-    else {
+    if (props.currentModel !== '5') {
       stop();
     }
+    return true;
   }
   catch (error) {
     error;
+    return false;
     // stop();
   }
   finally {
@@ -250,10 +250,13 @@ async function startGetDataPage() {
 // });
 watch(
   () => props.currentModel,
-  (newValue) => {
+  async (newValue) => {
     if (newValue === '5') {
       useAppStore().setSpinning(true);
-      getDataPage();
+      const end = await getDataPage();
+      !end && openNotify('bottomRight', `接口超时`);
+      useAppStore().setSpinning(false);
+      await startGetDataPage();
       // setTimeout(() => {}, 5000);
     }
     else {

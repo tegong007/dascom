@@ -25,6 +25,7 @@
 
 <script lang="ts" setup>
 import { watch } from 'vue';
+import { App } from 'ant-design-vue';
 import Reader from './Reader.vue';
 import Camera from './Camera.vue';
 import Laser from './Laser.vue';
@@ -35,6 +36,7 @@ import { useAppStore } from '@/store/index';
 const props = defineProps({
   currentModel: String,
 });
+const { notification } = App.useApp();
 const item = ref({});
 function handleUpdateItem(arrayName, index, value) {
   if (item.value[arrayName] && item.value[arrayName][index]) {
@@ -59,6 +61,11 @@ async function getData(newValue: string) {
   }
   catch (error) {
     error;
+    notification.error({
+      message: `错误`,
+      description: '接口超时',
+      placement: 'bottomRight',
+    });
   }
   finally {
     useAppStore().setSpinning(false);
