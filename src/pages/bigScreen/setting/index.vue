@@ -3,42 +3,43 @@
     class="bg h-100vh w-full flex flex-col items-center text-[18px] text-white"
   >
     <bigScreenHeader title="设置" />
-    <div class="h-100% w-full flex flex-col text-white">
-      <div class="bg-color m-x-4em h-87% flex border-[4px] border-[#3F89DD]">
-        <div class="h-full w-[10%] flex flex-col">
-          <a-radio-group
-            v-model:value="currentModel"
-            class="bg-color h-full w-full"
-            button-style="outline"
-          >
-            <a-radio-button
-              v-for="(item, index) in options"
-              :key="index"
-              :value="item.value"
-              class="siyuan w-full flex cursor-pointer items-center justify-center border-0 bg-[#0000] py-[45px] text-[20px] text-white before:!w-0"
+    <a-app class="h-100% w-full">
+      <div class="h-100% w-full flex flex-col text-white">
+        <div class="bg-color m-x-4em h-87% flex border-[4px] border-[#3F89DD]">
+          <div class="h-full w-[10%] flex flex-col">
+            <a-radio-group
+              v-model:value="currentModel"
+              class="bg-color h-full w-full"
+              button-style="outline"
             >
-              {{ item.label }}
-            </a-radio-button>
-          </a-radio-group>
-        </div>
-        <div class="wh-full border-l-[4px] border-[#3F89DD]">
-          <section
-            v-if="currentModel === 'sort'"
-            class="wh-full flex flex-col flex-1"
-          >
-            <Sort />
-          </section>
+              <a-radio-button
+                v-for="(item, index) in options"
+                :key="index"
+                :value="item.value"
+                class="siyuan w-full flex cursor-pointer items-center justify-center border-0 bg-[#0000] py-[45px] text-[20px] text-white before:!w-0"
+              >
+                {{ item.label }}
+              </a-radio-button>
+            </a-radio-group>
+          </div>
+          <div class="wh-full border-l-[4px] border-[#3F89DD]">
+            <section
+              v-if="currentModel === 'sort'"
+              class="wh-full flex flex-col flex-1"
+            >
+              <Sort />
+            </section>
 
-          <!-- <section v-if="currentModel === '1'">
+            <!-- <section v-if="currentModel === '1'">
             <Print />
           </section> -->
-          <section v-if="currentModel === '2' || currentModel === '3'">
-            <Set :current-model="currentModel" />
-          </section>
+            <section v-if="currentModel === '2' || currentModel === '3'">
+              <Set :current-model="currentModel" />
+            </section>
+          </div>
         </div>
       </div>
-    </div>
-
+    </a-app>
     <div
       class="groupBtn absolute bottom-0 h8em w-full flex items-center justify-center gap-20"
     >

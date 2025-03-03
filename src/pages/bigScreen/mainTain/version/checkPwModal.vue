@@ -77,6 +77,10 @@
 
 <script lang="ts" setup>
 import { defineProps, onMounted, onUnmounted, reactive } from 'vue';
+import { App } from 'ant-design-vue';
+import { Md5 } from 'ts-md5';
+import { mainTainModule } from '@/apis/proApi';
+import { useAppStore } from '@/store/index';
 
 const props = defineProps({
   open: Boolean,
@@ -89,6 +93,7 @@ const props = defineProps({
 });
 const password = ref<string>('');
 const formRef = ref();
+const { notification } = App.useApp();
 interface FormState {
   password: string;
 }
@@ -120,17 +125,50 @@ function getBackgroundStyle(item) {
     backgroundRepeat: 'no-repeat', // 调整背景图片的位置
   };
 }
-// 验证通过，告诉爸爸
+
+async function checkPassWord() {
+  try {
+    useAppStore().setSpinning(true);
+    const params = {
+      type: 0,
+      curPassword: new Md5().appendStr(password.value).end(),
+    };
+    const data = await mainTainModule.getPassWord(params);
+    if (data.code === 0) {
+      useAppStore().setSpinning(false);
+      window.electron.send('quit-app');
+    }
+    else {
+      notification.error({
+        message: `错误`,
+        description: data.msg,
+        placement: 'bottomRight',
+      });
+      formRef.value.resetFields();
+      props.handleCancel();
+    }
+  }
+  catch (error) {
+    notification.error({
+      message: `错误`,
+      description: error,
+      placement: 'bottomRight',
+    });
+  }
+  finally {
+    useAppStore().setSpinning(false);
+  }
+}
 function onSubmit() {
   formRef.value
     .validate()
-    .then(() => {
-      window.electron.send('quit-app');
+    .then(async () => {
+      await checkPassWord();
     })
     .catch((error) => {
       console.log('error', error);
-      formRef.value.resetFields();
-      props.handleCancel();
+      // formRef.value.resetFields();
+      // props.handleCancel();
     })
     .finally(() => {
       // formRef.value.resetFields();

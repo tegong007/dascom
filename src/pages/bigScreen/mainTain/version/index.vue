@@ -19,7 +19,6 @@
     </main>
     <SuceessModal
       :open="successOpen"
-      :success-icon="true"
       :handle-ok="() => setSuccessOpen(false)"
       :handle-cancel="() => setSuccessOpen(false)"
       title="退出系统"
@@ -29,7 +28,7 @@
 
 <script lang="ts" setup>
 import { App } from 'ant-design-vue';
-import SuceessModal from './successModal.vue';
+import SuceessModal from './checkPwModal.vue';
 import { mainTainModule } from '@/apis/proApi';
 
 const props = defineProps({

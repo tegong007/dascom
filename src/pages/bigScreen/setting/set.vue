@@ -89,7 +89,8 @@
 
 <script lang="ts" setup>
 import { QuestionCircleOutlined } from '@ant-design/icons-vue';
-import { contextHolder, openNotify } from '@/components/base/useNotification';
+import { App } from 'ant-design-vue';
+import { contextHolder } from '@/components/base/useNotification';
 import { getApiTransfer } from '@/apis/webApi';
 import { useAppStore } from '@/store/index';
 import { settingMoule } from '@/apis/proApi';
@@ -97,6 +98,7 @@ import { settingMoule } from '@/apis/proApi';
 const props = defineProps({
   currentModel: String,
 });
+const { notification } = App.useApp();
 const setItems = ref([]);
 function validateInput(event, index, platformIndex, optionIndex) {
   // 获取输入框的值
@@ -161,7 +163,11 @@ async function transfer(url, objs, itemIndex, platformIndex) {
     };
     const data = await getApiTransfer(params);
     if (data.rslts[0].code !== 0) {
-      openNotify('bottomRight', data.rslts[0].msg);
+      notification.error({
+        message: `错误`,
+        description: data.rslts[0].msg,
+        placement: 'bottomRight',
+      });
     }
     else {
       if (url === '/uvpdps/get-platform-config') {
@@ -170,12 +176,20 @@ async function transfer(url, objs, itemIndex, platformIndex) {
         setItems.value[itemIndex].positionItems[platformIndex].option[1].value
           = data.rslts[0].y;
       }
-      openNotify('bottomRight', '操作成功', true);
+      notification.success({
+        message: `成功`,
+        description: '成功',
+        placement: 'bottomRight',
+      });
     }
   }
   catch (error) {
     error;
-    openNotify('bottomRight', '操作失败');
+    notification.error({
+      message: `错误`,
+      description: '操作失败',
+      placement: 'bottomRight',
+    });
   }
   finally {
     useAppStore().setSpinning(false);
@@ -192,10 +206,20 @@ async function getData(newValue: string) {
     }
     else {
       item.value = {};
+      notification.error({
+        message: `错误`,
+        description: '读取设置页面失败',
+        placement: 'bottomRight',
+      });
     }
   }
   catch (error) {
     error;
+    notification.error({
+      message: `错误`,
+      description: '读取设置页面失败',
+      placement: 'bottomRight',
+    });
   }
   finally {
     useAppStore().setSpinning(false);

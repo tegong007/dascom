@@ -115,7 +115,7 @@ const options = [
   { label: `主副页打印`, value: '2' },
   { label: `加注打印`, value: '3' },
   { label: `成本证本收集`, value: '4' },
-  { label: `版本信息`, value: '6' },
+  { label: `关于`, value: '6' },
 ];
 
 function labelChange(value) {
