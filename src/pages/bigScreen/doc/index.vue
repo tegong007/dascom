@@ -110,7 +110,7 @@ import { documentModule } from '@/apis/proApi';
 const pageVO = reactive({
   total: 20,
   currentPage: 1,
-  pageSize: 10,
+  pageSize: 202.20,
 });
 const checkedRow = ref();
 const oldCheckedRow = ref([]);

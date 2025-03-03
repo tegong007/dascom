@@ -61,8 +61,8 @@ async function getDataPage() {
       items.value[0].value = data.respData.batchNum;
       items.value[1].value = data.respData.successNum;
       items.value[2].value = data.respData.finishNum;
-      items.value[4].value = data.respData.waitingNum;
-      items.value[5].value = data.respData.hangUpNum;
+      items.value[3].value = data.respData.waitingNum;
+      items.value[4].value = data.respData.hangUpNum;
     }
     startGetDataPage();
   }

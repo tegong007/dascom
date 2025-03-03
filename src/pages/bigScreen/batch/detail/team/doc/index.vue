@@ -92,7 +92,7 @@ const props = defineProps({
 const pageVO = reactive({
   total: 20,
   currentPage: 1,
-  pageSize: 10,
+  pageSize: 20,
 });
 const searchForm = ref({});
 const checkedRow = ref([]);

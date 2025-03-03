@@ -61,8 +61,8 @@ async function getDataPage() {
       items.value[0].value = data.respData.docNum;
       items.value[1].value = data.respData.productNum;
       items.value[2].value = data.respData.obsoleteNum;
-      items.value[4].value = data.respData.waitingNum;
-      items.value[5].value = data.respData.hangUpNum;
+      items.value[3].value = data.respData.waitingNum;
+      items.value[4].value = data.respData.hangUpNum;
     }
     startGetDataPage();
   }

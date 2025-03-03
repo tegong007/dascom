@@ -35,8 +35,8 @@
           </a-form-item>
         </a-col>
         <a-col :span="3">
-          <a-form-item label="状态" name="status">
-            <a-select v-model:value="formState.status">
+          <a-form-item label="状态" name="docStatus">
+            <a-select v-model:value="formState.docStatus">
               <a-select-option
                 v-for="option in docStatusOptions"
                 :key="option.value"
@@ -76,13 +76,13 @@ const formRef = ref();
 interface FormState {
   batchID: string;
   docID: string;
-  status: number;
+  docStatus: number;
   // timeRange: RangeValue;
 }
 const formState: UnwrapRef<FormState> = reactive({
   batchID: '',
   docID: '',
-  status: null,
+  docStatus: null,
 });
 
 function onSubmit() {
