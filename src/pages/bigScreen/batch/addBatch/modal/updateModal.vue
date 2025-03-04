@@ -5,6 +5,7 @@
     wrap-class-name="test"
     :closable="false"
     centered
+    destroy-on-close
     force-render
     @ok="props.handleOk"
   >

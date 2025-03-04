@@ -13,14 +13,14 @@
       >
         <div>{{ item.name }}：{{ item.version }}</div>
       </div>
-      <a-button class="btn" type="primary" @click="setSuccessOpen(true)">
+      <a-button class="btn" type="primary" @click="setcheckPwOpen(true)">
         退出系统
       </a-button>
     </main>
     <SuceessModal
-      :open="successOpen"
-      :handle-ok="() => setSuccessOpen(false)"
-      :handle-cancel="() => setSuccessOpen(false)"
+      :open="checkPwOpen"
+      :handle-ok="() => setcheckPwOpen(false)"
+      :handle-cancel="() => setcheckPwOpen(false)"
       title="退出系统"
     />
   </div>
@@ -35,9 +35,9 @@ const props = defineProps({
   currentModel: String,
 });
 const { notification } = App.useApp();
-const successOpen = ref<boolean>(false);
-function setSuccessOpen(value: boolean) {
-  successOpen.value = value;
+const checkPwOpen = ref<boolean>(false);
+function setcheckPwOpen(value: boolean) {
+  checkPwOpen.value = value;
 }
 const items = ref([]);
 async function getData() {
@@ -51,7 +51,7 @@ async function getData() {
   catch (error) {
     notification.error({
       message: `错误`,
-      description: '接口超时',
+      description: '获取版本信息接口超时',
       placement: 'bottomRight',
     });
     error;

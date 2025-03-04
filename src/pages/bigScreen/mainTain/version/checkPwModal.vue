@@ -1,14 +1,15 @@
 <template>
   <a-modal
+    v-if="props.open"
     :get-container="false"
     :open="props.open"
     wrap-class-name="test"
     :closable="false"
-    centered
-    force-render
+
+    centered force-render destroy-on-close
     @ok="props.handleOk"
   >
-    <div class="delete-modal box-border h-[30em] p-t-50px">
+    <div class="delete-modal box-border h-[30.5em] p-t-50px">
       <div class="h-full flex flex-col items-center justify-start">
         <span class="text-[30px] color-[#627384] font-bold">
           &nbsp;&nbsp; {{ props.title }}</span>
@@ -17,7 +18,7 @@
         >
           <a-form
             ref="formRef"
-            class="mt15 h50px"
+            class="mt15 h65px"
             :model="formState"
             :rules="rules"
           >
@@ -31,7 +32,6 @@
                 :visibility-toggle="false"
                 size="large"
                 class="border-1px border-blue"
-                autofocus
                 readonly
                 :maxlength="6"
                 @input="handleInput"
@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, onMounted, onUnmounted, reactive } from 'vue';
+import { defineProps, reactive } from 'vue';
 import { App } from 'ant-design-vue';
 import { Md5 } from 'ts-md5';
 import { mainTainModule } from '@/apis/proApi';
@@ -206,15 +206,6 @@ function handleCancel() {
   formRef.value.resetFields();
   props.handleCancel();
 }
-// 在组件挂载时添加全局监听
-onMounted(() => {
-  window.addEventListener('keydown', handleKeydown);
-});
-
-// 在组件卸载时移除全局监听
-onUnmounted(() => {
-  window.removeEventListener('keydown', handleKeydown);
-});
 
 // 处理输入框的输入事件
 function handleInput(event: Event) {
@@ -276,6 +267,18 @@ function handleButtonClick(item: any) {
     password.value += value; // 添加数字到密码
   }
 }
+watch(
+  () => props.open,
+  async (newValue) => {
+    if (newValue) {
+      window.addEventListener('keydown', handleKeydown);
+    }
+    else {
+      window.removeEventListener('keydown', handleKeydown);
+    }
+  },
+  { deep: true, immediate: true },
+);
 </script>
 
 <style scoped lang="less">

@@ -31,12 +31,18 @@
       <br>
 
       <a-input
-        v-model:value="value"
+        v-model:value="speed"
         size="large"
         placeholder="Basic usage"
         class="m-r-10 w-150px"
+        :maxlength="6"
+        @input="handleInput"
       />
-      <a-button type="link" class="btn hover:text-[#89f7ff]!">
+      <a-button
+        type="link"
+        class="btn hover:text-[#89f7ff]!"
+        @click="setSpeedLine"
+      >
         保存
       </a-button>
     </section>
@@ -139,14 +145,13 @@
 <script lang="ts" setup>
 import type { NotificationPlacement } from 'ant-design-vue';
 import { notification } from 'ant-design-vue';
+import { useAppStore } from '@/store/index';
 import {
   getApiTransfer,
   initMachine,
   startOrStopPrintTask,
 } from '@/apis/webApi';
-import { useAppStore } from '@/store/index';
 
-const appStore = useAppStore();
 const [api, contextHolder] = notification.useNotification();
 function openNotify(
   placement: NotificationPlacement,
@@ -162,26 +167,32 @@ function openNotification(
 ) {
   success
     ? api.success({
-      message: '成功',
-      description: ` ${msg}`,
-      placement,
-    })
+        message: '成功',
+        description: ` ${msg}`,
+        placement,
+      })
     : api.error({
-      message: '错误信息',
-      description: ` ${msg}`,
-      placement,
-    });
+        message: '错误信息',
+        description: ` ${msg}`,
+        placement,
+      });
 }
-const value = ref<string>('10');
+const speed = ref<string>('10');
 const isStop = ref<boolean>(true);
 const value1 = ref(1);
 function handleChange(value: number) {
   value1.value = value;
 }
+// 处理输入框的输入事件
+function handleInput(event: Event) {
+  const input = event.target as HTMLInputElement;
+  speed.value = input.value.replace(/\D/g, ''); // 限制只能输入数字
+  event.target.value = speed.value;
+}
 // 初始化
 async function init() {
   try {
-    appStore.setSpinning(true);
+    useAppStore().setSpinning(true);
     await initMachine({ module: 'm0' });
     openNotify('bottomRight', '初始化接口调用成功', 'success');
   }
@@ -190,11 +201,12 @@ async function init() {
     openNotify('bottomRight', '初始化接口调用失败');
   }
   finally {
-    appStore.setSpinning(false);
+    useAppStore().setSpinning(false);
   }
 }
 async function sendDocLine() {
   try {
+    useAppStore().setSpinning(true);
     // await sendDoc();
     const params = {
       transURI: `/doc-machine/module-send-doc`,
@@ -207,11 +219,35 @@ async function sendDocLine() {
     error;
     openNotify('bottomRight', '手动送本失败');
   }
+  finally {
+    useAppStore().setSpinning(false);
+  }
+}
+async function setSpeedLine() {
+  try {
+    useAppStore().setSpinning(true);
+    // await sendDoc();
+    const params = {
+      transURI: `/doc-machine/set-speed`,
+      paraIn: {
+        speedValue: speed.value,
+      },
+    };
+    await getApiTransfer(params);
+    openNotify('bottomRight', '修改传输速度成功', 'success');
+  }
+  catch (error) {
+    error;
+    openNotify('bottomRight', '修改传输速度失败');
+  }
+  finally {
+    useAppStore().setSpinning(false);
+  }
 }
 async function openTask() {
   isStop.value = !isStop.value;
   try {
-    appStore.setSpinning(true);
+    useAppStore().setSpinning(true);
     // await startOrStopPrintTask({ operate: 1 });
     await startOrStopPrintTask({
       operate: 0,
@@ -228,12 +264,12 @@ async function openTask() {
     isStop.value = !isStop.value;
   }
   finally {
-    appStore.setSpinning(false);
+    useAppStore().setSpinning(false);
   }
 }
 async function stopTask() {
   isStop.value = !isStop.value;
-  appStore.setSpinning(true);
+  useAppStore().setSpinning(true);
   try {
     await startOrStopPrintTask({ operate: 1 });
   }
@@ -243,11 +279,12 @@ async function stopTask() {
     isStop.value = !isStop.value;
   }
   finally {
-    appStore.setSpinning(false);
+    useAppStore().setSpinning(false);
   }
 }
 async function grooveOperate(grooveID: number, operate: number) {
   try {
+    useAppStore().setSpinning(true);
     // await sendDoc();
     const params = {
       transURI: `/doc-machine/groove-operate`,
@@ -258,7 +295,10 @@ async function grooveOperate(grooveID: number, operate: number) {
   }
   catch (error) {
     error;
-    openNotify('bottomRight', '操作失败');
+    openNotify('bottomRight', '卡槽操作失败');
+  }
+  finally {
+    useAppStore().setSpinning(false);
   }
 }
 </script>

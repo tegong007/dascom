@@ -254,7 +254,7 @@ watch(
     if (newValue === '5') {
       useAppStore().setSpinning(true);
       const end = await getDataPage();
-      !end && openNotify('bottomRight', `接口超时`);
+      !end && openNotify('bottomRight', `耗材接口超时`);
       useAppStore().setSpinning(false);
       await startGetDataPage();
       // setTimeout(() => {}, 5000);

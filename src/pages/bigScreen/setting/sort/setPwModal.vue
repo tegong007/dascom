@@ -1,10 +1,12 @@
 <template>
   <a-modal
+    v-if="props.open"
     :get-container="false"
     :open="props.open"
     wrap-class-name="test"
     :closable="false"
     centered
+    destroy-on-close
     force-render
     @ok="props.handleOk"
   >
@@ -15,7 +17,7 @@
         <div
           class="scoll-bar mt20px h-full w-60% flex flex-col overflow-y-auto rounded-[8px] text-[24px] color-[#627384] font-bold"
         >
-          <a-form ref="formRef" :model="formState" :rules="rules">
+          <a-form ref="setPwRef" :model="formState" :rules="rules">
             <!-- 旧密码 -->
             <a-form-item
               name="oldPassword"
@@ -25,7 +27,7 @@
                 v-model:value="formState.oldPassword"
                 placeholder="请输入旧密码"
                 size="large"
-                autofocus
+                :maxlength="6"
                 @input="handleInput('oldPassword', $event)"
               />
             </a-form-item>
@@ -88,7 +90,7 @@ const props = defineProps({
   handleCancel: Function,
 });
 const { notification } = App.useApp();
-const formRef = ref();
+const setPwRef = ref();
 
 interface FormState {
   oldPassword: string;
@@ -143,7 +145,7 @@ const rules = {
 
 // 提交表单
 function onSubmit() {
-  formRef.value
+  setPwRef.value
     .validate()
     .then(async () => {
       await setPassWord();
@@ -170,7 +172,7 @@ async function setPassWord() {
         description: '修改成功',
         placement: 'bottomRight',
       });
-      formRef.value.resetFields();
+      setPwRef.value.resetFields();
       props.handleCancel();
     }
     else {
@@ -179,7 +181,7 @@ async function setPassWord() {
         description: data.msg,
         placement: 'bottomRight',
       });
-      // formRef.value.resetFields();
+      // setPwRef.value.resetFields();
       // props.handleCancel();
     }
   }
@@ -200,7 +202,7 @@ function handleCancel() {
   formState.oldPassword = '';
   formState.newPassword = '';
   formState.confirmPassword = '';
-  formRef.value.resetFields();
+  setPwRef.value.resetFields();
   props.handleCancel();
 }
 
