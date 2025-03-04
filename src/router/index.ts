@@ -21,6 +21,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/mainTain', // 维护
     name: 'MainTain',
+    meta: { keepAlive: false },
     component: () => import('@/pages/bigScreen/mainTain/index.vue'),
   },
   {

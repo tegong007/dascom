@@ -242,6 +242,10 @@ async function AddBatch() {
       // 如果没有添加过，补一条数据
       insertData.unshift({ isTeam: 0, num: 0 });
     }
+    insertData[0] = {
+      isTeam: [insertData[0].isTeam],
+      num: [insertData[0].num],
+    };
     try {
       useAppStore().setSpinning(true);
       const { respData } = await addBatch({ groups: insertData });

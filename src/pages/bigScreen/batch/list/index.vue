@@ -96,6 +96,7 @@
 
 <script lang="ts" setup>
 import { RollbackOutlined } from '@ant-design/icons-vue';
+import { useRoute } from 'vue-router';
 import TeamForm from './team-form.vue';
 import BatchInfo from './batchInfo.vue';
 import { BatchStatusOptions } from '@/pages/bigScreen/batch/option.ts';
@@ -106,6 +107,8 @@ import TheModal from '@/components/modal/TheModal.vue';
 import { contextHolder, openNotify } from '@/components/base/useNotification';
 import { batchModule } from '@/apis/proApi';
 import { useAppStore } from '@/store/index';
+
+const route = useRoute();
 // const { start, stop } = useCustomTimer();
 const pageVO = reactive({
   total: 20,
@@ -120,6 +123,8 @@ const open = ref<boolean>(false);
 const modal = ref('');
 const isReset = ref(0);
 const tableData = ref([]);
+const batchID = ref<string>('');
+
 const colums = ref([
   {
     title: '序号',
@@ -273,7 +278,11 @@ async function operate() {
 }
 
 onActivated(() => {
-  getDataPage();
+  nextTick(() => {
+    const query = route.query;
+    batchID.value = query.batchID;
+    getDataPage();
+  });
 });
 onDeactivated(() => {
   // 清空筛选
@@ -287,7 +296,7 @@ async function getDataPage() {
   try {
     useAppStore().setSpinning(true);
     const params = {
-      ...searchForm.value,
+      ...{ batchID: batchID.value, ...searchForm.value },
       page: pageVO.currentPage,
       rowPerPage: pageVO.pageSize,
     };

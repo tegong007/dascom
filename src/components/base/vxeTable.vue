@@ -47,7 +47,27 @@
           show-overflow="title"
           show-footer-overflow
           align="center"
-        />
+        >
+          <template
+            v-if="
+              (item.field === 'batchID' && props.pageName === 'docList')
+                || item.type === 'html'
+            "
+            #default="{ row }"
+          >
+            <a
+              class="color-[#89F7FF]"
+              @click="$goto('BatchList', { batchID: row.batchID })"
+            >{{ row.batchID }}</a>
+          </template>
+        </vxe-column>
+        <!-- 如果当前列的 field 是 batchID，则使用自定义模板 -->
+        <!-- <template v-slot="{ row }" v-if="item.field === 'batchID'">
+            <a class="my-link" @click="handleClick(row.batchID)">{{
+              row.batchID
+            }}</a>
+          </template>
+        </vxe-column> -->
         <!-- 可编辑 :edit-render="{
             name: item.options ? 'select' : 'input',
             options: item.options,
@@ -99,19 +119,19 @@
           v-if="props.pageName === 'docList'"
           field="action"
           title="操作"
-          width="170"
+          width="100"
           fixed="right"
           align="center"
         >
           <template #default="{ row }">
             <div class="flex items-center justify-start gap-10">
               <a
-                v-if="row.status === 1"
+                v-if="row.docStatus === 1"
                 class="color-[#89F7FF]"
                 @click="props.rowfun('stop', row.docID)"
               >挂起</a>
               <a
-                v-if="row.status === 2"
+                v-if="row.docStatus === 2"
                 class="color-[#89F7FF]"
                 @click="props.rowfun('reset', row.docID)"
               >重新生产</a>

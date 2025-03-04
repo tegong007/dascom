@@ -58,22 +58,33 @@ import { defineProps, reactive } from 'vue';
 import type { UnwrapRef } from 'vue';
 import { SearchOutlined } from '@ant-design/icons-vue';
 
+import { useRoute } from 'vue-router';
 import { BatchStatusOptions } from '@/pages/bigScreen/batch/option.ts';
 
 const props = defineProps({
   setSearchForm: Function,
 });
+const route = useRoute();
 const formRef = ref();
+
 interface FormState {
   batchID: string;
   docID: string;
   status: number;
   // timeRange: RangeValue;
 }
+const batchID = ref('');
 const formState: UnwrapRef<FormState> = reactive({
-  batchID: '',
+  batchID: batchID.value || '',
   docID: '',
   status: null,
+});
+onActivated(() => {
+  nextTick(() => {
+    const query = route.query;
+    batchID.value = query.batchID;
+    formState.batchID = query.batchID;
+  });
 });
 
 function onSubmit() {
