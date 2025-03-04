@@ -152,18 +152,7 @@ function validateUsername() {
 const rules = {
   password: [{ validator: validateUsername }],
 };
-// async function getBackgroundStyle(item) {
-//   // 定义统一的图片路径前缀
-//   const prefix = '@/assets/image/bigScreen/btn/';
-//   // 动态加载图片路径
-//   const imagePath = await import(`${prefix}${item}.png`);
-//   // 返回内联样式
-//   return {
-//     backgroundImage: `url(${imagePath.default})`,
-//     backgroundSize: '100% 100%',
-//     backgroundRepeat: 'no-repeat',
-//   };
-// }
+
 async function checkPassWord() {
   try {
     useAppStore().setSpinning(true);
@@ -255,20 +244,36 @@ function handleKeydown(event: KeyboardEvent) {
     event.preventDefault();
   }
 }
+const buttonMapping = {
+  [btn1]: 1,
+  [btn2]: 2,
+  [btn3]: 3,
+  [btn4]: 4,
+  [btn5]: 5,
+  [btn6]: 6,
+  [btn7]: 7,
+  [btn8]: 8,
+  [btn9]: 9,
+  [btnClear]: 'clear',
+  [btn0]: 0,
+  [btnDelect]: 'delect',
+};
 // 处理数字键盘按钮的点击事件
-function handleButtonClick(item: number | string) {
-  if (item === 'clear') {
+function handleButtonClick(item: any) {
+  // 通过映射关系获取逻辑值
+  const value = buttonMapping[item];
+  if (value === 'clear') {
     password.value = ''; // 清空密码
     formRef.value.resetFields();
   }
-  else if (item === 'delect') {
+  else if (value === 'delect') {
     password.value = password.value.slice(0, -1); // 删除最后一个字符
     if (!password.value) {
       formRef.value.resetFields();
     }
   }
   else if (password.value.length < 6) {
-    password.value += item; // 添加数字到密码
+    password.value += value; // 添加数字到密码
   }
 }
 </script>

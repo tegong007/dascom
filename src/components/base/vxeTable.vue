@@ -111,7 +111,7 @@
                 @click="props.rowfun('stop', row.docID)"
               >挂起</a>
               <a
-                v-if="row.status !== 1 && row.status !== 0"
+                v-if="row.status === 2"
                 class="color-[#89F7FF]"
                 @click="props.rowfun('reset', row.docID)"
               >重新生产</a>
