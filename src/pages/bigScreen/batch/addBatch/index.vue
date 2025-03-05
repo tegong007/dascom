@@ -243,8 +243,8 @@ async function AddBatch() {
       insertData.unshift({ isTeam: 0, num: 0 });
     }
     insertData[0] = {
-      isTeam: [insertData[0].isTeam],
-      num: [insertData[0].num],
+      isTeam: insertData[0].isTeam,
+      num: insertData[0].num,
     };
     try {
       useAppStore().setSpinning(true);
