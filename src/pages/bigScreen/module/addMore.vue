@@ -6,7 +6,7 @@
         <span class="ml-10 text-[1.5em] color-[#CFDEF1]">加注打印</span>
       </div>
       <div
-        class="absolute top-[3.5em] h-4.8em w-90% flex justify-center gap-50"
+        class="absolute top-[3.3em] h-4.8em w-90% flex justify-center gap-50"
       >
         <div v-for="(item, index) in props.data.items" :key="index">
           <div class="w-full flex flex-col items-center">
@@ -25,12 +25,40 @@
         </div>
       </div>
       <div class="table-data absolute top-[8em] w-95%">
-        <div class="p-x-10">
+        <div class="p-x-10 p-b-10">
           <div class="h30px w-full flex items-center bg-[#fff]/[0.2]">
             <span class="ml3">证件信息</span>
           </div>
           <div class="scroll-table w-full">
             <SeamlessScroll :data="props.data.periodDataList" />
+          </div>
+        </div>
+        <div
+          v-if="props.data.status === 3 || props.data.status === 2"
+          :class="[
+            props.data.status === 3 ? 'bg-[#FF0000]/[0.5]' : '',
+            props.data.status === 2 ? 'bg-[#FF9900]/[0.5]' : '',
+          ]"
+          class="absolute top-0 wh-full flex items-center justify-center"
+        >
+          <!-- <a-button
+            type="link"
+            class="bg-[#000]/[0.4] text-white p-y-20px p-x-40 flex justify-center items-center rounded-full border-1 border-[#fff]"
+            >故障</a-button
+          >
+          <img src="../../assets/image/bigScreen/errorBtn.png" alt="" /> -->
+          <div
+            class="flex items-center justify-center p-x-40 p-y-20px text-center text-22px text-white font-bold"
+          >
+            {{
+              props.data.status === 3
+                ? '故障'
+                : props.data.status === 2
+                  ? '警告'
+                  : ''
+            }}
+            <br>
+            {{ props.data.msg }}
           </div>
         </div>
       </div>

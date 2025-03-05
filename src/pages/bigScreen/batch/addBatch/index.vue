@@ -242,13 +242,17 @@ async function AddBatch() {
       // 如果没有添加过，补一条数据
       insertData.unshift({ isTeam: 0, num: 0 });
     }
-    insertData[0] = {
-      isTeam: insertData[0].isTeam,
-      num: insertData[0].num,
-    };
+    // 改isTeam=0
+    const result = insertData.map((item) => {
+      if (item.isTeam === 0) {
+        return { isTeam: item.isTeam, num: item.num };
+      }
+      return item; // 如果 isTeam 不为 0，保留原数据
+    });
+
     try {
       useAppStore().setSpinning(true);
-      const { respData } = await addBatch({ groups: insertData });
+      const { respData } = await addBatch({ groups: result });
       if (respData) {
         showSuccessData.value = { ...respData };
         setSuccessOpen(true);

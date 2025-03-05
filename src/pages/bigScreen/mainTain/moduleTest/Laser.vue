@@ -137,6 +137,13 @@ async function transfer(url, objs) {
         placement: 'bottomRight',
       });
     }
+    else if (data.rslts[0].code === 0 && url !== '/lpdps/preview') {
+      notification.success({
+        message: `成功`,
+        description: '操作成功',
+        placement: 'bottomRight',
+      });
+    }
     else {
       if (url === '/lpdps/preview') {
         path.value = data.rslts[0].imgData;

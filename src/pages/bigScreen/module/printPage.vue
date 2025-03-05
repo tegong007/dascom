@@ -9,24 +9,29 @@
         class="absolute top-[3.3em] h-[4.8em] w-90% flex justify-center gap-50"
       >
         <div v-for="(item, index) in props.data.items" :key="index">
-          <!-- <div
+          <div
             :class="[
-              item.status === 'error' ? 'bg-[#FF0000]/[0.4] border-[#E83131] border-1px' : '',
-              item.status === 'warning' ? 'bg-[#FF9900]/[0.4] border-[#E8AB31] border-1px' : '',
+              item.status === 3
+                ? 'bg-[#FF0000]/[0.4] border-[#E83131] border-1px'
+                : '',
+              item.status === 2
+                ? 'bg-[#FF9900]/[0.4] border-[#E8AB31] border-1px'
+                : '',
             ]"
             class="w-full flex flex-col items-center"
-          > -->
-          <div class="w-full flex flex-col items-center">
-            <div class="mt-5 text-[1em] color-[#CFDEF1]">
-              {{ item.item }}
-            </div>
-            <div class="mt8 text-2em font-[youshe]">
-              <CountTo
-                :start-val="0"
-                separator
-                :end-val="item.value"
-                :duration="Math.floor(Math.random() * 2000) + 1000"
-              />
+          >
+            <div class="w-full flex flex-col items-center">
+              <div class="mt-5 text-[1em] color-[#CFDEF1]">
+                {{ item.item }}
+              </div>
+              <div class="mt8 text-2em font-[youshe]">
+                <CountTo
+                  :start-val="0"
+                  separator
+                  :end-val="item.value"
+                  :duration="Math.floor(Math.random() * 2000) + 1000"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -38,6 +43,34 @@
           </div>
           <div class="scroll-table w-full">
             <SeamlessScroll :data="props.data.periodDataList" />
+          </div>
+        </div>
+        <div
+          v-if="props.data.status === 3 || props.data.status === 2"
+          :class="[
+            props.data.status === 3 ? 'bg-[#FF0000]/[0.5]' : '',
+            props.data.status === 2 ? 'bg-[#FF9900]/[0.5]' : '',
+          ]"
+          class="absolute top-0 wh-full flex items-center justify-center"
+        >
+          <!-- <a-button
+            type="link"
+            class="bg-[#000]/[0.4] text-white p-y-20px p-x-40 flex justify-center items-center rounded-full border-1 border-[#fff]"
+            >故障</a-button
+          >
+          <img src="../../assets/image/bigScreen/errorBtn.png" alt="" /> -->
+          <div
+            class="flex items-center justify-center p-x-40 p-y-20px text-center text-22px text-white font-bold"
+          >
+            {{
+              props.data.status === 3
+                ? '故障'
+                : props.data.status === 2
+                  ? '警告'
+                  : ''
+            }}
+            <br>
+            {{ props.data.msg }}
           </div>
         </div>
         <!-- <div class="absolute top-0 wh-full flex items-center justify-center bg-[#FF0000]/[0.4]">
