@@ -172,6 +172,7 @@ async function getGroupData() {
 }
 function setSearchForm(formValue: object) {
   searchForm.value = formValue;
+  pageVO.currentPage = 1;
   getGroupData();
 }
 
