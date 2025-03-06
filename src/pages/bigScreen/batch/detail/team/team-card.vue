@@ -109,7 +109,8 @@ watch(
       }
     });
     // 当页勾选的数据=页数，即全选
-    isAllCheck.value = newItems.every(item => item.checked);
+    isAllCheck.value
+      = newItems.length && newItems.every(item => item.checked);
     props.setCheckRow(resultArray);
   },
 

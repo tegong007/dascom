@@ -8,11 +8,12 @@
         statisticsData.docNum
       }}，良本数：{{ statisticsData.productNum }}，废本数：{{
         statisticsData.obsoleteNum
-      }}，待生产数：{{ statisticsData.waitingNum }}，状态：{{
-        statisticsData.status
-      }}，接收时间：{{ statisticsData.receiveTime }}，生产时间：{{
-        statisticsData.startTime
-      }}，完成时间：{{ statisticsData.finishTime }}</span>
+      }}，待生产数：{{ statisticsData.waitingNum }}，状态：
+        {{ formatterStatus(statisticsData.status) }}，接收时间：{{
+          statisticsData.receiveTime
+        }}，生产时间：{{ statisticsData.startTime }}，完成时间：{{
+          statisticsData.finishTime
+        }}</span>
       <TeamForm :set-search-form="setSearchForm" />
       <main class="box-border h78% w-full flex">
         <div class="card-box box-border h-full w-250px p-l-10 p-t-10">
@@ -68,7 +69,7 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router';
 import { reactive } from 'vue';
-import { findLabelByValue } from '../option';
+import { BatchStatusOptions, findLabelByValue } from '../option';
 import TeamForm from './team/team-form.vue';
 import TeamCard from './team/team-card.vue';
 import Doc from './team/doc/index.vue';
@@ -97,6 +98,10 @@ const statisticsData = ref({
   startTime: '',
   finishTime: '',
 });
+function formatterStatus(cellValue: any) {
+  const item = BatchStatusOptions.find(item => item.value === cellValue);
+  return item ? item.label : cellValue;
+}
 const info = ref([
   {
     label: '派遣单位',
