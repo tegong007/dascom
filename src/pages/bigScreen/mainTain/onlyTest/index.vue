@@ -33,8 +33,9 @@
       <a-input
         v-model:value="speed"
         size="large"
-        placeholder="Basic usage"
+        placeholder="请输入数字"
         class="m-r-10 w-150px"
+        allow-clear
         :maxlength="6"
         @input="handleInput"
       />

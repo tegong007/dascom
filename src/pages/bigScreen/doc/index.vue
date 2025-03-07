@@ -106,6 +106,7 @@ import { contextHolder, openNotify } from '@/components/base/useNotification';
 import { getWorkstationName } from '@/utils/workstationDefinitions';
 import { findLabelByValue } from '@/pages/bigScreen/batch/option.ts';
 import { documentModule } from '@/apis/proApi';
+import { useAppStore } from '@/store/index';
 
 const pageVO = reactive({
   total: 20,
@@ -446,6 +447,7 @@ onDeactivated(() => {
 
 async function getDataPage() {
   try {
+    useAppStore().setSpinning(true);
     const params = {
       ...searchForm.value,
       page: pageVO.currentPage,
@@ -464,6 +466,9 @@ async function getDataPage() {
     error;
     openNotify('bottomRight', `接口超时`);
     // stop();
+  }
+  finally {
+    useAppStore().setSpinning(false);
   }
 }
 // async function startGetDataPage() {

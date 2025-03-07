@@ -13,6 +13,7 @@
               v-model:value="formState.batchID"
               placeholder="请输入批次号"
               :maxlength="30"
+              allow-clear
             />
           </a-form-item>
         </a-col>
@@ -22,6 +23,7 @@
               v-model:value="formState.groupID"
               placeholder="请输入团组号"
               :maxlength="30"
+              allow-clear
             />
           </a-form-item>
         </a-col>
@@ -31,6 +33,7 @@
               v-model:value="formState.docID"
               placeholder="请输入证本号"
               :maxlength="30"
+              allow-clear
             />
           </a-form-item>
         </a-col>

@@ -5,8 +5,9 @@
     :open="props.open"
     wrap-class-name="test"
     :closable="false"
-
-    centered force-render destroy-on-close
+    centered
+    force-render
+    destroy-on-close
     @ok="props.handleOk"
   >
     <div class="delete-modal box-border h-[30.5em] p-t-50px">
@@ -35,7 +36,6 @@
                 readonly
                 :maxlength="6"
                 @input="handleInput"
-                @keydown="handleKeydown"
               />
             </a-form-item>
           </a-form>
@@ -211,12 +211,15 @@ function handleCancel() {
 function handleInput(event: Event) {
   const input = event.target as HTMLInputElement;
   password.value = input.value.replace(/\D/g, ''); // 限制只能输入数字
+  console.log('🚀 ~ handleInput ~  password.value:', password.value);
 }
 
 // 处理键盘按下事件
 function handleKeydown(event: KeyboardEvent) {
   // 检查按键是否是数字（0-9）
+  console.log('🚀 ~ handleKeydown ~ password.value:', password.value);
   if (/^\d$/.test(event.key) && password.value.length < 6) {
+    console.log('🚀 ~ handleKeydown ~ event.key:', event.key);
     password.value += event.key; // 添加数字到密码
     // 允许数字输入
   }

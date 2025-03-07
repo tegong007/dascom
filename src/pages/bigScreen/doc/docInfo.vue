@@ -19,7 +19,6 @@
 <script setup lang="ts">
 import useCustomTimer from '@/utils/useCustomTimer';
 import { documentModule } from '@/apis/proApi';
-import { useAppStore } from '@/store/index';
 
 const { start, stop } = useCustomTimer();
 
@@ -47,9 +46,7 @@ const items = ref([
 ]);
 
 onActivated(async () => {
-  useAppStore().setSpinning(true);
   await getDataPage();
-  useAppStore().setSpinning(false);
 });
 onDeactivated(() => {
   stop();

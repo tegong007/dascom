@@ -13,6 +13,7 @@
               v-model:value="formState.batchID"
               placeholder="请输入批次号"
               :maxlength="30"
+              allow-clear
             />
           </a-form-item>
         </a-col>

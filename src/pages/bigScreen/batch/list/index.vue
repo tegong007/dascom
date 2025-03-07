@@ -179,12 +179,14 @@ const colums = ref([
     width: 200,
   },
 ]);
+const isSearching = ref(false);
 function setSearchForm(formValue: object) {
   searchForm.value = formValue;
   pageVO.currentPage = 1;
   // 清空筛选
   oldCheckedRow.value = [];
   checkedRow.value = [];
+  isSearching.value = true;
   getDataPage();
 }
 // 取消的时候删掉这一行
@@ -289,17 +291,25 @@ onDeactivated(() => {
   oldCheckedRow.value = [];
   checkedRow.value = [];
   tableData.value = [];
+  isSearching.value = false;
 
   // stop();
 });
+
 async function getDataPage() {
   try {
     useAppStore().setSpinning(true);
+    const { batchID: _, ...restSearchForm } = searchForm.value; // 移除 searchForm.value 中的 batchID 属性
     const params = {
-      ...{ batchID: batchID.value, ...searchForm.value },
+      batchID: isSearching.value
+        ? searchForm.value.batchID
+        : batchID.value || searchForm.value.batchID,
+      ...restSearchForm,
+      // ...searchForm.value,
       page: pageVO.currentPage,
       rowPerPage: pageVO.pageSize,
     };
+    // console.log('🚀 ~ getDataPage ~ params:', params);
     const data = await batchModule.getBatchPage(params);
     if (data.respData) {
       tableData.value = data.respData.batchInfo;

@@ -17,6 +17,7 @@
           v-model:value="reader.value"
           size="large"
           placeholder="读卡器数据"
+          allow-clear
           :maxlength="40"
         />
         <div class="mt10 box-border flex justify-between">
