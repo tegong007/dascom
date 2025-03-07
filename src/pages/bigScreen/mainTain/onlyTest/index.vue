@@ -24,7 +24,7 @@
         初始化
       </a-button>
     </section>
-    <section class="p-l-3em p-t-1em">
+    <!-- <section class="p-l-3em p-t-1em">
       <div class="text-[18px]">
         传输速度
       </div>
@@ -46,7 +46,7 @@
       >
         保存
       </a-button>
-    </section>
+    </section> -->
     <!-- 执行任务 -->
     <div class="m-t-1.5em bg-[#fff]/[0.4] p-y-5px p-l-0.5em">
       <span>执行任务</span>
@@ -178,18 +178,18 @@ function openNotification(
         placement,
       });
 }
-const speed = ref<string>('10');
+// const speed = ref<string>('10');
 const isStop = ref<boolean>(true);
 const value1 = ref(1);
 function handleChange(value: number) {
   value1.value = value;
 }
 // 处理输入框的输入事件
-function handleInput(event: Event) {
-  const input = event.target as HTMLInputElement;
-  speed.value = input.value.replace(/\D/g, ''); // 限制只能输入数字
-  event.target.value = speed.value;
-}
+// function handleInput(event: Event) {
+//   const input = event.target as HTMLInputElement;
+//   speed.value = input.value.replace(/\D/g, ''); // 限制只能输入数字
+//   event.target.value = speed.value;
+// }
 // 初始化
 async function init() {
   try {
@@ -224,27 +224,27 @@ async function sendDocLine() {
     useAppStore().setSpinning(false);
   }
 }
-async function setSpeedLine() {
-  try {
-    useAppStore().setSpinning(true);
-    // await sendDoc();
-    const params = {
-      transURI: `/doc-machine/set-speed`,
-      paraIn: {
-        speedValue: speed.value,
-      },
-    };
-    await getApiTransfer(params);
-    openNotify('bottomRight', '修改传输速度成功', 'success');
-  }
-  catch (error) {
-    error;
-    openNotify('bottomRight', '修改传输速度失败');
-  }
-  finally {
-    useAppStore().setSpinning(false);
-  }
-}
+// async function setSpeedLine() {
+//   try {
+//     useAppStore().setSpinning(true);
+//     // await sendDoc();
+//     const params = {
+//       transURI: `/doc-machine/set-speed`,
+//       paraIn: {
+//         speedValue: speed.value,
+//       },
+//     };
+//     await getApiTransfer(params);
+//     openNotify('bottomRight', '修改传输速度成功', 'success');
+//   }
+//   catch (error) {
+//     error;
+//     openNotify('bottomRight', '修改传输速度失败');
+//   }
+//   finally {
+//     useAppStore().setSpinning(false);
+//   }
+// }
 async function openTask() {
   isStop.value = !isStop.value;
   try {

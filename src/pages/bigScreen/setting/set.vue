@@ -146,8 +146,18 @@ async function setPlatformConfig(
     {
       deviceIndex,
       platform: Number(platform),
-      x: setItems.value[itemIndex].positionItems[platformIndex].option[0].value,
-      y: setItems.value[itemIndex].positionItems[platformIndex].option[1].value,
+      x: Number.parseFloat(
+        Number.parseFloat(
+          setItems.value[itemIndex].positionItems[platformIndex].option[0]
+            .value,
+        ).toFixed(2),
+      ),
+      y: Number.parseFloat(
+        Number.parseFloat(
+          setItems.value[itemIndex].positionItems[platformIndex].option[1]
+            .value,
+        ).toFixed(2),
+      ),
     },
   ];
   transfer('/uvpdps/set-platform-config', objs, null);
