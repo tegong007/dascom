@@ -4,7 +4,7 @@
     <div
       class="absolute top-3.1em h1.6em flex items-center justify-center rounded-2xl bg-[#919195b0] p-x-15"
     >
-      <span class="text-[1.1em]">当前批次号：{{ statisticsData.batchID }}，证本数：{{
+      <span class="text-[1.1em]">当前批次号：{{ statisticsData.batchID }}，证本总数：{{
         statisticsData.docNum
       }}，待生产数：{{ statisticsData.waitingNum }}，良本数：{{
         statisticsData.productNum
@@ -14,17 +14,60 @@
     </div>
 
     <div
-      class="absolute bottom-[12%] left-[-0.5] h-35% w-80% flex items-center justify-center opacity-0 hover:opacity-100"
+      class="absolute bottom-[12%] left-180px h-35% w-10% flex items-center justify-center opacity-0 hover:opacity-100"
+      @click="
+        $goto('WorkstationStatus', {
+          batchID: statisticsData.batchID,
+          light: 4,
+        })
+      "
     >
-      <div
-        class="m-t-10vh h-[124px] w-[271px] flex items-center justify-center rounded-[30px] bg-[#0000007a]"
-        @click="$goto('WorkstationStatus', { batchID: statisticsData.batchID })"
-      >
-        <span
-          class="cursor-default border-1 border-[#fff] rounded-[30px] bg-[#00000049] p-10 text-[36px] font-[youshe]"
-        >点击查看详情
-        </span>
-      </div>
+      <span
+        class="absolute bottom-50 left-20 cursor-default rounded-[30px] bg-[#0000007a] p-x-20 p-y-10 text-[32px] font-[youshe]"
+      >查看详情
+      </span>
+    </div>
+    <div
+      class="absolute bottom-[12%] left-360px h-35% w-23% flex items-center justify-center opacity-0 hover:opacity-100"
+      @click="
+        $goto('WorkstationStatus', {
+          batchID: statisticsData.batchID,
+          light: 3,
+        })
+      "
+    >
+      <span
+        class="absolute left-150 top-200px cursor-default rounded-[30px] bg-[#0000007a] p-x-20 p-y-10 text-[32px] font-[youshe]"
+      >查看详情
+      </span>
+    </div>
+    <div
+      class="absolute bottom-[12%] left-800px h-35% w-30.5% flex items-center justify-center opacity-0 hover:opacity-100"
+      @click="
+        $goto('WorkstationStatus', {
+          batchID: statisticsData.batchID,
+          light: 2,
+        })
+      "
+    >
+      <span
+        class="absolute left-220 top-200px cursor-default rounded-[30px] bg-[#0000007a] p-x-20 p-y-10 text-[32px] font-[youshe]"
+      >查看详情
+      </span>
+    </div>
+    <div
+      class="absolute bottom-[12%] left-1380px h-35% w-18% flex items-center justify-center opacity-0 hover:opacity-100"
+      @click="
+        $goto('WorkstationStatus', {
+          batchID: statisticsData.batchID,
+          light: 1,
+        })
+      "
+    >
+      <span
+        class="absolute left-80 top-200px cursor-default rounded-[30px] bg-[#0000007a] p-x-20 p-y-10 text-[32px] font-[youshe]"
+      >查看详情
+      </span>
     </div>
 
     <a-row
@@ -77,21 +120,31 @@
     <div
       class="groupBtn absolute bottom-0 h8em w-full flex items-center justify-center gap-20"
     >
-      <div class="flex">
+      <!-- <div class="flex">
+        <TheButton title="批次查询" @click="$goto('BatchList')" />
+      </div>
+     <div class="flex">
         <TheButton title="批次查询" @click="$goto('BatchList')" />
       </div>
       <div class="flex">
         <TheButton title="证本查询" @click="$goto('docList')" />
+      </div> -->
+      <div class="flex">
+        <TheButton title="查询" @click="$goto('Search')" />
       </div>
       <span class="h-50% w-2px bg-[#8BB2FF]" />
       <div class="flex gap-20">
         <TheButton
           title="设备设置"
-          @click="$goto('SetPage', { currentModel: 'sort' })"
+          @click="
+            $goto('SetPage', { currentModel: 'sort', isProduce })
+          "
         />
         <TheButton
           title="设备维护"
-          @click="$goto('MainTain', { currentModel: '5' })"
+          @click="
+            $goto('MainTain', { currentModel: '5', isProduce })
+          "
         />
       </div>
     </div>
@@ -131,6 +184,7 @@ const control = ref(null);
 const additionPrint = ref({});
 const machineStatus = ref(null);
 const finishedProduct = ref({});
+const isProduce = ref(false);
 const statisticsData = ref({
   batchID: '',
   docNum: 0,
@@ -164,6 +218,14 @@ async function getDataPage() {
     if (statistics.respData) {
       statisticsData.value = { ...statistics.respData };
       machineStatus.value = statistics.respData.status;
+    }
+    if (data.respData && statistics.respData) {
+      isProduce.value
+        = statistics.respData.status !== 0
+          && mainPrint.value.status !== 1
+          && blankCheck.value.status !== 1
+          && additionPrint.value.status !== 1
+          && finishedProduct.value.status !== 1;
     }
     return true;
 

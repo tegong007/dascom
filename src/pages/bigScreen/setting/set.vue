@@ -44,7 +44,6 @@
                 placeholder="0-1200"
                 class="m-r-10 w-150px"
                 size="large"
-                addon-after="mm"
                 @input="validateInput($event, index, itemIndex, optionIndex)"
                 @blur="validateInput($event, index, itemIndex, optionIndex)"
               />

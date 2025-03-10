@@ -67,6 +67,12 @@ const routes: Array<RouteRecordRaw> = [
   //   name: 'test',
   //   component: () => import('@/pages/test.vue'),
   // },
+
+  {
+    path: '/search', // 工位状态
+    name: 'Search',
+    component: () => import('../pages/bigScreen/search/index.vue'),
+  },
 ];
 
 const router = createRouter({

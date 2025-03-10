@@ -3,7 +3,9 @@
     <a-flex justify="center" align="center">
       <div class="absolute left-0 top-0 h-3em w100% flex items-center">
         <span class="m-x-0.3em text-2.5em font-[youshe]">02</span>
-        <span class="ml-10 text-[1.5em] color-[#CFDEF1]">主副页打印</span>
+        <span class="ml-10 text-[1.5em] color-[#CFDEF1]">{{
+          props.data.name
+        }}</span>
       </div>
       <div
         class="absolute top-[3.3em] h-[4.8em] w-90% flex justify-center gap-50"
@@ -39,7 +41,7 @@
       <div class="table-data absolute top-[8em] w-95%">
         <div class="p-x-10">
           <div class="h30px w-full flex items-center bg-[#fff]/[0.2]">
-            <span class="ml3">证件信息</span>
+            <span class="ml3">证本状态</span>
           </div>
           <div class="scroll-table w-full">
             <SeamlessScroll :data="props.data.periodDataList" />

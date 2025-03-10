@@ -21,7 +21,7 @@
         </div>
       </div>
     </main>
-    <Card />
+    <Card :light="light" />
     <!-- 下边按钮 -->
     <div
       class="groupBtn absolute bottom-0 h8em w-full flex items-center justify-center gap-20"
@@ -44,10 +44,13 @@ import bigScreenHeader from '@/components/bigScreen/header.vue';
 
 const route = useRoute();
 const batchID = ref<string>('');
+const light = ref<number>();
 onMounted(() => {
   nextTick(() => {
     const query = route.query;
     batchID.value = query.batchID;
+    light.value = Number(query.light);
+    console.log('🚀 ~ nextTick ~   light.value:', light.value);
   });
 });
 const items = [

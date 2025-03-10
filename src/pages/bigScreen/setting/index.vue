@@ -66,22 +66,35 @@ definePage({
 });
 const route = useRoute();
 const currentModel = ref<string>('sort');
+const isProduce = ref<boolean>(false);
+const options = ref([
+  { label: `软件设置`, value: 'sort' },
+  // { label: `整机`, value: '0' },
+  // { label: `空白本校验`, value: '0' },
+  // { label: `主副页设置`, value: '2' },
+  // { label: `加注页设置`, value: '3' },
+  // { label: `成本证本收集`, value: '3' },
+  // { label: `模块测试`, value: '4' },
+]);
 onMounted(() => {
   nextTick(() => {
     const query = route.query;
     currentModel.value = query.currentModel;
+    isProduce.value = query.isProduce;
+    if (query.isProduce === true) {
+      options.value = [
+        { label: `软件设置`, value: 'sort' },
+        // { label: `整机`, value: '0' },
+        // { label: `空白本校验`, value: '0' },
+        { label: `主副页打印模块`, value: '2' },
+        { label: `加注页打印模块`, value: '3' },
+        // { label: `成本证本收集`, value: '3' },
+        // { label: `模块测试`, value: '4' },
+      ];
+    }
   });
 });
 // console.log(query); // 这里应该能获取到查询参数
-const options = [
-  { label: `软件设置`, value: 'sort' },
-  // { label: `整机`, value: '0' },
-  // { label: `空白本校验`, value: '0' },
-  { label: `主副页设置`, value: '2' },
-  { label: `加注页设置`, value: '3' },
-  // { label: `成本证本收集`, value: '3' },
-  // { label: `模块测试`, value: '4' },
-];
 
 // // 使用 watch 监视 divRef 值的变化
 // watch(query.currentModel, (newValue) => {

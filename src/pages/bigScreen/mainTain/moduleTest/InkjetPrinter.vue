@@ -21,7 +21,9 @@
                 :key="itemIndex"
                 class="text-[18px]"
               >
-                {{ item.label }}：
+                {{
+                  item.label !== '目标位置' ? item.label : `${item.label}(mm)`
+                }}：
                 <a-select
                   v-if="item.label !== '目标位置'"
                   v-model:value="item.value"
@@ -50,7 +52,6 @@
                   placeholder="(0-1200)"
                   class="m-r-10 w-150px"
                   size="large"
-                  addon-after="mm"
                   :maxlength="4"
                   @input="validateInput($event, index)"
                   @blur="validateInput($event, index)"

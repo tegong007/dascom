@@ -8,10 +8,10 @@
         证本号
       </div>
       <div class="tit">
-        位置
+        状态
       </div>
       <div class="tit">
-        时间
+        更新时间
       </div>
     </div>
 

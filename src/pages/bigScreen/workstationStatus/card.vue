@@ -3,7 +3,8 @@
     <main
       v-for="(item, index) in items"
       :key="index"
-      class="m-t-15 box-border flex flex-col flex-1 color-[#CFDEF1]"
+      class="m-t-15 box-border flex flex-col flex-1 p-y-10 pl20 color-[#CFDEF1]"
+      :class="props.light === index + 1 && 'chooseItem'"
     >
       <a-flex justify="space-between" align="center" class="w-250px">
         <span class="text-[16.72px]">{{ item.moduleName }}</span>
@@ -85,17 +86,40 @@ import { positionModule } from '@/apis/proApi';
 import useCustomTimer from '@/utils/useCustomTimer';
 import { useAppStore } from '@/store/index';
 
+const props = defineProps({
+  light: Number,
+});
 const { start, stop } = useCustomTimer();
 const items = ref([]);
 onActivated(async () => {
   useAppStore().setSpinning(true);
   await getDataPage();
+  if (items.value) {
+    scrollToBox();
+  }
+  // nextTick(() => {
   startGetDataPage();
   useAppStore().setSpinning(false);
+  // });
 });
+
 onDeactivated(() => {
   stop();
 });
+function scrollToBox() {
+  const elements = document.getElementsByClassName('chooseItem');
+  // 检查是否有目标元素
+  if (elements.length > 0) {
+    // 获取第一个目标元素（假设只有一个元素匹配）
+    const element = elements[0];
+
+    // 调用 scrollIntoView 方法
+    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  else {
+    console.log('🚀 ~ scrollToBox ~ \'没有找到目标元素\':');
+  }
+}
 async function getDataPage() {
   try {
     const data = await positionModule.getPositionCard({ moduleID: 0 });
@@ -107,6 +131,9 @@ async function getDataPage() {
     console.log('🚀 ~ file: newIndex.vue:182 ~ getDataPage ~ error:', error);
     // stop();
   }
+  // finally {
+  //   useAppStore().setSpinning(false);
+  // }
 }
 
 async function startGetDataPage() {
@@ -165,6 +192,11 @@ function getTextClass(status: string) {
   // background-color: #ffffff38;
   background-color: #ffffff69;
   border-radius: 5px;
+}
+.chooseItem {
+  background-image: url('../../assets/image/bigScreen/bg.png');
+  background-size: 100% 100%;
+  background-repeat: 'no-repeat';
 }
 // ::-webkit-scrollbar-track {
 //   background-image: linear-gradient(

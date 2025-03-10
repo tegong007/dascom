@@ -33,7 +33,7 @@
               v-if="currentModel === '0'"
               class="wh-full flex flex-col flex-1"
             >
-              <OnlyTest />
+              <OnlyTest :is-produce="isProduce === true" />
             </section>
             <!-- 耗材 -->
             <section
@@ -101,22 +101,37 @@ definePage({
 });
 const route = useRoute();
 const currentModel = ref<string>('');
+const isProduce = ref<boolean>(false);
+const options = ref([
+  { label: `耗材`, value: '5' },
+  { label: `整机`, value: '0' },
+  // { label: `空白本校验`, value: '1' },
+  // { label: `主副页打印`, value: '2' },
+  // { label: `加注打印`, value: '3' },
+  // { label: `成本证本收集`, value: '4' },
+  { label: `关于`, value: '6' },
+]);
+
 onActivated(() => {
   nextTick(() => {
     const query = route.query;
     currentModel.value = query.currentModel;
+    isProduce.value = query.isProduce;
+    console.log('🚀 ~ nextTick ~  isProduce.value:', isProduce.value);
+    if (isProduce.value === true) {
+      options.value = [
+        { label: `耗材`, value: '5' },
+        { label: `整机`, value: '0' },
+        { label: `空白本检测模块`, value: '1' },
+        { label: `主副页打印模块`, value: '2' },
+        { label: `加注页打印模块`, value: '3' },
+        { label: `成本收集模块`, value: '4' },
+        { label: `关于`, value: '6' },
+      ];
+    }
   });
 });
 // console.log(query); // 这里应该能获取到查询参数
-const options = [
-  { label: `耗材`, value: '5' },
-  { label: `整机`, value: '0' },
-  { label: `空白本校验`, value: '1' },
-  { label: `主副页打印`, value: '2' },
-  { label: `加注打印`, value: '3' },
-  { label: `成本证本收集`, value: '4' },
-  { label: `关于`, value: '6' },
-];
 
 function labelChange(value) {
   setCurrentModel(value?.target.value);

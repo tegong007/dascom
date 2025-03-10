@@ -3,7 +3,9 @@
     <a-flex justify="center" align="center">
       <div class="absolute left-0 top-0 h-3em w100% flex items-center">
         <span class="m-x-10px text-2.5em font-[youshe]">04</span>
-        <span class="ml-10 text-[1.5em] color-[#CFDEF1]">成品证本收集</span>
+        <span class="ml-10 text-[1.5em] color-[#CFDEF1]">{{
+          props.data.name
+        }}</span>
       </div>
       <div
         class="sum absolute top-[3.2em] box-border w-full flex flex-col flex-1 gap-10 p-x-20"
