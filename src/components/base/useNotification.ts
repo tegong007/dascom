@@ -15,6 +15,7 @@ export function openNotify(
       message: '成功',
       description: `${msg}`,
       placement,
+      class: 'notification-custom-class',
     });
   }
   else {
@@ -22,6 +23,7 @@ export function openNotify(
       message: '错误信息',
       description: `${msg}`,
       placement,
+      class: 'notification-custom-class',
     });
   }
 }

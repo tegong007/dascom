@@ -70,6 +70,9 @@ onActivated(() => {
     formState.batchID = query.batchID;
   });
 });
+onDeactivated(() => {
+  formRef.value.resetFields();
+});
 
 function onSubmit() {
   formRef.value

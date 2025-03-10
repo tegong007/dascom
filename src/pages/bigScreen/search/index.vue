@@ -18,12 +18,14 @@
       </a-select>
     </div>
 
-    <Batch />
+    <Batch v-if="choose === 1" />
+    <!-- <Doc v-if="choose == 3" /> -->
   </div>
 </template>
 
 <script lang="ts" setup>
 import Batch from './batch/index.vue';
+// import Doc from './doc/index.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 
 const choose = ref<number>(1);

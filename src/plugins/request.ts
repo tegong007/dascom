@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { useI18n } from 'vue-i18n';
-
+// 确保引入了 ant-design-vue
 const timeOut = window.timeOut ?? '5000';
 const service = axios.create({ timeout: timeOut });
 
@@ -21,6 +21,9 @@ service.interceptors.response.use(
     if (res.status === 200) {
       if (res.data.code === 0) {
         return res.data;
+      }
+      else if (res.data.code === 11001) {
+        return Promise.reject(res.data.msg);
       }
       else {
         return Promise.reject(res.data.msg);

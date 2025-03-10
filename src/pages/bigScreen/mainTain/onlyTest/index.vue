@@ -1,10 +1,10 @@
 <template>
   <div class="wh-full">
     <!-- 初始阶段 -->
-    <div v-if="props.isProduce" class="bg-[#fff]/[0.4] p-y-5px p-l-0.5em">
+    <div class="bg-[#fff]/[0.4] p-y-5px p-l-0.5em">
       <span>初始阶段</span>
     </div>
-    <section v-if="props.isProduce" class="p-l-3em p-t-1em">
+    <section class="p-l-3em p-t-1em">
       <div class="text-[18px]">
         手动送本：
       </div>
@@ -48,14 +48,10 @@
       </a-button>
     </section> -->
     <!-- 执行任务 -->
-    <div
-      v-if="props.isProduce"
-      class="bg-[#fff]/[0.4] p-y-5px p-l-0.5em"
-      :class="props.isProduce && 'm-t-1.5em'"
-    >
+    <div class="m-t-1.5em bg-[#fff]/[0.4] p-y-5px p-l-0.5em">
       <span>执行任务</span>
     </div>
-    <section v-if="props.isProduce" class="p-l-3em p-t-1em">
+    <section class="p-l-3em p-t-1em">
       <div class="text-[18px]">
         任务执行：
       </div>
@@ -100,10 +96,7 @@
       </a-button>
     </section>
     <!-- 卡槽操作 -->
-    <div
-      class="bg-[#fff]/[0.4] p-y-5px p-l-0.5em"
-      :class="props.isProduce && 'm-t-1.5em'"
-    >
+    <div class="m-t-1.5em bg-[#fff]/[0.4] p-y-5px p-l-0.5em">
       <span>卡槽操作</span>
     </div>
     <section class="p-l-3em p-t-1em">
@@ -160,10 +153,9 @@ import {
   startOrStopPrintTask,
 } from '@/apis/webApi';
 
-const props = defineProps({
-  isProduce: Boolean,
-});
-console.log('🚀 ~ props:', props.isProduce);
+// const props = defineProps({
+//   isProduce: Boolean,
+// });
 const [api, contextHolder] = notification.useNotification();
 function openNotify(
   placement: NotificationPlacement,
@@ -313,13 +305,13 @@ async function grooveOperate(grooveID: number, operate: number) {
     useAppStore().setSpinning(false);
   }
 }
-watch(
-  () => props.isProduce,
-  (newValue) => {
-    console.log('🚀 ~ newValue:', newValue);
-  },
-  { deep: true, immediate: true },
-);
+// watch(
+//   () => props.isProduce,
+//   (newValue) => {
+//     console.log('🚀 ~ newValue:', newValue);
+//   },
+//   { deep: true, immediate: true },
+// );
 </script>
 
 <style scoped>
