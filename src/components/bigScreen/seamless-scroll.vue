@@ -20,14 +20,12 @@
       :list="props.data"
       class="scroll"
       direction="up"
-      :step="0.5"
+      :step="0.3"
       :hover="true"
       :limit-scroll-num="6"
       :is-watch="true"
       :single-height="0"
       :single-width="0"
-      :single-wait-time="1000"
-      :wheel="false"
     >
       <div v-for="(item, i) in props.data" :key="i" class="countContent w-full">
         <div class="descr">
@@ -37,7 +35,8 @@
           {{ item.docID }}
         </div>
         <div class="descr">
-          {{ getWorkstationName(item.position) }}
+          {{ item.workingStatus }}
+          <!-- {{ getWorkstationName(item.position) }} -->
         </div>
         <div class="descr">
           {{ item.time }}
@@ -49,7 +48,7 @@
 
 <script setup lang="ts">
 import { Vue3SeamlessScroll } from 'vue3-seamless-scroll';
-import { getWorkstationName } from '@/utils/workstationDefinitions';
+// import { getWorkstationName } from '@/utils/workstationDefinitions';
 
 const props = defineProps({
   data: Array,
@@ -97,10 +96,10 @@ const props = defineProps({
     flex: 0.5;
   }
   .tit:nth-child(2) {
-    flex: 1.2;
+    flex: 1.3;
   }
   .tit:nth-child(3) {
-    flex: 1.5;
+    flex: 1.6;
   }
   .tit:last-child {
     border-right: none; /* 最后一个元素不显示右侧边框 */
@@ -132,10 +131,10 @@ const props = defineProps({
   }
 
   .descr:nth-child(2) {
-    flex: 1.2;
+    flex: 1.3;
   }
   .descr:nth-child(3) {
-    flex: 1.5;
+    flex: 1.6;
   }
   .descr:last-child {
     border-right: none; /* 最后一个元素不显示右侧边框 */

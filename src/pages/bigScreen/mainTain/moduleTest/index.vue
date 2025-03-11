@@ -36,15 +36,7 @@ import { useAppStore } from '@/store/index';
 const props = defineProps({
   currentModel: String,
 });
-const options = [
-  { label: `耗材`, value: '5' },
-  { label: `整机`, value: '0' },
-  { label: `空白本校验`, value: '1' },
-  { label: `主副页打印`, value: '2' },
-  { label: `加注打印`, value: '3' },
-  { label: `成本证本收集`, value: '4' },
-  { label: `关于`, value: '6' },
-];
+
 const { notification } = App.useApp();
 const item = ref({});
 function handleUpdateItem(arrayName, index, value) {
@@ -56,10 +48,6 @@ function handleUpdateItem(arrayName, index, value) {
       item.value[arrayName][index].value = value;
     }
   }
-}
-function findLabelByValue(value) {
-  const option = options.find(option => option.value === value);
-  return option ? option.label : null; // 如果找到，返回对应的 label；否则返回 null
 }
 
 async function getData(newValue: string) {
@@ -74,12 +62,16 @@ async function getData(newValue: string) {
     }
   }
   catch (error) {
-    error;
-
+    // notification.error({
+    //   message: `错误`,
+    //   description: `${findLabelByValue(newValue)}接口超时`,
+    //   placement: 'bottomRight',
+    // });
     notification.error({
       message: `错误`,
-      description: `${findLabelByValue(newValue)}接口超时`,
+      description: error,
       placement: 'bottomRight',
+      class: 'notification-custom-class',
     });
   }
   finally {

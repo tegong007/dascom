@@ -4,7 +4,7 @@
   >
     <!-- <DocInfo /> -->
     <div class="relative w-full">
-      <docForm :set-search-form="setSearchForm" />
+      <docForm ref="searchRef" :set-search-form="setSearchForm" />
       <a-space :size="20" class="absolute right-10 top-[20px]">
         <a-button
           type="primary"
@@ -36,7 +36,7 @@
       </a-space>
     </div>
 
-    <main class="box-border h70% w-full">
+    <main class="box-border h80% w-full">
       <MyTable
         ref="tableRef"
         :colums="colums"
@@ -44,6 +44,7 @@
         :data="tableData"
         :rowfun="rowAction"
         :update-old-checked-row="updateOldCheckedRow"
+        :change-batch-id-o-rteam-id="props.changeBatchIdORteamId"
         key-field="recID"
         page-name="docList"
       />
@@ -74,24 +75,13 @@
     :handle-cancel="() => setOpen(false)"
     :title="modal"
   />
-  <div
-    class="groupBtn absolute bottom-0 h8em w-full flex items-center justify-center gap-20"
-  >
-    <!-- <div class="flex">
-          <TheButton title="批次查询" />
-        </div> -->
-    <!-- <span class="h-50% w-2px bg-[#8BB2FF]" /> -->
-    <div class="flex gap-20">
-      <TheButton title="返回首页" @click="$goto('BigScreen')" />
-    </div>
-  </div>
+
   <contextHolder />
 </template>
 
 <script lang="ts" setup>
 import { RollbackOutlined } from '@ant-design/icons-vue';
 import docForm from './doc-form.vue';
-import TheButton from '@/components/base/TheButton.vue';
 import MyTable from '@/components/base/vxeTable.vue';
 import TheModal from '@/components/modal/TheModal.vue';
 import { contextHolder, openNotify } from '@/components/base/useNotification';
@@ -100,6 +90,12 @@ import { findLabelByValue } from '@/pages/bigScreen/batch/option.ts';
 import { documentModule } from '@/apis/proApi';
 import { useAppStore } from '@/store/index';
 
+const props = defineProps({
+  choose: Number,
+  changeBatchIdORteamId: Function,
+  docBatchId: String || Object,
+  docTeamId: String || Object,
+});
 const pageVO = reactive({
   total: 20,
   currentPage: 1,
@@ -108,6 +104,7 @@ const pageVO = reactive({
 const checkedRow = ref();
 const oldCheckedRow = ref([]);
 const tableRef = ref(null);
+const searchRef = ref(null);
 const searchForm = ref({});
 const open = ref<boolean>(false);
 const modal = ref('');
@@ -140,6 +137,7 @@ const colums = ref([
   {
     title: '团组号',
     field: 'groupID',
+    type: 'html',
     width: 120,
     overflow: 'title',
   },
@@ -434,6 +432,9 @@ onDeactivated(() => {
   oldCheckedRow.value = [];
   checkedRow.value = [];
   tableData.value = [];
+  // pageVO.total = 20;
+  pageVO.currentPage = 1;
+  pageVO.pageSize = 20;
   // stop();
 });
 
@@ -463,6 +464,24 @@ async function getDataPage() {
     useAppStore().setSpinning(false);
   }
 }
+
+watch(
+  () => props.choose,
+  (newValue) => {
+    // console.log('🚀 ~ newValue:', newValue);
+    if (newValue === 3) {
+      nextTick(() => {
+        if (searchRef.value) {
+          searchRef.value.setBatchIDandGroupId(
+            typeof props.docBatchId === 'string' ? props.docBatchId : '',
+            typeof props.docTeamId === 'string' ? props.docTeamId : '',
+          );
+        }
+      });
+    }
+  },
+  { deep: true, immediate: true },
+);
 // async function startGetDataPage() {
 //   start(async () => {
 //     await getDataPage();
@@ -471,22 +490,16 @@ async function getDataPage() {
 </script>
 
 <style scoped lang="less">
-.bg {
-  background-image: url('@/assets/image/bigScreen/bg-none.png');
-  background-size: 100% 100%;
-  background-repeat: 'no-repeat';
-
-  //分页
-  ::v-deep(.vxe-pager) {
+//分页
+::v-deep(.vxe-pager) {
+  background-color: unset;
+  color: #fff;
+  .vxe-pager--jump-next,
+  .vxe-pager--jump-prev,
+  .vxe-pager--next-btn,
+  .vxe-pager--num-btn,
+  .vxe-pager--prev-btn {
     background-color: unset;
-    color: #fff;
-    .vxe-pager--jump-next,
-    .vxe-pager--jump-prev,
-    .vxe-pager--next-btn,
-    .vxe-pager--num-btn,
-    .vxe-pager--prev-btn {
-      background-color: unset;
-    }
   }
 }
 </style>

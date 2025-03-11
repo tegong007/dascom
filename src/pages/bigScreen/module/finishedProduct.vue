@@ -19,7 +19,7 @@
             {{ item.item }}
           </div>
           <div class="m-t-8 text-[2em] line-height-none font-[youshe]">
-            <CountTo :start-val="0" :end-val="item.value" :duration="1500" />
+            <!-- <CountTo :start-val="0" :end-val="item.value" :duration="1500" />
             <CountTo
               v-if="item.hangingNum"
               :start-val="0"
@@ -27,7 +27,8 @@
               suffix="(挂起)"
               :end-val="item.hangingNum"
               :duration="1500"
-            />
+            /> -->
+            {{ item.value }}
           </div>
         </div>
       </div>
@@ -36,8 +37,6 @@
 </template>
 
 <script setup lang="ts">
-import { CountTo } from 'vue3-count-to';
-
 const props = defineProps({
   data: Object,
 });

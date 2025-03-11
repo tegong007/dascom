@@ -53,6 +53,7 @@ async function getData() {
       message: `错误`,
       description: '获取版本信息接口超时',
       placement: 'bottomRight',
+      class: 'notification-custom-class',
     });
     error;
   }

@@ -4,7 +4,7 @@
       v-for="(item, index) in items"
       :key="index"
       class="m-t-15 box-border flex flex-col flex-1 p-y-10 pl20 color-[#CFDEF1]"
-      :class="props.light === index + 1 && 'chooseItem'"
+      :class="props.light === index + 1 && 'chooseItem '"
     >
       <a-flex justify="space-between" align="center" class="w-250px">
         <span class="text-[16.72px]">{{ item.moduleName }}</span>
@@ -159,7 +159,7 @@ function getBoxClass(status: string) {
   };
   const bgColor = {
     3: 'bg-[#FF0000]/[0.27]',
-    1: 'bg-[#FFFFFF]/[0.09]',
+    1: 'bg-[#89f7ff]/[0.2]',
     0: 'bg-[#CBCBCB]/[0.2]',
     2: 'bg-[#FF920D]/[0.37]',
   };
@@ -194,9 +194,35 @@ function getTextClass(status: string) {
   border-radius: 5px;
 }
 .chooseItem {
-  background-image: url('../../assets/image/bigScreen/bg.png');
-  background-size: 100% 100%;
-  background-repeat: 'no-repeat';
+  background: rgba(255, 255, 255, 0.12);
+  border: 4px solid transparent; /* 设置边框为透明 */
+  border-image: linear-gradient(100deg, #2ee0ce 7%, #98e533 30%, #e57133 58%, #0084ff 82%) 1; /* 设置边框图像 */
+  border-image-slice: 1; /* 确保边框图像覆盖整个边框 */
+  animation: moveBorder 5s linear infinite; /* 应用动画 */
+  // background-image: url('@/assets/image/bigScreen/123123123.gif');
+  // // border: 5px solid #000; /* 假设边框粗细为5px */
+  // // background-image: url('your-image-url.gif'); /* 替换为你的图片URL */
+  // background-size: cover; /* 使背景图覆盖整个div，同时保持宽高比 */
+  // background-repeat: no-repeat; /* 防止背景图重复 */
+  // background-position: center; /* 背景图居中显示 */
+}
+
+@keyframes moveBorder {
+  0% {
+    border-image: linear-gradient(100deg, #2ee0ce 7%, #98e533 30%, #e57133 58%, #0084ff 82%) 1;
+  }
+  25% {
+    border-image: linear-gradient(85deg, #2ee0ce 7%, #98e533 30%, #e57133 58%, #0084ff 82%) 1;
+  }
+  50% {
+    border-image: linear-gradient(70deg, #2ee0ce 7%, #98e533 30%, #e57133 58%, #0084ff 82%) 1;
+  }
+  75% {
+    border-image: linear-gradient(55deg, #2ee0ce 7%, #98e533 30%, #e57133 58%, #0084ff 82%) 1;
+  }
+  100% {
+    border-image: linear-gradient(40deg, #2ee0ce 7%, #98e533 30%, #e57133 58%, #0084ff 82%) 1;
+  }
 }
 // ::-webkit-scrollbar-track {
 //   background-image: linear-gradient(

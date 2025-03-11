@@ -179,6 +179,7 @@ async function setPassWord() {
       notification.error({
         message: `错误`,
         description: data.msg,
+        class: 'notification-custom-class',
         placement: 'bottomRight',
       });
       // setPwRef.value.resetFields();
@@ -189,6 +190,7 @@ async function setPassWord() {
     notification.error({
       message: `错误`,
       description: error,
+      class: 'notification-custom-class',
       placement: 'bottomRight',
     });
   }

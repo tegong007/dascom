@@ -176,6 +176,7 @@ async function transfer(url, objs, itemIndex, platformIndex) {
         message: `错误`,
         description: data.rslts[0].msg,
         placement: 'bottomRight',
+        class: 'notification-custom-class',
       });
     }
     else {
@@ -189,6 +190,7 @@ async function transfer(url, objs, itemIndex, platformIndex) {
         message: `成功`,
         description: '成功',
         placement: 'bottomRight',
+        class: 'notification-custom-class',
       });
     }
   }
@@ -196,7 +198,8 @@ async function transfer(url, objs, itemIndex, platformIndex) {
     error;
     notification.error({
       message: `错误`,
-      description: '操作失败',
+      description: error,
+      class: 'notification-custom-class',
       placement: 'bottomRight',
     });
   }
@@ -218,15 +221,16 @@ async function getData(newValue: string) {
       notification.error({
         message: `错误`,
         description: '读取设置页面失败',
+        class: 'notification-custom-class',
         placement: 'bottomRight',
       });
     }
   }
   catch (error) {
-    error;
     notification.error({
       message: `错误`,
-      description: '读取设置页面失败',
+      class: 'notification-custom-class',
+      description: error,
       placement: 'bottomRight',
     });
   }

@@ -1,6 +1,5 @@
 import axios from 'axios';
 import type { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { useI18n } from 'vue-i18n';
 // 确保引入了 ant-design-vue
 const timeOut = window.timeOut ?? '5000';
 const service = axios.create({ timeout: timeOut });
@@ -22,9 +21,6 @@ service.interceptors.response.use(
       if (res.data.code === 0) {
         return res.data;
       }
-      else if (res.data.code === 11001) {
-        return Promise.reject(res.data.msg);
-      }
       else {
         return Promise.reject(res.data.msg);
       }
@@ -34,11 +30,11 @@ service.interceptors.response.use(
     }
   },
   (err) => {
-    const { t } = useI18n();
+    // const { t } = useI18n();
     if (err.code === 'ECONNABORTED')
-      return Promise.reject(t('network.timeout'));
+      return Promise.reject('接口超时');
     if (err.code === 'ERR_NETWORK')
-      return Promise.reject(t('network.newworkError'));
+      return Promise.reject('网络错误');
     return Promise.reject(err.message);
   },
 );

@@ -6,12 +6,12 @@
       :model="formState"
       class="w-full rounded-[8px] bg-[#ffffff34] p-x-10 p-y-20 pl210px"
     >
-      <a-form-item label="批次号" name="batchID">
+      <a-form-item label="所属批次" name="batchID">
         <a-input
           v-model:value="formState.batchID"
-          placeholder="请输入批次号"
+          placeholder="请输入所属批次号"
           :maxlength="30"
-          allow-clear
+          class="w155px"
         />
       </a-form-item>
       <a-form-item label="团组号" name="groupID">
@@ -19,21 +19,37 @@
           v-model:value="formState.groupID"
           placeholder="请输入团组号"
           :maxlength="30"
-          allow-clear
+          class="w155px"
         />
       </a-form-item>
-      <a-form-item label="证本号" name="docID">
+      <a-form-item label="派遣单位" name="dispatchUnit">
         <a-input
-          v-model:value="formState.docID"
-          placeholder="请输入证本号"
+          v-model:value="formState.dispatchUnit"
+          placeholder="请输入派遣单位"
           :maxlength="30"
-          allow-clear
+          class="w155px"
         />
       </a-form-item>
-      <a-form-item label="状态" name="docStatus">
-        <a-select v-model:value="formState.docStatus">
+      <a-form-item label="数据来源" name="dataSource">
+        <a-input
+          v-model:value="formState.dataSource"
+          placeholder="请输入数据来源"
+          :maxlength="30"
+          class="w155px"
+        />
+      </a-form-item>
+      <a-form-item label="加急类型" name="urgentType">
+        <a-select
+          v-model:value="formState.urgentType"
+          placeholder="请选择加急类型"
+          :maxlength="30"
+          class="w155px"
+        >
+          <a-select-option :value="null">
+            全部
+          </a-select-option>
           <a-select-option
-            v-for="option in docStatusOptions"
+            v-for="option in urgencyOptions"
             :key="option.value"
             :value="option.value"
           >
@@ -58,27 +74,32 @@ import { defineExpose, defineProps, reactive } from 'vue';
 import type { UnwrapRef } from 'vue';
 import { SearchOutlined } from '@ant-design/icons-vue';
 
-import { docStatusOptions } from '@/pages/bigScreen/batch/option.ts';
+import { urgencyOptions } from '@/pages/bigScreen/batch/option.ts';
 
 const props = defineProps({
   setSearchForm: Function,
 });
 const formRef = ref();
+// const groupID = ref('');
+
 interface FormState {
   batchID: string;
-  docID: string;
-  groupID?: string;
-  docStatus: number;
+  groupID: string;
+  dispatchUnit: string;
+  dataSource: string;
+  urgentType: number;
   // timeRange: RangeValue;
 }
 const formState: UnwrapRef<FormState> = reactive({
   batchID: '',
-  docID: '',
   groupID: '',
-  docStatus: null,
+  dispatchUnit: '',
+  dataSource: '',
+  urgentType: null,
 });
-
 function setBatchIDandGroupId(value1: string, value2: string) {
+  console.log('🚀 ~ setBatchIDorGroupId ~ value2:', value2);
+  console.log('🚀 ~ setBatchIDorGroupId ~ value1:', value1);
   formState.batchID = value1;
   formState.groupID = value2;
   const filteredForm = Object.fromEntries(
@@ -88,6 +109,17 @@ function setBatchIDandGroupId(value1: string, value2: string) {
   );
   props.setSearchForm(filteredForm);
 }
+// onActivated(() => {
+//   nextTick(() => {
+//     const query = route.query;
+//     groupID.value = query.groupID;
+//     formState.groupID = query.groupID;
+//   });
+// });
+onDeactivated(() => {
+  formRef.value.resetFields();
+});
+
 function onSubmit() {
   formRef.value
     .validate()

@@ -27,12 +27,13 @@
                 {{ item.item }}
               </div>
               <div class="mt8 text-2em font-[youshe]">
-                <CountTo
+                <!-- <CountTo
                   :start-val="0"
                   separator
                   :end-val="item.value"
                   :duration="Math.floor(Math.random() * 2000) + 1000"
-                />
+                /> -->
+                {{ item.value }}
               </div>
             </div>
           </div>

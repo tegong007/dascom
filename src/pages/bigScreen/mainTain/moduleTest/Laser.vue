@@ -135,6 +135,7 @@ async function transfer(url, objs) {
         message: `错误`,
         description: data.rslts[0].msg,
         placement: 'bottomRight',
+        class: 'notification-custom-class',
       });
     }
     else if (data.rslts[0].code === 0 && url !== '/lpdps/preview') {
@@ -142,6 +143,7 @@ async function transfer(url, objs) {
         message: `成功`,
         description: '操作成功',
         placement: 'bottomRight',
+        class: 'notification-custom-class',
       });
     }
     else {
@@ -152,10 +154,10 @@ async function transfer(url, objs) {
     }
   }
   catch (error) {
-    error;
     notification.error({
       message: `错误`,
-      description: '操作失败',
+      description: error,
+      class: 'notification-custom-class',
       placement: 'bottomRight',
     });
   }

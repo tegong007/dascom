@@ -170,6 +170,7 @@ async function checkPassWord() {
         message: `错误`,
         description: data.msg,
         placement: 'bottomRight',
+        class: 'notification-custom-class',
       });
       formRef.value.resetFields();
       props.handleCancel();
@@ -180,6 +181,7 @@ async function checkPassWord() {
       message: `错误`,
       description: error,
       placement: 'bottomRight',
+      class: 'notification-custom-class',
     });
   }
   finally {

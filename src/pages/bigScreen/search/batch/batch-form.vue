@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, reactive } from 'vue';
+import { defineExpose, defineProps, reactive } from 'vue';
 import type { UnwrapRef } from 'vue';
 import { SearchOutlined } from '@ant-design/icons-vue';
 
@@ -59,10 +59,19 @@ interface FormState {
 }
 const batchID = ref('');
 const formState: UnwrapRef<FormState> = reactive({
-  batchID: batchID.value || '',
+  batchID: '',
   docID: '',
   status: null,
 });
+function setBatchID(value: string) {
+  formState.batchID = value;
+  const filteredForm = Object.fromEntries(
+    Object.entries(toRaw(formState)).filter(
+      ([_key, value]) => value !== null && value !== undefined && value !== '',
+    ),
+  );
+  props.setSearchForm(filteredForm);
+}
 onActivated(() => {
   nextTick(() => {
     const query = route.query;
@@ -90,6 +99,9 @@ function onSubmit() {
       console.log('error', error);
     });
 }
+defineExpose({
+  setBatchID,
+});
 </script>
 
 <style lang="scss" scoped>

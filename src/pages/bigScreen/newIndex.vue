@@ -130,21 +130,17 @@
         <TheButton title="证本查询" @click="$goto('docList')" />
       </div> -->
       <div class="flex">
-        <TheButton title="查询" @click="$goto('Search')" />
+        <TheButton title="查询" @click="$goto('Search', { choose: 1 })" />
       </div>
       <span class="h-50% w-2px bg-[#8BB2FF]" />
       <div class="flex gap-20">
         <TheButton
           title="设备设置"
-          @click="
-            $goto('SetPage', { currentModel: 'sort', isProduce })
-          "
+          @click="$goto('SetPage', { currentModel: 'sort', isProduce })"
         />
         <TheButton
           title="设备维护"
-          @click="
-            $goto('MainTain', { currentModel: '5', isProduce })
-          "
+          @click="$goto('MainTain', { currentModel: '5', isProduce })"
         />
       </div>
     </div>

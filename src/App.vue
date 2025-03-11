@@ -54,6 +54,9 @@ const indicator = h(LoadingOutlined, {
     margin-top: -70px !important;
     margin-left: -100px !important;
   }
+  .ant-spin-text {
+    text-shadow: unset;
+  }
 }
 ::v-deep(.ant-spin-blur::after) {
   background-color: rgba(0, 0, 0, 1);

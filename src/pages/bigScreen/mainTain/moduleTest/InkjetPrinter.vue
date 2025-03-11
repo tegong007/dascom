@@ -208,27 +208,29 @@ async function transfer(url, objs) {
       },
     };
     const data = await getApiTransfer(params);
-    if (data.rslts[0].code !== 0) {
-      notification.error({
-        message: `错误`,
-        description: data.rslts[0].msg,
-        placement: 'bottomRight',
-      });
-    }
-    else {
+    if (data.rslts[0].code === 0) {
       notification.success({
         message: `错误`,
         description: '操作成功',
         placement: 'bottomRight',
+        class: 'notification-custom-class',
+      });
+    }
+    else {
+      notification.error({
+        message: `错误`,
+        description: data.rslts[0].msg || '未知错误',
+        placement: 'bottomRight',
+        class: 'notification-custom-class',
       });
     }
   }
   catch (error) {
-    error;
     notification.error({
       message: `错误`,
-      description: '操作失败',
+      description: error,
       placement: 'bottomRight',
+      class: 'notification-custom-class',
     });
   }
   finally {

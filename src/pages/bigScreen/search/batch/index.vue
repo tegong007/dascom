@@ -12,7 +12,7 @@
             <a-select-option :value="2">团组</a-select-option>
             <a-select-option :value="3">证本</a-select-option>
           </a-select> -->
-      <TeamForm :set-search-form="setSearchForm" />
+      <TeamForm ref="searchRef" :set-search-form="setSearchForm" />
 
       <a-space :size="20" class="absolute right-10 top-[20px]">
         <a-button
@@ -52,6 +52,7 @@
         :checkbox="true"
         :data="tableData"
         :rowfun="rowAction"
+        :change-batch-id-o-rteam-id="props.changeBatchIdORteamId"
         :update-old-checked-row="updateOldCheckedRow"
         key-field="batchID"
         page-name="BatchList"
@@ -83,49 +84,44 @@
     :handle-cancel="() => setOpen(false)"
     :title="modal"
   />
-  <div
-    class="groupBtn absolute bottom-0 h8em w-full flex items-center justify-center gap-20"
-  >
-    <!-- <div class="flex">
-          <TheButton title="批次查询" />
-        </div> -->
-    <!-- <span class="h-50% w-2px bg-[#8BB2FF]" /> -->
-    <div class="flex gap-20">
-      <TheButton title="返回首页" @click="$goto('BigScreen')" />
-    </div>
-  </div>
+
   <contextHolder />
 </template>
 
 <script lang="ts" setup>
 import { RollbackOutlined } from '@ant-design/icons-vue';
-import { useRoute } from 'vue-router';
-import TeamForm from './team-form.vue';
+// import { useRoute } from 'vue-router';
+import { defineProps, reactive } from 'vue';
+import TeamForm from './batch-form.vue';
 import { BatchStatusOptions } from '@/pages/bigScreen/batch/option.ts';
-
-import TheButton from '@/components/base/TheButton.vue';
 import MyTable from '@/components/base/vxeTable.vue';
 import TheModal from '@/components/modal/TheModal.vue';
 import { contextHolder, openNotify } from '@/components/base/useNotification';
 import { batchModule } from '@/apis/proApi';
 import { useAppStore } from '@/store/index';
 
-const route = useRoute();
+const props = defineProps({
+  choose: Number,
+  docBatchId: String,
+  changeBatchIdORteamId: Function,
+});
+// const route = useRoute();
 // const { start, stop } = useCustomTimer();
 const pageVO = reactive({
   total: 20,
   currentPage: 1,
   pageSize: 20,
 });
+
 const checkedRow = ref();
 const oldCheckedRow = ref([]);
 const tableRef = ref(null);
+const searchRef = ref(null);
 const searchForm = ref({});
 const open = ref<boolean>(false);
 const modal = ref('');
 const isReset = ref(0);
 const tableData = ref([]);
-const batchID = ref<string>('');
 // const choose = ref<Number>(1);
 const colums = ref([
   {
@@ -281,19 +277,21 @@ async function operate() {
   }
 }
 
-onActivated(() => {
-  nextTick(() => {
-    const query = route.query;
-    batchID.value = query.batchID;
-    getDataPage();
-  });
-});
+// onActivated(() => {
+//   // const query = route.query;
+//   // batchID.value = query.batchID;
+//   // searchRef.value.setBatchID(query.batchID);
+//   getDataPage();
+// });
 onDeactivated(() => {
   // 清空筛选
   oldCheckedRow.value = [];
   checkedRow.value = [];
   tableData.value = [];
   isSearching.value = false;
+  // pageVO.total = 20;
+  pageVO.currentPage = 1;
+  pageVO.pageSize = 20;
 
   // stop();
 });
@@ -301,13 +299,19 @@ onDeactivated(() => {
 async function getDataPage() {
   try {
     useAppStore().setSpinning(true);
-    const { batchID: _, ...restSearchForm } = searchForm.value; // 移除 searchForm.value 中的 batchID 属性
+
+    // const { batchID: _, ...restSearchForm } = searchForm.value; // 移除 searchForm.value 中的 batchID 属性
+    // const params = {
+    //   batchID: isSearching.value
+    //     ? searchForm.value.batchID
+    //     : batchID.value || searchForm.value.batchID,
+    //   ...restSearchForm,
+    //   // ...searchForm.value,
+    //   page: pageVO.currentPage,
+    //   rowPerPage: pageVO.pageSize,
+    // };
     const params = {
-      batchID: isSearching.value
-        ? searchForm.value.batchID
-        : batchID.value || searchForm.value.batchID,
-      ...restSearchForm,
-      // ...searchForm.value,
+      ...searchForm.value,
       page: pageVO.currentPage,
       rowPerPage: pageVO.pageSize,
     };
@@ -330,6 +334,22 @@ async function getDataPage() {
   }
 }
 
+watch(
+  () => props.choose,
+  (newValue) => {
+    // console.log('🚀 ~ newValue:', newValue);
+    if (newValue === 1) {
+      nextTick(() => {
+        if (searchRef.value) {
+          searchRef.value.setBatchID(
+            typeof props.docBatchId === 'string' ? props.docBatchId : '',
+          );
+        }
+      });
+    }
+  },
+  { deep: true, immediate: true },
+);
 // async function startGetDataPage() {
 //   start(async () => {
 //     await getDataPage();

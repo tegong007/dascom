@@ -85,21 +85,30 @@ async function transfer(url, index, deviceIndex, inputData) {
           ? data.rslts[0].data
           : data.rslts[0].cardUid,
       );
+      if (url === '/ips-r/write-test-data') {
+        notification.success({
+          message: `成功`,
+          description: '操作成功',
+          placement: 'bottomRight',
+          class: 'notification-custom-class',
+        });
+      }
     }
     else {
       notification.error({
         message: `错误`,
         description: data.rslts[0].msg,
         placement: 'bottomRight',
+        class: 'notification-custom-class',
       });
       props.updateItem('readers', index, undefined);
     }
   }
   catch (error) {
-    error;
     notification.error({
       message: `错误`,
-      description: '操作失败',
+      description: error,
+      class: 'notification-custom-class',
       placement: 'bottomRight',
     });
     props.updateItem('readers', index, undefined);
