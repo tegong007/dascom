@@ -59,7 +59,7 @@ async function transfer(deviceIndex) {
     if (data.rslts[0].code === 0) {
       path.value = data.rslts[0].imgData;
       setVisible(true);
-      notification.suceess({
+      notification.success({
         message: `成功`,
         description: '操作成功',
         class: 'notification-custom-class',
