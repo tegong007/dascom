@@ -134,6 +134,15 @@ async function createWindow() {
     return null;
   });
 
+  // 监听窗口关闭事件
+  win.on('close', (event) => {
+    // 在这里编写处理用户退出的逻辑
+
+    // 如果需要阻止窗口关闭，可以调用 event.preventDefault()
+    // 例如，在用户确认后才关闭窗口
+    event.preventDefault();
+  });
+
   // win.webContents.on('will-navigate', (event, url) => { }) #344
 }
 

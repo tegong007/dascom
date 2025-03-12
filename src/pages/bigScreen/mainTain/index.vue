@@ -106,7 +106,7 @@ const currentModel = ref<string>('');
 const options = ref([
   { label: `耗材`, value: '5' },
   { label: `整机`, value: '0' },
-  { label: `整机`, value: '0' },
+  // { label: `整机`, value: '0' },
   { label: `空白本检测模块`, value: '1' },
   { label: `主副页打印模块`, value: '2' },
   { label: `加注页打印模块`, value: '3' },
