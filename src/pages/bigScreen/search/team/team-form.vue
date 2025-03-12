@@ -6,14 +6,6 @@
       :model="formState"
       class="w-full rounded-[8px] bg-[#ffffff34] p-x-10 p-y-20 pl210px"
     >
-      <a-form-item label="所属批次" name="batchID">
-        <a-input
-          v-model:value="formState.batchID"
-          placeholder="请输入所属批次号"
-          :maxlength="30"
-          class="w155px"
-        />
-      </a-form-item>
       <a-form-item label="团组号" name="groupID">
         <a-input
           v-model:value="formState.groupID"
@@ -22,6 +14,15 @@
           class="w155px"
         />
       </a-form-item>
+      <a-form-item label="所属批次" name="batchID">
+        <a-input
+          v-model:value="formState.batchID"
+          placeholder="请输入所属批次号"
+          :maxlength="30"
+          class="w155px"
+        />
+      </a-form-item>
+
       <a-form-item label="派遣单位" name="dispatchUnit">
         <a-input
           v-model:value="formState.dispatchUnit"
@@ -65,6 +66,13 @@
         <SearchOutlined />
         查询
       </a-button>
+      <a-button
+        type="primary"
+        class="btn ml10 w80px hover:text-[#89f7ff]!"
+        @click="clearAll"
+      >
+        清空
+      </a-button>
     </a-form>
   </div>
 </template>
@@ -98,8 +106,6 @@ const formState: UnwrapRef<FormState> = reactive({
   urgentType: null,
 });
 function setBatchIDandGroupId(value1: string, value2: string) {
-  console.log('🚀 ~ setBatchIDorGroupId ~ value2:', value2);
-  console.log('🚀 ~ setBatchIDorGroupId ~ value1:', value1);
   formState.batchID = value1;
   formState.groupID = value2;
   const filteredForm = Object.fromEntries(
@@ -135,6 +141,10 @@ function onSubmit() {
     .catch((error) => {
       console.log('error', error);
     });
+}
+function clearAll() {
+  formRef.value.resetFields();
+  props.setSearchForm();
 }
 defineExpose({
   setBatchIDandGroupId,

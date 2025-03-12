@@ -33,6 +33,13 @@
         <SearchOutlined />
         查询
       </a-button>
+      <a-button
+        type="primary"
+        class="btn ml10 w80px hover:text-[#89f7ff]!"
+        @click="clearAll"
+      >
+        清空
+      </a-button>
     </a-form>
   </div>
 </template>
@@ -98,6 +105,10 @@ function onSubmit() {
     .catch((error) => {
       console.log('error', error);
     });
+}
+function clearAll() {
+  formRef.value.resetFields();
+  props.setSearchForm();
 }
 defineExpose({
   setBatchID,

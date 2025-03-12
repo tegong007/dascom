@@ -68,6 +68,7 @@ declare module 'vue-router/auto-routes' {
     '/bigScreen/search/batch/': RouteRecordInfo<'/bigScreen/search/batch/', '/bigScreen/search/batch', Record<never, never>, Record<never, never>>,
     '/bigScreen/search/batch/batch-form': RouteRecordInfo<'/bigScreen/search/batch/batch-form', '/bigScreen/search/batch/batch-form', Record<never, never>, Record<never, never>>,
     '/bigScreen/search/doc/': RouteRecordInfo<'/bigScreen/search/doc/', '/bigScreen/search/doc', Record<never, never>, Record<never, never>>,
+    '/bigScreen/search/doc/detailModal': RouteRecordInfo<'/bigScreen/search/doc/detailModal', '/bigScreen/search/doc/detailModal', Record<never, never>, Record<never, never>>,
     '/bigScreen/search/doc/doc-form': RouteRecordInfo<'/bigScreen/search/doc/doc-form', '/bigScreen/search/doc/doc-form', Record<never, never>, Record<never, never>>,
     '/bigScreen/search/team/': RouteRecordInfo<'/bigScreen/search/team/', '/bigScreen/search/team', Record<never, never>, Record<never, never>>,
     '/bigScreen/search/team/team-form': RouteRecordInfo<'/bigScreen/search/team/team-form', '/bigScreen/search/team/team-form', Record<never, never>, Record<never, never>>,

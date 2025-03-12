@@ -53,9 +53,7 @@
 // import { useRoute } from 'vue-router';
 import { defineProps } from 'vue';
 import TeamForm from './team-form.vue';
-import {
-  findLabelByValue,
-} from '@/pages/bigScreen/batch/option.ts';
+import { findLabelByValue } from '@/pages/bigScreen/batch/option.ts';
 
 import MyTable from '@/components/base/vxeTable.vue';
 import { contextHolder, openNotify } from '@/components/base/useNotification';
@@ -91,14 +89,14 @@ const colums = ref([
     width: 150,
   },
   {
-    title: '批次号',
-    field: 'batchID',
-    type: 'html',
+    title: '团组号',
+    field: 'groupID',
     width: 150,
   },
   {
-    title: '团组号',
-    field: 'groupID',
+    title: '所属批次号',
+    field: 'batchID',
+    type: 'html',
     width: 150,
   },
 

@@ -6,24 +6,6 @@
       :model="formState"
       class="w-full rounded-[8px] bg-[#ffffff34] p-x-10 p-y-20 pl210px"
     >
-      <a-form-item label="批次号" name="batchID">
-        <a-input
-          v-model:value="formState.batchID"
-          placeholder="请输入批次号"
-          :maxlength="30"
-          class="w150px"
-          allow-clear
-        />
-      </a-form-item>
-      <a-form-item label="团组号" name="groupID">
-        <a-input
-          v-model:value="formState.groupID"
-          placeholder="请输入团组号"
-          :maxlength="30"
-          class="w150px"
-          allow-clear
-        />
-      </a-form-item>
       <a-form-item label="证本号" name="docID">
         <a-input
           v-model:value="formState.docID"
@@ -33,11 +15,31 @@
           allow-clear
         />
       </a-form-item>
-      <a-form-item label="状态" name="docStatus">
+      <a-form-item label="所属批次号" name="batchID">
+        <a-input
+          v-model:value="formState.batchID"
+          placeholder="请输入批次号"
+          :maxlength="30"
+          class="w150px"
+          allow-clear
+        />
+      </a-form-item>
+      <a-form-item label="所属团组号" name="groupID">
+        <a-input
+          v-model:value="formState.groupID"
+          placeholder="请输入团组号"
+          :maxlength="30"
+          class="w150px"
+          allow-clear
+        />
+      </a-form-item>
+
+      <a-form-item label="状态" name="docStatus" class="w-180px">
         <a-select v-model:value="formState.docStatus">
           <a-select-option
             v-for="option in docStatusOptions"
             :key="option.value"
+            class="w-120px"
             :value="option.value"
           >
             {{ option.label }}
@@ -52,13 +54,13 @@
         <SearchOutlined />
         查询
       </a-button>
-      <!-- <a-button
+      <a-button
         type="primary"
-        class="btn w80px ml10 hover:text-[#89f7ff]!"
-        @click="onSubmit"
+        class="btn ml10 w80px hover:text-[#89f7ff]!"
+        @click="clearAll"
       >
         清空
-      </a-button> -->
+      </a-button>
     </a-form>
   </div>
 </template>
@@ -113,6 +115,10 @@ function onSubmit() {
     .catch((error) => {
       console.log('error', error);
     });
+}
+function clearAll() {
+  formRef.value.resetFields();
+  props.setSearchForm();
 }
 defineExpose({
   setBatchIDandGroupId,

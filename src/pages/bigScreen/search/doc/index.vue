@@ -45,6 +45,7 @@
         :rowfun="rowAction"
         :update-old-checked-row="updateOldCheckedRow"
         :change-batch-id-o-rteam-id="props.changeBatchIdORteamId"
+        :set-detai="setDetai"
         key-field="recID"
         page-name="docList"
       />
@@ -75,6 +76,13 @@
     :handle-cancel="() => setOpen(false)"
     :title="modal"
   />
+  <DetailModal
+    :open="detailOpen"
+    :current-row="currentRow"
+    :handle-ok="() => setDetailOpen(false)"
+    :handle-cancel="() => setDetailOpen(false)"
+    title="详情"
+  />
 
   <contextHolder />
 </template>
@@ -82,6 +90,7 @@
 <script lang="ts" setup>
 import { RollbackOutlined } from '@ant-design/icons-vue';
 import docForm from './doc-form.vue';
+import DetailModal from './detailModal.vue';
 import MyTable from '@/components/base/vxeTable.vue';
 import TheModal from '@/components/modal/TheModal.vue';
 import { contextHolder, openNotify } from '@/components/base/useNotification';
@@ -107,38 +116,24 @@ const tableRef = ref(null);
 const searchRef = ref(null);
 const searchForm = ref({});
 const open = ref<boolean>(false);
+const detailOpen = ref<boolean>(false);
 const modal = ref('');
 const isReset = ref(0);
 const tableData = ref([]);
-const imgShow = {
-  name: 'VxeImage',
-  props: {
-    width: 80,
-    height: 80,
-    maskClosable: true,
-  },
-};
+// const imgShow = {
+//   name: 'VxeImage',
+//   props: {
+//     width: 80,
+//     height: 80,
+//     maskClosable: true,
+//   },
+// };
 const colums = ref([
   {
     title: '序号',
     field: 'seq',
     fixed: 'left',
     width: 80,
-    overflow: 'title',
-  },
-
-  {
-    title: '批次号',
-    field: 'batchID',
-    type: 'html',
-    width: 120,
-    overflow: 'ellipsis',
-  },
-  {
-    title: '团组号',
-    field: 'groupID',
-    type: 'html',
-    width: 120,
     overflow: 'title',
   },
   {
@@ -148,25 +143,40 @@ const colums = ref([
     overflow: 'title',
   },
   {
+    title: '所属批次号',
+    field: 'batchID',
+    type: 'html',
+    width: 120,
+    overflow: 'ellipsis',
+  },
+  {
+    title: '所属团组号',
+    field: 'groupID',
+    type: 'html',
+    width: 120,
+    overflow: 'title',
+  },
+
+  {
     title: '识别号',
     field: 'recID',
     width: 120,
     overflow: 'title',
   },
-  {
-    title: '派遣单位',
-    field: 'dispatchUnit',
-    formatter: formatterValue,
-    width: 130,
-    overflow: 'title',
-  },
-  {
-    title: '数据来源',
-    field: 'dataSource',
-    formatter: formatterValue,
-    width: 130,
-    overflow: 'title',
-  },
+  // {
+  //   title: '派遣单位',
+  //   field: 'dispatchUnit',
+  //   formatter: formatterValue,
+  //   width: 130,
+  //   overflow: 'title',
+  // },
+  // {
+  //   title: '数据来源',
+  //   field: 'dataSource',
+  //   formatter: formatterValue,
+  //   width: 130,
+  //   overflow: 'title',
+  // },
 
   {
     title: '加急程度',
@@ -180,7 +190,6 @@ const colums = ref([
     title: '当前工位',
     field: 'position',
     formatter: formatterValue,
-    width: 150,
     overflow: 'title',
   },
   {
@@ -197,99 +206,99 @@ const colums = ref([
     width: 120,
     overflow: 'title',
   },
-  {
-    title: '姓(中)',
-    field: 'cnSurname',
-    width: 70,
-    overflow: 'title',
-  },
-  {
-    title: '名(中)',
-    field: 'cnGivenName',
-    width: 70,
-    overflow: 'title',
-  },
-  {
-    title: '人像',
-    field: 'photo',
-    width: 100,
-    overflow: 'title',
-    imgUrlCellRender: imgShow,
-  },
-  {
-    title: '加注类型',
-    field: 'cnObsvType',
-    formatter: formatterValue,
-    width: 150,
-    overflow: 'title',
-  },
-  {
-    title: '机读码1',
-    field: 'mrz1',
-    width: 200,
-    overflow: 'title',
-  },
-  {
-    title: '机读码2',
-    field: 'mrz2',
-    width: 200,
-    overflow: 'title',
-  },
-  {
-    title: '空白本照片',
-    field: 'blankDocPic',
-    width: 120,
-    overflow: 'title',
-    imgUrlCellRender: imgShow,
-  },
-  {
-    title: '激光前定位照片',
-    field: 'laserPicLocation',
-    width: 140,
-    overflow: 'title',
-    imgUrlCellRender: imgShow,
-  },
-  {
-    title: '激光后质检照片',
-    field: 'laserPicCheck',
-    width: 140,
-    overflow: 'title',
-    imgUrlCellRender: imgShow,
-  },
-  {
-    title: '喷墨前定位照片(主)',
-    field: 'mainUVPicLocation',
-    width: 160,
-    overflow: 'title',
-    imgUrlCellRender: imgShow,
-  },
-  {
-    title: '喷墨后质检照片(主)',
-    field: 'mainUVPicCheck',
-    width: 160,
-    overflow: 'title',
-    imgUrlCellRender: imgShow,
-  },
-  {
-    title: '喷墨前定位照片(加)',
-    field: 'additionUVPicLocation',
-    width: 160,
-    overflow: 'title',
-    imgUrlCellRender: imgShow,
-  },
-  {
-    title: '喷墨前定位照片(加)',
-    field: 'additionUVPicCheck',
-    width: 160,
-    overflow: 'title',
-    imgUrlCellRender: imgShow,
-  },
-  {
-    title: '废本原因',
-    field: 'obsoleteReason',
-    width: 120,
-    overflow: 'title',
-  },
+  // {
+  //   title: '姓(中)',
+  //   field: 'cnSurname',
+  //   width: 70,
+  //   overflow: 'title',
+  // },
+  // {
+  //   title: '名(中)',
+  //   field: 'cnGivenName',
+  //   width: 70,
+  //   overflow: 'title',
+  // },
+  // {
+  //   title: '人像',
+  //   field: 'photo',
+  //   width: 100,
+  //   overflow: 'title',
+  //   imgUrlCellRender: imgShow,
+  // },
+  // {
+  //   title: '加注类型',
+  //   field: 'cnObsvType',
+  //   formatter: formatterValue,
+  //   width: 150,
+  //   overflow: 'title',
+  // },
+  // {
+  //   title: '机读码1',
+  //   field: 'mrz1',
+  //   width: 200,
+  //   overflow: 'title',
+  // },
+  // {
+  //   title: '机读码2',
+  //   field: 'mrz2',
+  //   width: 200,
+  //   overflow: 'title',
+  // },
+  // {
+  //   title: '空白本照片',
+  //   field: 'blankDocPic',
+  //   width: 120,
+  //   overflow: 'title',
+  //   imgUrlCellRender: imgShow,
+  // },
+  // {
+  //   title: '激光前定位照片',
+  //   field: 'laserPicLocation',
+  //   width: 140,
+  //   overflow: 'title',
+  //   imgUrlCellRender: imgShow,
+  // },
+  // {
+  //   title: '激光后质检照片',
+  //   field: 'laserPicCheck',
+  //   width: 140,
+  //   overflow: 'title',
+  //   imgUrlCellRender: imgShow,
+  // },
+  // {
+  //   title: '喷墨前定位照片(主)',
+  //   field: 'mainUVPicLocation',
+  //   width: 160,
+  //   overflow: 'title',
+  //   imgUrlCellRender: imgShow,
+  // },
+  // {
+  //   title: '喷墨后质检照片(主)',
+  //   field: 'mainUVPicCheck',
+  //   width: 160,
+  //   overflow: 'title',
+  //   imgUrlCellRender: imgShow,
+  // },
+  // {
+  //   title: '喷墨前定位照片(加)',
+  //   field: 'additionUVPicLocation',
+  //   width: 160,
+  //   overflow: 'title',
+  //   imgUrlCellRender: imgShow,
+  // },
+  // {
+  //   title: '喷墨前定位照片(加)',
+  //   field: 'additionUVPicCheck',
+  //   width: 160,
+  //   overflow: 'title',
+  //   imgUrlCellRender: imgShow,
+  // },
+  // {
+  //   title: '废本原因',
+  //   field: 'obsoleteReason',
+  //   width: 120,
+  //   overflow: 'title',
+  // },
   {
     title: '开始时间',
     field: 'startTime',
@@ -422,6 +431,16 @@ function pageChange({ pageSize, currentPage }) {
 
 function setOpen(value: boolean) {
   open.value = value;
+}
+
+function setDetailOpen(value: boolean) {
+  detailOpen.value = value;
+}
+const currentRow = ref({});
+// 查看详情
+function setDetai(row: any) {
+  detailOpen.value = true;
+  currentRow.value = row;
 }
 
 onActivated(() => {

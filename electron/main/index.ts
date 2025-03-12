@@ -6,7 +6,8 @@ import fs from 'node:fs';
 import { BrowserWindow, app, globalShortcut, ipcMain, shell } from 'electron';
 // const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
+// 禁用 GPU 加速
+app.commandLine.appendSwitch('disable-gpu');
 // The built directory structure
 //
 // ├─┬ dist-electron

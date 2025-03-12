@@ -158,12 +158,13 @@
           v-if="props.pageName === 'docList'"
           field="action"
           title="操作"
-          width="100"
+          width="170"
           fixed="right"
           align="center"
         >
           <template #default="{ row }">
             <div class="flex items-center justify-start gap-10">
+              <a class="color-[#89F7FF]" @click="props.setDetai(row)">查看更多</a>
               <a
                 v-if="row.docStatus === 1"
                 class="color-[#89F7FF]"
@@ -199,6 +200,7 @@ const props = defineProps({
   setIsAddNoTeam: Function,
   updateOldCheckedRow: Function,
   changeBatchIdORteamId: Function,
+  setDetai: Function,
 });
 
 const tableRef = ref();
