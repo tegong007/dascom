@@ -3,9 +3,20 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import os from 'node:os';
 import fs from 'node:fs';
-import { BrowserWindow, app, globalShortcut, ipcMain, shell } from 'electron';
+import {
+  BrowserWindow,
+  Menu,
+  app,
+  globalShortcut,
+  ipcMain,
+  shell,
+} from 'electron';
+import { ref } from 'vue';
 // const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const canExit = ref(false);
+
+Menu.setApplicationMenu(null);
 // 禁用 GPU 加速
 app.commandLine.appendSwitch('disable-gpu');
 // The built directory structure
@@ -74,7 +85,7 @@ const preload = path.join(__dirname, '../preload/index.mjs');
 const indexHtml = path.join(RENDERER_DIST, 'index.html');
 
 // 需要无效化的键位
-const keysDisabled = ['f11'];
+const keysDisabled = ['f11', 'Alt'];
 
 async function createWindow() {
   win = new BrowserWindow({
@@ -140,7 +151,9 @@ async function createWindow() {
 
     // 如果需要阻止窗口关闭，可以调用 event.preventDefault()
     // 例如，在用户确认后才关闭窗口
-    event.preventDefault();
+    if (!canExit.value) {
+      event.preventDefault();
+    }
   });
 
   // win.webContents.on('will-navigate', (event, url) => { }) #344
@@ -240,5 +253,7 @@ ipcMain.handle('modify-config', async (key, value) => {
 });
 // 监听渲染进程发送的退出事件
 ipcMain.on('quit-app', () => {
-  app.quit();
+  // app.quit();
+  canExit.value = true;
+  win.close(); // 关闭窗口
 });

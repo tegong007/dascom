@@ -48,7 +48,7 @@
           <span class="ml35">{{ moduleItems.missingMsg }}</span>
         </div>
         <div class="flex-1">
-          【墨水将近】 <br><span class="ml35">{{ moduleItems.lowMsg }}</span>
+          【墨水将尽】 <br><span class="ml35">{{ moduleItems.lowMsg }}</span>
         </div>
       </div>
     </section>
