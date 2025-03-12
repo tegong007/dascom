@@ -45,7 +45,6 @@
           @click="
             () => {
               props.handleOk();
-              $goto('BatchDetail', { BatchId: props.data?.batchID });
             }
           "
         />

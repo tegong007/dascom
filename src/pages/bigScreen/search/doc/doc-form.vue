@@ -11,6 +11,7 @@
           v-model:value="formState.batchID"
           placeholder="请输入批次号"
           :maxlength="30"
+          class="w150px"
           allow-clear
         />
       </a-form-item>
@@ -19,6 +20,7 @@
           v-model:value="formState.groupID"
           placeholder="请输入团组号"
           :maxlength="30"
+          class="w150px"
           allow-clear
         />
       </a-form-item>
@@ -26,6 +28,7 @@
         <a-input
           v-model:value="formState.docID"
           placeholder="请输入证本号"
+          class="w150px"
           :maxlength="30"
           allow-clear
         />
@@ -49,6 +52,13 @@
         <SearchOutlined />
         查询
       </a-button>
+      <!-- <a-button
+        type="primary"
+        class="btn w80px ml10 hover:text-[#89f7ff]!"
+        @click="onSubmit"
+      >
+        清空
+      </a-button> -->
     </a-form>
   </div>
 </template>

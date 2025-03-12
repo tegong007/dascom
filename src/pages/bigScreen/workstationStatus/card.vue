@@ -194,7 +194,7 @@ function getTextClass(status: string) {
   border-radius: 5px;
 }
 .chooseItem {
-  background: rgba(255, 255, 255, 0.12);
+  // background: rgba(255, 255, 255, 0.12);
   border: 4px solid transparent; /* 设置边框为透明 */
   border-image: linear-gradient(100deg, #2ee0ce 7%, #98e533 30%, #e57133 58%, #0084ff 82%) 1; /* 设置边框图像 */
   border-image-slice: 1; /* 确保边框图像覆盖整个边框 */

@@ -6,11 +6,11 @@
     >
       <span class="text-[1.1em]">当前批次号：{{ statisticsData.batchID }}，证本总数：{{
         statisticsData.docNum
-      }}，待生产数：{{ statisticsData.waitingNum }}，良本数：{{
-        statisticsData.productNum
-      }}，废本数：{{ statisticsData.obsoleteNum }}，挂起数：{{
-        statisticsData.hangUpNum
-      }}</span>
+      }}，批次状态：{{ formatterStatus(statisticsData.status) }}，待生产数：{{
+        statisticsData.waitingNum
+      }}，良本数：{{ statisticsData.productNum }}，废本数：{{
+        statisticsData.obsoleteNum
+      }}，挂起数：{{ statisticsData.hangUpNum }}</span>
     </div>
 
     <div
@@ -166,6 +166,9 @@ import useCustomTimer from '@/utils/useCustomTimer';
 import { contextHolder, openNotify } from '@/components/base/useNotification';
 import { batchModule, homeModule } from '@/apis/proApi';
 import { useAppStore } from '@/store/index';
+import {
+  BatchStatusOptions,
+} from '@/pages/bigScreen/batch/option.ts';
 
 const { start, stop } = useCustomTimer();
 
@@ -199,6 +202,10 @@ onActivated(async () => {
 onDeactivated(() => {
   stop();
 });
+function formatterStatus(cellValue: any) {
+  const item = BatchStatusOptions.find(item => item.value === cellValue);
+  return item ? item.label : cellValue;
+}
 async function getDataPage() {
   try {
     const data = await homeModule.getHomeList();

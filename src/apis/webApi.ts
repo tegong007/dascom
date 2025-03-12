@@ -43,3 +43,8 @@ export function getCurrentBatch() {
   const api = `${v1}/tss/current-batch`;
   return request.post(api);
 }
+// 立刻打印
+export function setBatchRank(data: any) {
+  const api = `${v1}/tss/set-batch-rank`;
+  return request.post(api, data);
+}

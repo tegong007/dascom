@@ -37,7 +37,7 @@
       :open="successOpen"
       :success-icon="true"
       :data="showSuccessData"
-      :handle-ok="() => setSuccessOpen(false)"
+      :handle-ok="() => topProduction()"
       :handle-cancel="() => setSuccessOpen(false)"
       :title="successTitle"
     />
@@ -92,10 +92,11 @@ import TipModal from '@/components/modal/TheModal.vue';
 import router from '@/router/index.ts';
 import { useAppStore } from '@/store/index';
 import { addBatch } from '@/apis/testApi';
+import { setBatchRank } from '@/apis/webApi';
 import { contextHolder, openNotify } from '@/components/base/useNotification';
 
 const modal = ref('新增团组');
-const successTitle = ref('批次添加成功，是否查看详情?');
+const successTitle = ref('批次添加成功，是否立即生产?');
 const open = ref<boolean>(false);
 const tipOpen = ref<boolean>(false);
 const successOpen = ref<boolean>(false);
@@ -267,6 +268,27 @@ async function AddBatch() {
     finally {
       useAppStore().setSpinning(false);
     }
+  }
+}
+async function topProduction() {
+  setSuccessOpen(false);
+  try {
+    useAppStore().setSpinning(true);
+    const params = {
+      batchID: showSuccessData.value.batchID,
+      rank: 0,
+    };
+    console.log('🚀 ~ topProduction ~ params:', params);
+    await setBatchRank(params);
+    setSuccessOpen(false);
+    router.push({ name: 'BigScreen' });
+    openNotify('bottomRight', `立即生产成功`, true);
+  }
+  catch (error) {
+    openNotify('bottomRight', error);
+  }
+  finally {
+    useAppStore().setSpinning(false);
   }
 }
 </script>
