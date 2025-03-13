@@ -14,7 +14,7 @@ import {
 import { ref } from 'vue';
 // const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const canExit = ref(false);
+const canExit = ref<boolean>(false);
 
 Menu.setApplicationMenu(null);
 // 禁用 GPU 加速
@@ -85,7 +85,7 @@ const preload = path.join(__dirname, '../preload/index.mjs');
 const indexHtml = path.join(RENDERER_DIST, 'index.html');
 
 // 需要无效化的键位
-const keysDisabled = ['f11', 'Alt'];
+const keysDisabled = ['f11'];
 
 async function createWindow() {
   win = new BrowserWindow({
@@ -145,12 +145,10 @@ async function createWindow() {
     return null;
   });
 
-  // 监听窗口关闭事件
   win.on('close', (event) => {
     // 在这里编写处理用户退出的逻辑
-
+    // console.log('🚀 ~ win.on ~ canExit.value:', canExit.value);
     // 如果需要阻止窗口关闭，可以调用 event.preventDefault()
-    // 例如，在用户确认后才关闭窗口
     if (!canExit.value) {
       event.preventDefault();
     }

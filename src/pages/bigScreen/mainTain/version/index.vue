@@ -13,9 +13,11 @@
       >
         <div>{{ item.name }}：{{ item.version }}</div>
       </div>
-      <a-button class="btn" type="primary" @click="setcheckPwOpen(true)">
-        退出系统
-      </a-button>
+      <div class="text-center text-[18px] line-height-[60px]">
+        <a-button class="btn" type="primary" @click="setcheckPwOpen(true)">
+          退出系统
+        </a-button>
+      </div>
     </main>
     <SuceessModal
       :open="checkPwOpen"

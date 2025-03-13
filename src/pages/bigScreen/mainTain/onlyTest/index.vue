@@ -174,11 +174,13 @@ function openNotification(
         message: '成功',
         description: ` ${msg}`,
         placement,
+        class: 'notification-custom-class',
       })
     : api.error({
         message: '错误信息',
         description: ` ${msg}`,
         placement,
+        class: 'notification-custom-class',
       });
 }
 // const speed = ref<string>('10');

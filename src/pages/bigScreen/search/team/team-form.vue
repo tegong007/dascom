@@ -12,6 +12,7 @@
           placeholder="请输入团组号"
           :maxlength="30"
           class="w155px"
+          allow-clear
         />
       </a-form-item>
       <a-form-item label="所属批次" name="batchID">
@@ -19,6 +20,7 @@
           v-model:value="formState.batchID"
           placeholder="请输入所属批次号"
           :maxlength="30"
+          allow-clear
           class="w155px"
         />
       </a-form-item>
@@ -28,6 +30,7 @@
           v-model:value="formState.dispatchUnit"
           placeholder="请输入派遣单位"
           :maxlength="30"
+          allow-clear
           class="w155px"
         />
       </a-form-item>

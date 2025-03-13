@@ -21,11 +21,9 @@
                 :key="itemIndex"
                 class="text-[18px]"
               >
-                {{
-                  item.label !== '目标位置' ? item.label : `${item.label}(mm)`
-                }}：
+                {{ item.label }}：
                 <a-select
-                  v-if="item.label !== '目标位置'"
+                  v-if="!item.label.includes('mm')"
                   v-model:value="item.value"
                   size="large"
                   class="m-r-10 w-150px"
@@ -210,7 +208,7 @@ async function transfer(url, objs) {
     const data = await getApiTransfer(params);
     if (data.rslts[0].code === 0) {
       notification.success({
-        message: `错误`,
+        message: `成功`,
         description: '操作成功',
         placement: 'bottomRight',
         class: 'notification-custom-class',
