@@ -78,6 +78,7 @@
         </div>
       </a-flex>
     </main>
+    <contextHolder />
   </div>
 </template>
 
@@ -85,6 +86,7 @@
 import { positionModule } from '@/apis/proApi';
 import useCustomTimer from '@/utils/useCustomTimer';
 import { useAppStore } from '@/store/index';
+import { contextHolder, openNotify } from '@/components/base/useNotification';
 
 const props = defineProps({
   light: Number,
@@ -93,7 +95,8 @@ const { start, stop } = useCustomTimer();
 const items = ref([]);
 onActivated(async () => {
   useAppStore().setSpinning(true);
-  await getDataPage();
+  const end = await getDataPage();
+  !end && openNotify('bottomRight', `接口超时`);
   if (items.value) {
     scrollToBox();
   }
@@ -126,9 +129,11 @@ async function getDataPage() {
     if (data.respData) {
       items.value = data.respData;
     }
+    return true;
   }
   catch (error) {
-    console.log('🚀 ~ file: newIndex.vue:182 ~ getDataPage ~ error:', error);
+    error;
+    return false;
     // stop();
   }
   // finally {
