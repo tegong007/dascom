@@ -28,11 +28,11 @@
               class="absolute z-[999] text-[80px] font-bold"
             >
               {{ $t('home.preparePrint') }}</span>
-            <a-image
+            <vxe-image
               v-if="imgIndex !== 0"
               :src="imgStatus[imgIndex]"
               :width="480"
-              :preview="false"
+              :show-preview="false"
             />
           </a-flex>
         </div>

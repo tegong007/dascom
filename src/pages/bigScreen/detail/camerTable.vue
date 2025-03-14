@@ -29,7 +29,7 @@
             {{ getWorkstationName(item?.position) }}
           </div>
           <div class="descr flex-[1.5]!">
-            <a-image
+            <vxe-image
               :width="50"
               src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
             />

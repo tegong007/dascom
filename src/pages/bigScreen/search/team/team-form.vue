@@ -39,6 +39,7 @@
           v-model:value="formState.dataSource"
           placeholder="请输入数据来源"
           :maxlength="30"
+          allow-clear
           class="w155px"
         />
       </a-form-item>

@@ -372,37 +372,34 @@ function updateOldCheckedRow(delectArr) {
   let toDeleteIDs;
   // 提取要删除的 batchID 列表
   if (Array.isArray(delectArr)) {
-    toDeleteIDs = delectArr.map(item => item.batchID);
+    toDeleteIDs = delectArr.map(item => item.recID);
   }
   else {
-    toDeleteIDs = [delectArr.batchID];
-    console.log('🚀 ~ updateOldCheckedRow ~ toDeleteIDs:', toDeleteIDs);
+    toDeleteIDs = [delectArr.recID];
   }
 
   // 使用 filter 方法过滤掉需要删除的元素
   oldCheckedRow.value = oldCheckedRow.value.filter(
-    item => !toDeleteIDs.includes(item.batchID),
+    item => !toDeleteIDs.includes(item.recID),
   );
-  console.log('🚀 ~ updateOldCheckedRow ~ delectArr:', oldCheckedRow.value);
 }
 
-function rowAction(type: string, batchID: string) {
+function rowAction(type: string, recID: string) {
   modal.value = type;
-  const newCheckRow = !batchID ? tableRef.value.getSelectEvent() : [batchID];
+  const newCheckRow = !recID ? tableRef.value.getSelectEvent() : [recID];
   if (tableRef.value && newCheckRow) {
-    checkedRow.value = !batchID
-      ? newCheckRow.map(item => item.batchID)
+    checkedRow.value = !recID
+      ? newCheckRow.map(item => item.recID)
       : newCheckRow;
   }
   nextTick(() => {
     if (checkedRow.value.length === 0 && oldCheckedRow.value.length === 0) {
       openNotify('bottomRight', `您还没有选中数据`);
     }
+
     if (checkedRow.value.length || oldCheckedRow.value.length) {
-      const oldCheckBatchID = oldCheckedRow.value.map(item => item.batchID);
-      const allCheckRox = [
-        ...new Set([...checkedRow.value, ...oldCheckBatchID]),
-      ];
+      const oldCheckrecID = oldCheckedRow.value.map(item => item.recID);
+      const allCheckRox = [...new Set([...checkedRow.value, ...oldCheckrecID])];
       modal.value = `可能含有不能${type === 'stop' ? '挂起' : '重新生产'}的数据，是否继续${type === 'stop' ? '挂起' : '重新生产'}${
         allCheckRox.length
       }条数据?`;

@@ -44,7 +44,7 @@
           {{ getWorkstationName(item?.position) }}
         </div>
         <div class="descr" :style="`width:${colums[2].width}px`">
-          <a-image
+          <vxe-image
             :width="50"
             src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
           />

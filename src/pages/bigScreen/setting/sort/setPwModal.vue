@@ -149,7 +149,6 @@ function onSubmit() {
     .validate()
     .then(async () => {
       await setPassWord();
-      props.handleCancel();
     })
     .catch((error) => {
       console.error('Form validation error:', error);

@@ -16,148 +16,110 @@
         <div class="scoll-bar mt10px h-full w-90% overflow-y-auto bg-white">
           <a-descriptions title="" bordered>
             <a-descriptions-item label="批次号">
-              {{
-                props.currentRow.batchID
-              }}
+              {{ props.currentRow.batchID }}
             </a-descriptions-item>
             <a-descriptions-item label="数据索引">
-              {{
-                props.currentRow.recID
-              }}
+              {{ props.currentRow.recID }}
             </a-descriptions-item>
             <a-descriptions-item label="团组号">
-              {{
-                props.currentRow.groupID
-              }}
+              {{ props.currentRow.groupID }}
             </a-descriptions-item>
             <a-descriptions-item label="证本号">
-              {{
-                props.currentRow.docID
-              }}
+              {{ props.currentRow.docID }}
             </a-descriptions-item>
             <a-descriptions-item label="识别号">
-              {{
-                props.currentRow.recID
-              }}
+              {{ props.currentRow.recID }}
             </a-descriptions-item>
             <a-descriptions-item label="派遣单位">
-              {{
-                props.currentRow.dispatchUnit
-              }}
+              {{ props.currentRow.dispatchUnit }}
             </a-descriptions-item>
             <a-descriptions-item label="数据来源">
-              {{
-                props.currentRow.dataSource
-              }}
+              {{ props.currentRow.dataSource }}
             </a-descriptions-item>
             <a-descriptions-item label="加急程度">
-              {{
-                formatterValue('urgentType', props.currentRow.urgentType)
-              }}
+              {{ formatterValue('urgentType', props.currentRow.urgentType) }}
             </a-descriptions-item>
             <a-descriptions-item label="当前工位">
-              {{
-                formatterValue('position', props.currentRow.position)
-              }}
+              {{ formatterValue('position', props.currentRow.position) }}
             </a-descriptions-item>
             <a-descriptions-item label="证本状态">
-              {{
-                formatterValue('docStatus', props.currentRow.docStatus)
-              }}
+              {{ formatterValue('docStatus', props.currentRow.docStatus) }}
             </a-descriptions-item>
             <a-descriptions-item label="证本类型">
-              {{
-                formatterValue('type', props.currentRow.type)
-              }}
+              {{ formatterValue('type', props.currentRow.type) }}
             </a-descriptions-item>
             <a-descriptions-item label="姓(中)">
-              {{
-                props.currentRow.cnSurname
-              }}
+              {{ props.currentRow.cnSurname }}
             </a-descriptions-item>
             <a-descriptions-item label="名(中)">
-              {{
-                props.currentRow.cnName
-              }}
+              {{ props.currentRow.cnName }}
             </a-descriptions-item>
             <a-descriptions-item label="人像照片">
-              <a-image
+              <vxe-image
                 :width="100"
                 :src="`data:image/png;base64,${props.currentRow.photo}`"
               />
             </a-descriptions-item>
             <a-descriptions-item label="加注类型">
-              {{
-                formatterValue('cnObsvType', props.currentRow.cnObsvType)
-              }}
+              {{ formatterValue('cnObsvType', props.currentRow.cnObsvType) }}
             </a-descriptions-item>
             <a-descriptions-item label="机读码1">
-              {{
-                props.currentRow.mrz1
-              }}
+              {{ props.currentRow.mrz1 }}
             </a-descriptions-item>
             <a-descriptions-item label="机读码2">
-              {{
-                props.currentRow.mrz2
-              }}
+              {{ props.currentRow.mrz2 }}
             </a-descriptions-item>
             <a-descriptions-item label="空白本照片">
-              <a-image
-                :width="100"
+              <vxe-image
                 :src="`data:image/png;base64,${props.currentRow.blankDocPic}`"
+                :width="100"
               />
             </a-descriptions-item>
             <a-descriptions-item label="激光前定位照片">
-              <a-image
+              <vxe-image
                 :width="100"
                 :src="`data:image/png;base64,${props.currentRow.laserPicLocation}`"
               />
             </a-descriptions-item>
             <a-descriptions-item label="激光后质检照片">
-              <a-image
+              <vxe-image
                 :width="100"
                 :src="`data:image/png;base64,${props.currentRow.laserPicCheck}`"
               />
             </a-descriptions-item>
             <a-descriptions-item label="喷墨前定位照片(主)">
-              <a-image
+              <vxe-image
                 :width="100"
                 :src="`data:image/png;base64,${props.currentRow.mainUVPicLocation}`"
               />
             </a-descriptions-item>
             <a-descriptions-item label="喷墨后质检照片(主)">
-              <a-image
+              <vxe-image
                 :width="100"
                 :src="`data:image/png;base64,${props.currentRow.mainUVPicCheck}`"
               />
             </a-descriptions-item>
             <a-descriptions-item label="喷墨前定位照片(加)">
-              <a-image
+              <vxe-image
                 :width="100"
                 :src="`data:image/png;base64,${props.currentRow.additionUVPicLocation}`"
               />
             </a-descriptions-item>
             <a-descriptions-item label="喷墨前定位照片(加)">
-              <a-image
+              <vxe-image
                 :width="100"
                 :src="`data:image/png;base64,${props.currentRow.additionUVPicCheck}`"
               />
             </a-descriptions-item>
             <a-descriptions-item label="废本原因">
-              {{
-                props.currentRow.obsoleteReason
-              }}
+              {{ props.currentRow.obsoleteReason }}
             </a-descriptions-item>
 
             <a-descriptions-item label="开始时间">
-              {{
-                props.currentRow.startTime
-              }}
+              {{ props.currentRow.startTime }}
             </a-descriptions-item>
             <a-descriptions-item label="结束时间">
-              {{
-                props.currentRow.endTime
-              }}
+              {{ props.currentRow.endTime }}
             </a-descriptions-item>
           </a-descriptions>
         </div>

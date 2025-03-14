@@ -168,12 +168,12 @@
               <a
                 v-if="row.docStatus === 1"
                 class="color-[#89F7FF]"
-                @click="props.rowfun('stop', row.docID)"
+                @click="props.rowfun('stop', row.recID)"
               >挂起</a>
               <a
                 v-if="row.docStatus === 2"
                 class="color-[#89F7FF]"
-                @click="props.rowfun('reset', row.docID)"
+                @click="props.rowfun('reset', row.recID)"
               >重新生产</a>
             </div>
           </template>

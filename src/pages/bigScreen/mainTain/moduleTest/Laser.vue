@@ -65,12 +65,9 @@
         </div>
       </div>
     </section>
-    <a-image
+    <vxe-image
       class="hidden"
-      :preview="{
-        visible,
-        onVisibleChange: setVisible,
-      }"
+      :show-preview="visible"
       :src="`data:image/png;base64,${path}`"
     />
     <!-- <contextHolder /> -->

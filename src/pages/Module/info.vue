@@ -36,17 +36,14 @@
           v-if="item.imgData && isIncludes(item.status, 'Camera')"
           class="py-[10px]"
         >
-          <a-image
+          <vxe-image
             :width="200"
             :src="`data:image/png;base64,${item.imgData}`"
           />
         </div>
       </div>
       <!-- 分割线 -->
-      <div
-        v-if="item.showDivider "
-        class="leading-[55px]"
-      >
+      <div v-if="item.showDivider" class="leading-[55px]">
         *********************************************{{
           item.showDivider
         }}**************************************************
@@ -66,7 +63,7 @@ interface T {
   imgData?: string;
   error?: boolean; // 任务失败的标识
   showDivider?: string; // 分界线的标识
-  stop?: boolean;// 用户手动停止
+  stop?: boolean; // 用户手动停止
 }
 const props = defineProps({
   flowData: Array<T>,
