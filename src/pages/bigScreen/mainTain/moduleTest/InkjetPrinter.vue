@@ -56,7 +56,7 @@
                 />
                 <a-popover v-if="item.label.includes('mm')">
                   <template #content>
-                    {{ item.tips }}
+                    {{ getTips(index) }}
                   </template>
                   <QuestionCircleOutlined />
                   <!-- <span v-else>&nbsp;&nbsp;&nbsp;&nbsp;</span> -->
@@ -243,6 +243,13 @@ async function transfer(url, objs) {
   finally {
     useAppStore().setSpinning(false);
   }
+}
+function getTips(index) {
+  const tips
+    = props.data[index].positionItems[0].option[
+      props.data[index].positionItems[0].value
+    ].tips;
+  return tips;
 }
 function validateInput(event, index) {
   // 获取输入框的值
