@@ -21,8 +21,9 @@
         </div>
       </div>
       <vxe-image
+        ref="imageRef"
         class="hidden"
-        :show-preview="visible"
+        mask-closable
         :src="`data:image/png;base64,${path}`"
       />
     </section>
@@ -38,11 +39,8 @@ const props = defineProps({
   data: Object,
 });
 const { notification } = App.useApp();
-const visible = ref<boolean>(false);
 const path = ref('');
-function setVisible(value): void {
-  visible.value = value;
-}
+const imageRef = ref(null);
 async function transfer(deviceIndex) {
   try {
     useAppStore().setSpinning(true);
@@ -55,7 +53,7 @@ async function transfer(deviceIndex) {
     const data = await getApiTransfer(params);
     if (data.rslts[0].code === 0) {
       path.value = data.rslts[0].imgData;
-      setVisible(true);
+      imageRef.value.$el.click();
       notification.success({
         message: `成功`,
         description: '操作成功',

@@ -45,7 +45,7 @@
                   addon-after="mm"
                 /> -->
                 <a-input
-                  v-else
+                  v-if="item.label.includes('mm')"
                   v-model:value="item.value"
                   placeholder="(0-1200)"
                   class="m-r-10 w-150px"
@@ -54,6 +54,14 @@
                   @input="validateInput($event, index)"
                   @blur="validateInput($event, index)"
                 />
+                <a-popover v-if="item.label.includes('mm')">
+                  <template #content>
+                    {{ item.tips }}
+                  </template>
+                  <QuestionCircleOutlined />
+                  <!-- <span v-else>&nbsp;&nbsp;&nbsp;&nbsp;</span> -->
+                </a-popover>
+                <span v-else class="select-none">&nbsp;&nbsp;&nbsp;&nbsp;</span>
               </div>
             </div>
             <div class="mt10 flex justify-evenly">
@@ -158,6 +166,7 @@
 
 <script lang="ts" setup>
 import { App } from 'ant-design-vue';
+import { QuestionCircleOutlined } from '@ant-design/icons-vue';
 import { getApiTransfer } from '@/apis/webApi';
 import { useAppStore } from '@/store/index';
 

@@ -158,6 +158,7 @@ function setSuccessOpen(value: boolean) {
 }
 function handleTipModal(type: boolean) {
   if (tableRef.value.exportEvent().length === 0) {
+    openNotify('bottomRight', `您还没有添加数据哦`);
     type && gotolast();
   }
   else {

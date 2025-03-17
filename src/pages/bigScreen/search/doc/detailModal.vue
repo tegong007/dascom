@@ -57,6 +57,7 @@
             <a-descriptions-item label="人像照片">
               <vxe-image
                 :width="100"
+                mask-closable
                 :src="`data:image/png;base64,${props.currentRow.photo}`"
               />
             </a-descriptions-item>
@@ -73,41 +74,48 @@
               <vxe-image
                 :src="`data:image/png;base64,${props.currentRow.blankDocPic}`"
                 :width="100"
+                mask-closable
               />
             </a-descriptions-item>
             <a-descriptions-item label="激光前定位照片">
               <vxe-image
                 :width="100"
+                mask-closable
                 :src="`data:image/png;base64,${props.currentRow.laserPicLocation}`"
               />
             </a-descriptions-item>
             <a-descriptions-item label="激光后质检照片">
               <vxe-image
                 :width="100"
+                mask-closable
                 :src="`data:image/png;base64,${props.currentRow.laserPicCheck}`"
               />
             </a-descriptions-item>
             <a-descriptions-item label="喷墨前定位照片(主)">
               <vxe-image
                 :width="100"
+                mask-closable
                 :src="`data:image/png;base64,${props.currentRow.mainUVPicLocation}`"
               />
             </a-descriptions-item>
             <a-descriptions-item label="喷墨后质检照片(主)">
               <vxe-image
                 :width="100"
+                mask-closable
                 :src="`data:image/png;base64,${props.currentRow.mainUVPicCheck}`"
               />
             </a-descriptions-item>
             <a-descriptions-item label="喷墨前定位照片(加)">
               <vxe-image
                 :width="100"
+                mask-closable
                 :src="`data:image/png;base64,${props.currentRow.additionUVPicLocation}`"
               />
             </a-descriptions-item>
             <a-descriptions-item label="喷墨前定位照片(加)">
               <vxe-image
                 :width="100"
+                mask-closable
                 :src="`data:image/png;base64,${props.currentRow.additionUVPicCheck}`"
               />
             </a-descriptions-item>

@@ -66,8 +66,9 @@
       </div>
     </section>
     <vxe-image
+      ref="imageRef"
+      mask-closable
       class="hidden"
-      :show-preview="visible"
       :src="`data:image/png;base64,${path}`"
     />
     <!-- <contextHolder /> -->
@@ -83,11 +84,8 @@ const props = defineProps({
   data: Object,
 });
 const { notification } = App.useApp();
-const visible = ref<boolean>(false);
+const imageRef = ref(null);
 const path = ref('');
-function setVisible(value): void {
-  visible.value = value;
-}
 async function previewPhoto(deviceIndex, arr) {
   const objs = [
     {
@@ -146,7 +144,7 @@ async function transfer(url, objs) {
     else {
       if (url === '/lpdps/preview') {
         path.value = data.rslts[0].imgData;
-        setVisible(true);
+        imageRef.value.$el.click();
       }
     }
   }

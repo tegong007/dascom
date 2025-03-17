@@ -47,6 +47,12 @@
                 @input="validateInput($event, index, itemIndex, optionIndex)"
                 @blur="validateInput($event, index, itemIndex, optionIndex)"
               />
+              <a-popover>
+                <template #content>
+                  {{ optionItem.tips }}
+                </template>
+                <QuestionCircleOutlined />
+              </a-popover>
             </div>
             <div class="mt10 flex justify-evenly">
               <a-button
