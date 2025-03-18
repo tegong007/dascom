@@ -53,12 +53,14 @@ async function transfer(deviceIndex) {
     const data = await getApiTransfer(params);
     if (data.rslts[0].code === 0) {
       path.value = data.rslts[0].imgData;
-      imageRef.value.$el.click();
-      notification.success({
-        message: `成功`,
-        description: '操作成功',
-        class: 'notification-custom-class',
-        placement: 'bottomRight',
+      nextTick(() => {
+        imageRef.value.$el.click();
+        notification.success({
+          message: `成功`,
+          description: '操作成功',
+          class: 'notification-custom-class',
+          placement: 'bottomRight',
+        });
       });
     }
     else {
