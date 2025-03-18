@@ -144,7 +144,15 @@ async function transfer(url, objs) {
     else {
       if (url === '/lpdps/preview') {
         path.value = data.rslts[0].imgData;
-        imageRef.value.$el.click();
+        nextTick(() => {
+          imageRef.value.$el.click();
+          notification.success({
+            message: `成功`,
+            description: '操作成功',
+            placement: 'bottomRight',
+            class: 'notification-custom-class',
+          });
+        });
       }
     }
   }
