@@ -52,7 +52,7 @@
               {{ props.currentRow.cnSurname }}
             </a-descriptions-item>
             <a-descriptions-item label="名(中)">
-              {{ props.currentRow.cnName }}
+              {{ props.currentRow.cnGivenName }}
             </a-descriptions-item>
             <a-descriptions-item label="人像照片">
               <vxe-image
