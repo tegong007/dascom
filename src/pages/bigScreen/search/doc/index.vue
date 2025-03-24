@@ -53,20 +53,20 @@
     <vxe-pager
       v-model:current-page="pageVO.currentPage"
       v-model:page-size="pageVO.pageSize"
-      class="z-99 w-full"
+      class="z-99 w-full flex items-center justify-center"
       :total="pageVO.total"
-      :layouts="[
-        'Home',
-        'PrevPage',
-        'Jump',
-        'PageCount',
-        'NextPage',
-        'End',
-        'Sizes',
-        'Total',
-      ]"
+      :layouts="['Home', 'PrevPage', 'Number', 'NextPage', 'End']"
       @page-change="pageChange"
-    />
+    >
+      <template #right>
+        <div class="relative top-1">
+          <span>共{{ Math.ceil(pageVO.total / pageVO.pageSize) }}页，{{
+            pageVO.total
+          }}条记录
+          </span>
+        </div>
+      </template>
+    </vxe-pager>
   </div>
   <!-- 下边按钮 -->
   <TheModal
@@ -516,6 +516,9 @@ watch(
   .vxe-pager--num-btn,
   .vxe-pager--prev-btn {
     background-color: unset;
+  }
+  .is--active {
+    box-shadow: 0 0 0.25em 0 #7ff3fd !important;
   }
 }
 </style>

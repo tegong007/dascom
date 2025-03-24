@@ -61,20 +61,32 @@
     <vxe-pager
       v-model:current-page="pageVO.currentPage"
       v-model:page-size="pageVO.pageSize"
-      class="z-99 w-full"
+      class="z-99 w-full flex items-center justify-center"
       :total="pageVO.total"
-      :layouts="[
-        'Home',
-        'PrevPage',
-        'Jump',
-        'PageCount',
-        'NextPage',
-        'End',
-        'Sizes',
-        'Total',
-      ]"
+      :layouts="['Home', 'PrevPage', 'Number', 'NextPage', 'End']"
       @page-change="pageChange"
-    />
+    >
+      <template #right>
+        <div class="relative top-1">
+          <!-- <span
+            >跳到
+            <a-input
+              class="w-50 m-l-3"
+              size="small"
+              v-model:value="pageVO.jumpPage"
+              @click="onInputFocus($event, 'jumpPage')"
+              @blur="validatePageNumber(pageVO.jumpPage)"
+            ></a-input>
+
+            页，
+          </span> -->
+          <span>共{{ Math.ceil(pageVO.total / pageVO.pageSize) }}页，{{
+            pageVO.total
+          }}条记录
+          </span>
+        </div>
+      </template>
+    </vxe-pager>
   </div>
   <!-- 下边按钮 -->
   <TheModal
@@ -277,12 +289,6 @@ async function operate() {
   }
 }
 
-// onActivated(() => {
-//   // const query = route.query;
-//   // batchID.value = query.batchID;
-//   // searchRef.value.setBatchID(query.batchID);
-//   getDataPage();
-// });
 onDeactivated(() => {
   // 清空筛选
   oldCheckedRow.value = [];
@@ -299,23 +305,11 @@ onDeactivated(() => {
 async function getDataPage() {
   try {
     useAppStore().setSpinning(true);
-
-    // const { batchID: _, ...restSearchForm } = searchForm.value; // 移除 searchForm.value 中的 batchID 属性
-    // const params = {
-    //   batchID: isSearching.value
-    //     ? searchForm.value.batchID
-    //     : batchID.value || searchForm.value.batchID,
-    //   ...restSearchForm,
-    //   // ...searchForm.value,
-    //   page: pageVO.currentPage,
-    //   rowPerPage: pageVO.pageSize,
-    // };
     const params = {
       ...searchForm.value,
       page: pageVO.currentPage,
       rowPerPage: pageVO.pageSize,
     };
-    // console.log('🚀 ~ getDataPage ~ params:', params);
     const data = await batchModule.getBatchPage(params);
     if (data.respData) {
       tableData.value = data.respData.batchInfo;
@@ -333,6 +327,18 @@ async function getDataPage() {
     useAppStore().setSpinning(false);
   }
 }
+// const validatePageNumber = (value) => {
+//   // 确保 pageVO.currentPage 是一个有效的数字
+//   if (isNaN(value) || value === null) {
+//     pageVO.currentPage = 1; // 默认值为 1
+//   } else {
+//     pageVO.currentPage = Math.ceil(
+//       Math.max(1, Math.min(Math.ceil(pageVO.total / pageVO.pageSize), value)),
+//     );
+//   }
+//   pageVO.jumpPage = pageVO.currentPage;
+//   getDataPage();
+// };
 
 watch(
   () => props.choose,
@@ -368,6 +374,10 @@ watch(
   .vxe-pager--num-btn,
   .vxe-pager--prev-btn {
     background-color: unset;
+  }
+  .is--active {
+    // background: #fff !important;
+    box-shadow: 0 0 0.25em 0 #7ff3fd !important;
   }
 }
 </style>

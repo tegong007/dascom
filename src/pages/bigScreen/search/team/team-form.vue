@@ -13,7 +13,7 @@
           :maxlength="30"
           class="w155px"
           allow-clear
-          @touch="onInputFocus($event, 'groupID')"
+          @click="onInputFocus($event, 'groupID')"
         />
       </a-form-item>
       <a-form-item label="所属批次" name="batchID">
@@ -174,6 +174,7 @@ function onInputFocus(event, res) {
 }
 // 给输入框赋值
 function onChangeKeyboard(input, keyboard) {
+  console.log('🚀 ~ onChangeKeyboard ~ input:', input);
   const caretPosition = keyboard.caretPosition;
   if (caretPosition !== null)
     setInputCaretPosition(cursorPosition.value, caretPosition);
