@@ -1,17 +1,27 @@
 <template>
   <div class="box-border h-100% flex flex-col items-center justify-center">
-    <main>
+    <main class="w50%">
       <!-- 示例：“1.0.3.0.0”，主版号（两位）.项目编号（一位）.迭代号（一位）.测试号（一位）。
         目前，主版本号和项目编号固定，为 “1.0.3” 。 -->
-      <div class="text-center text-[18px] line-height-[60px]">
-        打印管理系统 ：1.0.3.0.4
+      <div class="w-100% flex text-center text-[18px] line-height-[60px]">
+        <div class="w-50% text-right">
+          <span class="">打印管理系统 ：</span>
+        </div>
+        <div class="flex-1 text-left">
+          <span class="">1.0.3.0.4</span>
+        </div>
       </div>
       <div
         v-for="(item, index) in items"
         :key="index"
-        class="text-center text-[18px] line-height-[60px]"
+        class="w-100% flex text-center text-[18px] line-height-[60px]"
       >
-        <div>{{ item.name }}：{{ item.version }}</div>
+        <div class="w-50% text-right">
+          <span class="">{{ item.name }} ：</span>
+        </div>
+        <div class="flex-1 text-left">
+          <span class="">{{ item.version }}</span>
+        </div>
       </div>
       <div class="text-center text-[18px] line-height-[60px]">
         <a-button class="btn" type="primary" @click="setcheckPwOpen(true)">
