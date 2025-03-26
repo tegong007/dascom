@@ -1,13 +1,26 @@
 <template>
-  <div :class="keyboardClass" />
+  <div ref="parentRef" class="fixed z999 min-w70%" :style="transformStyle">
+    <div
+      ref="modalTitleRef"
+      class="drag-el hg-candidate-box"
+      style="width: 100%; cursor: move"
+    />
+    <div :class="keyboardClass" />
+  </div>
 </template>
 
-<script setup>
-import { onMounted, ref, watch } from 'vue';
+<script setup lang="ts">
+import { computed, onMounted, ref, watch, watchEffect } from 'vue';
 import Keyboard from 'simple-keyboard';
 import 'simple-keyboard/build/css/index.css';
 // import layout from 'simple-keyboard-layouts/build/layouts/chinese'; // 中文输入法
+
+// 移动
+import type { CSSProperties } from 'vue';
+
+import { useDraggable } from '@vueuse/core';
 import layout from '@/utils/chinese';
+
 // 中文库
 const props = defineProps({
   keyboardClass: {
@@ -48,6 +61,7 @@ onMounted(() => {
   keyboard.value = new Keyboard(props.keyboardClass, {
     onChange,
     onKeyPress,
+    // onKeyReleased,
     layoutCandidates: layout.layoutCandidates,
     layout: {
       default: [
@@ -73,6 +87,9 @@ onMounted(() => {
     // physicalKeyboardHighlightPress: true,
     syncInstanceInputs: true,
     mergeDisplay: true,
+    stopMouseUpPropagation: false, // 阻止简单键盘按钮上的指针向上事件冒泡到父元素。
+    // stopMouseDownPropagation: false, //向下事件冒泡到父元素。
+    // useTouchEvents: true, //仅支持触摸事件
     display: displayDefault.value,
     buttonTheme: [
       {
@@ -91,8 +108,19 @@ function onChange(input) {
   keyboard.value.setInput(input);
   emit('onChange', input, keyboard.value);
 }
+
+// function onKeyReleased(button) {
+//   console.log('simple-keyboard button released', button);
+//   // let c = document.getElementsByClassName('hg-candidate-box')[0];
+//   if (document.getElementsByClassName('hg-candidate-box')[0]) {
+//     isShowChinese.value = true;
+//   } else {
+//     isShowChinese.value = false;
+//   }
+// }
+
+// function onKeyPress(button) {
 function onKeyPress(button, $event) {
-  console.log(button);
   if (button === '{close}') {
     emit('closekeyboard');
     return false;
@@ -129,6 +157,57 @@ function onKeyPress(button, $event) {
   if (button === '{shift}' || button === '{lock}')
     handleShift();
 }
+const modalTitleRef = ref<HTMLElement>(null);
+const parentRef = ref<HTMLElement>(null);
+const { x, y, isDragging } = useDraggable(modalTitleRef);
+
+const startX = ref<number>(0);
+const startY = ref<number>(0);
+const startedDrag = ref(false);
+const transformX = ref(0);
+const transformY = ref(30);
+const preTransformX = ref(0);
+const preTransformY = ref(0);
+const dragRect = ref({ left: 0, right: 0, top: 0, bottom: 0 });
+
+watch([x, y], () => {
+  if (!startedDrag.value) {
+    startX.value = x.value;
+    startY.value = y.value;
+    const bodyRect = document.body.getBoundingClientRect();
+    const titleRect = modalTitleRef.value.getBoundingClientRect();
+    dragRect.value.right = bodyRect.width - titleRect.width;
+    dragRect.value.bottom
+      = bodyRect.height - titleRect.height - parentRef.value?.clientHeight;
+    preTransformX.value = transformX.value;
+    preTransformY.value = transformY.value;
+  }
+  startedDrag.value = true;
+});
+watch(isDragging, () => {
+  if (!isDragging) {
+    startedDrag.value = false;
+  }
+});
+
+watchEffect(() => {
+  if (startedDrag.value) {
+    transformX.value
+      = preTransformX.value
+        + Math.min(Math.max(dragRect.value.left, x.value), dragRect.value.right)
+        - startX.value;
+    transformY.value
+      = preTransformY.value
+        + Math.min(Math.max(dragRect.value.top, y.value), dragRect.value.bottom)
+        - startY.value;
+  }
+});
+const transformStyle = computed<CSSProperties>(() => {
+  return {
+    transform: `translate(${transformX.value}px, ${transformY.value}px)`,
+  };
+});
+
 defineExpose({
   onKeyPress,
   onChange,
@@ -142,8 +221,20 @@ watch(
 </script>
 
 <style lang="less">
+.drag-el {
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  background-color: rgba(215, 214, 214, 0.9) !important; //间隙背景颜色
+  position: absolute !important;
+  height: 40px !important;
+  margin-left: 0px !important;
+  border-radius: 5px 5px 0 0 !important;
+  // top: -35px !important;
+}
 .hg-candidate-box {
-  position: fixed;
+  // position: fixed;
   // left: 0;
   width: 100%;
   color: #000;
@@ -151,7 +242,7 @@ watch(
   margin-top: 0px;
   margin-left: -5px;
   border-bottom: 0;
-  background-color: rgba(215, 214, 214, 0.9); //间隙背景颜色
+  background-color: rgba(215, 214, 214, 0); //间隙背景颜色
   border-radius: 0;
   .hg-candidate-box-list {
     .hg-candidate-box-list-item {
@@ -168,7 +259,7 @@ watch(
       // 按钮属性
       font-size: 24px; /* 调整字体大小 */
       padding: 5px; /* 调整内边距 */
-      //width: 40px;     /* 设置按钮宽度 */
+      // min-width: 40px; /* 设置按钮宽度 */
       height: 40px; /* 设置按钮高度 */
     }
   }
@@ -179,7 +270,8 @@ watch(
   // left: 415;
   // top: px;
   left: 0;
-  position: fixed;
+  // position: fixed;
+  border-radius: 0 0 5px 5px;
   bottom: 0;
   background-color: rgba(215, 214, 214, 0.9); //间隙背景颜色
   z-index: 9999;
