@@ -166,9 +166,7 @@ import useCustomTimer from '@/utils/useCustomTimer';
 import { contextHolder, openNotify } from '@/components/base/useNotification';
 import { batchModule, homeModule } from '@/apis/proApi';
 import { useAppStore } from '@/store/index';
-import {
-  BatchStatusOptions,
-} from '@/pages/bigScreen/batch/option.ts';
+import { BatchStatusOptions } from '@/pages/bigScreen/batch/option.ts';
 
 const { start, stop } = useCustomTimer();
 
@@ -285,7 +283,7 @@ async function controlMachine() {
   }
   catch (error) {
     error;
-    openNotify('bottomRight', `${tips}操作失败`);
+    openNotify('bottomRight', error);
   }
   finally {
     setOpen(false);
