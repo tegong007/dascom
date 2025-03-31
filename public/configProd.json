@@ -1,0 +1,10 @@
+{
+  "fullscreen": true,
+  "devTools": false,
+  "width": 1920,
+  "height": 1080,
+  "serverAddress": "http://192.168.88.15:6102",
+  "timeOut": 100000,
+  "lang": "cn",
+  "docCount": 15
+}

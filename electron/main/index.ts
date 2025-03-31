@@ -56,13 +56,13 @@ function readConfig() {
   let configPath;
   // 在本地开发环境中，使用 VITE_PUBLIC 路径
   if (process.env.VITE_DEV_SERVER_URL) {
-    configPath = path.join(process.env.VITE_PUBLIC, 'config.json');
+    configPath = path.join(process.env.VITE_PUBLIC, 'configDev.json');
   }
   else {
     // 在打包后的环境中，使用 APP_ROOT 路径
     configPath = path.resolve(
       path.dirname(app.getPath('exe')),
-      'public/config.json',
+      'public/configProd.json',
     );
   }
 

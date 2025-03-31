@@ -12,58 +12,58 @@
       align="center"
       class="absolute top-0 w-full p-x-5em p-t-0.4em text-[1.3em] color-[#CFDEF1]"
     >
-      <span class="light relative">网络状态:已连接</span>
+      <span class="light relative">网络状态:{{ showConnect }}</span>
       <span class="light relative">{{ currentTime }}</span>
     </a-flex>
-    <!-- <CloseOutlined
-      class="absolute right-0em top-5 p-x-[1em] text-[25px] color-red hover:bg-[#f86e6e98] hover:color-white"
-      @click="showQuitModal"
-    /> -->
-    <!-- <TheModal
-      :open="open"
-      :handle-ok="ok"
-      :warn-icon="true"
-      :handle-cancel="() => setOpen(false)"
-      :title="modal"
-    /> -->
   </div>
 </template>
 
 <script lang="ts" setup>
-import useCustomTimer from '@/utils/useCustomTimer';
+// import useCustomTimer from '@/utils/useCustomTimer';
 import { formatDateTime } from '@/utils/time';
 // import TheModal from '@/components/modal/TheModal.vue';
+import { mainTainModule } from '@/apis/proApi';
 
 const props = defineProps({
   title: String,
 });
-// const open = ref<boolean>(false);
-// const modal = ref('');
-// function showQuitModal() {
-//   open.value = true;
-//   modal.value = '是否退出系统？';
-// }
-// function setOpen(value: boolean) {
-//   open.value = value;
-// }
-// 手动停止
-// async function ok() {
-//   if (modal.value === '是否退出系统？') {
-//     window.electron.send('quit-app');
-//   }
-
-//   open.value = false;
-// }
 // 时间展示
+const timeId = ref(); // 用于控制定时器逻辑是否继续执行
 const currentTime = ref('2024-12-18 14:37:23');
-const { start } = useCustomTimer();
-async function startClick() {
-  start(async () => {
-    currentTime.value = formatDateTime();
-    await new Promise(resolve => setTimeout(resolve, 1000)); // 模拟异步操作
-  }, 1);
+const showConnect = ref('');
+async function getData() {
+  try {
+    // useAppStore().setSpinning(true);
+    const data = await mainTainModule.getVersion({ type: 1 });
+    if (data.code === 0) {
+      showConnect.value = '已连接';
+    }
+  }
+  catch (error) {
+    error;
+    showConnect.value = '未连接';
+  }
 }
-startClick();
+async function startClick() {
+  timeId.value = setInterval(() => {
+    currentTime.value = formatDateTime();
+    getData();
+  }, 1000);
+}
+//  清除定时器
+async function stopInterval() {
+  if (timeId.value !== null) {
+    clearInterval(timeId.value);
+    timeId.value = null;
+  }
+}
+
+onActivated(async () => {
+  startClick();
+});
+onDeactivated(() => {
+  stopInterval();
+});
 </script>
 
 <style scoped>

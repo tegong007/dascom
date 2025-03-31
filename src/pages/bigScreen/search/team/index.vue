@@ -163,7 +163,7 @@ async function getDataPage() {
       page: pageVO.currentPage,
       rowPerPage: pageVO.pageSize,
     };
-    console.log('🚀 ~ getDataPage ~ params:', params);
+    // console.log('🚀 ~ getDataPage ~ params:', params);
     const data = await batchModule.getGroupPage(params);
     if (data.respData) {
       tableData.value = data.respData.groupInfo;

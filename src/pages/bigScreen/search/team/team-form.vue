@@ -13,7 +13,7 @@
           :maxlength="30"
           class="w155px"
           allow-clear
-          @click="onInputFocus($event, 'groupID')"
+          @touch="onInputFocus($event, 'groupID')"
         />
       </a-form-item>
       <a-form-item label="所属批次" name="batchID">
