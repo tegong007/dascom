@@ -30,7 +30,7 @@ const props = defineProps({
 // 时间展示
 const timeId = ref(); // 用于控制定时器逻辑是否继续执行
 const currentTime = ref('2024-12-18 14:37:23');
-const showConnect = ref('');
+const showConnect = ref('未连接');
 async function getData() {
   try {
     // useAppStore().setSpinning(true);
@@ -45,10 +45,12 @@ async function getData() {
   }
 }
 async function startClick() {
-  timeId.value = setInterval(() => {
+  setInterval(() => {
     currentTime.value = formatDateTime();
-    getData();
   }, 1000);
+  timeId.value = setInterval(() => {
+    getData();
+  }, 5000);
 }
 //  清除定时器
 async function stopInterval() {
@@ -59,6 +61,7 @@ async function stopInterval() {
 }
 
 onActivated(async () => {
+  getData();
   startClick();
 });
 onDeactivated(() => {
