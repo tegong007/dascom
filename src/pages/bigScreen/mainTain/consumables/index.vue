@@ -36,7 +36,7 @@
         >
           <span> 预计打印证本数</span>
           <span
-            class="text-[26px] color-white line-height-[1.1em] font-[youshe]"
+            class="text-[26px] color-white line-height-[40px] font-[youshe]"
           >{{ moduleItems.remainDocNum }}</span>
         </div>
       </div>

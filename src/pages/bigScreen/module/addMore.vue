@@ -2,20 +2,18 @@
   <div class="addMore text-[18px] text-white">
     <a-flex justify="center" align="center">
       <div class="absolute left-0 top-0 h-3em w100% flex items-center">
-        <span class="m-x-0.4em text-2.5em line-height-[1.1em] font-[youshe]">03</span>
+        <span class="m-x-0.4em text-2.5em line-height-[40px] font-[youshe]">03</span>
         <span class="ml-10 text-[1.5em] color-[#CFDEF1]">{{
           props.data.name
         }}</span>
       </div>
-      <div
-        class="absolute top-[3.3em] h-4.8em w-90% flex justify-center gap-50"
-      >
+      <div class="absolute top-[3em] h-4.8em w-90% flex justify-center gap-50">
         <div v-for="(item, index) in props.data.items" :key="index">
           <div class="w-full flex flex-col items-center">
             <div class="mt-5 text-[1em] color-[#CFDEF1]">
               {{ item.item }}
             </div>
-            <div class="mt8 text-2em line-height-[1.1em] font-[youshe]">
+            <div class="text-2em line-height-[40px] font-[youshe]">
               {{ item.value }}
               <!-- <CountTo
                 :start-val="0"
@@ -27,7 +25,7 @@
           </div>
         </div>
       </div>
-      <div class="table-data absolute top-[8em] w-95%">
+      <div class="table-data absolute top-[7.6em] w-95%">
         <div class="p-x-10 p-b-10">
           <div class="h30px w-full flex items-center bg-[#fff]/[0.2]">
             <span class="ml3">证本状态</span>

@@ -25,7 +25,7 @@
       "
     >
       <span
-        class="absolute bottom-50 left-20 cursor-default rounded-[30px] bg-[#0000007a] p-x-20 p-y-10 text-[32px] line-height-[1.1em] line-height-[1.1em] font-[youshe]"
+        class="absolute bottom-50 left-20 cursor-default rounded-[30px] bg-[#0000007a] p-x-20 p-y-10 text-[32px] line-height-[40px] line-height-[40px] font-[youshe]"
       >查看详情
       </span>
     </div>
@@ -39,7 +39,7 @@
       "
     >
       <span
-        class="absolute left-150 top-200px cursor-default rounded-[30px] bg-[#0000007a] p-x-20 p-y-10 text-[32px] line-height-[1.1em] font-[youshe]"
+        class="absolute left-150 top-200px cursor-default rounded-[30px] bg-[#0000007a] p-x-20 p-y-10 text-[32px] line-height-[40px] font-[youshe]"
       >查看详情
       </span>
     </div>
@@ -53,7 +53,7 @@
       "
     >
       <span
-        class="absolute left-220 top-200px cursor-default rounded-[30px] bg-[#0000007a] p-x-20 p-y-10 text-[32px] line-height-[1.1em] font-[youshe]"
+        class="absolute left-220 top-200px cursor-default rounded-[30px] bg-[#0000007a] p-x-20 p-y-10 text-[32px] line-height-[40px] font-[youshe]"
       >查看详情
       </span>
     </div>
@@ -67,7 +67,7 @@
       "
     >
       <span
-        class="absolute left-80 top-200px cursor-default rounded-[30px] bg-[#0000007a] p-x-20 p-y-10 text-[32px] line-height-[1.1em] font-[youshe]"
+        class="absolute left-80 top-200px cursor-default rounded-[30px] bg-[#0000007a] p-x-20 p-y-10 text-[32px] line-height-[40px] font-[youshe]"
       >查看详情
       </span>
     </div>
