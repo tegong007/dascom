@@ -2,7 +2,7 @@
   <div class="finishedProduct absolute text-white">
     <a-flex justify="center" align="center">
       <div class="absolute left-0 top-0 h-3em w100% flex items-center">
-        <span class="m-x-10px text-2.5em font-[youshe]">04</span>
+        <span class="m-x-10px text-2.5em line-height-[1.1em] font-[youshe]">04</span>
         <span class="ml-10 text-[1.5em] color-[#CFDEF1]">{{
           props.data.name
         }}</span>
@@ -18,7 +18,9 @@
           <div class="text-[1.5em] color-[#CFDEF1]">
             {{ item.item }}
           </div>
-          <div class="m-t-8 text-[2em] line-height-none font-[youshe]">
+          <div
+            class="m-t-8 text-[2em] line-height-[1.1em] line-height-none font-[youshe]"
+          >
             <!-- <CountTo :start-val="0" :end-val="item.value" :duration="1500" />
             <CountTo
               v-if="item.hangingNum"

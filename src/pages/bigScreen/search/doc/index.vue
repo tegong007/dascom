@@ -306,7 +306,7 @@ const colums = ref([
     overflow: 'title',
   },
   {
-    title: '结束时间',
+    title: '更新时间',
     field: 'endTime',
     width: 200,
     overflow: 'title',

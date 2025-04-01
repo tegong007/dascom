@@ -35,9 +35,9 @@
           class="flex flex-col flex-1 justify-around text-[24px] color-[#CFDEF1]"
         >
           <span> 预计打印证本数</span>
-          <span class="text-[26px] color-white font-[youshe]">{{
-            moduleItems.remainDocNum
-          }}</span>
+          <span
+            class="text-[26px] color-white line-height-[1.1em] font-[youshe]"
+          >{{ moduleItems.remainDocNum }}</span>
         </div>
       </div>
       <div

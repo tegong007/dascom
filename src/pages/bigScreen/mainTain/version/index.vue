@@ -17,11 +17,12 @@
       <div
         v-for="(item, index) in items"
         :key="index"
-        class="w-100% flex text-center text-[18px] line-height-[60px]"
+        class="box-border w-100% flex text-center text-[18px] line-height-[60px]"
       >
-        <div class="w-50% text-right">
-          <span class="">{{ item.name }} ：</span>
+        <div class="box-border w-50% text-right">
+          <span class="">{{ item.name }} </span>
         </div>
+        ：
         <div class="flex-1 text-left">
           <span class="">{{ item.version }}</span>
         </div>

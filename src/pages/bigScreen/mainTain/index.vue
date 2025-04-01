@@ -3,69 +3,67 @@
     class="bg h-100vh w-full flex flex-col items-center text-[18px] text-white"
   >
     <bigScreenHeader title="维护" />
-    <a-app class="h-100% w-full">
-      <div class="h-100% w-full flex flex-col text-white">
-        <div
-          class="bg-color m-x-4em h-87% max-h-790px flex border-[4px] border-[#3F89DD]"
-        >
-          <div class="h-full w-[11%] flex flex-col">
-            <a-radio-group
-              v-model:value="currentModel"
-              class="bg-color h-full w-full"
-              button-style="outline"
-              @change="labelChange"
-            >
-              <a-radio-button
-                v-for="(item, index) in options"
-                :key="index"
-                :value="item.value"
-                class="siyuan w-full flex cursor-pointer items-center justify-center border-0 bg-[#0000] py-[45px] text-[20px] text-white before:!w-0"
-              >
-                {{ item.label }}
-              </a-radio-button>
-            </a-radio-group>
-          </div>
-          <div
-            class="box-border wh-full overflow-hidden border-l-[4px] border-[#3F89DD]"
+    <div class="h-100% w-full flex flex-col text-white">
+      <div
+        class="bg-color m-x-4em h-87% max-h-790px flex border-[4px] border-[#3F89DD]"
+      >
+        <div class="h-full w-[11%] flex flex-col">
+          <a-radio-group
+            v-model:value="currentModel"
+            class="bg-color h-full w-full"
+            button-style="outline"
+            @change="labelChange"
           >
-            <!-- 整机测试 -->
-            <section
-              v-if="currentModel === '0'"
-              class="wh-full flex flex-col flex-1"
+            <a-radio-button
+              v-for="(item, index) in options"
+              :key="index"
+              :value="item.value"
+              class="siyuan w-full flex cursor-pointer items-center justify-center border-0 bg-[#0000] py-[45px] text-[20px] text-white before:!w-0"
             >
-              <OnlyTest />
-              <!-- <OnlyTest :is-produce="isProduce === true" /> -->
-            </section>
-            <!-- 耗材 -->
-            <section
-              v-show="currentModel === '5'"
-              class="scoll-bar box-border wh-full flex flex-col flex-1"
-            >
-              <Consumables :current-model="currentModel" />
-            </section>
-            <!-- 四个模块 -->
-            <section
-              v-if="
-                currentModel !== '5'
-                  && currentModel !== '6'
-                  && currentModel !== '0'
-                  && currentModel !== ''
-              "
-              class="scoll-bar box-border wh-full flex flex-col flex-1"
-            >
-              <ModuleTest :current-model="currentModel" />
-            </section>
-            <!-- 版本信息 -->
-            <section
-              v-show="currentModel === '6'"
-              class="scoll-bar box-border wh-full flex flex-col flex-1"
-            >
-              <Version :current-model="currentModel" />
-            </section>
-          </div>
+              {{ item.label }}
+            </a-radio-button>
+          </a-radio-group>
+        </div>
+        <div
+          class="box-border wh-full overflow-hidden border-l-[4px] border-[#3F89DD]"
+        >
+          <!-- 整机测试 -->
+          <section
+            v-if="currentModel === '0'"
+            class="wh-full flex flex-col flex-1"
+          >
+            <OnlyTest />
+            <!-- <OnlyTest :is-produce="isProduce === true" /> -->
+          </section>
+          <!-- 耗材 -->
+          <section
+            v-show="currentModel === '5'"
+            class="scoll-bar box-border wh-full flex flex-col flex-1"
+          >
+            <Consumables :current-model="currentModel" />
+          </section>
+          <!-- 四个模块 -->
+          <section
+            v-if="
+              currentModel !== '5'
+                && currentModel !== '6'
+                && currentModel !== '0'
+                && currentModel !== ''
+            "
+            class="scoll-bar box-border wh-full flex flex-col flex-1"
+          >
+            <ModuleTest :current-model="currentModel" />
+          </section>
+          <!-- 版本信息 -->
+          <section
+            v-show="currentModel === '6'"
+            class="scoll-bar box-border wh-full flex flex-col flex-1"
+          >
+            <Version :current-model="currentModel" />
+          </section>
         </div>
       </div>
-    </a-app>
+    </div>
     <div
       class="groupBtn absolute bottom-0 h8em w-full flex items-center justify-center gap-20"
     >

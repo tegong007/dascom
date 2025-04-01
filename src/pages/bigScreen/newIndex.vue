@@ -1,5 +1,7 @@
 <template>
-  <div class="bg h-100vh flex flex-col items-center text-[18px] text-white">
+  <div
+    class="bg relative h-100vh flex flex-col items-center text-[18px] text-white"
+  >
     <bigScreenHeader />
     <div
       class="absolute top-3.1em h1.6em flex items-center justify-center rounded-2xl bg-[#919195b0] p-x-15"
@@ -23,7 +25,7 @@
       "
     >
       <span
-        class="absolute bottom-50 left-20 cursor-default rounded-[30px] bg-[#0000007a] p-x-20 p-y-10 text-[32px] font-[youshe]"
+        class="absolute bottom-50 left-20 cursor-default rounded-[30px] bg-[#0000007a] p-x-20 p-y-10 text-[32px] line-height-[1.1em] line-height-[1.1em] font-[youshe]"
       >查看详情
       </span>
     </div>
@@ -37,7 +39,7 @@
       "
     >
       <span
-        class="absolute left-150 top-200px cursor-default rounded-[30px] bg-[#0000007a] p-x-20 p-y-10 text-[32px] font-[youshe]"
+        class="absolute left-150 top-200px cursor-default rounded-[30px] bg-[#0000007a] p-x-20 p-y-10 text-[32px] line-height-[1.1em] font-[youshe]"
       >查看详情
       </span>
     </div>
@@ -51,7 +53,7 @@
       "
     >
       <span
-        class="absolute left-220 top-200px cursor-default rounded-[30px] bg-[#0000007a] p-x-20 p-y-10 text-[32px] font-[youshe]"
+        class="absolute left-220 top-200px cursor-default rounded-[30px] bg-[#0000007a] p-x-20 p-y-10 text-[32px] line-height-[1.1em] font-[youshe]"
       >查看详情
       </span>
     </div>
@@ -65,7 +67,7 @@
       "
     >
       <span
-        class="absolute left-80 top-200px cursor-default rounded-[30px] bg-[#0000007a] p-x-20 p-y-10 text-[32px] font-[youshe]"
+        class="absolute left-80 top-200px cursor-default rounded-[30px] bg-[#0000007a] p-x-20 p-y-10 text-[32px] line-height-[1.1em] font-[youshe]"
       >查看详情
       </span>
     </div>
@@ -144,6 +146,7 @@
         />
       </div>
     </div>
+
     <TheModal
       :open="open"
       :handle-ok="() => controlMachine()"
@@ -151,11 +154,11 @@
       :handle-cancel="() => setOpen(false)"
       :title="modal"
     />
-    <contextHolder />
   </div>
 </template>
 
 <script setup lang="ts">
+import { App } from 'ant-design-vue';
 import FinishedProductBg from './module/finishedProduct.vue';
 import AddMore from './module/addMore.vue';
 import Print from './module/printPage.vue';
@@ -163,10 +166,11 @@ import Start from './module/startPage.vue';
 import TheButton from '@/components/base/TheButton.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 import useCustomTimer from '@/utils/useCustomTimer';
-import { contextHolder, openNotify } from '@/components/base/useNotification';
 import { batchModule, homeModule } from '@/apis/proApi';
 import { useAppStore } from '@/store/index';
 import { BatchStatusOptions } from '@/pages/bigScreen/batch/option.ts';
+
+const { notification } = App.useApp();
 
 const { start, stop } = useCustomTimer();
 
@@ -193,7 +197,13 @@ const statisticsData = ref({
 onActivated(async () => {
   useAppStore().setSpinning(true);
   const end = await getDataPage();
-  !end && openNotify('bottomRight', `接口超时`);
+  !end
+  && notification.error({
+    message: `错误`,
+    description: '接口超时',
+    placement: 'bottomRight',
+    class: 'notification-custom-class',
+  });
   useAppStore().setSpinning(false);
   await startGetDataPage();
 });
@@ -279,11 +289,21 @@ async function controlMachine() {
   try {
     useAppStore().setSpinning(true);
     await homeModule.setControlMachine({ control: control.value });
-    openNotify('bottomRight', `${tips}操作成功`, true);
+    notification.success({
+      message: `成功`,
+      description: `${tips}操作成功`,
+      placement: 'bottomRight',
+      class: 'notification-custom-class',
+    });
   }
   catch (error) {
     error;
-    openNotify('bottomRight', error);
+    notification.error({
+      message: `错误`,
+      description: error,
+      placement: 'bottomRight',
+      class: 'notification-custom-class',
+    });
   }
   finally {
     setOpen(false);

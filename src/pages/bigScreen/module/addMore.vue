@@ -2,7 +2,7 @@
   <div class="addMore text-[18px] text-white">
     <a-flex justify="center" align="center">
       <div class="absolute left-0 top-0 h-3em w100% flex items-center">
-        <span class="m-x-0.4em text-2.5em font-[youshe]">03</span>
+        <span class="m-x-0.4em text-2.5em line-height-[1.1em] font-[youshe]">03</span>
         <span class="ml-10 text-[1.5em] color-[#CFDEF1]">{{
           props.data.name
         }}</span>
@@ -15,7 +15,7 @@
             <div class="mt-5 text-[1em] color-[#CFDEF1]">
               {{ item.item }}
             </div>
-            <div class="mt8 text-2em font-[youshe]">
+            <div class="mt8 text-2em line-height-[1.1em] font-[youshe]">
               {{ item.value }}
               <!-- <CountTo
                 :start-val="0"
