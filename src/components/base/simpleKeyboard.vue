@@ -4,6 +4,7 @@
       ref="modalTitleRef"
       class="drag-el hg-candidate-box"
       style="width: 100%; cursor: move"
+      @touchstart="startDrag"
     />
     <div :class="keyboardClass" />
   </div>
@@ -57,10 +58,17 @@ function handleShift() {
   });
 }
 
+function startDrag(event: MouseEvent | TouchEvent) {
+  event.preventDefault();
+  // 初始化拖拽逻辑
+}
+
 onMounted(() => {
   keyboard.value = new Keyboard(props.keyboardClass, {
     onChange,
     onKeyPress,
+    onKeyReleased: button =>
+      console.log('simple-keyboard button released', button),
     // onKeyReleased,
     layoutCandidates: layout.layoutCandidates,
     layout: {
@@ -79,17 +87,11 @@ onMounted(() => {
         '{change} {space} {close}',
       ],
     },
-    preventMouseDownDefault: true,
-    layoutCandidatesPageSize: 20,
-    // theme: 'simple-keyboard hg-theme-default hg-layout-default',
-    physicalKeyboardHighlight: true,
-    autoUseTouchEvents: true,
-    // physicalKeyboardHighlightPress: true,
-    syncInstanceInputs: true,
-    mergeDisplay: true,
-    stopMouseUpPropagation: false, // 阻止简单键盘按钮上的指针向上事件冒泡到父元素。
-    // stopMouseDownPropagation: false, //向下事件冒泡到父元素。
-    // useTouchEvents: true, //仅支持触摸事件
+    autoUseTouchEvents: false,
+    debug: false,
+    stopMouseUpPropagation: false,
+    stopMouseDownPropagation: false,
+
     display: displayDefault.value,
     buttonTheme: [
       {
@@ -119,7 +121,6 @@ function onChange(input) {
 //   }
 // }
 
-// function onKeyPress(button) {
 function onKeyPress(button, $event) {
   if (button === '{close}') {
     emit('closekeyboard');

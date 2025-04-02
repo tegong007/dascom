@@ -13,6 +13,7 @@
           class="w150px"
           :maxlength="30"
           allow-clear
+          @touchstart="onInputFocus($event, 'docID')"
         />
       </a-form-item>
       <a-form-item label="所属批次号" name="batchID">
@@ -22,6 +23,7 @@
           :maxlength="30"
           class="w150px"
           allow-clear
+          @touchstart="onInputFocus($event, 'batchID')"
         />
       </a-form-item>
       <a-form-item label="所属团组号" name="groupID">
@@ -31,6 +33,7 @@
           :maxlength="30"
           class="w150px"
           allow-clear
+          @touchstart="onInputFocus($event, 'groupID')"
         />
       </a-form-item>
 
@@ -62,6 +65,14 @@
         清空
       </a-button>
     </a-form>
+    <div v-show="showKeyboard">
+      <SimpleKeyboard
+        ref="simpleKeyboard"
+        :input="formState[changeIpt]"
+        @on-change="onChangeKeyboard"
+        @closekeyboard="closekeyboard"
+      />
+    </div>
   </div>
 </template>
 
@@ -69,7 +80,7 @@
 import { defineExpose, defineProps, reactive } from 'vue';
 import type { UnwrapRef } from 'vue';
 import { SearchOutlined } from '@ant-design/icons-vue';
-
+import SimpleKeyboard from '@/components/base/simpleKeyboard.vue';
 import { docStatusOptions } from '@/pages/bigScreen/batch/option.ts';
 
 const props = defineProps({
@@ -111,6 +122,7 @@ function onSubmit() {
         ),
       );
       props.setSearchForm(filteredForm);
+      closekeyboard();
     })
     .catch((error) => {
       console.log('error', error);
@@ -119,6 +131,35 @@ function onSubmit() {
 function clearAll() {
   formRef.value.resetFields();
   props.setSearchForm();
+  closekeyboard();
+}
+const showKeyboard = ref(false); // 键盘默认隐藏
+const changeIpt = ref(''); // 选择了哪个输入框
+const simpleKeyboard = ref(null);
+const cursorPosition = ref('');
+function onInputFocus(event, res) {
+  showKeyboard.value = true;
+  changeIpt.value = res;
+  cursorPosition.value = event.target;
+}
+// 给输入框赋值
+function onChangeKeyboard(input, keyboard) {
+  const caretPosition = keyboard.caretPosition;
+  if (caretPosition !== null)
+    setInputCaretPosition(cursorPosition.value, caretPosition);
+
+  formState[changeIpt.value] = input;
+}
+function setInputCaretPosition(elem, pos) {
+  setTimeout(() => {
+    if (elem.setSelectionRange) {
+      elem.focus();
+      elem.setSelectionRange(pos, pos);
+    }
+  });
+}
+function closekeyboard() {
+  showKeyboard.value = false;
 }
 defineExpose({
   setBatchIDandGroupId,

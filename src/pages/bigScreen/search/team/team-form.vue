@@ -13,7 +13,7 @@
           :maxlength="30"
           class="w155px"
           allow-clear
-          @touch="onInputFocus($event, 'groupID')"
+          @touchstart="onInputFocus($event, 'groupID')"
         />
       </a-form-item>
       <a-form-item label="所属批次" name="batchID">
@@ -23,7 +23,7 @@
           :maxlength="30"
           allow-clear
           class="w155px"
-          @touch="onInputFocus($event, 'batchID')"
+          @touchstart="onInputFocus($event, 'batchID')"
         />
       </a-form-item>
       <a-form-item label="派遣单位" name="dispatchUnit">
@@ -33,6 +33,7 @@
           :maxlength="30"
           allow-clear
           class="w155px"
+          @touchstart="onInputFocus($event, 'dispatchUnit')"
         />
       </a-form-item>
       <a-form-item label="数据来源" name="dataSource">
@@ -42,6 +43,7 @@
           :maxlength="30"
           allow-clear
           class="w155px"
+          @touchstart="onInputFocus($event, 'dataSource')"
         />
       </a-form-item>
       <a-form-item label="加急类型" name="urgentType">
@@ -50,6 +52,7 @@
           placeholder="请选择加急类型"
           :maxlength="30"
           class="w155px"
+          @touchstart="onInputFocus($event, 'urgentType')"
         >
           <a-select-option :value="null">
             全部
@@ -128,6 +131,7 @@ function setBatchIDandGroupId(value1: string, value2: string) {
   );
   props.setSearchForm(filteredForm);
 }
+
 onDeactivated(() => {
   formRef.value.resetFields();
 });
@@ -143,6 +147,7 @@ function onSubmit() {
         ),
       );
       props.setSearchForm(filteredForm);
+      closekeyboard();
     })
     .catch((error) => {
       console.log('error', error);
@@ -151,6 +156,7 @@ function onSubmit() {
 function clearAll() {
   formRef.value.resetFields();
   props.setSearchForm();
+  closekeyboard();
 }
 
 const showKeyboard = ref(false); // 键盘默认隐藏
@@ -161,6 +167,7 @@ function onInputFocus(event, res) {
   showKeyboard.value = true;
   changeIpt.value = res;
   cursorPosition.value = event.target;
+
   // 获取组件的位置信息
   // const rect = event.target.getBoundingClientRect();
   // console.log('🚀 ~ onInputFocus ~ rect:', rect);
