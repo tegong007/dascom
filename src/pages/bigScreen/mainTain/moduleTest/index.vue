@@ -39,6 +39,7 @@ const props = defineProps({
 
 const { notification } = App.useApp();
 const item = ref({});
+
 function handleUpdateItem(arrayName, index, value) {
   if (item.value[arrayName] && item.value[arrayName][index]) {
     if (arrayName === 'uvPrinters') {

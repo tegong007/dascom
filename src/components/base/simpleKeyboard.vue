@@ -1,5 +1,10 @@
 <template>
-  <div ref="parentRef" class="fixed z999 min-w70%" :style="transformStyle">
+  <div
+    ref="parentRef"
+    class="fixed z999"
+    :class="`${props.keyboardWidth}`"
+    :style="transformStyle"
+  >
     <div
       ref="modalTitleRef"
       class="drag-el hg-candidate-box"
@@ -31,6 +36,16 @@ const props = defineProps({
   input: {
     default: '',
   },
+  layout: {
+    default: 'default',
+  },
+  keyboardWidth: {
+    default: 'w70%',
+  },
+  transform: {
+    default: () => [0, 0], // 使用函数返回默认值
+    type: Array,
+  },
   maxLength: { default: '' },
 });
 
@@ -39,7 +54,7 @@ const emit = defineEmits(['onChange', 'onKeyPress', 'closekeyboard']);
 const keyboard = ref(null);
 
 const displayDefault = ref({
-  '{bksp}': 'backspace',
+  '{bksp}': '删除',
   '{lock}': 'caps',
   // '{enter}': 'enter',
   '{tab}': 'tab',
@@ -60,7 +75,6 @@ function handleShift() {
 
 function startDrag(event: MouseEvent | TouchEvent) {
   event.preventDefault();
-  // 初始化拖拽逻辑
 }
 
 onMounted(() => {
@@ -71,6 +85,8 @@ onMounted(() => {
       console.log('simple-keyboard button released', button),
     // onKeyReleased,
     layoutCandidates: layout.layoutCandidates,
+    layoutName: props.layout,
+    theme: `hg-theme-${props.layout}`,
     layout: {
       default: [
         '` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
@@ -86,11 +102,13 @@ onMounted(() => {
         '{shift} Z X C V B N M < > ? {clear}',
         '{change} {space} {close}',
       ],
+      num: ['1 2 3', '4 5 6', '7 8 9', '{bksp} 0 {close}'],
     },
     autoUseTouchEvents: false,
     debug: false,
-    stopMouseUpPropagation: false,
-    stopMouseDownPropagation: false,
+    useMouseEvents: true,
+    stopMouseUpPropagation: true,
+    stopMouseDownPropagation: true,
 
     display: displayDefault.value,
     buttonTheme: [
@@ -165,8 +183,8 @@ const { x, y, isDragging } = useDraggable(modalTitleRef);
 const startX = ref<number>(0);
 const startY = ref<number>(0);
 const startedDrag = ref(false);
-const transformX = ref(0);
-const transformY = ref(30);
+const transformX = ref(props.transform[0]);
+const transformY = ref(props.transform[1]);
 const preTransformX = ref(0);
 const preTransformY = ref(0);
 const dragRect = ref({ left: 0, right: 0, top: 0, bottom: 0 });
@@ -216,7 +234,27 @@ defineExpose({
 watch(
   () => props.input,
   (newInput) => {
+    console.log('🚀 ~ newInput:', newInput);
     keyboard.value?.setInput(newInput);
+  },
+);
+watch(
+  () => props.layout,
+  (newInput) => {
+    keyboard.value?.layout[newInput];
+    console.log(
+      '🚀 ~ keyboard.value?.layout[newInput]:',
+      keyboard.value?.layout[newInput],
+    );
+    // keyboard.value?.setOptions({ layout: newInput });
+  },
+);
+watch(
+  () => props.transform,
+  (newInput) => {
+    transformX.value = newInput[0];
+    transformY.value = newInput[1];
+    // keyboard.value?.setOptions({ layout: newInput });
   },
 );
 </script>
@@ -287,6 +325,9 @@ watch(
     &.change {
       max-width: 200px;
     }
+    &.change {
+      max-width: 200px;
+    }
   }
 }
 .hg-button {
@@ -309,5 +350,112 @@ watch(
 // 切换按钮大小
 .hg-button-lock {
   width: 150px;
+}
+
+.hg-theme-num {
+  background-color: #ececec;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-family:
+    HelveticaNeue-Light,
+    Helvetica Neue Light,
+    Helvetica Neue,
+    Helvetica,
+    Arial,
+    Lucida Grande,
+    sans-serif;
+  overflow: hidden;
+  padding: 5px;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  width: 100%;
+  background-color: rgba(215, 214, 214, 0.9); //间隙背景颜色
+  border-radius: 0 0 5px 5px;
+  button {
+    &.hg-button {
+      border-width: 0;
+      font-size: inherit;
+      outline: 0;
+    }
+  }
+  .hg-button {
+    display: inline-block;
+    flex-grow: 1;
+    align-items: center;
+    background: #fff;
+    border-bottom: 1px solid #b5b5b5;
+    border-radius: 5px;
+    box-shadow: 0 0 3px -1px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+    cursor: pointer;
+    display: flex;
+    height: 40px;
+    justify-content: center;
+    padding: 5px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    &.hg-red {
+      background: #db3e5d !important;
+      color: white;
+      &.close {
+        max-width: 200px;
+      }
+    }
+    &.hg-standardBtn {
+      width: 20px;
+      &.hg-button-at {
+        max-width: 45px;
+      }
+    }
+    &.hg-activeButton {
+      background: #efefef;
+    }
+    &.hg-button-numpad0 {
+      width: 105px;
+    }
+    &.hg-button-com {
+      max-width: 85px;
+    }
+    &.hg-selectedButton {
+      background: rgba(5, 25, 70, 0.53);
+      color: #fff;
+    }
+  }
+  .hg-row {
+    display: flex;
+    &:not(:last-child) {
+      margin-bottom: 5px;
+    }
+    & > div {
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+    .hg-button-container {
+      display: flex;
+    }
+  }
+  &.hg-layout-numeric {
+    .hg-button {
+      align-items: center;
+      display: flex;
+      height: 60px;
+      justify-content: center;
+      width: 33.3%;
+    }
+  }
+}
+.hg-theme-num .hg-button span,
+.hg-theme-num .hg-button span svg {
+  pointer-events: none;
+}
+.hg-theme-num .hg-row .hg-button-container,
+.hg-theme-num .hg-row .hg-button:not(:last-child) {
+  margin-right: 5px;
+}
+.hg-theme-num .hg-button.hg-button-numpadadd,
+.hg-theme-num .hg-button.hg-button-numpadenter {
+  height: 85px;
 }
 </style>

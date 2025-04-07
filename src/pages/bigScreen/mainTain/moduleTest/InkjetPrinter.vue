@@ -36,14 +36,6 @@
                     {{ option.label }}
                   </a-select-option>
                 </a-select>
-                <!-- <a-input-number
-                  v-else
-                  v-model:value="item.value"
-                  size="large"
-                  :step="0.01"
-                  class="m-r-10 w-150px"
-                  addon-after="mm"
-                /> -->
                 <a-input
                   v-if="item.label.includes('mm')"
                   v-model:value="item.value"
@@ -52,8 +44,9 @@
                   size="large"
                   :maxlength="4"
                   @input="validateInput($event, index)"
-                  @blur="validateInput($event, index)"
+                  @touchstart="onInputFocus($event, index)"
                 />
+
                 <a-popover v-if="item.label.includes('mm')">
                   <template #content>
                     {{ getTips(index) }}
@@ -159,6 +152,18 @@
             </div>
           </section>
         </main>
+        {{ cursorPosition?.target.value }}
+        <div v-show="showKeyboard">
+          <SimpleKeyboard
+            ref="simpleKeyboard"
+            :transform="[300, -500]"
+            :input="cursorPosition?.target.value"
+            keyboard-width="w20%"
+            layout="num"
+            @on-change="onChangeKeyboard"
+            @closekeyboard="closekeyboard"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -169,6 +174,7 @@ import { App } from 'ant-design-vue';
 import { QuestionCircleOutlined } from '@ant-design/icons-vue';
 import { getApiTransfer } from '@/apis/webApi';
 import { useAppStore } from '@/store/index';
+import SimpleKeyboard from '@/components/base/simpleKeyboard.vue';
 
 const props = defineProps({
   data: Object,
@@ -252,6 +258,7 @@ function getTips(index) {
   return tips;
 }
 function validateInput(event, index) {
+  console.log('🚀 ~ validateInput ~ event:', event);
   // 获取输入框的值
   let value = event.target.value;
   // 使用正则表达式限制输入为 0 到 1200 的正整数
@@ -271,6 +278,67 @@ function validateInput(event, index) {
   }
   props.updateItem('uvPrinters', index, value); // 更新绑定值
   // event.target.value = value; // 更新输入框显示
+}
+
+const showKeyboard = ref(false); // 键盘默认隐藏
+const changeIpt = ref(''); // 选择了哪个输入框
+const simpleKeyboard = ref(null);
+const cursorPosition = ref(null);
+function onInputFocus(event, res) {
+  console.log(
+    '🚀 ~ onInputFocus ~ props.data[index].positionItems[1].value:',
+    props.data[res].positionItems[1].value,
+  );
+  showKeyboard.value = true;
+  changeIpt.value = res;
+  cursorPosition.value = event;
+  // 获取组件的位置信息;
+  // const rect = event.target.getBoundingClientRect();
+  // console.log('🚀 ~ onInputFocus ~ rect:', rect);
+
+  // // 获取距离上方和左方的位置
+  // const top = rect.bottom + rect.height + window.scrollY; // 距离页面顶部的位置
+  // const left = rect.left + window.scrollX; // 距离页面左侧的位置
+
+  // console.log('距离页面顶部的位置:', top);
+  // console.log('距离页面左侧的位置:', left);
+}
+// 给输入框赋值
+function onChangeKeyboard(input, keyboard) {
+  const caretPosition = keyboard.caretPosition;
+  if (caretPosition !== null)
+    setInputCaretPosition(cursorPosition.value.target, caretPosition);
+  console.log('🚀 ~ onChangeKeyboard ~ input:', input);
+
+  let Newvalue = input;
+  // 使用正则表达式限制输入为 0 到 1200 的正整数
+  Newvalue = Newvalue.replace(/\D/g, ''); // 移除所有非数字字符
+  cursorPosition.value.target.value = Newvalue;
+  if (Newvalue === '') {
+    props.updateItem('uvPrinters', changeIpt.value, '0'); // 更新绑定值为空
+    cursorPosition.value.target.value = 0;
+    return;
+  }
+  // 将输入值转换为整数
+  Newvalue = Number.parseInt(Newvalue, 10);
+
+  // 如果输入值大于1200，设置为1200
+  if (Newvalue > 1200) {
+    Newvalue = 1200;
+  }
+  props.updateItem('uvPrinters', changeIpt.value, Newvalue);
+  // props.updateItem('uvPrinters', changeIpt.value, input);
+}
+function setInputCaretPosition(elem, pos) {
+  setTimeout(() => {
+    if (elem.setSelectionRange) {
+      elem.focus();
+      elem.setSelectionRange(pos, pos);
+    }
+  });
+}
+function closekeyboard() {
+  showKeyboard.value = false;
 }
 </script>
 

@@ -45,6 +45,7 @@
     <div v-show="showKeyboard">
       <SimpleKeyboard
         ref="simpleKeyboard"
+        :transform="[0, 30]"
         :input="formState[changeIpt]"
         @on-change="onChangeKeyboard"
         @closekeyboard="closekeyboard"
