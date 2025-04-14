@@ -152,16 +152,16 @@
             </div>
           </section>
         </main>
-        {{ cursorPosition?.target.value }}
-        <div v-show="showKeyboard">
+        <div v-if="props.showKeyboard && props.currentPage === 'InkjetPrinter'">
           <SimpleKeyboard
             ref="simpleKeyboard"
-            :transform="[300, -500]"
+            :transform="transformValue"
             :input="cursorPosition?.target.value"
             keyboard-width="w20%"
             layout="num"
+            :max-length="4"
             @on-change="onChangeKeyboard"
-            @closekeyboard="closekeyboard"
+            @closekeyboard="props.setShowKeyboard(false, 'InkjetPrinter')"
           />
         </div>
       </div>
@@ -179,6 +179,9 @@ import SimpleKeyboard from '@/components/base/simpleKeyboard.vue';
 const props = defineProps({
   data: Object,
   updateItem: Function,
+  showKeyboard: Boolean,
+  setShowKeyboard: Function,
+  currentPage: String,
 });
 const { notification } = App.useApp();
 async function motoMove(deviceIndex, arr) {
@@ -257,6 +260,7 @@ function getTips(index) {
     ].tips;
   return tips;
 }
+
 function validateInput(event, index) {
   console.log('🚀 ~ validateInput ~ event:', event);
   // 获取输入框的值
@@ -280,28 +284,24 @@ function validateInput(event, index) {
   // event.target.value = value; // 更新输入框显示
 }
 
-const showKeyboard = ref(false); // 键盘默认隐藏
 const changeIpt = ref(''); // 选择了哪个输入框
 const simpleKeyboard = ref(null);
+const transformValue = ref([300, -400]);
 const cursorPosition = ref(null);
 function onInputFocus(event, res) {
-  console.log(
-    '🚀 ~ onInputFocus ~ props.data[index].positionItems[1].value:',
-    props.data[res].positionItems[1].value,
-  );
-  showKeyboard.value = true;
+  props.setShowKeyboard(true, 'InkjetPrinter');
   changeIpt.value = res;
   cursorPosition.value = event;
   // 获取组件的位置信息;
-  // const rect = event.target.getBoundingClientRect();
-  // console.log('🚀 ~ onInputFocus ~ rect:', rect);
+  const rect = event.target.getBoundingClientRect();
+  console.log('🚀 ~ onInputFocus ~ rect:', rect);
 
-  // // 获取距离上方和左方的位置
-  // const top = rect.bottom + rect.height + window.scrollY; // 距离页面顶部的位置
-  // const left = rect.left + window.scrollX; // 距离页面左侧的位置
-
-  // console.log('距离页面顶部的位置:', top);
-  // console.log('距离页面左侧的位置:', left);
+  // 获取距离上方和左方的位置
+  const top = rect.bottom + rect.height + window.scrollY; // 距离页面顶部的位置
+  const left = rect.left + window.scrollX; // 距离页面左侧的位置
+  transformValue.value = [300, -(top - 450)];
+  console.log('距离页面顶部的位置:', top);
+  console.log('距离页面左侧的位置:', left);
 }
 // 给输入框赋值
 function onChangeKeyboard(input, keyboard) {
@@ -313,7 +313,6 @@ function onChangeKeyboard(input, keyboard) {
   let Newvalue = input;
   // 使用正则表达式限制输入为 0 到 1200 的正整数
   Newvalue = Newvalue.replace(/\D/g, ''); // 移除所有非数字字符
-  cursorPosition.value.target.value = Newvalue;
   if (Newvalue === '') {
     props.updateItem('uvPrinters', changeIpt.value, '0'); // 更新绑定值为空
     cursorPosition.value.target.value = 0;
@@ -326,6 +325,8 @@ function onChangeKeyboard(input, keyboard) {
   if (Newvalue > 1200) {
     Newvalue = 1200;
   }
+  console.log('🚀 ~ onChangeKeyboard ~ Newvalue:', Newvalue);
+  cursorPosition.value.target.value = Newvalue;
   props.updateItem('uvPrinters', changeIpt.value, Newvalue);
   // props.updateItem('uvPrinters', changeIpt.value, input);
 }
@@ -336,9 +337,6 @@ function setInputCaretPosition(elem, pos) {
       elem.setSelectionRange(pos, pos);
     }
   });
-}
-function closekeyboard() {
-  showKeyboard.value = false;
 }
 </script>
 

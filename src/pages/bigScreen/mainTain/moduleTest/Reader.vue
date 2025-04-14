@@ -19,6 +19,8 @@
           placeholder="读卡器数据"
           allow-clear
           :maxlength="40"
+          @input="validateInput($event, index)"
+          @touchstart="onInputFocus($event, index)"
         />
         <div class="mt10 box-border flex justify-between">
           <a-button
@@ -54,6 +56,15 @@
         </div>
       </div>
     </section>
+    <div v-if="props.showKeyboard && props.currentPage === 'readers'">
+      <SimpleKeyboard
+        ref="simpleKeyboard"
+        :input="cursorPosition?.target.value"
+        :max-length="40"
+        @on-change="onChangeKeyboard"
+        @closekeyboard="props.setShowKeyboard(false, 'readers')"
+      />
+    </div>
   </div>
 </template>
 
@@ -61,10 +72,14 @@
 import { App } from 'ant-design-vue';
 import { getApiTransfer } from '@/apis/webApi';
 import { useAppStore } from '@/store/index';
+import SimpleKeyboard from '@/components/base/simpleKeyboard.vue';
 
 const props = defineProps({
   data: Object,
   updateItem: Function,
+  showKeyboard: Boolean,
+  setShowKeyboard: Function,
+  currentPage: String,
 });
 const { notification } = App.useApp();
 async function transfer(url, index, deviceIndex, inputData) {
@@ -116,6 +131,41 @@ async function transfer(url, index, deviceIndex, inputData) {
   finally {
     useAppStore().setSpinning(false);
   }
+}
+
+const changeIpt = ref(''); // 选择了哪个输入框
+const simpleKeyboard = ref(null);
+const cursorPosition = ref(null);
+function onInputFocus(event, res) {
+  props.setShowKeyboard(true, 'readers');
+  changeIpt.value = res;
+  cursorPosition.value = event;
+  // 获取组件的位置信息;
+  const rect = event.target.getBoundingClientRect();
+  console.log('🚀 ~ onInputFocus ~ rect:', rect);
+
+  // 获取距离上方和左方的位置
+  const top = rect.bottom + rect.height + window.scrollY; // 距离页面顶部的位置
+  const left = rect.left + window.scrollX; // 距离页面左侧的位置
+  console.log('距离页面顶部的位置:', top);
+  console.log('距离页面左侧的位置:', left);
+}
+// 给输入框赋值
+function onChangeKeyboard(input, keyboard) {
+  const caretPosition = keyboard.caretPosition;
+  if (caretPosition !== null)
+    setInputCaretPosition(cursorPosition.value.target, caretPosition);
+  cursorPosition.value.target.value = input;
+  props.updateItem('readers', changeIpt.value, input);
+  // props.updateItem('uvPrinters', changeIpt.value, input);
+}
+function setInputCaretPosition(elem, pos) {
+  setTimeout(() => {
+    if (elem.setSelectionRange) {
+      elem.focus();
+      elem.setSelectionRange(pos, pos);
+    }
+  });
 }
 </script>
 

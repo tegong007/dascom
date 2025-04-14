@@ -4,6 +4,9 @@
       v-if="item.readers"
       :data="item.readers"
       :update-item="handleUpdateItem"
+      :current-page="currentPage"
+      :show-keyboard="showKeyboard"
+      :set-show-keyboard="setShowKeyboard"
     />
     <Camera
       v-if="item.cameras"
@@ -19,6 +22,9 @@
       v-if="item.uvPrinters"
       :data="item.uvPrinters"
       :update-item="handleUpdateItem"
+      :current-page="currentPage"
+      :show-keyboard="showKeyboard"
+      :set-show-keyboard="setShowKeyboard"
     />
   </div>
 </template>
@@ -36,7 +42,12 @@ import { useAppStore } from '@/store/index';
 const props = defineProps({
   currentModel: String,
 });
-
+const showKeyboard = ref(false);
+const currentPage = ref('');
+function setShowKeyboard(value: boolean, current?: string) {
+  showKeyboard.value = value;
+  currentPage.value = current;
+}
 const { notification } = App.useApp();
 const item = ref({});
 
@@ -83,6 +94,7 @@ async function getData(newValue: string) {
 watch(
   () => props.currentModel,
   (newValue) => {
+    setShowKeyboard(false);
     getData(newValue);
   },
   { deep: true, immediate: true },
