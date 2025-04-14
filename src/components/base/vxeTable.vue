@@ -50,21 +50,7 @@
         >
           <template
             v-if="
-              item.field === 'batchID'
-                && (props.pageName === 'docList' || props.pageName === 'teamList')
-                && item.type === 'html'
-            "
-            #default="{ row }"
-          >
-            <a
-              class="color-[#89F7FF]"
-              @click="props.changeBatchIdORteamId(1, row.batchID)"
-            >{{ row.batchID }}</a>
-          </template>
-
-          <template
-            v-else-if="
-              item.field === 'groupID'
+              item.field === 'taskID'
                 && props.pageName === 'docList'
                 && item.type === 'html'
             "
@@ -72,8 +58,8 @@
           >
             <a
               class="color-[#89F7FF]"
-              @click="props.changeBatchIdORteamId(2, row.batchID, row.groupID)"
-            >{{ row.groupID }}</a>
+              @click="props.changeTaskIdOrBatchId(1, row.taskID)"
+            >{{ row.taskID }}</a>
           </template>
         </vxe-column>
         <!-- 如果当前列的 field 是 batchID，则使用自定义模板 -->
@@ -104,7 +90,7 @@
           </template>
         </vxe-column>
         <vxe-column
-          v-if="props.pageName === 'BatchList'"
+          v-if="props.pageName === 'TaskList'"
           field="action"
           title="操作"
           width="200"
@@ -120,37 +106,18 @@
               > -->
               <a
                 class="color-[#89F7FF]"
-                @click="props.changeBatchIdORteamId(2, row.batchID, '')"
-              >查看团组列表</a>
+                @click="props.changeTaskIdOrBatchId(3, row.taskID, row.batchID)"
+              >查看证本列表</a>
               <a
                 v-if="row.status === 2"
                 class="color-[#89F7FF]"
-                @click="props.rowfun('stop', row.batchID)"
+                @click="props.rowfun('stop', row.taskID)"
               >挂起</a>
               <a
                 v-if="row.status === 3"
                 class="color-[#89F7FF]"
-                @click="props.rowfun('reset', row.batchID)"
+                @click="props.rowfun('reset', row.taskID)"
               >重新生产</a>
-            </div>
-          </template>
-        </vxe-column>
-        <vxe-column
-          v-if="props.pageName === 'teamList'"
-          field="action"
-          title="操作"
-          width="150"
-          fixed="right"
-          align="center"
-        >
-          <template #default="{ row }">
-            <div class="flex items-center justify-start gap-10">
-              <a
-                class="color-[#89F7FF]"
-                @click="
-                  props.changeBatchIdORteamId(3, row.batchID, row.groupID)
-                "
-              >查看证本列表</a>
             </div>
           </template>
         </vxe-column>
@@ -168,13 +135,23 @@
               <a
                 v-if="row.docStatus === 1"
                 class="color-[#89F7FF]"
-                @click="props.rowfun('stop', row.recID)"
+                @click="props.rowfun(0, row.docSN)"
               >挂起</a>
               <a
                 v-if="row.docStatus === 2"
                 class="color-[#89F7FF]"
-                @click="props.rowfun('reset', row.recID)"
+                @click="props.rowfun(1, row.docSN)"
               >重新生产</a>
+              <a
+                v-if="row.docStatus === 1"
+                class="color-[#89F7FF]"
+                @click="props.rowfun(2, row.docSN)"
+              >设为成功</a>
+              <a
+                v-if="row.docStatus === 2"
+                class="color-[#89F7FF]"
+                @click="props.rowfun(3, row.docSN)"
+              >设为失败</a>
             </div>
           </template>
         </vxe-column>
@@ -199,7 +176,7 @@ const props = defineProps({
   rowfun: Function,
   setIsAddNoTeam: Function,
   updateOldCheckedRow: Function,
-  changeBatchIdORteamId: Function,
+  changeTaskIdOrBatchId: Function,
   setDetai: Function,
 });
 

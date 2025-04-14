@@ -2,9 +2,7 @@
   <div class="bg h-100vh flex flex-col items-center text-[18px] text-white">
     <bigScreenHeader title="工位状态" />
     <main class="relative h-20px w-full">
-      <div class="absolute top-0 w-full text-center text-[20px]">
-        当前批次号:{{ batchID }}
-      </div>
+      <div class="absolute top-0 w-full text-center text-[20px]" />
       <div class="absolute right-150 top-[-5px]">
         <!-- 状态标识 -->
         <div class="w-400px flex justify-around">
@@ -43,12 +41,11 @@ import Card from './card.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 
 const route = useRoute();
-const batchID = ref<string>('');
+// const batchID = ref<string>('');
 const light = ref<number>();
 onMounted(() => {
   nextTick(() => {
     const query = route.query;
-    batchID.value = query.batchID;
     light.value = Number(query.light);
     console.log('🚀 ~ nextTick ~   light.value:', light.value);
   });

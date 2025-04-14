@@ -12,13 +12,13 @@ const positionModule = {
     request.post(`${v1}/tss/position-status`, data),
 };
 
-// 批次模块
-const batchModule = {
-  getBatchPage: (data: any) => request.post(`${v1}/tss/get-batch`, data),
-  getBatchOperate: (data: any) => request.post(`${v1}/tss/batch-operate`, data),
-  getGroupPage: (data: any) => request.post(`${v1}/tss/get-group`, data),
-  getBatchStatistics: (data: any) =>
-    request.post(`${v1}/tss/batch-statistics`, data),
+// 任务模块
+const TaskModule = {
+  getTaskPage: (data: any) => request.post(`${v1}/tss/get-task`, data),
+  getTaskOperate: (data: any) => request.post(`${v1}/tss/task-operate`, data),
+  // getGroupPage: (data: any) => request.post(`${v1}/tss/get-group`, data),
+  // getBatchStatistics: (data: any) =>
+  //   request.post(`${v1}/tss/batch-statistics`, data),
 };
 
 // 证本模块
@@ -49,7 +49,7 @@ const settingMoule = {
 export {
   homeModule,
   positionModule,
-  batchModule,
+  TaskModule,
   documentModule,
   mainTainModule,
   settingMoule,

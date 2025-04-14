@@ -69,7 +69,7 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router';
 import { reactive } from 'vue';
-import { BatchStatusOptions, findLabelByValue } from '../option';
+import { TaskStatusOptions, findLabelByValue } from '../option';
 import TeamForm from './team/team-form.vue';
 import TeamCard from './team/team-card.vue';
 import Doc from './team/doc/index.vue';
@@ -99,7 +99,7 @@ const statisticsData = ref({
   finishTime: '',
 });
 function formatterStatus(cellValue: any) {
-  const item = BatchStatusOptions.find(item => item.value === cellValue);
+  const item = TaskStatusOptions.find(item => item.value === cellValue);
   return item ? item.label : cellValue;
 }
 const info = ref([

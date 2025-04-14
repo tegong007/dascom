@@ -3,23 +3,11 @@
     class="bg relative h-100vh flex flex-col items-center text-[18px] text-white"
   >
     <bigScreenHeader />
-    <div
-      class="absolute top-3.1em h1.6em flex items-center justify-center rounded-2xl bg-[#919195b0] p-x-15"
-    >
-      <span class="text-[1.1em]">当前批次号：{{ statisticsData.batchID }}，证本总数：{{
-        statisticsData.docNum
-      }}，批次状态：{{ formatterStatus(statisticsData.status) }}，待生产数：{{
-        statisticsData.waitingNum
-      }}，良本数：{{ statisticsData.productNum }}，废本数：{{
-        statisticsData.obsoleteNum
-      }}，挂起数：{{ statisticsData.hangUpNum }}</span>
-    </div>
 
     <div
       class="absolute bottom-[12%] left-180px h-35% w-10% flex items-center justify-center opacity-0 hover:opacity-100"
       @click="
         $goto('WorkstationStatus', {
-          batchID: statisticsData.batchID,
           light: 4,
         })
       "
@@ -33,7 +21,6 @@
       class="absolute bottom-[12%] left-360px h-35% w-23% flex items-center justify-center opacity-0 hover:opacity-100"
       @click="
         $goto('WorkstationStatus', {
-          batchID: statisticsData.batchID,
           light: 3,
         })
       "
@@ -47,7 +34,6 @@
       class="absolute bottom-[12%] left-800px h-35% w-30.5% flex items-center justify-center opacity-0 hover:opacity-100"
       @click="
         $goto('WorkstationStatus', {
-          batchID: statisticsData.batchID,
           light: 2,
         })
       "
@@ -61,7 +47,6 @@
       class="absolute bottom-[12%] left-1380px h-35% w-18% flex items-center justify-center opacity-0 hover:opacity-100"
       @click="
         $goto('WorkstationStatus', {
-          batchID: statisticsData.batchID,
           light: 1,
         })
       "
@@ -166,9 +151,8 @@ import Start from './module/startPage.vue';
 import TheButton from '@/components/base/TheButton.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 import useCustomTimer from '@/utils/useCustomTimer';
-import { batchModule, homeModule } from '@/apis/proApi';
+import { homeModule } from '@/apis/proApi';
 import { useAppStore } from '@/store/index';
-import { BatchStatusOptions } from '@/pages/bigScreen/batch/option.ts';
 
 const { notification } = App.useApp();
 
@@ -186,14 +170,14 @@ const additionPrint = ref({});
 const machineStatus = ref(null);
 const finishedProduct = ref({});
 const isProduce = ref(false);
-const statisticsData = ref({
-  batchID: '',
-  docNum: 0,
-  hangUpNum: 0,
-  obsoleteNum: 0,
-  productNum: 0,
-  waitingNum: 0,
-});
+// const statisticsData = ref({
+//   batchID: '',
+//   docNum: 0,
+//   hangUpNum: 0,
+//   obsoleteNum: 0,
+//   productNum: 0,
+//   waitingNum: 0,
+// });
 onActivated(async () => {
   useAppStore().setSpinning(true);
   const end = await getDataPage();
@@ -210,30 +194,30 @@ onActivated(async () => {
 onDeactivated(() => {
   stop();
 });
-function formatterStatus(cellValue: any) {
-  const item = BatchStatusOptions.find(item => item.value === cellValue);
-  return item ? item.label : cellValue;
-}
+// function formatterStatus(cellValue: any) {
+//   const item = TaskStatusOptions.find((item) => item.value === cellValue);
+//   return item ? item.label : cellValue;
+// }
 async function getDataPage() {
   try {
     const data = await homeModule.getHomeList();
-    const statistics = await batchModule.getBatchStatistics({
-      batchID: 'current',
-    });
+    // const statistics = await batchModule.getBatchStatistics({
+    //   batchID: 'current',
+    // });
     if (data.respData) {
       blankCheck.value = data.respData.blankCheck;
       mainPrint.value = data.respData.mainPrint;
       additionPrint.value = data.respData.additionPrint;
       finishedProduct.value = data.respData.finishedProduct;
     }
-    if (statistics.respData) {
-      statisticsData.value = { ...statistics.respData };
-      machineStatus.value = statistics.respData.status;
-    }
-    if (data.respData && statistics.respData) {
+    // if (statistics.respData) {
+    //   statisticsData.value = { ...statistics.respData };
+    //   machineStatus.value = statistics.respData.status;
+    // }
+    if (data.respData) {
       isProduce.value
-        = statistics.respData.status !== 0
-          && mainPrint.value.status !== 1
+        // statistics.respData.status !== 0 &&
+        = mainPrint.value.status !== 1
           && blankCheck.value.status !== 1
           && additionPrint.value.status !== 1
           && finishedProduct.value.status !== 1;

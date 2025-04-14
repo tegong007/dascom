@@ -14,25 +14,65 @@
           <img src="@/assets/image/bigScreen/btn/huifu.svg" class="mr7 w12px">
           刷新
         </a-button>
-        <a-button
-          type="primary"
-          class="btn flex items-center"
-          @click="rowAction('reset')"
-        >
-          <RollbackOutlined />
-          重新生产
-        </a-button>
-        <a-button
-          type="primary"
-          class="btn flex items-center"
-          @click="rowAction('stop')"
-        >
-          <img
-            src="@/assets/image/bigScreen/btn/guaqi.svg"
-            class="m-r-7 w12px"
+        <a-dropdown>
+          <template #overlay>
+            <a-menu @click="handleMenuClick">
+              <a-menu-item :key="0">
+                挂起
+              </a-menu-item>
+              <a-menu-item :key="1">
+                重新生产
+              </a-menu-item>
+              <a-menu-item :key="2">
+                设为成功
+              </a-menu-item>
+              <a-menu-item :key="3">
+                设为失败
+              </a-menu-item>
+            </a-menu>
+          </template>
+          <a-button class="btn flex items-center">
+            批量操作
+            <DownOutlined />
+          </a-button>
+        </a-dropdown>
+        <!-- <div class="w230px flex flex-wrap gap-10">
+          <a-button
+            type="primary"
+            class="btn flex items-center"
+            @click="rowAction(1)"
           >
-          挂起
-        </a-button>
+            <RollbackOutlined />
+            重新生产
+          </a-button>
+          <a-button
+            type="primary"
+            class="btn flex items-center"
+            @click="rowAction(0)"
+          >
+            <img
+              src="@/assets/image/bigScreen/btn/guaqi.svg"
+              class="m-r-7 w12px"
+            />
+            挂起
+          </a-button>
+          <a-button
+            type="primary"
+            class="btn flex items-center"
+            @click="rowAction(2)"
+          >
+            <CheckOutlined />
+            设为成功
+          </a-button>
+          <a-button
+            type="primary"
+            class="btn flex items-center"
+            @click="rowAction(3)"
+          >
+            <CloseOutlined />
+            设为失败
+          </a-button>
+        </div> -->
       </a-space>
     </div>
 
@@ -44,9 +84,9 @@
         :data="tableData"
         :rowfun="rowAction"
         :update-old-checked-row="updateOldCheckedRow"
-        :change-batch-id-o-rteam-id="props.changeBatchIdORteamId"
+        :change-task-id-or-batch-id="props.changeTaskIdOrBatchId"
         :set-detai="setDetai"
-        key-field="recID"
+        key-field="docSN"
         page-name="docList"
       />
     </main>
@@ -88,8 +128,12 @@
 </template>
 
 <script lang="ts" setup>
-import { RollbackOutlined } from '@ant-design/icons-vue';
+import {
+  DownOutlined,
+} from '@ant-design/icons-vue';
+import type { MenuProps } from 'ant-design-vue';
 import docForm from './doc-form.vue';
+
 import DetailModal from './detailModal.vue';
 import MyTable from '@/components/base/vxeTable.vue';
 import TheModal from '@/components/modal/TheModal.vue';
@@ -101,9 +145,9 @@ import { useAppStore } from '@/store/index';
 
 const props = defineProps({
   choose: Number,
-  changeBatchIdORteamId: Function,
+  changeTaskIdOrBatchId: Function,
   docBatchId: String || Object,
-  docTeamId: String || Object,
+  docTaskId: String || Object,
 });
 const pageVO = reactive({
   total: 20,
@@ -120,6 +164,18 @@ const detailOpen = ref<boolean>(false);
 const modal = ref('');
 const isReset = ref(0);
 const tableData = ref([]);
+const title: {
+  [key: string]: string;
+} = {
+  0: '挂起',
+  1: '重新生产',
+  2: '设为成功',
+  3: '设为失败',
+};
+const handleMenuClick: MenuProps['onClick'] = (e) => {
+  console.log('click', e.key);
+  rowAction(e.key);
+};
 // const imgShow = {
 //   name: 'VxeImage',
 //   props: {
@@ -133,36 +189,29 @@ const colums = ref([
     title: '序号',
     field: 'seq',
     fixed: 'left',
-    width: 80,
+    width: 60,
     overflow: 'title',
   },
   {
-    title: '证本号',
-    field: 'docID',
-    width: 120,
+    title: '证本流水线号',
+    field: 'docSN',
+    width: 180,
     overflow: 'title',
+  },
+  {
+    title: '所属任务号',
+    field: 'taskID',
+    type: 'html',
+    width: 180,
+    overflow: 'ellipsis',
   },
   {
     title: '所属批次号',
     field: 'batchID',
-    type: 'html',
-    width: 120,
-    overflow: 'ellipsis',
-  },
-  {
-    title: '所属团组号',
-    field: 'groupID',
-    type: 'html',
     width: 120,
     overflow: 'title',
   },
 
-  {
-    title: '识别号',
-    field: 'recID',
-    width: 120,
-    overflow: 'title',
-  },
   // {
   //   title: '派遣单位',
   //   field: 'dispatchUnit',
@@ -178,13 +227,13 @@ const colums = ref([
   //   overflow: 'title',
   // },
 
-  {
-    title: '加急程度',
-    field: 'urgentType',
-    formatter: formatterValue,
-    width: 100,
-    overflow: 'title',
-  },
+  // {
+  //   title: '加急程度',
+  //   field: 'urgentType',
+  //   formatter: formatterValue,
+  //   width: 100,
+  //   overflow: 'title',
+  // },
 
   {
     title: '当前工位',
@@ -328,8 +377,8 @@ function formatterValue({ cellValue, column }: any) {
       return findLabelByValue('teamOptions', cellValue);
     case 'dataSource':
       return findLabelByValue('dataSourceOptions', cellValue);
-    case 'urgentType':
-      return findLabelByValue('urgencyOptions', cellValue);
+    // case 'urgentType':
+    //   return findLabelByValue('urgencyOptions', cellValue);
     default:
       break;
   }
@@ -345,22 +394,18 @@ function setSearchForm(formValue: object) {
 }
 async function operate() {
   try {
-    const oldCheckrecID = oldCheckedRow.value.map(item => item.recID);
+    const oldCheckrecID = oldCheckedRow.value.map(item => item.docSN);
     const allCheckRox = [...new Set([...checkedRow.value, ...oldCheckrecID])];
     await documentModule.getDocOperate({
-      recID: allCheckRox,
+      docSN: allCheckRox,
       operate: isReset.value,
     });
-    openNotify(
-      'bottomRight',
-      `${isReset.value ? '重新生产' : '挂起'}操作成功`,
-      true,
-    );
+    openNotify('bottomRight', `${title[isReset.value]}操作成功`, true);
     getDataPage();
   }
   catch (error) {
     error;
-    openNotify('bottomRight', `${isReset.value ? '重新生产' : '挂起'}操作失败`);
+    openNotify('bottomRight', `${title[isReset.value]}操作失败`);
   }
   finally {
     setOpen(false);
@@ -370,26 +415,25 @@ async function operate() {
 // 取消的时候删掉这一行
 function updateOldCheckedRow(delectArr) {
   let toDeleteIDs;
-  // 提取要删除的 batchID 列表
   if (Array.isArray(delectArr)) {
-    toDeleteIDs = delectArr.map(item => item.recID);
+    toDeleteIDs = delectArr.map(item => item.docSN);
   }
   else {
-    toDeleteIDs = [delectArr.recID];
+    toDeleteIDs = [delectArr.docSN];
   }
 
   // 使用 filter 方法过滤掉需要删除的元素
   oldCheckedRow.value = oldCheckedRow.value.filter(
-    item => !toDeleteIDs.includes(item.recID),
+    item => !toDeleteIDs.includes(item.docSN),
   );
 }
 
-function rowAction(type: string, recID: string) {
-  modal.value = type;
-  const newCheckRow = !recID ? tableRef.value.getSelectEvent() : [recID];
+function rowAction(type: number, docSN?: string) {
+  modal.value = title[type];
+  const newCheckRow = !docSN ? tableRef.value.getSelectEvent() : [docSN];
   if (tableRef.value && newCheckRow) {
-    checkedRow.value = !recID
-      ? newCheckRow.map(item => item.recID)
+    checkedRow.value = !docSN
+      ? newCheckRow.map(item => item.docSN)
       : newCheckRow;
   }
   nextTick(() => {
@@ -398,18 +442,18 @@ function rowAction(type: string, recID: string) {
     }
 
     if (checkedRow.value.length || oldCheckedRow.value.length) {
-      const oldCheckrecID = oldCheckedRow.value.map(item => item.recID);
+      const oldCheckrecID = oldCheckedRow.value.map(item => item.docSN);
       const allCheckRox = [...new Set([...checkedRow.value, ...oldCheckrecID])];
-      modal.value = `可能含有不能${type === 'stop' ? '挂起' : '重新生产'}的数据，是否继续${type === 'stop' ? '挂起' : '重新生产'}${
+      modal.value = `可能含有不能${title[type]}的数据，是否继续${title[type]}${
         allCheckRox.length
       }条数据?`;
-      isReset.value = type === 'stop' ? 0 : 1;
+      isReset.value = type;
       open.value = true;
     }
   });
 }
 // function formatterStatus({ cellValue }: any) {
-//   const item = BatchStatusOptions.find((item) => item.value === cellValue);
+//   const item = TaskStatusOptions.find((item) => item.value === cellValue);
 //   return item ? item.label : cellValue;
 // }
 // 分页
@@ -472,8 +516,7 @@ async function getDataPage() {
     // startGetDataPage();
   }
   catch (error) {
-    error;
-    openNotify('bottomRight', `接口超时`);
+    openNotify('bottomRight', error);
     // stop();
   }
   finally {
@@ -490,7 +533,7 @@ watch(
         if (searchRef.value) {
           searchRef.value.setBatchIDandGroupId(
             typeof props.docBatchId === 'string' ? props.docBatchId : '',
-            typeof props.docTeamId === 'string' ? props.docTeamId : '',
+            typeof props.docTaskId === 'string' ? props.docTaskId : '',
           );
         }
       });

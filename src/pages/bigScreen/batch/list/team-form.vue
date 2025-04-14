@@ -30,7 +30,7 @@
           <a-form-item label="状态" name="status">
             <a-select v-model:value="formState.status">
               <a-select-option
-                v-for="option in BatchStatusOptions"
+                v-for="option in TaskStatusOptions"
                 :key="option.value"
                 :value="option.value"
               >
@@ -60,7 +60,7 @@ import type { UnwrapRef } from 'vue';
 import { SearchOutlined } from '@ant-design/icons-vue';
 
 import { useRoute } from 'vue-router';
-import { BatchStatusOptions } from '@/pages/bigScreen/batch/option.ts';
+import { TaskStatusOptions } from '@/pages/bigScreen/batch/option.ts';
 
 const props = defineProps({
   setSearchForm: Function,

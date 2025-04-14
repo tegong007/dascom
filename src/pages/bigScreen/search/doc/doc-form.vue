@@ -16,6 +16,16 @@
           @touchstart="onInputFocus($event, 'docID')"
         />
       </a-form-item>
+      <a-form-item label="所属任务号" name="taskID">
+        <a-input
+          v-model:value="formState.taskID"
+          placeholder="请输入团组号"
+          :maxlength="30"
+          class="w150px"
+          allow-clear
+          @touchstart="onInputFocus($event, 'taskID')"
+        />
+      </a-form-item>
       <a-form-item label="所属批次号" name="batchID">
         <a-input
           v-model:value="formState.batchID"
@@ -24,16 +34,6 @@
           class="w150px"
           allow-clear
           @touchstart="onInputFocus($event, 'batchID')"
-        />
-      </a-form-item>
-      <a-form-item label="所属团组号" name="groupID">
-        <a-input
-          v-model:value="formState.groupID"
-          placeholder="请输入团组号"
-          :maxlength="30"
-          class="w150px"
-          allow-clear
-          @touchstart="onInputFocus($event, 'groupID')"
         />
       </a-form-item>
 
@@ -91,20 +91,20 @@ const formRef = ref();
 interface FormState {
   batchID: string;
   docID: string;
-  groupID?: string;
+  taskID?: string;
   docStatus: number;
   // timeRange: RangeValue;
 }
 const formState: UnwrapRef<FormState> = reactive({
   batchID: '',
   docID: '',
-  groupID: '',
+  taskID: '',
   docStatus: null,
 });
 
 function setBatchIDandGroupId(value1: string, value2: string) {
   formState.batchID = value1;
-  formState.groupID = value2;
+  formState.taskID = value2;
   const filteredForm = Object.fromEntries(
     Object.entries(toRaw(formState)).filter(
       ([_key, value]) => value !== null && value !== undefined && value !== '',

@@ -51,7 +51,7 @@ export const urgencyOptions: OptionType[] = [
   },
 ];
 // 批次状态类型
-export const BatchStatusOptions: OptionType[] = [
+export const TaskStatusOptions: OptionType[] = [
   {
     value: null,
     label: '全部', // 已经在流水线上进行生产
@@ -174,7 +174,7 @@ export function getOptionsByName(
     dataSourceOptions,
     urgencyOptions,
     teamOptions,
-    BatchStatusOptions,
+    TaskStatusOptions,
     docStatusOptions,
     docTypesOptions,
     cnObsvTypeOptions,

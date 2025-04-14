@@ -99,7 +99,7 @@ import { RollbackOutlined } from '@ant-design/icons-vue';
 import { useRoute } from 'vue-router';
 import TeamForm from './team-form.vue';
 import BatchInfo from './batchInfo.vue';
-import { BatchStatusOptions } from '@/pages/bigScreen/batch/option.ts';
+import { TaskStatusOptions } from '@/pages/bigScreen/batch/option.ts';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 import TheButton from '@/components/base/TheButton.vue';
 import MyTable from '@/components/base/vxeTable.vue';
@@ -234,7 +234,7 @@ function rowAction(type: string, batchID: string) {
   });
 }
 function formatterStatus({ cellValue }: any) {
-  const item = BatchStatusOptions.find(item => item.value === cellValue);
+  const item = TaskStatusOptions.find(item => item.value === cellValue);
   return item ? item.label : cellValue;
 }
 // 分页

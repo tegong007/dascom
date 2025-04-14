@@ -52,10 +52,10 @@
         :checkbox="true"
         :data="tableData"
         :rowfun="rowAction"
-        :change-batch-id-o-rteam-id="props.changeBatchIdORteamId"
+        :change-task-id-or-batch-id="props.changeTaskIdOrBatchId"
         :update-old-checked-row="updateOldCheckedRow"
-        key-field="batchID"
-        page-name="BatchList"
+        key-field="taskID"
+        page-name="TaskList"
       />
     </main>
     <vxe-pager
@@ -104,18 +104,19 @@
 import { RollbackOutlined } from '@ant-design/icons-vue';
 // import { useRoute } from 'vue-router';
 import { defineProps, reactive } from 'vue';
-import TeamForm from './batch-form.vue';
-import { BatchStatusOptions } from '@/pages/bigScreen/batch/option.ts';
+import TeamForm from './task-form.vue';
+import { TaskStatusOptions } from '@/pages/bigScreen/batch/option.ts';
 import MyTable from '@/components/base/vxeTable.vue';
 import TheModal from '@/components/modal/TheModal.vue';
 import { contextHolder, openNotify } from '@/components/base/useNotification';
-import { batchModule } from '@/apis/proApi';
+import { TaskModule } from '@/apis/proApi';
 import { useAppStore } from '@/store/index';
 
 const props = defineProps({
   choose: Number,
   docBatchId: String,
-  changeBatchIdORteamId: Function,
+  docTaskId: String,
+  changeTaskIdOrBatchId: Function,
 });
 // const route = useRoute();
 // const { start, stop } = useCustomTimer();
@@ -140,6 +141,12 @@ const colums = ref([
     title: '序号',
     field: 'seq',
     fixed: 'left',
+    width: 60,
+  },
+  {
+    title: '任务号',
+    field: 'taskID',
+    width: 180,
   },
   {
     title: '批次号',
@@ -149,22 +156,27 @@ const colums = ref([
   {
     title: '证本数',
     field: 'docNum',
+    width: 80,
   },
   {
     title: '良本数',
     field: 'productNum',
+    width: 80,
   },
   {
     title: '废本数',
     field: 'obsoleteNum',
+    width: 80,
   },
   {
     title: '待生产数',
     field: 'waitingNum',
+    width: 100,
   },
   {
     title: '挂起数',
     field: 'hangUpNum',
+    width: 80,
   },
   {
     title: '状态',
@@ -202,28 +214,28 @@ function setSearchForm(formValue: object) {
 // 取消的时候删掉这一行
 function updateOldCheckedRow(delectArr) {
   let toDeleteIDs;
-  // 提取要删除的 batchID 列表
+  // 提取要删除的 taskID 列表
   if (Array.isArray(delectArr)) {
-    toDeleteIDs = delectArr.map(item => item.batchID);
+    toDeleteIDs = delectArr.map(item => item.taskID);
   }
   else {
-    toDeleteIDs = [delectArr.batchID];
+    toDeleteIDs = [delectArr.taskID];
     console.log('🚀 ~ updateOldCheckedRow ~ toDeleteIDs:', toDeleteIDs);
   }
 
   // 使用 filter 方法过滤掉需要删除的元素
   oldCheckedRow.value = oldCheckedRow.value.filter(
-    item => !toDeleteIDs.includes(item.batchID),
+    item => !toDeleteIDs.includes(item.taskID),
   );
   console.log('🚀 ~ updateOldCheckedRow ~ delectArr:', oldCheckedRow.value);
 }
 
-function rowAction(type: string, batchID: string) {
+function rowAction(type: string, taskID: string) {
   modal.value = type;
-  const newCheckRow = !batchID ? tableRef.value.getSelectEvent() : [batchID];
+  const newCheckRow = !taskID ? tableRef.value.getSelectEvent() : [taskID];
   if (tableRef.value && newCheckRow) {
-    checkedRow.value = !batchID
-      ? newCheckRow.map(item => item.batchID)
+    checkedRow.value = !taskID
+      ? newCheckRow.map(item => item.taskID)
       : newCheckRow;
   }
   nextTick(() => {
@@ -231,9 +243,9 @@ function rowAction(type: string, batchID: string) {
       openNotify('bottomRight', `您还没有选中数据`);
     }
     if (checkedRow.value.length || oldCheckedRow.value.length) {
-      const oldCheckBatchID = oldCheckedRow.value.map(item => item.batchID);
+      const oldCheckTaskID = oldCheckedRow.value.map(item => item.taskID);
       const allCheckRox = [
-        ...new Set([...checkedRow.value, ...oldCheckBatchID]),
+        ...new Set([...checkedRow.value, ...oldCheckTaskID]),
       ];
       modal.value = `可能含有不能${type === 'stop' ? '挂起' : '重新生产'}的数据，是否继续${type === 'stop' ? '挂起' : '重新生产'}${
         allCheckRox.length
@@ -244,7 +256,7 @@ function rowAction(type: string, batchID: string) {
   });
 }
 function formatterStatus({ cellValue }: any) {
-  const item = BatchStatusOptions.find(item => item.value === cellValue);
+  const item = TaskStatusOptions.find(item => item.value === cellValue);
   return item ? item.label : cellValue;
 }
 // 分页
@@ -267,10 +279,10 @@ function setOpen(value: boolean) {
 
 async function operate() {
   try {
-    const oldCheckBatchID = oldCheckedRow.value.map(item => item.batchID);
-    const allCheckRox = [...new Set([...checkedRow.value, ...oldCheckBatchID])];
-    await batchModule.getBatchOperate({
-      batchID: allCheckRox,
+    const oldCheckTaskID = oldCheckedRow.value.map(item => item.taskID);
+    const allCheckRox = [...new Set([...checkedRow.value, ...oldCheckTaskID])];
+    await TaskModule.getTaskOperate({
+      taskID: allCheckRox,
       operate: isReset.value,
     });
     openNotify(
@@ -310,9 +322,9 @@ async function getDataPage() {
       page: pageVO.currentPage,
       rowPerPage: pageVO.pageSize,
     };
-    const data = await batchModule.getBatchPage(params);
+    const data = await TaskModule.getTaskPage(params);
     if (data.respData) {
-      tableData.value = data.respData.batchInfo;
+      tableData.value = data.respData.taskInfo;
       pageVO.currentPage = data.respData.page;
       pageVO.total = data.respData.totalRows;
       pageVO.pageSize = data.respData.rowPerPage;
@@ -343,12 +355,11 @@ async function getDataPage() {
 watch(
   () => props.choose,
   (newValue) => {
-    // console.log('🚀 ~ newValue:', newValue);
     if (newValue === 1) {
       nextTick(() => {
         if (searchRef.value) {
-          searchRef.value.setBatchID(
-            typeof props.docBatchId === 'string' ? props.docBatchId : '',
+          searchRef.value.setTaskID(
+            typeof props.docTaskId === 'string' ? props.docTaskId : '',
           );
         }
       });

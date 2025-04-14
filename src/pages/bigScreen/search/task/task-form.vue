@@ -6,6 +6,15 @@
       :model="formState"
       class="w-full rounded-[8px] bg-[#ffffff34] p-x-10 p-y-20 pl210px"
     >
+      <a-form-item label="任务号" name="taskID">
+        <a-input
+          v-model:value="formState.taskID"
+          placeholder="请输入任务号"
+          :maxlength="30"
+          allow-clear
+          @touchstart="onInputFocus($event, 'taskID')"
+        />
+      </a-form-item>
       <a-form-item label="批次号" name="batchID">
         <a-input
           v-model:value="formState.batchID"
@@ -18,7 +27,7 @@
       <a-form-item label="状态" name="status" class="w-200px">
         <a-select v-model:value="formState.status" class="w-200px">
           <a-select-option
-            v-for="option in BatchStatusOptions"
+            v-for="option in TaskStatusOptions"
             :key="option.value"
             :value="option.value"
           >
@@ -60,7 +69,7 @@ import type { UnwrapRef } from 'vue';
 import { SearchOutlined } from '@ant-design/icons-vue';
 
 import { useRoute } from 'vue-router';
-import { BatchStatusOptions } from '@/pages/bigScreen/batch/option.ts';
+import { TaskStatusOptions } from '@/pages/bigScreen/batch/option.ts';
 import SimpleKeyboard from '@/components/base/simpleKeyboard.vue';
 
 const props = defineProps({
@@ -71,18 +80,19 @@ const formRef = ref();
 
 interface FormState {
   batchID: string;
-  docID: string;
+  taskID: string;
   status: number;
   // timeRange: RangeValue;
 }
 const batchID = ref('');
+const taskID = ref('');
 const formState: UnwrapRef<FormState> = reactive({
   batchID: '',
-  docID: '',
+  taskID: '',
   status: null,
 });
-function setBatchID(value: string) {
-  formState.batchID = value;
+function setTaskID(value: string) {
+  formState.taskID = value;
   const filteredForm = Object.fromEntries(
     Object.entries(toRaw(formState)).filter(
       ([_key, value]) => value !== null && value !== undefined && value !== '',
@@ -94,7 +104,9 @@ onActivated(() => {
   nextTick(() => {
     const query = route.query;
     batchID.value = query.batchID;
+    taskID.value = query.taskID;
     formState.batchID = query.batchID;
+    formState.taskID = query.taskID;
   });
 });
 onDeactivated(() => {
@@ -164,7 +176,7 @@ function closekeyboard() {
   showKeyboard.value = false;
 }
 defineExpose({
-  setBatchID,
+  setTaskID,
 });
 </script>
 

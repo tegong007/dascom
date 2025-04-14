@@ -7,36 +7,34 @@
       <span>搜索类型：</span>
       <a-select v-model:value="choose" @change="changeChoose">
         <a-select-option :value="1">
-          批次
+          任务
         </a-select-option>
-        <a-select-option :value="2">
-          团组
-        </a-select-option>
+        <!-- <a-select-option :value="2"> 团组 </a-select-option> -->
         <a-select-option :value="3">
           证本
         </a-select-option>
       </a-select>
     </div>
 
-    <Batch
+    <Task
       v-if="choose === 1"
       :choose="choose"
-      :doc-batch-id="docBatchId"
-      :change-batch-id-o-rteam-id="changeBatchIdORteamId"
+      :doc-task-id="docTaskId"
+      :change-task-id-or-batch-id="changeTaskIdOrBatchId"
     />
-    <Team
+    <!-- <Team
       v-if="choose === 2"
       :choose="choose"
       :doc-team-id="docTeamId"
       :doc-batch-id="docBatchId"
       :change-batch-id-o-rteam-id="changeBatchIdORteamId"
-    />
+    /> -->
     <Doc
       v-if="choose === 3"
       :choose="choose"
-      :change-batch-id-o-rteam-id="changeBatchIdORteamId"
-      :doc-team-id="docTeamId"
+      :change-task-id-or-batch-id="changeTaskIdOrBatchId"
       :doc-batch-id="docBatchId"
+      :doc-task-id="docTaskId"
     />
     <div
       class="groupBtn absolute bottom-0 h8em w-full flex items-center justify-center gap-20"
@@ -54,15 +52,15 @@
 
 <script lang="ts" setup>
 import { useRoute } from 'vue-router';
-import Batch from './batch/index.vue';
-import Team from './team/index.vue';
+import Task from './task/index.vue';
+// import Team from './team/index.vue';
 import Doc from './doc/index.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 
 const route = useRoute();
 const choose = ref<number>(0);
 const docBatchId = ref('');
-const docTeamId = ref('');
+const docTaskId = ref('');
 onActivated(() => {
   nextTick(() => {
     const query = route.query;
@@ -71,18 +69,18 @@ onActivated(() => {
 });
 function changeChoose(value: number) {
   choose.value = value;
-  changeBatchIdORteamId(0, '', '');
+  changeTaskIdOrBatchId(0, '', '');
 }
-function changeBatchIdORteamId(
+function changeTaskIdOrBatchId(
   value?: number,
+  taskId?: string,
   batchId?: string,
-  teamId?: string,
 ) {
   if (value) {
     choose.value = value;
   }
+  docTaskId.value = taskId;
   docBatchId.value = batchId;
-  docTeamId.value = teamId;
 }
 onDeactivated(() => {
   // 清空筛选

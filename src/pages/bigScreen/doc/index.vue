@@ -413,7 +413,7 @@ function rowAction(type: string, batchID: string) {
   });
 }
 // function formatterStatus({ cellValue }: any) {
-//   const item = BatchStatusOptions.find((item) => item.value === cellValue);
+//   const item = TaskStatusOptions.find((item) => item.value === cellValue);
 //   return item ? item.label : cellValue;
 // }
 // 分页
