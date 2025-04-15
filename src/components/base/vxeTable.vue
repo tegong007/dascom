@@ -76,7 +76,7 @@
 
         <!-- 操作 -->
         <vxe-column
-          v-if="props.pageName === 'AddBatch'"
+          v-if="props.pageName === 'AddTask'"
           field="action"
           title="操作"
           width="140"
@@ -106,7 +106,7 @@
               > -->
               <a
                 class="color-[#89F7FF]"
-                @click="props.changeTaskIdOrBatchId(3, row.taskID, row.batchID)"
+                @click="props.changeTaskIdOrBatchId(3, row.taskID)"
               >查看证本列表</a>
               <a
                 v-if="row.status === 2"
@@ -125,7 +125,7 @@
           v-if="props.pageName === 'docList'"
           field="action"
           title="操作"
-          width="170"
+          width="240"
           fixed="right"
           align="center"
         >
@@ -143,12 +143,12 @@
                 @click="props.rowfun(1, row.docSN)"
               >重新生产</a>
               <a
-                v-if="row.docStatus === 1"
+                v-if="row.docStatus === 0 || row.docStatus === 4"
                 class="color-[#89F7FF]"
                 @click="props.rowfun(2, row.docSN)"
               >设为成功</a>
               <a
-                v-if="row.docStatus === 2"
+                v-if="row.docStatus === 0 || row.docStatus === 3"
                 class="color-[#89F7FF]"
                 @click="props.rowfun(3, row.docSN)"
               >设为失败</a>
@@ -248,9 +248,6 @@ async function removeRow(row: any) {
   const $table = tableRef.value;
   if ($table) {
     $table.remove(row);
-    if (row && row.dataSource === '-------') {
-      props.setIsAddNoTeam(false);
-    }
   }
 }
 
@@ -264,9 +261,6 @@ async function showRow(row: any) {
 // 根据点击数据修改行
 function updateRow(newRow: object) {
   oldRow.value.num = newRow.num;
-  oldRow.value.isTeam = newRow.isTeam;
-  oldRow.value.dispatchUnit = newRow.dispatchUnit;
-  oldRow.value.dataSource = newRow.dataSource;
   oldRow.value.urgentType = newRow.urgentType;
 }
 function updateFirstRow(num: number) {

@@ -28,26 +28,8 @@
             class="w-full rounded-[8px] bg-[#ffffff34] p-x-10 p-y-20"
           >
             <a-row :gutter="[20, 0]" class="w-full" justify="space-evenly">
-              <a-col :span="24">
-                <a-form-item label="是否团组" name="isTeam">
-                  <a-select
-                    v-model:value="formState.isTeam"
-                    placeholder="请选择是否团组"
-                    :disabled="props.title !== '新增团组'"
-                    @change="teamChange"
-                  >
-                    <a-select-option
-                      v-for="option in teamOptions"
-                      :key="option.value"
-                      :value="option.value"
-                    >
-                      {{ option.label }}
-                    </a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
               <a-col :span="12">
-                <a-form-item label="组团人数" name="num">
+                <a-form-item label="人数" name="num">
                   <a-input
                     v-model:value="formState.num"
                     placeholder="请输入数字（1-99）"
@@ -56,40 +38,6 @@
                     @input="validateInput"
                     @blur="validateInput"
                   />
-                </a-form-item>
-              </a-col>
-              <a-col :span="12">
-                <a-form-item label="派遣单位" name="dispatchUnit">
-                  <a-select
-                    v-model:value="formState.dispatchUnit"
-                    placeholder="请选择派遣单位"
-                    :disabled="formState.dispatchUnit === '-------'"
-                  >
-                    <a-select-option
-                      v-for="option in dispatchUnitOptions"
-                      :key="option.value"
-                      :value="option.value"
-                    >
-                      {{ option.label }}
-                    </a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
-              <a-col :span="12">
-                <a-form-item label="数据来源" name="dataSource">
-                  <a-select
-                    v-model:value="formState.dataSource"
-                    placeholder="请选择数据来源"
-                    :disabled="formState.dispatchUnit === '-------'"
-                  >
-                    <a-select-option
-                      v-for="option in dataSourceOptions"
-                      :key="option.value"
-                      :value="option.value"
-                    >
-                      {{ option.label }}
-                    </a-select-option>
-                  </a-select>
                 </a-form-item>
               </a-col>
               <a-col :span="12">
@@ -134,9 +82,6 @@
 import { defineExpose, defineProps } from 'vue';
 import type { UnwrapRef } from 'vue';
 import {
-  dataSourceOptions,
-  dispatchUnitOptions,
-  teamOptions,
   urgencyOptions,
 } from '../../option.js';
 
@@ -159,7 +104,7 @@ interface FormState {
 }
 const rules = {
   num: [
-    { required: true, message: '请输入组团人数', trigger: ['blur', 'change'] },
+    { required: true, message: '请输入人数', trigger: ['blur', 'change'] },
     {
       pattern: /^[1-9]\d?$/,
       message: '请输入1到99的正整数',
@@ -174,18 +119,17 @@ const formState: UnwrapRef<FormState> = reactive({
   dataSource: 1,
   urgentType: 0,
 });
-function teamChange(value) {
-  if (!value) {
-    formState.dispatchUnit = '-------';
-    formState.dataSource = '-------';
-    formState.urgentType = '-------';
-  }
-  else {
-    formState.dispatchUnit = 1;
-    formState.dataSource = 1;
-    formState.urgentType = 0;
-  }
-}
+// function teamChange(value) {
+//   if (!value) {
+//     formState.dispatchUnit = '-------';
+//     formState.dataSource = '-------';
+//     formState.urgentType = '-------';
+//   } else {
+//     formState.dispatchUnit = 1;
+//     formState.dataSource = 1;
+//     formState.urgentType = 0;
+//   }
+// }
 function validateInput(event) {
   // 获取输入框的值
   let value = event.target.value;
@@ -215,7 +159,7 @@ function onSubmit() {
     .then(() => {
       props.handleUpdate(
         toRaw(formState),
-        props.title === '新增团组' ? 'add' : 'edit',
+        props.title === '新增任务' ? 'add' : 'edit',
       );
       formRef.value.resetFields();
     })

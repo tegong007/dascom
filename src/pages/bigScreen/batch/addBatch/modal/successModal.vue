@@ -28,8 +28,8 @@
         <div
           class="scoll-bar mt10px h-full w-80% overflow-y-auto rounded-[8px] bg-white p-10 text-[24px] color-[#627384] font-bold"
         >
+          <div>任务号：{{ props.data?.taskID }}</div>
           <div>批次号：{{ props.data?.batchID }}</div>
-          <div>团组个数：{{ props.data?.groupNum }}</div>
           <div>总人数：{{ props.data?.totalPeopleNum }}</div>
         </div>
       </div>

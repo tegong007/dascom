@@ -130,6 +130,21 @@ export const docTypesOptions: OptionType[] = [
     label: '领事护照',
   },
 ];
+// 证件类型
+export const idTypesOptions: OptionType[] = [
+  {
+    value: 0,
+    label: '其他',
+  },
+  {
+    value: 1,
+    label: '身份证',
+  },
+  {
+    value: 2,
+    label: '军官证',
+  },
+];
 // 加注类型
 export const cnObsvTypeOptions: OptionType[] = [
   {
@@ -177,6 +192,7 @@ export function getOptionsByName(
     TaskStatusOptions,
     docStatusOptions,
     docTypesOptions,
+    idTypesOptions,
     cnObsvTypeOptions,
   };
   return options[name];

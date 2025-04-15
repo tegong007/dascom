@@ -128,9 +128,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  DownOutlined,
-} from '@ant-design/icons-vue';
+import { DownOutlined } from '@ant-design/icons-vue';
 import type { MenuProps } from 'ant-design-vue';
 import docForm from './doc-form.vue';
 
@@ -193,11 +191,18 @@ const colums = ref([
     overflow: 'title',
   },
   {
-    title: '证本流水线号',
-    field: 'docSN',
-    width: 180,
+    title: '证本号',
+    field: 'docID',
+    width: 150,
     overflow: 'title',
   },
+
+  // {
+  //   title: '证本流水线号',
+  //   field: 'docSN',
+  //   width: 180,
+  //   overflow: 'title',
+  // },
   {
     title: '所属任务号',
     field: 'taskID',
@@ -208,6 +213,19 @@ const colums = ref([
   {
     title: '所属批次号',
     field: 'batchID',
+    width: 120,
+    overflow: 'title',
+  },
+  {
+    title: '证件号',
+    field: 'idNum',
+    width: 150,
+    overflow: 'title',
+  },
+  {
+    title: '证件类型',
+    field: 'idType',
+    formatter: formatterValue,
     width: 120,
     overflow: 'title',
   },
@@ -240,6 +258,7 @@ const colums = ref([
     field: 'position',
     formatter: formatterValue,
     overflow: 'title',
+    width: 180,
   },
   {
     title: '状态',
@@ -255,6 +274,7 @@ const colums = ref([
     width: 120,
     overflow: 'title',
   },
+
   // {
   //   title: '姓(中)',
   //   field: 'cnSurname',
@@ -367,6 +387,8 @@ function formatterValue({ cellValue, column }: any) {
       return getWorkstationName(cellValue);
     case 'type':
       return findLabelByValue('docTypesOptions', cellValue);
+    case 'idType':
+      return findLabelByValue('idTypesOptions', cellValue);
     case 'docStatus':
       return findLabelByValue('docStatusOptions', cellValue);
     case 'cnObsvType':
@@ -532,8 +554,8 @@ watch(
       nextTick(() => {
         if (searchRef.value) {
           searchRef.value.setBatchIDandGroupId(
-            typeof props.docBatchId === 'string' ? props.docBatchId : '',
             typeof props.docTaskId === 'string' ? props.docTaskId : '',
+            typeof props.docBatchId === 'string' ? props.docBatchId : '',
           );
         }
       });

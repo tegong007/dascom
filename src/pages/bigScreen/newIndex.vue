@@ -89,19 +89,15 @@
       class="groupBtn absolute right-35 top-150 h-100vh flex flex-col items-center justify-center"
     >
       <TheButton
-        :title="machineStatus === 0 ? '暂停进本' : '开始进本'"
-        :disable="
-          machineStatus === 3 || machineStatus === 4 || machineStatus === 5
-            ? true
-            : false
-        "
-        @click="
-          machineStatus === 3 || machineStatus === 4 || machineStatus === 5
-            ? null
-            : setModal(machineStatus === 0 ? 1 : 0)
-        "
+        :title="entire.hasTask ? '暂停进本' : '开始进本'"
+        @click="setModal(entire.hasTas ? 1 : 0)"
       />
-      <TheButton title="全线急停" class="mt2em" @click="setModal(2)" />
+      <TheButton
+        title="全线急停"
+        class="mt2em"
+        :disable="entire.status !== 'error'"
+        @click="setModal(2)"
+      />
     </div>
     <!-- 下边按钮 -->
     <div
@@ -163,11 +159,11 @@ const open = ref<boolean>(false);
 function setOpen(value: boolean) {
   open.value = value;
 }
+const entire = ref({});
 const blankCheck = ref({});
 const mainPrint = ref({});
 const control = ref(null);
 const additionPrint = ref({});
-const machineStatus = ref(null);
 const finishedProduct = ref({});
 const isProduce = ref(false);
 // const statisticsData = ref({
@@ -209,6 +205,7 @@ async function getDataPage() {
       mainPrint.value = data.respData.mainPrint;
       additionPrint.value = data.respData.additionPrint;
       finishedProduct.value = data.respData.finishedProduct;
+      entire.value = data.respData.entire;
     }
     // if (statistics.respData) {
     //   statisticsData.value = { ...statistics.respData };

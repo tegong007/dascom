@@ -4,8 +4,8 @@
       <span>演示模式</span>
     </div>
     <section class="p-l-2em p-t-1em">
-      <a-button class="btn" type="primary" @click="$goto('AddBatch')">
-        添加批次
+      <a-button class="btn" type="primary" @click="$goto('AddTask')">
+        添加任务
       </a-button>
     </section>
     <div class="mt1em bg-[#fff]/[0.4] p-y-5px p-l-0.5em">

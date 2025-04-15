@@ -19,9 +19,9 @@
       <a-form-item label="所属任务号" name="taskID">
         <a-input
           v-model:value="formState.taskID"
-          placeholder="请输入团组号"
+          placeholder="请输入任务号"
           :maxlength="30"
-          class="w150px"
+          class="w200px"
           allow-clear
           @touchstart="onInputFocus($event, 'taskID')"
         />
@@ -89,7 +89,7 @@ const props = defineProps({
 });
 const formRef = ref();
 interface FormState {
-  batchID: string;
+  batchID?: string;
   docID: string;
   taskID?: string;
   docStatus: number;
@@ -102,9 +102,10 @@ const formState: UnwrapRef<FormState> = reactive({
   docStatus: null,
 });
 
-function setBatchIDandGroupId(value1: string, value2: string) {
-  formState.batchID = value1;
-  formState.taskID = value2;
+function setBatchIDandGroupId(value1: string, value2?: string) {
+  formState.taskID = value1;
+  value2;
+  // formState.batchID = value2;
   const filteredForm = Object.fromEntries(
     Object.entries(toRaw(formState)).filter(
       ([_key, value]) => value !== null && value !== undefined && value !== '',

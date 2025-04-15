@@ -2,7 +2,7 @@
   <div
     ref="parentRef"
     class="fixed z999"
-    :class="`${props.keyboardWidth}`"
+    :class="`${props.keyboardWidth} `"
     :style="transformStyle"
   >
     <div
@@ -76,13 +76,31 @@ function handleShift() {
 function startDrag(event: MouseEvent | TouchEvent) {
   event.preventDefault();
 }
-
+const keyValue = ref('');
 onMounted(() => {
   keyboard.value = new Keyboard(props.keyboardClass, {
     onChange,
     onKeyPress,
-    onKeyReleased: button =>
-      console.log('simple-keyboard button released', button),
+    onKeyReleased: (button) => {
+      console.log('simple-keyboard button released', button);
+      if (keyValue.value !== props.input) {
+        console.log(
+          '🚀 ~ onChange ~ prob不一样 纠正:',
+          keyValue.value,
+          props.input,
+        );
+        console.log(
+          '🚀 ~ onMounted ~  keyboard.value:',
+          keyboard.value.caretPosition,
+        );
+        keyboard.value.setCaretPosition();
+        keyboard.value?.setInput(props.input);
+      }
+      else {
+        console.log('🚀 ~ onChange 一样的~ input:', props.input);
+      }
+    },
+
     // onKeyReleased,
     layoutCandidates: layout.layoutCandidates,
     layoutName: props.layout,
@@ -103,7 +121,7 @@ onMounted(() => {
         '{change} {space} {close}',
       ],
       num: ['1 2 3', '4 5 6', '7 8 9', '{bksp} 0 {close}'],
-      floatNum: ['1 2 3', '4 5 6', '7 8 9', '. 0 {close}'],
+      floatNum: ['1 2 3', '4 5 6', '7 8 9', '{bksp} . 0 {close}'],
     },
     autoUseTouchEvents: false,
     debug: false,
@@ -125,9 +143,10 @@ onMounted(() => {
     maxLength: props.maxLength,
   });
 });
+
 function onChange(input) {
   const newInput = input;
-  keyboard.value.setInput(newInput);
+  keyValue.value = newInput;
   emit('onChange', newInput, keyboard.value);
 }
 
@@ -236,10 +255,33 @@ defineExpose({
 watch(
   () => props.input,
   (newInput) => {
-    console.log('🚀 ~ newInput:', newInput);
+    console.log('🚀 ~ newI传入值put:', newInput);
     keyboard.value?.setInput(newInput);
   },
+  { deep: true, immediate: true },
 );
+// watch(
+//   () => keyValue.value,
+//   (newInput) => {
+//     console.log('🚀 ~ keyValue:', newInput);
+//   },
+//   { deep: true, immediate: true },
+// );
+// 键盘值与变化值保持一致
+// watch(
+//   () => keyValue.value,
+//   (newInput) => {
+//     if (newInput !== props.input) {
+//       console.log('🚀 ~ keyValue.value不一样:', newInput, props.input);
+//       keyboard.value?.setInput(props.input);
+//       keyValue.value = props.input;
+//       console.log('🚀 ~ keyValue.valub变成e:', keyValue.value);
+//     } else {
+//       console.log('🚀 ~ keyyi一样lue:');
+//     }
+//   },
+//   { deep: true, immediate: true },
+// );
 watch(
   () => props.layout,
   (newInput) => {

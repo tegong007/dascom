@@ -15,30 +15,27 @@
           {{ props.title }}</span>
         <div class="scoll-bar mt10px h-full w-90% overflow-y-auto bg-white">
           <a-descriptions title="" bordered>
+            <a-descriptions-item label="任务号">
+              {{ props.currentRow.taskID }}
+            </a-descriptions-item>
             <a-descriptions-item label="批次号">
               {{ props.currentRow.batchID }}
-            </a-descriptions-item>
-            <a-descriptions-item label="数据索引">
-              {{ props.currentRow.recID }}
-            </a-descriptions-item>
-            <a-descriptions-item label="团组号">
-              {{ props.currentRow.groupID }}
             </a-descriptions-item>
             <a-descriptions-item label="证本号">
               {{ props.currentRow.docID }}
             </a-descriptions-item>
-            <a-descriptions-item label="识别号">
-              {{ props.currentRow.recID }}
+            <a-descriptions-item label="证本流水线号">
+              {{ props.currentRow.docSN }}
             </a-descriptions-item>
-            <a-descriptions-item label="派遣单位">
-              {{ props.currentRow.dispatchUnit }}
+            <a-descriptions-item label="证件号">
+              {{ props.currentRow.idNum }}
             </a-descriptions-item>
-            <a-descriptions-item label="数据来源">
-              {{ props.currentRow.dataSource }}
+            <a-descriptions-item label="证件类型">
+              {{ formatterValue('idType', props.currentRow.idType) }}
             </a-descriptions-item>
-            <a-descriptions-item label="加急程度">
+            <!-- <a-descriptions-item label="加急程度">
               {{ formatterValue('urgentType', props.currentRow.urgentType) }}
-            </a-descriptions-item>
+            </a-descriptions-item> -->
             <a-descriptions-item label="当前工位">
               {{ formatterValue('position', props.currentRow.position) }}
             </a-descriptions-item>
@@ -169,6 +166,8 @@ function formatterValue(column, cellValue) {
       return findLabelByValue('docTypesOptions', cellValue);
     case 'docStatus':
       return findLabelByValue('docStatusOptions', cellValue);
+    case 'idType':
+      return findLabelByValue('idTypesOptions', Number(cellValue));
     case 'cnObsvType':
       return findLabelByValue('cnObsvTypeOptions', Number(cellValue));
     case 'dispatchUnit':

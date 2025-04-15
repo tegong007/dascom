@@ -6,8 +6,13 @@
     class="h-70px w-150px flex items-center justify-center"
     :class="
       props.disable
-        ? 'cursor-not-allowed'
+        ? 'cursor-not-allowed '
         : 'transition-transform duration-300 hover:scale-105 cursor-pointer'
+    "
+    @click="
+      () => {
+        props.disable ? event.preventDefault() : null;
+      }
     "
   >
     <span>{{ props.title }}</span>

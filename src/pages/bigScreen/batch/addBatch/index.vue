@@ -11,14 +11,14 @@
           @click="showRow(teamData, 'add')"
         >
           <PlusCircleFilled />
-          添加团组
-        </a-button>（只允许添加一个无团组）
+          添加任务
+        </a-button>（只允许添加一个任务）
       </div>
       <main class="box-border h-100% w-full">
         <MyTable
           ref="tableRef"
           :seq="true"
-          page-name="AddBatch"
+          page-name="AddTask"
           :show-row="showRow"
           :colums="colums"
           :set-is-add-no-team="setIsAddNoTeam"
@@ -37,7 +37,7 @@
       :open="successOpen"
       :success-icon="true"
       :data="showSuccessData"
-      :handle-ok="() => topProduction()"
+      :handle-ok="() => gotolast()"
       :handle-cancel="() => setSuccessOpen(false)"
       :title="successTitle"
     />
@@ -45,7 +45,7 @@
       :open="tipOpen"
       :handle-ok="
         () => {
-          isgoback ? gotolast() : AddBatch();
+          isgoback ? gotolast() : AddTask();
         }
       "
       :handle-cancel="() => setTipOpen(false)"
@@ -67,7 +67,7 @@
         <!-- <TheButton title="返回首页" @click="$goto('BigScreen')" /> -->
         <TheButton title="返回" @click="handleTipModal(true)" />
         <!-- <TheButton title="添加批次" @click="AddBatch()" /> -->
-        <TheButton title="添加批次" @click="handleTipModal(false)" />
+        <TheButton title="添加任务" @click="handleTipModal(false)" />
       </div>
     </div>
     <contextHolder />
@@ -77,10 +77,7 @@
 <script lang="ts" setup>
 import { PlusCircleFilled } from '@ant-design/icons-vue';
 import {
-  dataSourceOptions,
-  dispatchUnitOptions,
   findLabelByValue,
-  teamOptions,
   urgencyOptions,
 } from '../option';
 import SuceessModal from './modal/successModal.vue';
@@ -91,12 +88,11 @@ import MyTable from '@/components/base/vxeTable.vue';
 import TipModal from '@/components/modal/TheModal.vue';
 import router from '@/router/index.ts';
 import { useAppStore } from '@/store/index';
-import { addBatch } from '@/apis/testApi';
-import { setBatchRank } from '@/apis/webApi';
+import { addTask } from '@/apis/testApi';
 import { contextHolder, openNotify } from '@/components/base/useNotification';
 
-const modal = ref('新增团组');
-const successTitle = ref('批次添加成功，是否立即生产?');
+const modal = ref('新增批次');
+const successTitle = ref('任务添加成功，退回首页');
 const open = ref<boolean>(false);
 const tipOpen = ref<boolean>(false);
 const successOpen = ref<boolean>(false);
@@ -106,41 +102,19 @@ const showSuccessData = ref({});
 const isAddNoTeam = ref<boolean>(false);
 const isgoback = ref(false);
 const teamData = {
-  isTeam: 1,
-  dispatchUnit: 1,
-  dataSource: 1,
   urgentType: 0,
   num: 1,
 };
 const colums = ref([
   {
-    title: '是否团组',
-    field: 'isTeam',
-    options: teamOptions,
-    formatter: formatterValue,
-  },
-  {
-    title: '派遣单位',
-    field: 'dispatchUnit',
-    options: dispatchUnitOptions,
-    formatter: formatterValue,
-  },
-  {
-    title: '数据来源',
-    field: 'dataSource',
-    options: dataSourceOptions,
-    formatter: formatterValue,
+    title: '组团人数',
+    field: 'num',
   },
   {
     title: '加急类型',
     field: 'urgentType',
     options: urgencyOptions,
     formatter: formatterValue,
-  },
-  {
-    title: '组团人数',
-    field: 'num',
-    // isTip: true,
   },
 ]);
 function setIsAddNoTeam(value: string) {
@@ -170,6 +144,7 @@ function handleTipModal(type: boolean) {
 }
 function gotolast() {
   setTipOpen(false);
+  setSuccessOpen(false);
   tableRef.value.removeRow();
   router.go(-1);
   isAddNoTeam.value = false;
@@ -196,16 +171,16 @@ function formatterValue({ cellValue, column }: any) {
 // 收到通知打开弹窗
 async function showRow(record: object, type: string) {
   const insertData = tableRef.value.exportEvent();
-  if (insertData.length >= 200) {
-    openNotify('bottomRight', `单次添加最多200条数据`);
+  if (insertData.length >= 1 && type === 'add') {
+    openNotify('bottomRight', `单次添加最多1条数据`);
     return;
   }
   setOpen(true);
   if (type === 'add') {
-    modal.value = '新增团组';
+    modal.value = '新增任务';
   }
   else {
-    modal.value = '编辑团组';
+    modal.value = '编辑任务';
   }
   if (updateRef.value) {
     // 弹窗要修改的值
@@ -235,28 +210,20 @@ function handleUpdate(record: object, type: string) {
     }
   }
 }
-async function AddBatch() {
+async function AddTask() {
   setTipOpen(false);
   if (tableRef.value) {
     const insertData = tableRef.value.exportEvent();
     if (!insertData.length) {
       return;
     }
-    if (!isAddNoTeam.value) {
-      // 如果没有添加过，补一条数据
-      insertData.unshift({ isTeam: 0, num: 0 });
-    }
-    // 改isTeam=0
-    const result = insertData.map((item) => {
-      if (item.isTeam === 0) {
-        return { isTeam: item.isTeam, num: item.num };
-      }
-      return item; // 如果 isTeam 不为 0，保留原数据
-    });
 
     try {
       useAppStore().setSpinning(true);
-      const { respData } = await addBatch({ groups: result });
+      const { respData } = await addTask({
+        num: insertData[0].num,
+        urgentType: insertData[0].urgentType,
+      });
       if (respData) {
         showSuccessData.value = { ...respData };
         setSuccessOpen(true);
@@ -273,27 +240,25 @@ async function AddBatch() {
     }
   }
 }
-async function topProduction() {
-  setSuccessOpen(false);
-  try {
-    useAppStore().setSpinning(true);
-    const params = {
-      batchID: showSuccessData.value.batchID,
-      rank: 0,
-    };
-    console.log('🚀 ~ topProduction ~ params:', params);
-    await setBatchRank(params);
-    setSuccessOpen(false);
-    router.push({ name: 'BigScreen' });
-    openNotify('bottomRight', `立即生产成功`, true);
-  }
-  catch (error) {
-    openNotify('bottomRight', error);
-  }
-  finally {
-    useAppStore().setSpinning(false);
-  }
-}
+// async function topProduction() {
+//   setSuccessOpen(false);
+//   try {
+//     useAppStore().setSpinning(true);
+//     const params = {
+//       batchID: showSuccessData.value.batchID,
+//       rank: 0,
+//     };
+//     console.log('🚀 ~ topProduction ~ params:', params);
+//     await setBatchRank(params);
+//     setSuccessOpen(false);
+//     router.push({ name: 'BigScreen' });
+//     openNotify('bottomRight', `立即生产成功`, true);
+//   } catch (error) {
+//     openNotify('bottomRight', error);
+//   } finally {
+//     useAppStore().setSpinning(false);
+//   }
+// }
 </script>
 
 <style scoped lang="less">

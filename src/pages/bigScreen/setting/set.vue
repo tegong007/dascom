@@ -149,7 +149,6 @@ function validateInput(event, index, platformIndex, optionIndex) {
     value = 0;
   }
 
-  console.log('🚀 ~ validateInput ~ value:', value);
   event.target.value = value;
   setItems.value[index].positionItems[platformIndex].option[optionIndex].value
     = value;
@@ -281,7 +280,6 @@ function onInputFocus(event, index, itemIndex, optionIndex) {
 }
 // 给输入框赋值
 function onChangeKeyboard(input, keyboard) {
-  console.log('🚀 ~ onChangeKeyboard ~ input:', input);
   const caretPosition = keyboard.caretPosition;
   if (caretPosition !== null)
     setInputCaretPosition(cursorPosition.value.target, caretPosition);
