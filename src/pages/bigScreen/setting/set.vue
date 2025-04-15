@@ -285,26 +285,33 @@ function onChangeKeyboard(input, keyboard) {
     setInputCaretPosition(cursorPosition.value.target, caretPosition);
 
   let value = input;
-  // 内容控制
-  if (value === '1200.') {
-    value = 1200;
+  value = value.replace(/[^0-9.]/g, '');
+
+  // 分割字符串为两部分：第一个小数点之前的部分和之后的部分
+  const parts = value.split('.');
+  if (parts.length > 2) {
+    // 如果有多个小数点，只保留第一个小数点及其之后的内容
+    value = `${parts[0]}.${parts.slice(1).join('')}`;
+  }
+  else if (parts.length === 2) {
+    // 如果只有一个小数点，保持原样
+    value = parts.join('.');
   }
   else {
-    // 步骤1：移除非法字符（只允许数字和一个小数点）
-    value = value.replace(/[^0-9.]/g, '');
-    // 步骤2：确保只有一个有效的小数点
-    value = value.replace(/\.{2,}/g, '.'); // 替换多个小数点为一个
-    value = value.replace(/^\./, '0.'); // 如果以小数点开头，自动补0
-    // 步骤3：清除前导零（但保留小数部分）
-    value = value.replace(/^0+(\d)/, '$1'); // 移除前导零，但保留小数部分
-    // 步骤4：保留两位小数
-    value = value.replace(/(\.\d{2})\d+/, '$1'); // 保留两位小数
-    if (value > 1200) {
-      value = 1200;
-    }
-    if (value === '') {
-      value = 0;
-    }
+    // 如果没有小数点，保持原样
+    value = parts[0];
+  }
+
+  value = value.replace(/^\./, '0.'); // 如果以小数点开头，自动补0
+  // 步骤3：清除前导零（但保留小数部分）
+  value = value.replace(/^0+(\d)/, '$1'); // 移除前导零，但保留小数部分
+  // 步骤4：保留两位小数
+  value = value.replace(/(\.\d{2})\d+/, '$1'); // 保留两位小数
+  if (value > 1200) {
+    value = 1200;
+  }
+  if (value === '') {
+    value = 0;
   }
   cursorPosition.value.target.value = value;
   setItems.value[changeIpt.value[0]].positionItems[changeIpt.value[1]].option[

@@ -76,10 +76,7 @@
 
 <script lang="ts" setup>
 import { PlusCircleFilled } from '@ant-design/icons-vue';
-import {
-  findLabelByValue,
-  urgencyOptions,
-} from '../option';
+import { findLabelByValue, urgencyOptions } from '../option';
 import SuceessModal from './modal/successModal.vue';
 import UpdateModal from './modal/updateModal.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
@@ -103,7 +100,7 @@ const isAddNoTeam = ref<boolean>(false);
 const isgoback = ref(false);
 const teamData = {
   urgentType: 0,
-  num: 1,
+  num: '1',
 };
 const colums = ref([
   {
@@ -221,7 +218,7 @@ async function AddTask() {
     try {
       useAppStore().setSpinning(true);
       const { respData } = await addTask({
-        num: insertData[0].num,
+        num: Number(insertData[0].num),
         urgentType: insertData[0].urgentType,
       });
       if (respData) {

@@ -105,7 +105,7 @@ const props = defineProps({
 });
 const formRef = ref();
 interface FormState {
-  num: number;
+  num: string;
   dispatchUnit: string;
   dataSource: string;
   isTeam: string;
@@ -152,11 +152,11 @@ function validateInput(event) {
   }
   else {
     // 如果输入有效，更新绑定的值
-    formState.num = Number(value);
+    formState.num = value;
   }
 
   // 更新输入框的值
-  event.target.value = Number(value);
+  event.target.value = value;
 }
 function handleCancel() {
   closekeyboard();
@@ -216,7 +216,7 @@ function onChangeKeyboard(input, keyboard) {
   }
   else {
     // 如果输入有效，更新绑定的值
-    formState.num = Number(Newvalue);
+    formState.num = Newvalue;
   }
   // 更新输入框的值
   formState[changeIpt.value] = Newvalue;
