@@ -11,7 +11,7 @@
         </div>
         ：
         <div class="flex-1 text-left">
-          <span class="">1.0.3.0.4</span>
+          <span class="">1.0.4</span>
         </div>
       </div>
       <div

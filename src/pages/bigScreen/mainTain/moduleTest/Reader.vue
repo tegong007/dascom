@@ -56,7 +56,7 @@
         </div>
       </div>
     </section>
-    <div v-if="props.showKeyboard && props.currentPage === 'readers'">
+    <div v-show="props.showKeyboard && props.currentPage === 'readers'">
       <SimpleKeyboard
         ref="simpleKeyboard"
         :input="cursorPosition?.target.value"

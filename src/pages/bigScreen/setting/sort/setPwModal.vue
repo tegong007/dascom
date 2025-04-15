@@ -29,6 +29,7 @@
                 size="large"
                 :maxlength="6"
                 @input="handleInput('oldPassword', $event)"
+                @touchstart="onInputFocus($event, 'oldPassword')"
               />
             </a-form-item>
             <!-- 新密码 -->
@@ -42,6 +43,7 @@
                 size="large"
                 :maxlength="6"
                 @input="handleInput('newPassword', $event)"
+                @touchstart="onInputFocus($event, 'newPassword')"
               />
             </a-form-item>
             <!-- 确认新密码 -->
@@ -55,10 +57,22 @@
                 size="large"
                 :maxlength="6"
                 @input="handleInput('confirmPassword', $event)"
+                @touchstart="onInputFocus($event, 'confirmPassword')"
               />
             </a-form-item>
           </a-form>
         </div>
+      </div>
+      <div v-show="showKeyboard">
+        <SimpleKeyboard
+          ref="simpleKeyboard"
+          keyboard-width="w20%"
+          layout="num"
+          :max-length="6"
+          :input="formState[changeIpt]"
+          @on-change="onChangeKeyboard"
+          @closekeyboard="closekeyboard"
+        />
       </div>
     </div>
     <template #footer>
@@ -82,6 +96,7 @@ import { App } from 'ant-design-vue';
 import { Md5 } from 'ts-md5';
 import { mainTainModule } from '@/apis/proApi';
 import { useAppStore } from '@/store/index';
+import SimpleKeyboard from '@/components/base/simpleKeyboard.vue';
 
 const props = defineProps({
   open: Boolean,
@@ -149,6 +164,7 @@ function onSubmit() {
     .validate()
     .then(async () => {
       await setPassWord();
+      closekeyboard();
     })
     .catch((error) => {
       console.error('Form validation error:', error);
@@ -205,6 +221,7 @@ function handleCancel() {
   formState.confirmPassword = '';
   setPwRef.value.resetFields();
   props.handleCancel();
+  closekeyboard();
 }
 
 // 输入事件处理
@@ -213,6 +230,41 @@ function handleInput(field: string, event: Event) {
   const value = input.value.replace(/\D/g, ''); // 限制只能输入数字
   formState[field] = value;
   event.target.value = value;
+}
+
+const showKeyboard = ref(false); // 键盘默认隐藏
+const changeIpt = ref(''); // 选择了哪个输入框
+const simpleKeyboard = ref(null);
+const cursorPosition = ref('');
+
+function onInputFocus(event, res) {
+  showKeyboard.value = true;
+  changeIpt.value = res;
+  cursorPosition.value = event.target;
+}
+// 给输入框赋值
+function onChangeKeyboard(input, keyboard) {
+  console.log('🚀 ~ onChangeKeyboard ~ input:', input);
+  const caretPosition = keyboard.caretPosition;
+  if (caretPosition !== null)
+    setInputCaretPosition(cursorPosition.value, caretPosition);
+  const Newvalue = input.replace(/\D/g, ''); // 限制只能输入数字
+  // 更新输入框的值
+
+  formState[changeIpt.value] = Newvalue;
+  // 手动触发校验
+  setPwRef.value.validateFields([changeIpt.value], { first: true });
+}
+function setInputCaretPosition(elem, pos) {
+  setTimeout(() => {
+    if (elem.setSelectionRange) {
+      elem.focus();
+      elem.setSelectionRange(pos, pos);
+    }
+  });
+}
+function closekeyboard() {
+  showKeyboard.value = false;
 }
 </script>
 

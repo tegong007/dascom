@@ -42,7 +42,15 @@
       class="groupBtn absolute bottom-0 h8em w-full flex items-center justify-center gap-20"
     >
       <div class="flex gap-20">
-        <TheButton title="返回首页" @click="$goto('BigScreen')" />
+        <TheButton
+          title="返回首页"
+          @click="
+            () => {
+              setCurrentModel('sort');
+              $goto('BigScreen');
+            }
+          "
+        />
       </div>
     </div>
   </div>
@@ -76,6 +84,9 @@ const options = ref([
   // { label: `成本证本收集`, value: '3' },
   // { label: `模块测试`, value: '4' },
 ]);
+function setCurrentModel(value: string) {
+  currentModel.value = value;
+}
 onMounted(() => {
   nextTick(() => {
     const query = route.query;

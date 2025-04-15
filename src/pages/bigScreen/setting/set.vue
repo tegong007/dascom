@@ -88,7 +88,7 @@
         </div>
       </div>
     </section>
-    <div v-if="showKeyboard">
+    <div v-show="showKeyboard">
       <SimpleKeyboard
         ref="simpleKeyboard"
         :input="cursorPosition?.target.value"
@@ -331,6 +331,9 @@ watch(
   },
   { deep: true, immediate: true },
 );
+onDeactivated(() => {
+  showKeyboard.value = false;
+});
 </script>
 
 <style scoped>

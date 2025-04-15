@@ -36,7 +36,7 @@
                     class="w-full"
                     :maxlength="2"
                     @input="validateInput"
-                    @blur="validateInput"
+                    @click="onInputFocus($event, 'num')"
                   />
                 </a-form-item>
               </a-col>
@@ -59,6 +59,17 @@
               </a-col>
             </a-row>
           </a-form>
+          <div v-show="showKeyboard">
+            <SimpleKeyboard
+              ref="simpleKeyboard"
+              keyboard-width="w20%"
+              layout="num"
+              :max-length="2"
+              :input="formState[changeIpt]"
+              @on-change="onChangeKeyboard"
+              @closekeyboard="closekeyboard"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -81,9 +92,8 @@
 <script lang="ts" setup>
 import { defineExpose, defineProps } from 'vue';
 import type { UnwrapRef } from 'vue';
-import {
-  urgencyOptions,
-} from '../../option.js';
+import { urgencyOptions } from '../../option.js';
+import SimpleKeyboard from '@/components/base/simpleKeyboard.vue';
 
 const props = defineProps({
   open: Boolean,
@@ -114,7 +124,7 @@ const rules = {
 };
 const formState: UnwrapRef<FormState> = reactive({
   isTeam: 1,
-  num: 1,
+  num: '1',
   dispatchUnit: 1,
   dataSource: 1,
   urgentType: 0,
@@ -149,6 +159,7 @@ function validateInput(event) {
   event.target.value = Number(value);
 }
 function handleCancel() {
+  closekeyboard();
   formRef.value.resetFields();
   props.handleCancel();
 }
@@ -167,6 +178,7 @@ function onSubmit() {
       console.log('error', error);
     })
     .finally(() => {
+      closekeyboard();
       // formRef.value.resetFields();
     });
 }
@@ -177,6 +189,48 @@ function updateForm(row: object) {
   formState.dataSource = row.dataSource;
   formState.urgentType = row.urgentType;
   formState.isTeam = row.isTeam;
+}
+
+const showKeyboard = ref(false); // 键盘默认隐藏
+const changeIpt = ref(''); // 选择了哪个输入框
+const simpleKeyboard = ref(null);
+const cursorPosition = ref('');
+function onInputFocus(event, res) {
+  showKeyboard.value = true;
+  changeIpt.value = res;
+  cursorPosition.value = event.target;
+}
+// 给输入框赋值
+function onChangeKeyboard(input, keyboard) {
+  console.log('🚀 ~ onChangeKeyboard ~ input:', input);
+  const caretPosition = keyboard.caretPosition;
+  if (caretPosition !== null)
+    setInputCaretPosition(cursorPosition.value, caretPosition);
+  let Newvalue = input;
+  // 使用正则表达式限制输入为1到99的正整数
+  const regex = /^[1-9]\d?$/; // 匹配1到99的正整数
+  // 如果输入不符合正则表达式，重置为上一次有效的值
+  if (!regex.test(Newvalue)) {
+    // 如果输入无效，清空输入框或设置为默认值
+    formState.num = Newvalue = '';
+  }
+  else {
+    // 如果输入有效，更新绑定的值
+    formState.num = Number(Newvalue);
+  }
+  // 更新输入框的值
+  formState[changeIpt.value] = Newvalue;
+}
+function setInputCaretPosition(elem, pos) {
+  setTimeout(() => {
+    if (elem.setSelectionRange) {
+      elem.focus();
+      elem.setSelectionRange(pos, pos);
+    }
+  });
+}
+function closekeyboard() {
+  showKeyboard.value = false;
 }
 defineExpose({
   updateForm,

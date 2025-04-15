@@ -157,7 +157,6 @@ function onInputFocus(event, res) {
 }
 // 给输入框赋值
 function onChangeKeyboard(input, keyboard) {
-  console.log('🚀 ~ onChangeKeyboard ~ input:', input);
   const caretPosition = keyboard.caretPosition;
   if (caretPosition !== null)
     setInputCaretPosition(cursorPosition.value, caretPosition);
