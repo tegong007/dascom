@@ -84,20 +84,13 @@ onMounted(() => {
     onKeyReleased: (button) => {
       console.log('simple-keyboard button released', button);
       if (keyValue.value !== props.input) {
-        console.log(
-          '🚀 ~ onChange ~ prob不一样 纠正:',
-          keyValue.value,
-          props.input,
-        );
-        console.log(
-          '🚀 ~ onMounted ~  keyboard.value:',
-          keyboard.value.caretPosition,
-        );
-        keyboard.value.setCaretPosition();
+        if (
+          keyValue.value.length > props.input.length
+          && keyboard.value.caretPosition >= keyValue.value.length
+        ) {
+          keyboard.value.setCaretPosition(props.input.length);
+        }
         keyboard.value?.setInput(props.input);
-      }
-      else {
-        console.log('🚀 ~ onChange 一样的~ input:', props.input);
       }
     },
 
