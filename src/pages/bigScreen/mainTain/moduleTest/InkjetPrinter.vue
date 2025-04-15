@@ -153,7 +153,8 @@
           </section>
         </main>
         <div
-          v-show="props.showKeyboard && props.currentPage === 'InkjetPrinter'"
+          v-if="props.currentPage === 'InkjetPrinter'"
+          v-show="props.showKeyboard"
         >
           <SimpleKeyboard
             ref="simpleKeyboard"

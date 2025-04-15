@@ -34,17 +34,17 @@ const routes: Array<RouteRecordRaw> = [
     name: 'AddTask',
     component: () => import('@/pages/bigScreen/batch/addBatch/index.vue'),
   },
-  {
-    path: '/batchList', // 批次列表
-    name: 'BatchList',
-    component: () => import('@/pages/bigScreen/batch/list/index.vue'),
-  },
+  // {
+  //   path: '/batchList', // 批次列表
+  //   name: 'BatchList',
+  //   component: () => import('@/pages/bigScreen/batch/list/index.vue'),
+  // },
 
-  {
-    path: '/batchDetail',
-    name: 'BatchDetail',
-    component: () => import('@/pages/bigScreen/batch/detail/index.vue'),
-  },
+  // {
+  //   path: '/batchDetail',
+  //   name: 'BatchDetail',
+  //   component: () => import('@/pages/bigScreen/batch/detail/index.vue'),
+  // },
   {
     path: '/docList', // 证本列表
     name: 'docList',
