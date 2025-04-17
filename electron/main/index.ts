@@ -3,14 +3,17 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import os from 'node:os';
 import fs from 'node:fs';
+import { spawn } from 'node:child_process';
 import {
   BrowserWindow,
   Menu,
   app,
+  dialog,
   globalShortcut,
   ipcMain,
   shell,
 } from 'electron';
+
 import { ref } from 'vue';
 // const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -159,6 +162,54 @@ async function createWindow() {
 
 app.whenReady().then(createWindow);
 
+function checkForUpdate() {
+  let newExePath = '';
+  // 模拟检查更新逻辑
+  if (process.env.VITE_DEV_SERVER_URL) {
+    newExePath = path.join(
+      process.env.APP_ROOT,
+      'Light-Ink-Craftsman-1.0.1.exe',
+    );
+  }
+  else {
+    // 在打包后的环境中，使用 APP_ROOT 路径
+    newExePath = path.resolve(
+      path.dirname(app.getPath('exe')),
+      'Light-Ink-Craftsman-1.0.1.exe',
+    );
+  }
+
+  const opts = {
+    type: 'question',
+    buttons: ['立即更新', '稍后'],
+    defaultId: 0,
+    message: '检测到新版本，是否立即更新？',
+    detail: '点击“立即更新”以安装最新版本。',
+  };
+
+  dialog.showMessageBox(opts).then((result) => {
+    if (result.response === 0) {
+      updateApp(newExePath);
+    }
+  });
+}
+
+function updateApp(newExePath: string) {
+  if (win) {
+    canExit.value = true;
+    // win.close(); // 关闭窗口
+  }
+
+  // app.quit();
+  // 延时一段时间，确保旧版本完全退出
+  if (process.platform === 'win32') {
+    spawn(newExePath, [], {
+      detached: true,
+    }).unref();
+    app.quit();
+  }
+}
+
 app.on('window-all-closed', () => {
   win = null;
   if (process.platform !== 'darwin')
@@ -198,6 +249,10 @@ ipcMain.handle('open-win', (_, arg) => {
   else {
     childWindow.loadFile(indexHtml, { hash: arg });
   }
+});
+// 检测更新
+ipcMain.on('check-for-updates', () => {
+  checkForUpdate();
 });
 // 读配置文件
 ipcMain.handle('get-config', async () => {

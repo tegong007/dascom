@@ -31,6 +31,9 @@
     "build:unpack": "npm run build && electron-builder --dir",
     "build:win": "vite build && electron-builder --win",
     "build:mac": "vite build && electron-builder --mac",
+    "electron-updater": "^6.6.2",
+    "lodash.escaperegexp": "^4.1.2",
+    "lodash.isequal": "^4.5.0",
     "build:linux": "vite build && electron-builder --linux",
     "up": "taze major -I"
   },

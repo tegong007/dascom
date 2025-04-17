@@ -69,9 +69,14 @@ const routes: Array<RouteRecordRaw> = [
   // },
 
   {
-    path: '/search', // 工位状态
+    path: '/search', // 查询页面
     name: 'Search',
     component: () => import('../pages/bigScreen/search/index.vue'),
+  },
+  {
+    path: '/test', // 工位状态
+    name: 'Test',
+    component: () => import('../pages/bigScreen/test.vue'),
   },
 ];
 
