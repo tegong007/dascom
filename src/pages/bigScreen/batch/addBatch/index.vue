@@ -50,7 +50,7 @@
       "
       :handle-cancel="() => setTipOpen(false)"
       :title="
-        isgoback ? '返回将失去填写的内容，确认返回？' : '是否确认添加批次？'
+        isgoback ? '返回将失去填写的内容，确认返回？' : '是否确认添加任务？'
       "
       height="130"
     />
@@ -88,7 +88,7 @@ import { useAppStore } from '@/store/index';
 import { addTask } from '@/apis/testApi';
 import { contextHolder, openNotify } from '@/components/base/useNotification';
 
-const modal = ref('新增批次');
+const modal = ref('新增任务');
 const successTitle = ref('任务添加成功，退回首页');
 const open = ref<boolean>(false);
 const tipOpen = ref<boolean>(false);
@@ -104,7 +104,7 @@ const teamData = {
 };
 const colums = ref([
   {
-    title: '组团人数',
+    title: '任务人数',
     field: 'num',
   },
   {

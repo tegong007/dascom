@@ -81,39 +81,25 @@
                 :src="`data:image/png;base64,${props.currentRow.laserPicLocation}`"
               />
             </a-descriptions-item>
-            <a-descriptions-item label="激光后质检照片">
-              <vxe-image
-                :width="100"
-                mask-closable
-                :src="`data:image/png;base64,${props.currentRow.laserPicCheck}`"
-              />
-            </a-descriptions-item>
-            <a-descriptions-item label="喷墨前定位照片(主)">
+            <a-descriptions-item label="喷墨前定位照片">
               <vxe-image
                 :width="100"
                 mask-closable
                 :src="`data:image/png;base64,${props.currentRow.mainUVPicLocation}`"
               />
             </a-descriptions-item>
-            <a-descriptions-item label="喷墨后质检照片(主)">
+            <a-descriptions-item label="主副页质检照片">
               <vxe-image
                 :width="100"
                 mask-closable
-                :src="`data:image/png;base64,${props.currentRow.mainUVPicCheck}`"
+                :src="`data:image/png;base64,${props.currentRow.mainPicCheck}`"
               />
             </a-descriptions-item>
-            <a-descriptions-item label="喷墨前定位照片(加)">
+            <a-descriptions-item label="加注页质检照片">
               <vxe-image
                 :width="100"
                 mask-closable
-                :src="`data:image/png;base64,${props.currentRow.additionUVPicLocation}`"
-              />
-            </a-descriptions-item>
-            <a-descriptions-item label="喷墨前定位照片(加)">
-              <vxe-image
-                :width="100"
-                mask-closable
-                :src="`data:image/png;base64,${props.currentRow.additionUVPicCheck}`"
+                :src="`data:image/png;base64,${props.currentRow.additionPicCheck}`"
               />
             </a-descriptions-item>
             <a-descriptions-item label="废本原因">
