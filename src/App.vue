@@ -4,6 +4,7 @@ import { LoadingOutlined } from '@ant-design/icons-vue';
 import { useI18n } from 'vue-i18n';
 import zhCN from 'ant-design-vue/es/locale/zh_CN';
 import { useAppStore } from './store';
+import SuceessModal from '@/pages/bigScreen/mainTain/version/checkPwModal.vue';
 // import enUS from "ant-design-vue/es/locale/en_US";
 const appStore = useAppStore();
 const { t } = useI18n();
@@ -16,6 +17,22 @@ const indicator = h(LoadingOutlined, {
     fontSize: '200px',
   },
   spin: true,
+});
+const checkPwOpen = ref<boolean>(false);
+function setcheckPwOpen(value: boolean) {
+  checkPwOpen.value = value;
+}
+
+onMounted(() => {
+  // 监听主进程发送的确认退出消息
+  window.ipcRenderer.on('confirm-quit', () => {
+    checkPwOpen.value = true;
+  });
+});
+
+onUnmounted(() => {
+  // 移除监听器
+  window.ipcRenderer.removeAllListeners('confirm-quit');
 });
 </script>
 
@@ -39,6 +56,12 @@ const indicator = h(LoadingOutlined, {
             <component :is="Component" :key="curRoute.fullPath" />
           </KeepAlive>
         </router-view>
+        <SuceessModal
+          :open="checkPwOpen"
+          :handle-ok="() => setcheckPwOpen(false)"
+          :handle-cancel="() => setcheckPwOpen(false)"
+          title="退出系统"
+        />
       </a-spin>
     </a-app>
   </a-config-provider>

@@ -152,7 +152,10 @@ async function createWindow() {
     // 在这里编写处理用户退出的逻辑
     // console.log('🚀 ~ win.on ~ canExit.value:', canExit.value);
     // 如果需要阻止窗口关闭，可以调用 event.preventDefault()
+    console.log('🚀 ~ win.on ~ canExit.value):', canExit.value);
+
     if (!canExit.value) {
+      win.webContents.send('confirm-quit');
       event.preventDefault();
     }
   });

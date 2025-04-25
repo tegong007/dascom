@@ -26,7 +26,7 @@ export default defineConfig(({ command }) => {
   // 定义全局变量
   const viteDevServerUrl = process.env.VSCODE_DEBUG
     ? pkg.debug.env.VITE_DEV_SERVER_URL
-    : 'http://localhost:6101';
+    : 'http://localhost:6102';
 
   return {
     plugins: [

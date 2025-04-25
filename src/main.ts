@@ -7,7 +7,6 @@ import Antd from 'ant-design-vue';
 import { CountTo } from 'vue3-count-to';
 import VxeUI from 'vxe-pc-ui';
 import VxeUITable from 'vxe-table';
-import App from './App.vue';
 import { setupStore } from './store';
 import { setupNaiveDiscreteApi } from './utils';
 import i18n from './i18n';
@@ -20,6 +19,7 @@ import 'vxe-pc-ui/lib/style.css';
 import 'vxe-table/lib/style.css';
 
 async function bootstrap() {
+  const { default: App } = await import('./App.vue');
   const app = createApp(App);
   setupStore(app);
   app.use(i18n);
