@@ -1,16 +1,16 @@
+import { spawn } from 'node:child_process';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 // import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
-import path from 'node:path';
-import os from 'node:os';
-import fs from 'node:fs';
-import { spawn } from 'node:child_process';
 import {
-  BrowserWindow,
-  Menu,
   app,
+  BrowserWindow,
   dialog,
   globalShortcut,
   ipcMain,
+  Menu,
   shell,
 } from 'electron';
 
@@ -152,7 +152,6 @@ async function createWindow() {
     // 在这里编写处理用户退出的逻辑
     // console.log('🚀 ~ win.on ~ canExit.value:', canExit.value);
     // 如果需要阻止窗口关闭，可以调用 event.preventDefault()
-    console.log('🚀 ~ win.on ~ canExit.value):', canExit.value);
 
     if (!canExit.value) {
       win.webContents.send('confirm-quit');
