@@ -1,7 +1,7 @@
 <template>
   <div class="w-full">
     <div class="w-full flex items-center justify-center">
-      <span class="text-[38px] color-[#fff] line-height-[40px] font-[youshe]">数字孪生平台</span>
+      <span class="text-[38px] color-[#fff] line-height-[40px] font-[youshe]">智能护照制证平台</span>
     </div>
     <div class="mt10 w-full flex items-center justify-center">
       <span class="text-[2.2em] line-height-[40px] font-[youshe]">{{
@@ -21,10 +21,10 @@
 </template>
 
 <script lang="ts" setup>
-// import useCustomTimer from '@/utils/useCustomTimer';
-import { formatDateTime } from '@/utils/time';
 // import TheModal from '@/components/modal/TheModal.vue';
 import { mainTainModule } from '@/apis/proApi';
+// import useCustomTimer from '@/utils/useCustomTimer';
+import { formatDateTime } from '@/utils/time';
 
 const props = defineProps({
   title: String,

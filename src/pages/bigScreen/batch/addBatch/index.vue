@@ -75,18 +75,18 @@
 </template>
 
 <script lang="ts" setup>
+import { addTask } from '@/apis/testApi';
+import TheButton from '@/components/base/TheButton.vue';
+import { contextHolder, openNotify } from '@/components/base/useNotification';
+import MyTable from '@/components/base/vxeTable.vue';
+import bigScreenHeader from '@/components/bigScreen/header.vue';
+import TipModal from '@/components/modal/TheModal.vue';
+import router from '@/router/index.ts';
+import { useAppStore } from '@/store/index';
 import { PlusCircleFilled } from '@ant-design/icons-vue';
 import { findLabelByValue, urgencyOptions } from '../option';
 import SuceessModal from './modal/successModal.vue';
 import UpdateModal from './modal/updateModal.vue';
-import bigScreenHeader from '@/components/bigScreen/header.vue';
-import TheButton from '@/components/base/TheButton.vue';
-import MyTable from '@/components/base/vxeTable.vue';
-import TipModal from '@/components/modal/TheModal.vue';
-import router from '@/router/index.ts';
-import { useAppStore } from '@/store/index';
-import { addTask } from '@/apis/testApi';
-import { contextHolder, openNotify } from '@/components/base/useNotification';
 
 const modal = ref('新增任务');
 const successTitle = ref('任务添加成功，退回首页');

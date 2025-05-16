@@ -32,11 +32,11 @@
                 <a-form-item label="人数" name="num">
                   <a-input
                     v-model:value="formState.num"
-                    placeholder="请输入数字（1-99）"
+                    placeholder="请输入数字（1-2000）"
                     class="w-full"
-                    :maxlength="2"
+                    :maxlength="4"
                     @input="validateInput"
-                    @click="onInputFocus($event, 'num')"
+                    @touchstart="onInputFocus($event, 'num')"
                   />
                 </a-form-item>
               </a-col>
@@ -90,10 +90,10 @@
 </template>
 
 <script lang="ts" setup>
-import { defineExpose, defineProps } from 'vue';
 import type { UnwrapRef } from 'vue';
-import { urgencyOptions } from '../../option.js';
 import SimpleKeyboard from '@/components/base/simpleKeyboard.vue';
+import { defineExpose, defineProps } from 'vue';
+import { urgencyOptions } from '../../option.js';
 
 const props = defineProps({
   open: Boolean,
@@ -116,8 +116,8 @@ const rules = {
   num: [
     { required: true, message: '请输入人数', trigger: ['blur', 'change'] },
     {
-      pattern: /^[1-9]\d?$/,
-      message: '请输入1到99的正整数',
+      pattern: /^(?:[1-9]|[1-9]\d{1,2}|1\d{3}|2000)$/,
+      message: '请输入1到2000的正整数',
       trigger: ['blur', 'change'],
     },
   ],
@@ -144,7 +144,7 @@ function validateInput(event) {
   // 获取输入框的值
   let value = event.target.value;
   // 使用正则表达式限制输入为1到99的正整数
-  const regex = /^[1-9]\d?$/; // 匹配1到99的正整数
+  const regex = /^(?:[1-9]|[1-9]\d{1,2}|1\d{3}|2000)$/; // 匹配1到2000的正整数
   // 如果输入不符合正则表达式，重置为上一次有效的值
   if (!regex.test(value)) {
     // 如果输入无效，清空输入框或设置为默认值
@@ -208,7 +208,7 @@ function onChangeKeyboard(input, keyboard) {
     setInputCaretPosition(cursorPosition.value, caretPosition);
   let Newvalue = input;
   // 使用正则表达式限制输入为1到99的正整数
-  const regex = /^[1-9]\d?$/; // 匹配1到99的正整数
+  const regex = /^(?:[1-9]|[1-9]\d{1,2}|1\d{3}|2000)$/; // 匹配1到2000的正整数
   // 如果输入不符合正则表达式，重置为上一次有效的值
   if (!regex.test(Newvalue)) {
     // 如果输入无效，清空输入框或设置为默认值
