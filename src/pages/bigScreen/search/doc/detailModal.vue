@@ -37,7 +37,8 @@
               {{ formatterValue('urgentType', props.currentRow.urgentType) }}
             </a-descriptions-item> -->
             <a-descriptions-item label="当前工位">
-              {{ formatterValue('position', props.currentRow.position) }}
+              {{ props.currentRow.position }}
+              <!-- {{ formatterValue('position', props.currentRow.position) }} -->
             </a-descriptions-item>
             <a-descriptions-item label="证本状态">
               {{ formatterValue('docStatus', props.currentRow.docStatus) }}
@@ -133,9 +134,9 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps } from 'vue';
-import { getWorkstationName } from '@/utils/workstationDefinitions';
+// import { getWorkstationName } from '@/utils/workstationDefinitions';
 import { findLabelByValue } from '@/pages/bigScreen/batch/option.ts';
+import { defineProps } from 'vue';
 
 const props = defineProps({
   open: Boolean,
@@ -146,8 +147,8 @@ const props = defineProps({
 });
 function formatterValue(column, cellValue) {
   switch (column) {
-    case 'position':
-      return getWorkstationName(cellValue);
+    // case 'position':
+    //   return getWorkstationName(cellValue);
     case 'type':
       return findLabelByValue('docTypesOptions', cellValue);
     case 'docStatus':

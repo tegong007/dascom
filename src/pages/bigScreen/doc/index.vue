@@ -95,18 +95,18 @@
 </template>
 
 <script lang="ts" setup>
+import { documentModule } from '@/apis/proApi';
+import TheButton from '@/components/base/TheButton.vue';
+import { contextHolder, openNotify } from '@/components/base/useNotification';
+import MyTable from '@/components/base/vxeTable.vue';
+import bigScreenHeader from '@/components/bigScreen/header.vue';
+import TheModal from '@/components/modal/TheModal.vue';
+// import { getWorkstationName } from '@/utils/workstationDefinitions';
+import { findLabelByValue } from '@/pages/bigScreen/batch/option.ts';
+import { useAppStore } from '@/store/index';
 import { RollbackOutlined } from '@ant-design/icons-vue';
 import docForm from './doc-form.vue';
 import DocInfo from './docInfo.vue';
-import bigScreenHeader from '@/components/bigScreen/header.vue';
-import TheButton from '@/components/base/TheButton.vue';
-import MyTable from '@/components/base/vxeTable.vue';
-import TheModal from '@/components/modal/TheModal.vue';
-import { contextHolder, openNotify } from '@/components/base/useNotification';
-import { getWorkstationName } from '@/utils/workstationDefinitions';
-import { findLabelByValue } from '@/pages/bigScreen/batch/option.ts';
-import { documentModule } from '@/apis/proApi';
-import { useAppStore } from '@/store/index';
 
 const pageVO = reactive({
   total: 20,
@@ -189,7 +189,7 @@ const colums = ref([
   {
     title: '当前工位',
     field: 'position',
-    formatter: formatterValue,
+    // formatter: formatterValue,
     width: 150,
     overflow: 'title',
   },
@@ -315,8 +315,8 @@ const colums = ref([
 ]);
 function formatterValue({ cellValue, column }: any) {
   switch (column.field) {
-    case 'position':
-      return getWorkstationName(cellValue);
+    // case 'position':
+    //   return getWorkstationName(cellValue);
     case 'type':
       return findLabelByValue('docTypesOptions', cellValue);
     case 'docStatus':
