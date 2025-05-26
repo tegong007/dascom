@@ -64,7 +64,7 @@
               ref="simpleKeyboard"
               keyboard-width="w20%"
               layout="num"
-              :max-length="2"
+              :max-length="4"
               :input="formState[changeIpt]"
               @on-change="onChangeKeyboard"
               @closekeyboard="closekeyboard"

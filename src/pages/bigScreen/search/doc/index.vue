@@ -128,18 +128,17 @@
 </template>
 
 <script lang="ts" setup>
-import { DownOutlined } from '@ant-design/icons-vue';
 import type { MenuProps } from 'ant-design-vue';
-import docForm from './doc-form.vue';
+import { documentModule } from '@/apis/proApi';
+import { contextHolder, openNotify } from '@/components/base/useNotification';
 
-import DetailModal from './detailModal.vue';
 import MyTable from '@/components/base/vxeTable.vue';
 import TheModal from '@/components/modal/TheModal.vue';
-import { contextHolder, openNotify } from '@/components/base/useNotification';
-import { getWorkstationName } from '@/utils/workstationDefinitions';
 import { findLabelByValue } from '@/pages/bigScreen/batch/option.ts';
-import { documentModule } from '@/apis/proApi';
 import { useAppStore } from '@/store/index';
+import { DownOutlined } from '@ant-design/icons-vue';
+import DetailModal from './detailModal.vue';
+import docForm from './doc-form.vue';
 
 const props = defineProps({
   choose: Number,
@@ -256,7 +255,7 @@ const colums = ref([
   {
     title: '当前工位',
     field: 'position',
-    formatter: formatterValue,
+    // formatter: formatterValue,
     overflow: 'title',
     width: 180,
   },
@@ -383,8 +382,8 @@ const colums = ref([
 ]);
 function formatterValue({ cellValue, column }: any) {
   switch (column.field) {
-    case 'position':
-      return getWorkstationName(cellValue);
+    // case 'position':
+    //   return getWorkstationName(cellValue);
     case 'type':
       return findLabelByValue('docTypesOptions', cellValue);
     case 'idType':

@@ -5,7 +5,7 @@
     <bigScreenHeader />
 
     <div
-      class="absolute bottom-[12%] left-180px h-35% w-10% flex items-center justify-center opacity-0 hover:opacity-100"
+      class="absolute bottom-[16%] left-180px h-35% w-10% flex items-center justify-center opacity-0 hover:opacity-100"
       @click="
         $goto('WorkstationStatus', {
           light: 4,
@@ -86,7 +86,7 @@
     </a-row>
     <!-- 左边按钮 -->
     <div
-      class="groupBtn absolute right-35 top-150 h-100vh flex flex-col items-center justify-center"
+      class="groupBtn absolute bottom-0px right-35 z-22 h8em flex items-center justify-center gap-20"
     >
       <TheButton
         :title="entire.hasTask ? '暂停进本' : '开始进本'"
@@ -94,7 +94,6 @@
       />
       <TheButton
         title="全线急停"
-        class="mt2em"
         :disable="entire.status !== 'error'"
         @click="setModal(2)"
       />
@@ -139,16 +138,16 @@
 </template>
 
 <script setup lang="ts">
-import { App } from 'ant-design-vue';
-import FinishedProductBg from './module/finishedProduct.vue';
-import AddMore from './module/addMore.vue';
-import Print from './module/printPage.vue';
-import Start from './module/startPage.vue';
+import { homeModule } from '@/apis/proApi';
 import TheButton from '@/components/base/TheButton.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
-import useCustomTimer from '@/utils/useCustomTimer';
-import { homeModule } from '@/apis/proApi';
 import { useAppStore } from '@/store/index';
+import useCustomTimer from '@/utils/useCustomTimer';
+import { App } from 'ant-design-vue';
+import AddMore from './module/addMore.vue';
+import FinishedProductBg from './module/finishedProduct.vue';
+import Print from './module/printPage.vue';
+import Start from './module/startPage.vue';
 
 const { notification } = App.useApp();
 
@@ -313,7 +312,7 @@ async function controlMachine() {
 }
 
 .bg {
-  background-image: url('../../assets/image/bigScreen/bg.png');
+  background-image: url('../../assets/image/bigScreen/new-bg.png');
   background-size: 100% 100%;
   background-repeat: 'no-repeat';
   .light {
