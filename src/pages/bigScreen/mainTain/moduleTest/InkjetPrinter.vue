@@ -63,7 +63,10 @@
                 class="btn hover:text-[#89f7ff]!"
                 @click="
                   transfer('/uvpdps/moto-reposition', [
-                    { deviceIndex: uvPrinters.deviceIndex },
+                    {
+                      deviceIndex: uvPrinters.deviceIndex,
+                      dev: uvPrinters.dev,
+                    },
                   ])
                 "
               >
@@ -72,9 +75,7 @@
               <a-button
                 type="link"
                 class="btn hover:text-[#89f7ff]!"
-                @click="
-                  motoMove(uvPrinters.deviceIndex, uvPrinters.positionItems)
-                "
+                @click="motoMove(uvPrinters, uvPrinters.positionItems)"
               >
                 移动
               </a-button>
@@ -109,9 +110,7 @@
               <a-button
                 type="link"
                 class="btn hover:text-[#89f7ff]!"
-                @click="
-                  cleanHead(uvPrinters.deviceIndex, uvPrinters.cleanItems)
-                "
+                @click="cleanHead(uvPrinters, uvPrinters.cleanItems)"
               >
                 清洗
               </a-button>
@@ -145,7 +144,7 @@
               <a-button
                 type="link"
                 class="btn hover:text-[#89f7ff]!"
-                @click="print(uvPrinters.deviceIndex, uvPrinters.printItems)"
+                @click="print(uvPrinters, uvPrinters.printItems)"
               >
                 打印测试页
               </a-button>
@@ -173,11 +172,11 @@
 </template>
 
 <script lang="ts" setup>
-import { App } from 'ant-design-vue';
-import { QuestionCircleOutlined } from '@ant-design/icons-vue';
 import { getApiTransfer } from '@/apis/webApi';
-import { useAppStore } from '@/store/index';
 import SimpleKeyboard from '@/components/base/simpleKeyboard.vue';
+import { useAppStore } from '@/store/index';
+import { QuestionCircleOutlined } from '@ant-design/icons-vue';
+import { App } from 'ant-design-vue';
 
 const props = defineProps({
   data: Object,
@@ -187,30 +186,33 @@ const props = defineProps({
   currentPage: String,
 });
 const { notification } = App.useApp();
-async function motoMove(deviceIndex, arr) {
+async function motoMove(uvPrintersObj, arr) {
   const objs = [
     {
-      deviceIndex,
+      deviceIndex: uvPrintersObj.deviceIndex,
+      dev: uvPrintersObj.dev,
       axisType: Number(arr[0].value),
       target: arr[1].value,
     },
   ];
   transfer('/uvpdps/moto-move', objs);
 }
-async function cleanHead(deviceIndex, arr) {
+async function cleanHead(uvPrintersObj, arr) {
   const objs = [
     {
-      deviceIndex,
+      deviceIndex: uvPrintersObj.deviceIndex,
+      dev: uvPrintersObj.dev,
       headID: Number(arr[0].value),
       intension: Number(arr[1].value),
     },
   ];
   transfer('/uvpdps/clean-head', objs);
 }
-async function print(deviceIndex, arr) {
+async function print(uvPrintersObj, arr) {
   const objs = [
     {
-      deviceIndex,
+      deviceIndex: uvPrintersObj.deviceIndex,
+      dev: uvPrintersObj.dev,
       platform: Number(arr[0].value),
       isUseData: false,
     },

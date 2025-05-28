@@ -12,7 +12,24 @@
             <a-select-option :value="2">团组</a-select-option>
             <a-select-option :value="3">证本</a-select-option>
           </a-select> -->
+      <!-- <div v-if="props.choose === 1" v-show="showKeyboard">
+        <SimpleKeyboard
+          ref="simpleKeyboard"
+          keyboard-width="w20%"
+          :transform="[1050, 590]"
+          layout="num"
+          :max-length="2"
+          :input="pageVO.currentPage"
+          @on-change="onChangeKeyboard"
+          @closekeyboard="closekeyboard"
+        />
+      </div> -->
       <TeamForm ref="searchRef" :set-search-form="setSearchForm" />
+      <!-- <TeamForm
+        ref="searchRef"
+        :set-search-form="setSearchForm"
+        @closekeyboard="closekeyboard"
+      /> -->
 
       <a-space :size="20" class="absolute right-10 top-[20px]">
         <a-button
@@ -73,11 +90,11 @@
             <a-input
               class="w-50 m-l-3"
               size="small"
-              v-model:value="pageVO.jumpPage"
-              @click="onInputFocus($event, 'jumpPage')"
-              @blur="validatePageNumber(pageVO.jumpPage)"
+              :maxlength="2"
+              v-model:value="pageVO.currentPage"
+              @input="validateInput"
+              @click="onInputFocus($event, 'num')"
             ></a-input>
-
             页，
           </span> -->
           <span>共{{ Math.ceil(pageVO.total / pageVO.pageSize) }}页，{{
@@ -101,16 +118,17 @@
 </template>
 
 <script lang="ts" setup>
+import { TaskModule } from '@/apis/proApi';
+import { contextHolder, openNotify } from '@/components/base/useNotification';
+import MyTable from '@/components/base/vxeTable.vue';
+import TheModal from '@/components/modal/TheModal.vue';
+import { TaskStatusOptions } from '@/pages/bigScreen/batch/option.ts';
+import { useAppStore } from '@/store/index';
 import { RollbackOutlined } from '@ant-design/icons-vue';
 // import { useRoute } from 'vue-router';
 import { defineProps, reactive } from 'vue';
 import TeamForm from './task-form.vue';
-import { TaskStatusOptions } from '@/pages/bigScreen/batch/option.ts';
-import MyTable from '@/components/base/vxeTable.vue';
-import TheModal from '@/components/modal/TheModal.vue';
-import { contextHolder, openNotify } from '@/components/base/useNotification';
-import { TaskModule } from '@/apis/proApi';
-import { useAppStore } from '@/store/index';
+// import SimpleKeyboard from '@/components/base/simpleKeyboard.vue';
 
 const props = defineProps({
   choose: Number,
@@ -352,6 +370,75 @@ async function getDataPage() {
 //   getDataPage();
 // };
 
+// const showKeyboard = ref(false); // 键盘默认隐藏
+// const changeIpt = ref(''); // 选择了哪个输入框
+// const simpleKeyboard = ref(null);
+// const cursorPosition = ref('');
+// function onInputFocus(event, res) {
+//   if (searchRef.value) {
+//     searchRef.value.setChildrenShow(false);
+//   }
+//   showKeyboard.value = true;
+//   changeIpt.value = res;
+//   cursorPosition.value = event.target;
+// }
+// // 给输入框赋值
+// function onChangeKeyboard(input, keyboard) {
+//   console.log('🚀 ~ onChangeKeyboard ~ input:', input);
+//   const caretPosition = keyboard.caretPosition;
+//   if (caretPosition !== null)
+//     setInputCaretPosition(cursorPosition.value, caretPosition);
+//   let Newvalue = input;
+//   // 使用正则表达式限制输入为1到99的正整数
+//   const regex = /^[1-9]\d?$/; // 匹配1到99的正整数
+//   // 如果输入不符合正则表达式，重置为上一次有效的值
+//   if (!regex.test(Newvalue)) {
+//     // 如果输入无效，清空输入框或设置为默认值
+//     pageVO.currentPage = '';
+//   } else {
+//     // 如果输入有效更新绑定的值
+//     if (Newvalue > Math.ceil(pageVO.total / pageVO.pageSize)) {
+//       Newvalue = Math.ceil(pageVO.total / pageVO.pageSize);
+//       pageVO.currentPage = Number(Newvalue);
+//     } else {
+//       pageVO.currentPage = Number(Newvalue);
+//     }
+//     getDataPage();
+//   }
+// }
+// function setInputCaretPosition(elem, pos) {
+//   setTimeout(() => {
+//     if (elem.setSelectionRange) {
+//       elem.focus();
+//       elem.setSelectionRange(pos, pos);
+//     }
+//   });
+// }
+// function closekeyboard() {
+//   showKeyboard.value = false;
+// }
+// function validateInput(event) {
+//   // 获取输入框的值
+//   let value = event.target.value;
+//   // 使用正则表达式限制输入为1到99的正整数
+//   const regex = /^[1-9]\d?$/; // 匹配1到99的正整数
+//   // 如果输入不符合正则表达式，重置为上一次有效的值
+//   if (!regex.test(value)) {
+//     // 如果输入无效，清空输入框或设置为默认值
+//     pageVO.currentPage = value = '';
+//   } else {
+//     // 如果输入有效，更新绑定的值
+//     if (value > Math.ceil(pageVO.total / pageVO.pageSize)) {
+//       value = Math.ceil(pageVO.total / pageVO.pageSize);
+//       pageVO.currentPage = Number(value);
+//     } else {
+//       pageVO.currentPage = Number(value);
+//     }
+//     getDataPage();
+//   }
+//   // 更新输入框的值
+//   event.target.value = Number(value);
+// }
 watch(
   () => props.choose,
   (newValue) => {

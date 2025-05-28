@@ -14,7 +14,7 @@
           <a-button
             type="link"
             class="btn hover:text-[#89f7ff]!"
-            @click="() => transfer(camera.deviceIndex)"
+            @click="() => transfer(camera)"
           >
             拍照
           </a-button>
@@ -31,9 +31,9 @@
 </template>
 
 <script lang="ts" setup>
-import { App } from 'ant-design-vue';
 import { getApiTransfer } from '@/apis/webApi';
 import { useAppStore } from '@/store/index';
+import { App } from 'ant-design-vue';
 
 const props = defineProps({
   data: Object,
@@ -41,13 +41,13 @@ const props = defineProps({
 const { notification } = App.useApp();
 const path = ref('');
 const imageRef = ref(null);
-async function transfer(deviceIndex) {
+async function transfer(camera) {
   try {
     useAppStore().setSpinning(true);
     const params = {
       transURI: '/ips-c/camera-work',
       paraIn: {
-        objs: [{ deviceIndex }],
+        objs: [{ deviceIndex: camera.deviceIndex, dev: camera.dev }],
       },
     };
     const data = await getApiTransfer(params);

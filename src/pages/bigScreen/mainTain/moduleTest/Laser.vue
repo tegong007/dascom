@@ -33,14 +33,14 @@
           <a-button
             type="link"
             class="btn hover:text-[#89f7ff]!"
-            @click="previewPhoto(laser.deviceIndex, laser.printItems)"
+            @click="previewPhoto(laser, laser.printItems)"
           >
             预览标刻
           </a-button>
           <a-button
             type="link"
             class="btn hover:text-[#89f7ff]!"
-            @click="redLight(laser.deviceIndex, laser.printItems)"
+            @click="redLight(laser, laser.printItems)"
           >
             红光
           </a-button>
@@ -54,11 +54,7 @@
           <a-button
             type="link"
             class="btn hover:text-[#89f7ff]!"
-            @click="
-              transfer('/lpdps/emergency-stop', [
-                { deviceIndex: laser.deviceIndex },
-              ])
-            "
+            @click="transfer('/lpdps/emergency-stop', laser)"
           >
             急停
           </a-button>
@@ -76,9 +72,9 @@
 </template>
 
 <script lang="ts" setup>
-import { App } from 'ant-design-vue';
 import { getApiTransfer } from '@/apis/webApi';
 import { useAppStore } from '@/store/index';
+import { App } from 'ant-design-vue';
 
 const props = defineProps({
   data: Object,
@@ -86,42 +82,45 @@ const props = defineProps({
 const { notification } = App.useApp();
 const imageRef = ref(null);
 const path = ref('');
-async function previewPhoto(deviceIndex, arr) {
+async function previewPhoto(laserObj, arr) {
   const objs = [
     {
-      deviceIndex,
+      deviceIndex: laserObj.deviceIndex,
+      dev: laserObj.dev,
       platform: Number(arr[0].value),
       isUseData: false,
     },
   ];
   transfer('/lpdps/preview', objs);
 }
-async function redLight(deviceIndex, arr) {
+async function redLight(laserObj, arr) {
   const objs = [
     {
-      deviceIndex,
+      deviceIndex: laserObj.deviceIndex,
+      dev: laserObj.dev,
       platform: Number(arr[0].value),
     },
   ];
   transfer('/lpdps/red-light', objs);
 }
-async function printLaser(deviceIndex, arr) {
+async function printLaser(laserObj, arr) {
   const objs = [
     {
-      deviceIndex,
+      deviceIndex: laserObj.deviceIndex,
+      dev: laserObj.dev,
       platform: Number(arr[0].value),
       isUseData: false,
     },
   ];
   transfer('/lpdps/print', objs);
 }
-async function transfer(url, objs) {
+async function transfer(url, laserObj) {
   try {
     useAppStore().setSpinning(true);
     const params = {
       transURI: url,
       paraIn: {
-        objs,
+        objs: [{ deviceIndex: laserObj.deviceIndex, dev: laserObj.dev }],
       },
     };
     const data = await getApiTransfer(params);

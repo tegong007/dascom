@@ -26,16 +26,14 @@
           <a-button
             type="link"
             class="btn hover:text-[#89f7ff]!"
-            @click="
-              transfer('/ips-r/read-test-data', index, reader.deviceIndex)
-            "
+            @click="transfer('/ips-r/read-test-data', index, reader)"
           >
             读测试数据
           </a-button>
           <a-button
             type="link"
             class="btn hover:text-[#89f7ff]!"
-            @click="transfer('/ips-r/read-card-uid', index, reader.deviceIndex)"
+            @click="transfer('/ips-r/read-card-uid', index, reader)"
           >
             读卡UID
           </a-button>
@@ -43,12 +41,7 @@
             type="link"
             class="btn hover:text-[#89f7ff]!"
             @click="
-              transfer(
-                '/ips-r/write-test-data',
-                index,
-                reader.deviceIndex,
-                reader.value,
-              )
+              transfer('/ips-r/write-test-data', index, reader, reader.value)
             "
           >
             写入测试数据
@@ -69,10 +62,10 @@
 </template>
 
 <script lang="ts" setup>
-import { App } from 'ant-design-vue';
 import { getApiTransfer } from '@/apis/webApi';
-import { useAppStore } from '@/store/index';
 import SimpleKeyboard from '@/components/base/simpleKeyboard.vue';
+import { useAppStore } from '@/store/index';
+import { App } from 'ant-design-vue';
 
 const props = defineProps({
   data: Object,
@@ -82,13 +75,19 @@ const props = defineProps({
   currentPage: String,
 });
 const { notification } = App.useApp();
-async function transfer(url, index, deviceIndex, inputData) {
+async function transfer(url, index, readerObj, inputData) {
   try {
     useAppStore().setSpinning(true);
     const params = {
       transURI: url,
       paraIn: {
-        objs: [{ deviceIndex, data: inputData }],
+        objs: [
+          {
+            deviceIndex: readerObj.deviceIndex,
+            dev: readerObj.dev,
+            data: inputData,
+          },
+        ],
       },
     };
     const data = await getApiTransfer(params);

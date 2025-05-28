@@ -51,7 +51,7 @@
         清空
       </a-button>
     </a-form>
-    <div v-show="showKeyboard">
+    <div v-if="currentShow" v-show="showKeyboard">
       <SimpleKeyboard
         ref="simpleKeyboard"
         :transform="[0, 30]"
@@ -64,14 +64,15 @@
 </template>
 
 <script setup lang="ts">
-import { defineExpose, defineProps, reactive } from 'vue';
 import type { UnwrapRef } from 'vue';
-import { SearchOutlined } from '@ant-design/icons-vue';
-
-import { useRoute } from 'vue-router';
-import { TaskStatusOptions } from '@/pages/bigScreen/batch/option.ts';
 import SimpleKeyboard from '@/components/base/simpleKeyboard.vue';
-
+import { TaskStatusOptions } from '@/pages/bigScreen/batch/option.ts';
+import { SearchOutlined } from '@ant-design/icons-vue';
+import { defineExpose, defineProps, reactive } from 'vue';
+import { useRoute } from 'vue-router';
+// import { getCurrentInstance } from 'vue';
+// const emit = defineEmits(['closekeyboard']);
+// const instance = getCurrentInstance();
 const props = defineProps({
   setSearchForm: Function,
 });
@@ -137,10 +138,14 @@ function clearAll() {
 }
 
 const showKeyboard = ref(false); // 键盘默认隐藏
+// const currentShow = ref(false); // 键盘默认隐藏
 const changeIpt = ref(''); // 选择了哪个输入框
 const simpleKeyboard = ref(null);
 const cursorPosition = ref('');
 function onInputFocus(event, res) {
+  // 只出现当前的
+  // currentShow.value = true;
+  // emit('closekeyboard');
   showKeyboard.value = true;
   changeIpt.value = res;
   cursorPosition.value = event.target;
@@ -173,9 +178,15 @@ function setInputCaretPosition(elem, pos) {
 }
 function closekeyboard() {
   showKeyboard.value = false;
+  // currentShow.value = false;
 }
+// const setChildrenShow = (value: boolean) => {
+//   console.log('🚀 ~ setChildrenShow ~ value:', value);
+//   currentShow.value = value;
+// };
 defineExpose({
   setTaskID,
+  // setChildrenShow,
 });
 </script>
 
