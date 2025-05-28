@@ -95,7 +95,7 @@
 </template>
 
 <script lang="ts" setup>
-import { documentModule } from '@/apis/proApi';
+import { physicalModule } from '@/apis/proApi';
 import TheButton from '@/components/base/TheButton.vue';
 import { contextHolder, openNotify } from '@/components/base/useNotification';
 import MyTable from '@/components/base/vxeTable.vue';
@@ -348,7 +348,7 @@ async function operate() {
   try {
     const oldCheckrecID = oldCheckedRow.value.map(item => item.recID);
     const allCheckRox = [...new Set([...checkedRow.value, ...oldCheckrecID])];
-    await documentModule.getDocOperate({
+    await physicalModule.getDocOperate({
       recID: allCheckRox,
       operate: isReset.value,
     });
@@ -453,7 +453,7 @@ async function getDataPage() {
       page: pageVO.currentPage,
       rowPerPage: pageVO.pageSize,
     };
-    const data = await documentModule.getDocDetailGeneral(params);
+    const data = await physicalModule.getDocDetailGeneral(params);
     if (data.respData) {
       tableData.value = data.respData.docInfo;
       pageVO.currentPage = data.respData.page;

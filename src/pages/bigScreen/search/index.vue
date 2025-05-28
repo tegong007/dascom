@@ -5,11 +5,14 @@
       class="absolute left-160 top-126 z-99 flex items-center justify-between text-16px"
     >
       <span>搜索类型：</span>
-      <a-select v-model:value="choose" @change="changeChoose">
+      <a-select v-model:value="choose" class="w120px" @change="changeChoose">
         <a-select-option :value="1">
           任务
         </a-select-option>
         <!-- <a-select-option :value="2"> 团组 </a-select-option> -->
+        <a-select-option :value="2">
+          制证数据
+        </a-select-option>
         <a-select-option :value="3">
           证本
         </a-select-option>
@@ -22,13 +25,13 @@
       :doc-task-id="docTaskId"
       :change-task-id-or-batch-id="changeTaskIdOrBatchId"
     />
-    <!-- <Team
+    <Record
       v-if="choose === 2"
       :choose="choose"
-      :doc-team-id="docTeamId"
+      :change-task-id-or-batch-id="changeTaskIdOrBatchId"
       :doc-batch-id="docBatchId"
-      :change-batch-id-o-rteam-id="changeBatchIdORteamId"
-    /> -->
+      :doc-task-id="docTaskId"
+    />
     <Doc
       v-if="choose === 3"
       :choose="choose"
@@ -51,11 +54,11 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from 'vue-router';
-import Task from './task/index.vue';
-// import Team from './team/index.vue';
-import Doc from './doc/index.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
+import { useRoute } from 'vue-router';
+import Doc from './doc/index.vue';
+import Record from './record/index.vue';
+import Task from './task/index.vue';
 
 const route = useRoute();
 const choose = ref<number>(0);

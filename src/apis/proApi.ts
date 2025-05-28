@@ -21,15 +21,26 @@ const TaskModule = {
   //   request.post(`${v1}/tss/batch-statistics`, data),
 };
 
-// 证本模块
+// 制证数据模块
 const documentModule = {
   getDocDetailPage: (data: any) => request.post(`${v1}/tss/doc-detail`, data),
   getDocStatistics: (data: any) =>
     request.post(`${v1}/tss/doc-statistics`, data),
   getDocAllStatistics: () => request.post(`${v1}/tss/doc-allStatistics`),
   getDocOperate: (data: any) => request.post(`${v1}/tss/doc-operate`, data),
+  getDocDetailGeneral: (data: any) => request.post(`${v1}/tss/doc-data`, data),
+};
+
+// 证本模块
+const physicalModule = {
+  // getDocDetailPage: (data: any) => request.post(`${v1}/tss/doc-detail`, data),
+  // getDocStatistics: (data: any) =>
+  //   request.post(`${v1}/tss/doc-statistics`, data),
+  // getDocAllStatistics: () => request.post(`${v1}/tss/doc-allStatistics`),
+  getDocOperate: (data: any) =>
+    request.post(`${v1}/tss/physical-operate`, data),
   getDocDetailGeneral: (data: any) =>
-    request.post(`${v1}/tss/doc-detail-general`, data),
+    request.post(`${v1}/tss/physical-doc`, data),
 };
 
 // 维护页面
@@ -47,10 +58,11 @@ const settingMoule = {
     request.post(`${v1}/tss/get-setting-item`, data),
 };
 export {
-  homeModule,
-  positionModule,
-  TaskModule,
   documentModule,
+  homeModule,
   mainTainModule,
+  physicalModule,
+  positionModule,
   settingMoule,
+  TaskModule,
 };

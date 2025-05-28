@@ -4,7 +4,7 @@
       ref="formRef"
       layout="inline"
       :model="formState"
-      class="w-full rounded-[8px] bg-[#ffffff34] p-x-10 p-y-20 pl210px"
+      class="w-full rounded-[8px] bg-[#ffffff34] p-x-10 p-y-20 pl240px"
     >
       <a-form-item label="任务号" name="taskID">
         <a-input
@@ -51,7 +51,8 @@
         清空
       </a-button>
     </a-form>
-    <div v-if="currentShow" v-show="showKeyboard">
+    <!-- <div v-if="currentShow" v-show="showKeyboard"> -->
+    <div v-show="showKeyboard">
       <SimpleKeyboard
         ref="simpleKeyboard"
         :transform="[0, 30]"
