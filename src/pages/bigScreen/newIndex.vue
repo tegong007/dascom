@@ -57,7 +57,7 @@
       </span>
     </div>
 
-    <a-row
+    <!-- <a-row
       class="relative top-[4.3vh] h-33.7% w-full p-l-3em p-r-1.5em"
       :gutter="[8, 0]"
     >
@@ -72,18 +72,14 @@
             :span="8"
             class="group"
           >
-            <!-- <span
-              class="absolute right-20 top-10 z-88 cursor-default border-1 border-[#fff] rounded-[30px] bg-[#00000049] p-6 text-[18px] font-[youshe] opacity-0 group-hover:opacity-100"
-              @click="$goto('SetPage', { currentModel: item })"
-              >查看证本</span
-            > -->
             <Start v-if="item === 0" class="wh-full" :data="blankCheck" />
             <Print v-if="item === 1" class="wh-full" :data="mainPrint" />
             <AddMore v-if="item === 2" class="wh-full" :data="additionPrint" />
           </a-col>
         </a-row>
       </a-col>
-    </a-row>
+    </a-row> -->
+
     <!-- 左边按钮 -->
     <div
       class="groupBtn absolute bottom-0px right-35 z-22 h8em flex items-center justify-center gap-20"
@@ -144,10 +140,6 @@ import bigScreenHeader from '@/components/bigScreen/header.vue';
 import { useAppStore } from '@/store/index';
 import useCustomTimer from '@/utils/useCustomTimer';
 import { App } from 'ant-design-vue';
-import AddMore from './module/addMore.vue';
-import FinishedProductBg from './module/finishedProduct.vue';
-import Print from './module/printPage.vue';
-import Start from './module/startPage.vue';
 
 const { notification } = App.useApp();
 

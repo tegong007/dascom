@@ -1,7 +1,7 @@
 <template>
   <div class="w-full">
     <div class="w-full flex items-center justify-center">
-      <span class="text-[38px] color-[#fff] line-height-[40px] font-[youshe]">智能护照制证平台</span>
+      <!-- <span class="text-[38px] color-[#fff] line-height-[40px] font-[youshe]">智能护照制证平台</span> -->
     </div>
     <div class="mt10 w-full flex items-center justify-center">
       <span class="text-[2.2em] line-height-[40px] font-[youshe]">{{
@@ -12,7 +12,7 @@
     <a-flex
       justify="space-between"
       align="center"
-      class="absolute top-0 w-full p-x-5em p-t-0.4em text-[1.3em] color-[#CFDEF1]"
+      class="absolute top-0 w-full p-x-1vh p-t-2vh text-[1vh] color-[#CFDEF1]"
     >
       <span class="light relative">网络状态:{{ showConnect }}</span>
       <span class="light relative">{{ currentTime }}</span>

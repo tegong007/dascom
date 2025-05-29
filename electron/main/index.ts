@@ -117,6 +117,7 @@ async function createWindow() {
       preload,
     },
   });
+  win.setAspectRatio(config.width / config.height); // 固定页面比例
 
   if (VITE_DEV_SERVER_URL) {
     win.loadURL(VITE_DEV_SERVER_URL);
