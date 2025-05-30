@@ -4,95 +4,86 @@
     :open="props.open"
     wrap-class-name="test"
     :closable="false"
-
-    centered force-render destroy-on-close
-    @ok="props.handleOk"
+    centered
+    force-render
+    @ok="props.handleOk()"
   >
-    <div class="delete-modal box-border h-[25em] p-t-50px">
+    <div
+      class="delete-modal box-border h-[25em] p-t-50px"
+      :style="{ height: `${props.height}px` }"
+    >
       <div class="h-full flex flex-col items-center justify-start">
         <img
           v-if="props.warnIcon"
           src="@/assets/image/warning.png"
-          class="mb-[1em] h-[10em] w-[10em]"
+          class="h-[10em] w-[10em]"
           alt=""
         >
-        <span class="text-[30px] color-[#627384] font-bold">
-          &nbsp;&nbsp; {{ props.title }}</span>
-        <div class="scoll-bar mt20px h-full w-80% overflow-y-auto bg-white">
+        <div class="w-80% text-center text-[30px] color-[#627384] font-bold">
+          &nbsp;&nbsp; {{ props.title }}
+        </div>
+        <div
+          v-if="props.title === '确认开始进本？'"
+          class="mt50 flex items-center justify-center gap-10"
+        >
+          <!-- <span class="text-[30px] color-[#627384] font-bold">可进本数</span> -->
           <a-form
             ref="formRef"
-            layout="vertical"
             :model="formState"
             :rules="rules"
-            class="w-full rounded-[8px] bg-[#ffffff34] p-x-10 p-y-20"
+            class=""
+            size="large"
           >
-            <a-row :gutter="[20, 0]" class="w-full" justify="space-evenly">
-              <a-col :span="12">
-                <a-form-item label="人数" name="num">
-                  <a-input
-                    v-model:value="formState.num"
-                    placeholder="请输入数字（1-2000）"
-                    class="w-full"
-                    :maxlength="4"
-                    @input="validateInput"
-                    @touchstart="onInputFocus($event, 'num')"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col :span="12">
-                <a-form-item label="加急类型" name="urgentType">
-                  <a-select
-                    v-model:value="formState.urgentType"
-                    placeholder="请选择加急类型"
-                    :disabled="formState.dispatchUnit === '-------'"
-                  >
-                    <a-select-option
-                      v-for="option in urgencyOptions"
-                      :key="option.value"
-                      :value="option.value"
-                    >
-                      {{ option.label }}
-                    </a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
-            </a-row>
+            <a-form-item label="可进本数" name="num">
+              <a-input
+                v-model:value="formState.num"
+                placeholder="（1-2000）"
+                :maxlength="4"
+                @input="validateInput"
+                @click="onInputFocus($event, 'num')"
+              />
+            </a-form-item>
           </a-form>
-          <div v-show="showKeyboard">
-            <SimpleKeyboard
-              ref="simpleKeyboard"
-              keyboard-width="w20%"
-              layout="num"
-              :max-length="4"
-              :input="formState[changeIpt]"
-              @on-change="onChangeKeyboard"
-              @closekeyboard="closekeyboard"
-            />
-          </div>
         </div>
       </div>
     </div>
     <template #footer>
       <a-flex justify="center" align="center" class="pb-40px">
         <div
-          class="cancelBtn h-110px w-220px transition-transform duration-300 hover:scale-105"
-          @click="handleCancel"
+          class="cancelBtn h-100px w-200px transition-transform duration-300 hover:scale-105"
+          @click="
+            () => {
+              handleCancel();
+              closekeyboard();
+            }
+          "
         />
         <div
-          class="okBtn h-110px w-220px transition-transform duration-300 hover:scale-105"
+          class="okBtn h-100px w-200px transition-transform duration-300 hover:scale-105"
           @click="onSubmit"
         />
       </a-flex>
     </template>
+    <div v-if="props.title === '确认开始进本？'" v-show="showKeyboard">
+      <SimpleKeyboard
+        ref="simpleKeyboard"
+        keyboard-width="w20%"
+        layout="num"
+        :max-length="4"
+        :transform="[300, -200]"
+        :input="formState[changeIpt]"
+        @on-change="onChangeKeyboard"
+        @closekeyboard="closekeyboard"
+      />
+    </div>
   </a-modal>
   <!-- </div> -->
 </template>
 
 <script lang="ts" setup>
-import type { UnwrapRef } from 'vue';
+import { homeModule } from '@/apis/proApi';
 import SimpleKeyboard from '@/components/base/simpleKeyboard.vue';
-import { defineExpose, defineProps } from 'vue';
-import { urgencyOptions } from '../../option.js';
+import { defineProps } from 'vue';
 
 const props = defineProps({
   open: Boolean,
@@ -100,20 +91,16 @@ const props = defineProps({
   title: String,
   warnIcon: Boolean,
   handleCancel: Function,
-  handleUpdate: Function,
+  height: String,
 });
-const formRef = ref();
 interface FormState {
   num: string;
-  dispatchUnit: string;
-  dataSource: string;
-  isTeam: string;
-  urgentType: string;
   // timeRange: RangeValue;
 }
+const formRef = ref();
 const rules = {
   num: [
-    { required: true, message: '请输入人数', trigger: ['blur', 'change'] },
+    { required: true, message: '请输入进本数', trigger: ['blur', 'change'] },
     {
       pattern: /^(?:[1-9]|[1-9]\d{1,2}|1\d{3}|2000)$/,
       message: '请输入1到2000的正整数',
@@ -122,23 +109,9 @@ const rules = {
   ],
 };
 const formState: UnwrapRef<FormState> = reactive({
-  isTeam: 1,
   num: '1',
-  dispatchUnit: 1,
-  dataSource: 1,
-  urgentType: 0,
 });
-// function teamChange(value) {
-//   if (!value) {
-//     formState.dispatchUnit = '-------';
-//     formState.dataSource = '-------';
-//     formState.urgentType = '-------';
-//   } else {
-//     formState.dispatchUnit = 1;
-//     formState.dataSource = 1;
-//     formState.urgentType = 0;
-//   }
-// }
+
 function validateInput(event) {
   // 获取输入框的值
   let value = event.target.value;
@@ -162,42 +135,10 @@ function validateInput(event) {
   // 更新输入框的值
   event.target.value = value;
 }
-function handleCancel() {
-  closekeyboard();
-  formRef.value.resetFields();
-  props.handleCancel();
-}
-// 验证通过，告诉爸爸
-function onSubmit() {
-  formRef.value
-    .validate()
-    .then(() => {
-      props.handleUpdate(
-        toRaw(formState),
-        props.title === '新增任务' ? 'add' : 'edit',
-      );
-      formRef.value.resetFields();
-    })
-    .catch((error) => {
-      console.log('error', error);
-    })
-    .finally(() => {
-      closekeyboard();
-      // formRef.value.resetFields();
-    });
-}
-// 弹窗表单收到要修改的值
-function updateForm(row: object) {
-  formState.num = row.num;
-  formState.dispatchUnit = row.dispatchUnit;
-  formState.dataSource = row.dataSource;
-  formState.urgentType = row.urgentType;
-  formState.isTeam = row.isTeam;
-}
 
 const showKeyboard = ref(false); // 键盘默认隐藏
-const changeIpt = ref(''); // 选择了哪个输入框
 const simpleKeyboard = ref(null);
+const changeIpt = ref(''); // 选择了哪个输入框
 const cursorPosition = ref('');
 function onInputFocus(event, res) {
   showKeyboard.value = true;
@@ -240,10 +181,41 @@ function setInputCaretPosition(elem, pos) {
 }
 function closekeyboard() {
   showKeyboard.value = false;
+  // num.value = '1';
 }
-defineExpose({
-  updateForm,
-});
+async function getDocNum() {
+  try {
+    const { respData } = await homeModule.getDocNumProduce();
+    formState.num = `${respData.docNum}`;
+  }
+  catch (error) {
+    error;
+  }
+}
+// 验证通过，告诉爸爸
+function onSubmit() {
+  formRef.value
+    .validate()
+    .then(() => {
+      props.handleOk(formState.num);
+    })
+    .catch((error) => {
+      console.log('error', error);
+    })
+    .finally(() => {
+      closekeyboard();
+      // formRef.value.resetFields();
+    });
+}
+watch(
+  () => props.open,
+  (newInput) => {
+    if (newInput && props.title === '确认开始进本？') {
+      getDocNum();
+    }
+  },
+  { deep: true, immediate: true },
+);
 </script>
 
 <style scoped lang="less">
@@ -264,12 +236,6 @@ defineExpose({
 ::v-deep.scoll-bar {
   overflow-y: auto;
 }
-::v-deep(.ant-form-item) {
-  label {
-    color: #000 !important;
-    font-size: 16px;
-  }
-}
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -277,7 +243,7 @@ defineExpose({
 }
 ::-webkit-scrollbar-thumb {
   // background-color: #ffffff38;
-  background-color: #1110100e;
+  background-color: #ffffff69;
   border-radius: 5px;
 }
 .cancelBtn {

@@ -155,7 +155,7 @@
 import { homeModule } from '@/apis/proApi';
 import TheButton from '@/components/base/TheButton.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
-import TheModal from '@/components/modal/TheModal.vue';
+import TheModal from '@/components/modal/docNumModal.vue';
 import { useAppStore } from '@/store/index';
 import useCustomTimer from '@/utils/useCustomTimer';
 import { App } from 'ant-design-vue';
