@@ -3,6 +3,10 @@
     class="bg relative h-100vh flex flex-col items-center text-[18px] text-white"
   >
     <bigScreenHeader />
+    <div class="absolute top-8.7vh h20vh w100% flex gap-20 p-x-40">
+      <Print class="relative h20vh flex-1" :data="mainPrint" />
+      <Start class="relative h20vh flex-1" :data="blankCheck" />
+    </div>
 
     <div
       class="absolute bottom-[16%] left-180px h-35% w-10% flex items-center justify-center opacity-0 hover:opacity-100"
@@ -140,6 +144,8 @@ import bigScreenHeader from '@/components/bigScreen/header.vue';
 import { useAppStore } from '@/store/index';
 import useCustomTimer from '@/utils/useCustomTimer';
 import { App } from 'ant-design-vue';
+import Print from './module/printPage.vue';
+import Start from './module/startPage.vue';
 
 const { notification } = App.useApp();
 
