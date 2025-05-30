@@ -3,6 +3,7 @@ import request from '@/plugins/request';
 const v1 = window.serverAddress ?? 'http://localhost:6101/';
 const homeModule = {
   getHomeList: () => request.post(`${v1}/tss/produce-status`),
+  getDocNumProduce: () => request.post(`${v1}/tss/get-doc-num-produce`),
   setControlMachine: (data: any) =>
     request.post(`${v1}/tss/machine-control`, data),
 };
@@ -37,10 +38,9 @@ const physicalModule = {
   // getDocStatistics: (data: any) =>
   //   request.post(`${v1}/tss/doc-statistics`, data),
   // getDocAllStatistics: () => request.post(`${v1}/tss/doc-allStatistics`),
-  getDocOperate: (data: any) =>
-    request.post(`${v1}/tss/physical-operate`, data),
-  getDocDetailGeneral: (data: any) =>
-    request.post(`${v1}/tss/physical-doc`, data),
+  getPhysicaDocOperate: (data: any) =>
+    request.post(`${v1}/tss/physical-doc-operate`, data),
+  getPhysicalDoc: (data: any) => request.post(`${v1}/tss/physical-doc`, data),
 };
 
 // 维护页面

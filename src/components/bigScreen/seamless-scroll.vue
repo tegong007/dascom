@@ -65,9 +65,9 @@ const props = defineProps({
 
   color: #ffffff;
   .scroll {
-    max-height: 120px;
+    max-height: 150px;
     // min-height: 145px;
-    min-height: 13.5vh;
+    min-height: 18.5vh;
     overflow: hidden;
   }
 }

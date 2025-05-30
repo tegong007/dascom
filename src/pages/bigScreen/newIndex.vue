@@ -85,7 +85,7 @@
       </a-col>
     </a-row>
     <!-- 左边按钮 -->
-    <div
+    <!-- <div
       class="groupBtn absolute bottom-0px right-35 z-22 h8em flex items-center justify-center gap-20"
     >
       <TheButton
@@ -94,6 +94,20 @@
       />
       <TheButton
         title="全线急停"
+        :disable="entire.status !== 'error'"
+        @click="setModal(2)"
+      />
+    </div> -->
+    <div
+      class="groupBtn absolute right-30 top-300 h-100vh flex flex-col items-center justify-center"
+    >
+      <TheButton
+        :title="entire.hasTask ? '暂停进本' : '开始进本'"
+        @click="setModal(entire.hasTas ? 1 : 0)"
+      />
+      <TheButton
+        title="全线急停"
+        class="mt2em"
         :disable="entire.status !== 'error'"
         @click="setModal(2)"
       />
@@ -129,7 +143,7 @@
 
     <TheModal
       :open="open"
-      :handle-ok="() => controlMachine()"
+      :handle-ok="controlMachine"
       :warn-icon="true"
       :handle-cancel="() => setOpen(false)"
       :title="modal"
@@ -141,6 +155,7 @@
 import { homeModule } from '@/apis/proApi';
 import TheButton from '@/components/base/TheButton.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
+import TheModal from '@/components/modal/TheModal.vue';
 import { useAppStore } from '@/store/index';
 import useCustomTimer from '@/utils/useCustomTimer';
 import { App } from 'ant-design-vue';
@@ -251,7 +266,8 @@ function setModal(value: number) {
   }
   setOpen(true);
 }
-async function controlMachine() {
+async function controlMachine(num: string) {
+  console.log('🚀 ~ controlMachine ~ num:', num);
   let tips = '';
   switch (control.value) {
     case 0:
@@ -268,7 +284,10 @@ async function controlMachine() {
   }
   try {
     useAppStore().setSpinning(true);
-    await homeModule.setControlMachine({ control: control.value });
+    await homeModule.setControlMachine({
+      control: control.value,
+      docNum: Number(num),
+    });
     notification.success({
       message: `成功`,
       description: `${tips}操作成功`,

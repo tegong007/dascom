@@ -7,7 +7,7 @@
           props.data.name
         }}</span>
       </div>
-      <div class="absolute top-[3em] h-4.8em w-90% flex justify-center gap-50">
+      <!-- <div class="absolute top-[3em] h-4.8em w-90% flex justify-center gap-50">
         <div v-for="(item, index) in props.data.items" :key="index">
           <div class="mt-5 text-[1em] color-[#CFDEF1]">
             {{ item.item }}
@@ -15,18 +15,18 @@
           <div
             class="text-2em line-height-[40px] line-height-[40px] font-[youshe]"
           >
-            <!-- <CountTo
+            <CountTo
                 :start-val="0"
                 separator
                 :end-val="item.num"
                 suffix="%"
                 :duration="Math.floor(Math.random() * 2000) + 1000"
-              /> -->
+              />
             {{ item.value }}
           </div>
         </div>
-      </div>
-      <div class="table-data absolute top-[7.6em] w-95%">
+      </div> -->
+      <div class="table-data absolute top-[3.6em] w-95%">
         <div class="p-x-10">
           <div class="h30px w-full flex items-center bg-[#fff]/[0.2]">
             <span class="ml3">证本状态</span>
