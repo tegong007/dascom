@@ -3,6 +3,7 @@ import request from '@/plugins/request';
 const v1 = window.serverAddress ?? 'http://localhost:6101/';
 const homeModule = {
   getHomeList: () => request.post(`${v1}/tss/produce-status`),
+  getDocNumProduce: () => request.post(`${v1}/tss/get-doc-num-produce`),
   setControlMachine: (data: any) =>
     request.post(`${v1}/tss/machine-control`, data),
 };

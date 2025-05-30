@@ -155,6 +155,30 @@
             </div>
           </template>
         </vxe-column>
+        <vxe-column
+          v-if="props.pageName === 'physicalList'"
+          field="action"
+          title="操作"
+          width="240"
+          fixed="right"
+          align="center"
+        >
+          <template #default="{ row }">
+            <div class="flex items-center justify-start gap-10">
+              <a class="color-[#89F7FF]" @click="props.setDetai(row)">查看更多</a>
+              <a
+                v-if="row.docStatus === 0 || row.docStatus === 4"
+                class="color-[#89F7FF]"
+                @click="props.rowfun(2, row.physicalID)"
+              >设为成功</a>
+              <a
+                v-if="row.docStatus === 0 || row.docStatus === 3"
+                class="color-[#89F7FF]"
+                @click="props.rowfun(3, row.physicalID)"
+              >设为失败</a>
+            </div>
+          </template>
+        </vxe-column>
       </vxe-table>
     </div>
   </div>

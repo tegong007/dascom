@@ -17,12 +17,12 @@
         <a-dropdown>
           <template #overlay>
             <a-menu @click="handleMenuClick">
-              <a-menu-item :key="0">
+              <!-- <a-menu-item :key="0">
                 挂起
               </a-menu-item>
               <a-menu-item :key="1">
                 重新生产
-              </a-menu-item>
+              </a-menu-item> -->
               <a-menu-item :key="2">
                 设为成功
               </a-menu-item>
@@ -86,8 +86,8 @@
         :update-old-checked-row="updateOldCheckedRow"
         :change-task-id-or-batch-id="props.changeTaskIdOrBatchId"
         :set-detai="setDetai"
-        key-field="docSN"
-        page-name="docList"
+        key-field="physicalID"
+        page-name="physicalList"
       />
     </main>
     <vxe-pager
@@ -129,7 +129,7 @@
 
 <script lang="ts" setup>
 import type { MenuProps } from 'ant-design-vue';
-import { documentModule } from '@/apis/proApi';
+import { physicalModule } from '@/apis/proApi';
 import { contextHolder, openNotify } from '@/components/base/useNotification';
 
 import MyTable from '@/components/base/vxeTable.vue';
@@ -164,8 +164,8 @@ const tableData = ref([]);
 const title: {
   [key: string]: string;
 } = {
-  0: '挂起',
-  1: '重新生产',
+  // 0: '挂起',
+  // 1: '重新生产',
   2: '设为成功',
   3: '设为失败',
 };
@@ -415,10 +415,10 @@ function setSearchForm(formValue: object) {
 }
 async function operate() {
   try {
-    const oldCheckrecID = oldCheckedRow.value.map(item => item.docSN);
+    const oldCheckrecID = oldCheckedRow.value.map(item => item.physicalID);
     const allCheckRox = [...new Set([...checkedRow.value, ...oldCheckrecID])];
-    await documentModule.getDocOperate({
-      docSN: allCheckRox,
+    await physicalModule.getPhysicaDocOperate({
+      physicalID: allCheckRox,
       operate: isReset.value,
     });
     openNotify('bottomRight', `${title[isReset.value]}操作成功`, true);
@@ -437,24 +437,26 @@ async function operate() {
 function updateOldCheckedRow(delectArr) {
   let toDeleteIDs;
   if (Array.isArray(delectArr)) {
-    toDeleteIDs = delectArr.map(item => item.docSN);
+    toDeleteIDs = delectArr.map(item => item.physicalID);
   }
   else {
-    toDeleteIDs = [delectArr.docSN];
+    toDeleteIDs = [delectArr.physicalID];
   }
 
   // 使用 filter 方法过滤掉需要删除的元素
   oldCheckedRow.value = oldCheckedRow.value.filter(
-    item => !toDeleteIDs.includes(item.docSN),
+    item => !toDeleteIDs.includes(item.physicalID),
   );
 }
 
-function rowAction(type: number, docSN?: string) {
+function rowAction(type: number, physicalID?: string) {
   modal.value = title[type];
-  const newCheckRow = !docSN ? tableRef.value.getSelectEvent() : [docSN];
+  const newCheckRow = !physicalID
+    ? tableRef.value.getSelectEvent()
+    : [physicalID];
   if (tableRef.value && newCheckRow) {
-    checkedRow.value = !docSN
-      ? newCheckRow.map(item => item.docSN)
+    checkedRow.value = !physicalID
+      ? newCheckRow.map(item => item.physicalID)
       : newCheckRow;
   }
   nextTick(() => {
@@ -463,7 +465,7 @@ function rowAction(type: number, docSN?: string) {
     }
 
     if (checkedRow.value.length || oldCheckedRow.value.length) {
-      const oldCheckrecID = oldCheckedRow.value.map(item => item.docSN);
+      const oldCheckrecID = oldCheckedRow.value.map(item => item.physicalID);
       const allCheckRox = [...new Set([...checkedRow.value, ...oldCheckrecID])];
       modal.value = `可能含有不能${title[type]}的数据，是否继续${title[type]}${
         allCheckRox.length
@@ -527,7 +529,7 @@ async function getDataPage() {
       page: pageVO.currentPage,
       rowPerPage: pageVO.pageSize,
     };
-    const data = await documentModule.getDocDetailGeneral(params);
+    const data = await physicalModule.getPhysicalDoc(params);
     if (data.respData) {
       tableData.value = data.respData.docInfo;
       pageVO.currentPage = data.respData.page;

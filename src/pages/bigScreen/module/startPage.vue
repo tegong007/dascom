@@ -7,7 +7,6 @@
           props.data.name
         }}</span>
       </div>
-
       <!-- <div class="absolute top-[3em] h-4.8em w-90% flex justify-center gap-50">
         <div v-for="(item, index) in props.data.items" :key="index">
           <div class="mt-5 text-[1em] color-[#CFDEF1]">
