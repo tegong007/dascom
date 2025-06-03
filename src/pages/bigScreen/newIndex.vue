@@ -7,9 +7,16 @@
       <Print class="relative h20vh flex-1" :data="mainPrint" />
       <Start class="relative h20vh flex-1" :data="blankCheck" />
     </div>
+    <div class="absolute bottom-22vh h20vh w100% flex gap-20 p-x-40">
+      <FinishedProductBg
+        class="relative h20vh flex-1"
+        :data="finishedProduct"
+      />
+      <AddMore class="relative h20vh flex-1" :data="additionPrint" />
+    </div>
 
     <div
-      class="absolute bottom-[16%] left-180px h-35% w-10% flex items-center justify-center opacity-0 hover:opacity-100"
+      class="absolute left-6vh top-45vh h-3vh w-6vh flex items-center justify-center opacity-0 hover:opacity-100"
       @click="
         $goto('WorkstationStatus', {
           light: 4,
@@ -17,12 +24,12 @@
       "
     >
       <span
-        class="absolute bottom-50 left-20 cursor-default rounded-[30px] bg-[#0000007a] p-x-20 p-y-10 text-[32px] line-height-[40px] line-height-[40px] font-[youshe]"
+        class="absolute cursor-default rounded-[1vh] bg-[#0000007a] p-x-10 p-y-3 text-1vh line-height-[40px] line-height-[40px] font-[youshe]"
       >查看详情
       </span>
     </div>
     <div
-      class="absolute bottom-[12%] left-360px h-35% w-23% flex items-center justify-center opacity-0 hover:opacity-100"
+      class="absolute left-13vh top-45vh h-3vh w-15vh flex items-center justify-center opacity-0 hover:opacity-100"
       @click="
         $goto('WorkstationStatus', {
           light: 3,
@@ -30,12 +37,12 @@
       "
     >
       <span
-        class="absolute left-150 top-200px cursor-default rounded-[30px] bg-[#0000007a] p-x-20 p-y-10 text-[32px] line-height-[40px] font-[youshe]"
+        class="absolute cursor-default rounded-[1vh] bg-[#0000007a] p-x-10 p-y-3 text-1vh line-height-[40px] font-[youshe]"
       >查看详情
       </span>
     </div>
     <div
-      class="absolute bottom-[12%] left-800px h-35% w-30.5% flex items-center justify-center opacity-0 hover:opacity-100"
+      class="absolute left-28vh top-45vh h-3vh w-15vh flex items-center justify-center opacity-0 hover:opacity-100"
       @click="
         $goto('WorkstationStatus', {
           light: 2,
@@ -43,12 +50,12 @@
       "
     >
       <span
-        class="absolute left-220 top-200px cursor-default rounded-[30px] bg-[#0000007a] p-x-20 p-y-10 text-[32px] line-height-[40px] font-[youshe]"
+        class="absolute cursor-default rounded-[1vh] bg-[#0000007a] p-x-10 p-y-3 text-1vh line-height-[40px] font-[youshe]"
       >查看详情
       </span>
     </div>
     <div
-      class="absolute bottom-[12%] left-1380px h-35% w-18% flex items-center justify-center opacity-0 hover:opacity-100"
+      class="absolute right-9vh top-45vh h-3vh w-6vh flex items-center justify-center opacity-0 hover:opacity-100"
       @click="
         $goto('WorkstationStatus', {
           light: 1,
@@ -56,7 +63,7 @@
       "
     >
       <span
-        class="absolute left-80 top-200px cursor-default rounded-[30px] bg-[#0000007a] p-x-20 p-y-10 text-[32px] line-height-[40px] font-[youshe]"
+        class="absolute cursor-default rounded-[1vh] bg-[#0000007a] p-x-10 p-y-3 text-1vh line-height-[40px] font-[youshe]"
       >查看详情
       </span>
     </div>
@@ -86,7 +93,7 @@
 
     <!-- 左边按钮 -->
     <div
-      class="groupBtn absolute bottom-0px right-35 z-22 h8em flex items-center justify-center gap-20"
+      class="groupBtn absolute bottom-10vh z-22 h8em flex items-center justify-center gap-20"
     >
       <TheButton
         :title="entire.hasTask ? '暂停进本' : '开始进本'"
@@ -100,7 +107,7 @@
     </div>
     <!-- 下边按钮 -->
     <div
-      class="groupBtn absolute bottom-0 h8em w-full flex items-center justify-center gap-20"
+      class="groupBtn absolute bottom-4vh h8em w-full flex items-center justify-center gap-20"
     >
       <!-- <div class="flex">
         <TheButton title="批次查询" @click="$goto('BatchList')" />
@@ -114,7 +121,7 @@
       <div class="flex">
         <TheButton title="查询" @click="$goto('Search', { choose: 1 })" />
       </div>
-      <span class="h-50% w-2px bg-[#8BB2FF]" />
+      <!-- <span class="h-50% w-2px bg-[#8BB2FF]" /> -->
       <div class="flex gap-20">
         <TheButton
           title="设备设置"
@@ -144,6 +151,8 @@ import bigScreenHeader from '@/components/bigScreen/header.vue';
 import { useAppStore } from '@/store/index';
 import useCustomTimer from '@/utils/useCustomTimer';
 import { App } from 'ant-design-vue';
+import AddMore from './module/addMore.vue';
+import FinishedProductBg from './module/finishedProduct.vue';
 import Print from './module/printPage.vue';
 import Start from './module/startPage.vue';
 

@@ -95,13 +95,14 @@ async function createWindow() {
     title: 'Main window',
     // icon: "resources/app/resources/icon/logo.icon",
     icon: path.join(process.env.VITE_PUBLIC, 'icon/icon.ico'),
-    width: config.width,
-    height: config.height,
+    // width: config.width,
+    // height: config.height,
     frame: true, // 边框显示
     disableAutoHideCursor: false, // 隐藏鼠标
     fullscreen: config.fullscreen, // 全屏
     autoHideMenuBar: true, // 隐藏工具栏
     center: true,
+    // resizable: false,
     // alwaysOnTop: true,//置顶
     // useContentSize: true,
     webPreferences: {
