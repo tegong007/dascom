@@ -2,12 +2,10 @@
   <div
     class="bg h-100vh w-full flex flex-col items-center text-[18px] text-white"
   >
-    <bigScreenHeader title="维护" />
+    <bigScreenHeader title="维护" class="h8vh" />
     <div class="h-100% w-full flex flex-col text-white">
-      <div
-        class="bg-color m-x-4em h-87% max-h-790px flex border-[4px] border-[#3F89DD]"
-      >
-        <div class="h-full w-[11%] flex flex-col">
+      <div class="bg-color m-x-4em h-87% flex border-[4px] border-[#3F89DD]">
+        <div class="h-full w-[14%] flex flex-col">
           <a-radio-group
             v-model:value="currentModel"
             class="bg-color h-full w-full"
@@ -65,7 +63,7 @@
       </div>
     </div>
     <div
-      class="groupBtn absolute bottom-0 h8em w-full flex items-center justify-center gap-20"
+      class="groupBtn absolute bottom-4vh h8em w-full flex items-center justify-center gap-20"
     >
       <div class="flex gap-20">
         <TheButton
@@ -83,14 +81,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRoute } from 'vue-router';
-import OnlyTest from '@/pages/bigScreen/mainTain/onlyTest/index.vue';
-import Consumables from '@/pages/bigScreen/mainTain/consumables/index.vue';
-import ModuleTest from '@/pages/bigScreen/mainTain/moduleTest/index.vue';
 import TheButton from '@/components/base/TheButton.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
+import Consumables from '@/pages/bigScreen/mainTain/consumables/index.vue';
+import ModuleTest from '@/pages/bigScreen/mainTain/moduleTest/index.vue';
+import OnlyTest from '@/pages/bigScreen/mainTain/onlyTest/index.vue';
 import Version from '@/pages/bigScreen/mainTain/version/index.vue';
+import { ref } from 'vue';
+import { useRoute } from 'vue-router';
 // const { t } = useI18n();
 definePage({
   name: 'MainTain',

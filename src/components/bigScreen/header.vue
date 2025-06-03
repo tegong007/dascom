@@ -12,7 +12,7 @@
     <a-flex
       justify="space-between"
       align="center"
-      class="absolute top-0 w-full p-x-1vh p-t-2vh text-[1vh] color-[#CFDEF1]"
+      class="absolute top-0 w-full p-x-1vh p-t-3vh text-[1.2vh] color-[#CFDEF1]"
     >
       <span class="light relative">网络状态:{{ showConnect }}</span>
       <span class="light relative">{{ currentTime }}</span>

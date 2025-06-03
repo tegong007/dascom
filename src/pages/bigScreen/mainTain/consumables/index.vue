@@ -11,7 +11,7 @@
           <div
             v-for="(item, index) in moduleItems.inkObjects"
             :key="index"
-            class="h240px flex flex-col flex-1 items-center justify-around"
+            class="h250px flex flex-col flex-1 items-center justify-around"
           >
             <div class="h25px w25px">
               <img
@@ -25,7 +25,7 @@
               :trail-color="colorMap[item.inkName]"
               :stroke-color="colorMap[item.inkName].slice(0, -2)"
               :percent="item.remainder"
-              :size="[40, 60]"
+              :size="[30, 60]"
               :show-info="false"
             />
             <span>{{ item.inkName }}</span>
@@ -41,7 +41,7 @@
         </div>
       </div>
       <div
-        class="box-border h-full w-300px flex flex-col border from-[#ffffff38] bg-gradient-to-b p-10 color-[#CFDEF1]"
+        class="box-border h-full w-150px flex flex-col border from-[#ffffff38] bg-gradient-to-b p-10 color-[#CFDEF1]"
       >
         <div class="flex-1">
           【墨水缺失】<br>
@@ -56,11 +56,11 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from 'vue';
 import { mainTainModule } from '@/apis/proApi';
-import useCustomTimer from '@/utils/useCustomTimer';
-import { useAppStore } from '@/store/index';
 import { openNotify } from '@/components/base/useNotification';
+import { useAppStore } from '@/store/index';
+import useCustomTimer from '@/utils/useCustomTimer';
+import { watch } from 'vue';
 
 const props = defineProps({
   currentModel: String,

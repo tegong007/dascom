@@ -1,9 +1,9 @@
 <template>
-  <div class="scoll-bar mt10 box-border h-75% w-90% flex flex-col p-x-100">
+  <div class="scoll-bar mt3vh box-border h-85% w-90% flex flex-col p-x-100">
     <main
       v-for="(item, index) in items"
       :key="index"
-      class="m-t-15 box-border flex flex-col flex-1 p-y-10 pl20 color-[#CFDEF1]"
+      class="m-t-15 box-border flex flex-col p-y-10 pl20 color-[#CFDEF1]"
       :class="props.light === index + 1 && 'chooseItem '"
     >
       <a-flex justify="space-between" align="center" class="w-250px">
@@ -17,7 +17,7 @@
       </a-flex>
       <a-flex
         align="center"
-        class="m-y-10 box-border h-full w-full gap-20"
+        class="m-y-10 box-border w-full gap-20"
         wrap="wrap"
       >
         <div
@@ -84,9 +84,9 @@
 
 <script setup lang="ts">
 import { positionModule } from '@/apis/proApi';
-import useCustomTimer from '@/utils/useCustomTimer';
-import { useAppStore } from '@/store/index';
 import { contextHolder, openNotify } from '@/components/base/useNotification';
+import { useAppStore } from '@/store/index';
+import useCustomTimer from '@/utils/useCustomTimer';
 
 const props = defineProps({
   light: Number,

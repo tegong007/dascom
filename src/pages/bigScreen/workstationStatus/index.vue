@@ -3,7 +3,7 @@
     <bigScreenHeader title="工位状态" />
     <main class="relative h-20px w-full">
       <div class="absolute top-0 w-full text-center text-[20px]" />
-      <div class="absolute right-150 top-[-5px]">
+      <div class="absolute right-100 top-3vh">
         <!-- 状态标识 -->
         <div class="w-400px flex justify-around">
           <div
@@ -22,7 +22,7 @@
     <Card :light="light" />
     <!-- 下边按钮 -->
     <div
-      class="groupBtn absolute bottom-0 h8em w-full flex items-center justify-center gap-20"
+      class="groupBtn absolute bottom-4vh h8em w-full flex items-center justify-center gap-20"
     >
       <!-- <div class="flex">
         <TheButton title="批次查询" />
@@ -36,9 +36,9 @@
 </template>
 
 <script setup lang="ts">
+import bigScreenHeader from '@/components/bigScreen/header.vue';
 import { useRoute } from 'vue-router';
 import Card from './card.vue';
-import bigScreenHeader from '@/components/bigScreen/header.vue';
 
 const route = useRoute();
 // const batchID = ref<string>('');
