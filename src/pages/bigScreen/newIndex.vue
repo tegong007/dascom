@@ -119,7 +119,7 @@
         <TheButton title="证本查询" @click="$goto('docList')" />
       </div> -->
       <div class="flex">
-        <TheButton title="查询" @click="$goto('Search', { choose: 1 })" />
+        <TheButton title="查询" @click="$goto('SearchCard', { choose: 1 })" />
       </div>
       <!-- <span class="h-50% w-2px bg-[#8BB2FF]" /> -->
       <div class="flex gap-20">

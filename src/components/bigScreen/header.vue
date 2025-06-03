@@ -3,7 +3,7 @@
     <div class="w-full flex items-center justify-center">
       <!-- <span class="text-[38px] color-[#fff] line-height-[40px] font-[youshe]">智能护照制证平台</span> -->
     </div>
-    <div class="mt10 w-full flex items-center justify-center">
+    <div class="mt0.3vh w-full flex items-center justify-center">
       <span class="text-[2.2em] line-height-[40px] font-[youshe]">{{
         props.title
       }}</span>
