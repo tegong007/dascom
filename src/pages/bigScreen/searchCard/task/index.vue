@@ -35,12 +35,14 @@
       </a-space>
     </div>
 
-    <main class="box-border h80% w-full">
+    <main class="box-border h82% w-full">
       <TaskCard
         :items="tableData"
         :check-row="checkRow"
-        :set-check-row="setCheckRow"
         :old-checked-row="oldCheckedRow"
+        :set-check-row="setCheckRow"
+        :rowfun="rowAction"
+        :change-task-id-or-batch-id="props.changeTaskIdOrBatchId"
       />
       <vxe-pager
         v-model:current-page="pageVO.currentPage"
@@ -88,15 +90,12 @@
 <script lang="ts" setup>
 import { TaskModule } from '@/apis/proApi';
 import { contextHolder, openNotify } from '@/components/base/useNotification';
-// import MyTable from '@/components/base/vxeTable.vue';
 import TheModal from '@/components/modal/TheModal.vue';
 import { useAppStore } from '@/store/index';
 import { RollbackOutlined } from '@ant-design/icons-vue';
-// import { useRoute } from 'vue-router';
 import { defineProps, reactive } from 'vue';
 import TaskCard from './card.vue';
 import TeamForm from './task-form.vue';
-// import SimpleKeyboard from '@/components/base/simpleKeyboard.vue';
 
 const props = defineProps({
   choose: Number,
@@ -104,171 +103,48 @@ const props = defineProps({
   docTaskId: String,
   changeTaskIdOrBatchId: Function,
 });
-// const route = useRoute();
-// const { start, stop } = useCustomTimer();
 const pageVO = reactive({
   total: 20,
   currentPage: 1,
-  pageSize: 5,
+  pageSize: 6,
 });
-// 旧
-// const checkedRow = ref();
-// const oldCheckedRow = ref([]);
 const checkRow = ref([]); // 选中的数据
-const checkedRow = ref();
 const oldCheckedRow = ref([]); // 选中的数据
-const tableRef = ref(null);
+// const tableRef = ref(null);
 const searchRef = ref(null);
 const searchForm = ref({});
 const open = ref<boolean>(false);
 const modal = ref('');
 const isReset = ref(0);
 const tableData = ref([]);
-// // const choose = ref<Number>(1);
-// const colums = ref([
-//   {
-//     title: '序号',
-//     field: 'seq',
-//     fixed: 'left',
-//     width: 60,
-//   },
-//   {
-//     title: '任务号',
-//     field: 'taskID',
-//     width: 180,
-//   },
-//   {
-//     title: '批次号',
-//     field: 'batchID',
-//     width: 150,
-//   },
-//   {
-//     title: '证本数',
-//     field: 'docNum',
-//     width: 80,
-//   },
-//   {
-//     title: '良本数',
-//     field: 'productNum',
-//     width: 80,
-//   },
-//   {
-//     title: '废本数',
-//     field: 'obsoleteNum',
-//     width: 80,
-//   },
-//   {
-//     title: '待生产数',
-//     field: 'waitingNum',
-//     width: 100,
-//   },
-//   {
-//     title: '挂起数',
-//     field: 'hangUpNum',
-//     width: 80,
-//   },
-//   {
-//     title: '状态',
-//     field: 'status',
-//     formatter: formatterStatus,
-//     width: 150,
-//     // isTip: true,
-//   },
-//   {
-//     title: '接收时间',
-//     field: 'receiveTime',
-//     width: 200,
-//   },
-//   {
-//     title: '开始生产时间',
-//     field: 'startTime',
-//     width: 200,
-//   },
-//   {
-//     title: '完成时间',
-//     field: 'finishTime',
-//     width: 200,
-//   },
-// ]);
 const isSearching = ref(false);
 function setSearchForm(formValue: object) {
-  // old
-  // searchForm.value = formValue;
-  // pageVO.currentPage = 1;
-  // // 清空筛选
-  // oldCheckedRow.value = [];
-  // checkedRow.value = [];
-  // isSearching.value = true;
-  // getDataPage();
   searchForm.value = formValue;
   pageVO.currentPage = 1;
   getDataPage();
 }
-// 取消的时候删掉这一行
-// function updateOldCheckedRow(delectArr) {
-//   let toDeleteIDs;
-//   // 提取要删除的 taskID 列表
-//   if (Array.isArray(delectArr)) {
-//     toDeleteIDs = delectArr.map((item) => item.taskID);
-//   } else {
-//     toDeleteIDs = [delectArr.taskID];
-//     console.log('🚀 ~ updateOldCheckedRow ~ toDeleteIDs:', toDeleteIDs);
-//   }
-
-//   // 使用 filter 方法过滤掉需要删除的元素
-//   oldCheckedRow.value = oldCheckedRow.value.filter(
-//     (item) => !toDeleteIDs.includes(item.taskID),
-//   );
-//   console.log('🚀 ~ updateOldCheckedRow ~ delectArr:', oldCheckedRow.value);
-// }
-
 function rowAction(type: string, taskID: string) {
   modal.value = type;
-  const newCheckRow = !taskID ? tableRef.value.getSelectEvent() : [taskID];
-  if (tableRef.value && newCheckRow) {
-    checkedRow.value = !taskID
-      ? newCheckRow.map(item => item.taskID)
-      : newCheckRow;
-  }
+  checkRow.value = !taskID ? checkRow.value : [{ taskID }];
   nextTick(() => {
-    if (checkedRow.value.length === 0 && oldCheckedRow.value.length === 0) {
+    if (checkRow.value.length === 0 && oldCheckedRow.value.length === 0) {
       openNotify('bottomRight', `您还没有选中数据`);
     }
-    if (checkedRow.value.length || oldCheckedRow.value.length) {
-      const oldCheckTaskID = oldCheckedRow.value.map(item => item.taskID);
-      const allCheckRox = [
-        ...new Set([...checkedRow.value, ...oldCheckTaskID]),
-      ];
+    if (checkRow.value.length || oldCheckedRow.value.length) {
       modal.value = `可能含有不能${type === 'stop' ? '挂起' : '重新生产'}的数据，是否继续${type === 'stop' ? '挂起' : '重新生产'}${
-        allCheckRox.length
+        checkRow.value.length
       }条数据?`;
       isReset.value = type === 'stop' ? 0 : 1;
       open.value = true;
     }
   });
 }
-// function formatterStatus({ cellValue }: any) {
-//   const item = TaskStatusOptions.find((item) => item.value === cellValue);
-//   return item ? item.label : cellValue;
-// }
-// 分页
-// function pageChange({ pageSize, currentPage }) {
-function pageChange() {
-  // oldCheckedRow.value = [
-  //   ...oldCheckedRow.value,
-  //   ...tableRef.value.getSelectEvent(),
-  // ];
 
-  // pageVO.currentPage = currentPage;
-  // pageVO.pageSize = pageSize;
-  // getDataPage();
-  // // 选回上一页的数据
-  // tableRef.value.setSelectRow(oldCheckedRow.value, true);
+// 分页
+function pageChange() {
   oldCheckedRow.value.push(...checkRow.value); // 将 checkRow 的内容追加到 oldCheckedRow
   oldCheckedRow.value = [
-    ...new Map(
-      oldCheckedRow.value.map(item => [item.groupID, item]),
-    ).values(),
+    ...new Map(oldCheckedRow.value.map(item => [item.taskID, item])).values(),
   ];
   getDataPage();
 }
@@ -279,10 +155,9 @@ function setOpen(value: boolean) {
 
 async function operate() {
   try {
-    const oldCheckTaskID = oldCheckedRow.value.map(item => item.taskID);
-    const allCheckRox = [...new Set([...checkedRow.value, ...oldCheckTaskID])];
+    const oldCheckTaskID = checkRow.value.map(item => item.taskID);
     await TaskModule.getTaskOperate({
-      taskID: allCheckRox,
+      taskID: oldCheckTaskID,
       operate: isReset.value,
     });
     openNotify(
@@ -304,7 +179,7 @@ async function operate() {
 onDeactivated(() => {
   // 清空筛选
   oldCheckedRow.value = [];
-  checkedRow.value = [];
+  checkRow.value = [];
   tableData.value = [];
   isSearching.value = false;
   // pageVO.total = 20;
@@ -339,20 +214,9 @@ async function getDataPage() {
     useAppStore().setSpinning(false);
   }
 }
+
 function setCheckRow(arr: Array<any>) {
   checkRow.value = arr;
-  // info.value[0].value = checkRow.value[0]?.dispatchUnit;
-  // info.value[1].value = checkRow.value[0]?.dataSource;
-  // info.value[2].value = findLabelByValue(
-  //   'urgencyOptions',
-  //   Number(checkRow.value[0]?.urgentType),
-  // );
-  // let allnum = 0;
-  // checkRow.value.map((item) => {
-  //   allnum += Number(item.num);
-  //   return allnum;
-  // });
-  // info.value[3].value = allnum;
 }
 watch(
   () => props.choose,
