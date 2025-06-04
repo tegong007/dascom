@@ -12,12 +12,12 @@
         />
       </div>
       <div class="h-full flex flex-1 items-center justify-between p-l-5">
-        <span>全选</span><span>已选中：{{ checkRow.length }}个</span>
+        <span>全选</span><span>已选中：{{ props.checkRow?.length }}个</span>
       </div>
     </section> -->
     <a-result v-if="items.length === 0" class="" title="暂无数据">
       <template #icon>
-        <smile-twoTone />
+        <SmileTwoTone />
       </template>
     </a-result>
     <section
@@ -38,61 +38,85 @@
         序号：{{ item.seq }}<br>
         <main class="p-x-3vh">
           <div class="w-full flex justify-between">
-            <!-- <a
+            <a
               class="color-[#89F7FF]"
-              @click="props.changeTaskIdOrBatchId(1, items.taskID)   event.stopPropagation();"
-              >任务号：{{ item.taskID }}</a
-            > -->
-            <span>任务号：{{ item.taskID }}</span>
-            <span>批次号：{{ item.batchID }}</span>
-            <span>证本数：{{ item.docNum }}</span>
+              @click="
+                (event) => {
+                  props.changeTaskIdOrBatchId(1, item.taskID);
+                  event.stopPropagation();
+                }
+              "
+            >所属任务号：{{ item.taskID }}</a>
+            <span>所属批次号：{{ item.batchID }}</span>
+            <span>证件号：{{ item.docID }}</span>
           </div>
           <div class="w-full flex justify-between">
-            <span>良本数：{{ item.productNum }}</span>
-            <span>废本数：{{ item.obsoleteNum }}</span>
-            <span>待生产数：{{ item.waitingNum }}</span>
-            <span>挂起数：{{ item.hangUpNum }}</span>
-            <span>状态：{{ formatterStatus(item.status) }}</span>
+            <span>证件类型：{{ formatterValue(item.idType, 'idType') }}</span>
+            <span>证本类型：{{ formatterValue(item.type, 'type') }}</span>
+            <span>状态：{{ formatterValue(item.docStatus, 'docStatus') }}</span>
+            <span>当前工位：{{ item.position }}</span>
           </div>
           <div class="w-full flex justify-between">
-            <span>接收时间：{{ item.receiveTime }}</span>
-            <span>开始生产时间：{{ item.startTime }}</span>
+            <span>开始时间：{{ item.startTime }}</span>
+            <span>更新时间：{{ item.endTime }}</span>
           </div>
           <a-space :size="10" class="mt5 w-full flex justify-start">
             <a-button
               class="color-[#0c79c4] font-semibold"
               @click="
                 (event) => {
-                  props.changeTaskIdOrBatchId(3, item.taskID);
+                  props.setDetai(item);
                   event.stopPropagation();
                 }
               "
             >
-              查询证本列表
+              查看更多
             </a-button>
-            <a-button
-              v-if="item.status === 2"
+            <!-- <a-button
+              v-if="item.docStatus === 1"
               class="color-[#0c79c4] font-semibold"
               @click="
                 (event) => {
-                  props.rowfun('stop', item.taskID);
+                  props.rowfun(0, item.physicalID);
                   event.stopPropagation();
                 }
               "
-            >
-              挂起
+              >挂起
             </a-button>
             <a-button
-              v-if="item.status === 3"
+              v-if="item.docStatus === 2"
               class="color-[#0c79c4] font-semibold"
               @click="
                 (event) => {
-                  props.rowfun('reset', item.taskID);
+                  props.rowfun(1, item.physicalID);
+                  event.stopPropagation();
+                }
+              "
+              >重新生产
+            </a-button> -->
+            <a-button
+              v-if="item.docStatus === 0 || item.docStatus === 4"
+              class="color-[#0c79c4] font-semibold"
+              @click="
+                (event) => {
+                  props.rowfun(2, item.physicalID);
                   event.stopPropagation();
                 }
               "
             >
-              重新生产
+              设为成功
+            </a-button>
+            <a-button
+              v-if="item.docStatus === 0 || item.docStatus === 3"
+              class="color-[#0c79c4] font-semibold"
+              @click="
+                (event) => {
+                  props.rowfun(3, item.physicalID);
+                  event.stopPropagation();
+                }
+              "
+            >
+              设为失败
             </a-button>
           </a-space>
         </main>
@@ -102,7 +126,8 @@
 </template>
 
 <script setup lang="ts">
-import { TaskStatusOptions } from '@/pages/bigScreen/batch/option.ts';
+import { findLabelByValue } from '@/pages/bigScreen/batch/option.ts';
+import { SmileTwoTone } from '@ant-design/icons-vue';
 import { watch } from 'vue';
 
 const props = defineProps({
@@ -112,11 +137,12 @@ const props = defineProps({
   setCheckRow: Function,
   changeTaskIdOrBatchId: Function,
   rowfun: Function,
+  setDetai: Function,
 });
 
 const items = ref([]);
 
-const isAllCheck = ref<boolean>(false);
+// const isAllCheck = ref<boolean>(false);
 // function changeAllCheck() {
 //   isAllCheck.value = !isAllCheck.value;
 //   items.value?.map((item) => {
@@ -127,10 +153,31 @@ const isAllCheck = ref<boolean>(false);
 function changeItemCheck(item: object) {
   item.checked = !item.checked;
 }
-function formatterStatus(cellValue) {
-  const item = TaskStatusOptions.find(item => item.value === cellValue);
-  return item ? item.label : cellValue;
+function formatterValue(cellValue, type) {
+  switch (type) {
+    // case 'position':
+    //   return getWorkstationName(cellValue);
+    case 'type':
+      return findLabelByValue('docTypesOptions', cellValue);
+    case 'idType':
+      return findLabelByValue('idTypesOptions', cellValue);
+    case 'docStatus':
+      return findLabelByValue('docStatusOptions', cellValue);
+    case 'cnObsvType':
+      return findLabelByValue('cnObsvTypeOptions', Number(cellValue));
+    case 'dispatchUnit':
+      return findLabelByValue('dispatchUnitOptions', cellValue);
+    case 'isTeam':
+      return findLabelByValue('teamOptions', cellValue);
+    case 'dataSource':
+      return findLabelByValue('dataSourceOptions', cellValue);
+    // case 'urgentType':
+    //   return findLabelByValue('urgencyOptions', cellValue);
+    default:
+      break;
+  }
 }
+
 watch(
   () => props.items,
   () => {
@@ -144,7 +191,7 @@ watch(
     // 加上翻页数据的新选中数据
     // 创建一个 Map，以 groupID 为键，存储 oldCheckedRow 中的项
     const oldCheckedMap = new Map(
-      props.oldCheckedRow.map(item => [item.taskID, item]),
+      props.oldCheckedRow.map(item => [item.physicalID, item]),
     );
 
     // 遍历 newItems，处理重复项和新增项
@@ -152,11 +199,11 @@ watch(
     newItems.forEach((item) => {
       if (item.checked === false) {
         // 如果 newItems 中的 checked 为 false，删除 oldCheckedMap 中对应的条目
-        oldCheckedMap.delete(item.taskID);
+        oldCheckedMap.delete(item.physicalID);
       }
       else if (item.checked === true) {
         // 如果 newItems 中的 checked 为 true，保留该条目
-        oldCheckedMap.set(item.taskID, item); // 更新或添加到 Map 中
+        oldCheckedMap.set(item.physicalID, item); // 更新或添加到 Map 中
       }
     });
 
@@ -171,7 +218,7 @@ watch(
     // 重新打钩
     newItems.forEach((sourceItem, index) => {
       const targetItem = resultArray.find(
-        item => item.taskID === sourceItem.taskID,
+        item => item.physicalID === sourceItem.physicalID,
       );
       if (targetItem) {
         newItems[index] = targetItem; // 直接替换
@@ -200,6 +247,9 @@ watch(
   // background-color: #ffffff38;
   background-color: #ffffff69;
   border-radius: 5px;
+}
+::v-deep(.ant-result-title) {
+  color: #fff;
 }
 .bg-color {
   background: linear-gradient(

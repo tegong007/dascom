@@ -31,7 +31,7 @@
       :doc-batch-id="docBatchId"
       :doc-task-id="docTaskId"
     />
-    <Doc
+    <PhysicalDoc
       v-if="choose === 3"
       :choose="choose"
       :change-task-id-or-batch-id="changeTaskIdOrBatchId"
@@ -55,7 +55,7 @@
 <script lang="ts" setup>
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 import { useRoute } from 'vue-router';
-import Doc from './doc/index.vue';
+import PhysicalDoc from './physicalDoc/index.vue';
 import Record from './record/index.vue';
 import Task from './task/index.vue';
 

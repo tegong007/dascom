@@ -2,8 +2,9 @@
   <div
     class="absolute top-70 box-border h-85vh w90% flex flex-col items-center gap-20 p-2em p-b-0"
   >
-    <div class="relative w-full flex">
-      <TeamForm ref="searchRef" :set-search-form="setSearchForm" />
+    <!-- <DocInfo /> -->
+    <div class="relative w-full">
+      <docForm ref="searchRef" :set-search-form="setSearchForm" />
       <a-space :size="20" class="absolute bottom-[20px] right-10">
         <a-button
           type="primary"
@@ -13,35 +14,35 @@
           <img src="@/assets/image/bigScreen/btn/huifu.svg" class="mr7 w12px">
           刷新
         </a-button>
-        <a-button
-          type="primary"
-          class="btn flex items-center"
-          @click="rowAction('reset')"
-        >
-          <RollbackOutlined />
-          重新生产
-        </a-button>
-        <a-button
-          type="primary"
-          class="btn flex items-center"
-          @click="rowAction('stop')"
-        >
-          <img
-            src="@/assets/image/bigScreen/btn/guaqi.svg"
-            class="m-r-7 w12px"
-          >
-          挂起
-        </a-button>
+        <a-dropdown>
+          <template #overlay>
+            <a-menu @click="handleMenuClick">
+              <!-- <a-menu-item :key="0"> 挂起 </a-menu-item> -->
+              <!-- <a-menu-item :key="1"> 重新生产 </a-menu-item> -->
+              <a-menu-item :key="2">
+                设为成功
+              </a-menu-item>
+              <a-menu-item :key="3">
+                设为失败
+              </a-menu-item>
+            </a-menu>
+          </template>
+          <a-button class="btn flex items-center">
+            批量操作
+            <DownOutlined />
+          </a-button>
+        </a-dropdown>
       </a-space>
     </div>
 
-    <main class="box-border h82% w-full">
-      <TaskCard
+    <main class="box-border h80% w-full">
+      <DocCard
         :items="tableData"
         :check-row="checkRow"
         :old-checked-row="oldCheckedRow"
         :set-check-row="setCheckRow"
         :rowfun="rowAction"
+        :set-detai="setDetai"
         :change-task-id-or-batch-id="props.changeTaskIdOrBatchId"
       />
       <vxe-pager
@@ -54,18 +55,6 @@
       >
         <template #right>
           <div class="relative top-1">
-            <!-- <span
-            >跳到
-            <a-input
-              class="w-50 m-l-3"
-              size="small"
-              :maxlength="2"
-              v-model:value="pageVO.currentPage"
-              @input="validateInput"
-              @click="onInputFocus($event, 'num')"
-            ></a-input>
-            页，
-          </span> -->
             <span>共{{ Math.ceil(pageVO.total / pageVO.pageSize) }}页，{{
               pageVO.total
             }}条记录
@@ -83,68 +72,118 @@
     :handle-cancel="() => setOpen(false)"
     :title="modal"
   />
+  <DetailModal
+    :open="detailOpen"
+    :current-row="currentRow"
+    :handle-ok="() => setDetailOpen(false)"
+    :handle-cancel="() => setDetailOpen(false)"
+    title="详情"
+  />
 
   <contextHolder />
 </template>
 
 <script lang="ts" setup>
-import { TaskModule } from '@/apis/proApi';
+import type { MenuProps } from 'ant-design-vue';
+import { physicalModule } from '@/apis/proApi';
 import { contextHolder, openNotify } from '@/components/base/useNotification';
 import TheModal from '@/components/modal/TheModal.vue';
 import { useAppStore } from '@/store/index';
-import { RollbackOutlined } from '@ant-design/icons-vue';
-import { defineProps, reactive } from 'vue';
-import TaskCard from './card.vue';
-import TeamForm from './task-form.vue';
+import { DownOutlined } from '@ant-design/icons-vue';
+import DocCard from './card.vue';
+import DetailModal from './detailModal.vue';
+import docForm from './doc-form.vue';
 
 const props = defineProps({
   choose: Number,
-  docBatchId: String,
-  docTaskId: String,
   changeTaskIdOrBatchId: Function,
+  docBatchId: String || Object,
+  docTaskId: String || Object,
 });
 const pageVO = reactive({
   total: 20,
   currentPage: 1,
   pageSize: 6,
 });
-const checkRow = ref([]); // 选中的数据
-const oldCheckedRow = ref([]); // 选中的数据
+const checkRow = ref();
+const oldCheckedRow = ref([]);
 // const tableRef = ref(null);
 const searchRef = ref(null);
 const searchForm = ref({});
 const open = ref<boolean>(false);
+const detailOpen = ref<boolean>(false);
 const modal = ref('');
 const isReset = ref(0);
 const tableData = ref([]);
-const isSearching = ref(false);
+const title: {
+  [key: string]: string;
+} = {
+  0: '挂起',
+  1: '重新生产',
+  2: '设为成功',
+  3: '设为失败',
+};
+const handleMenuClick: MenuProps['onClick'] = (e) => {
+  console.log('click', e.key);
+  rowAction(e.key);
+};
+
 function setSearchForm(formValue: object) {
   searchForm.value = formValue;
   pageVO.currentPage = 1;
+  // 清空筛选
+  oldCheckedRow.value = [];
+  checkRow.value = [];
   getDataPage();
 }
-function rowAction(type: string, taskID: string) {
-  modal.value = type;
-  checkRow.value = !taskID ? checkRow.value : [{ taskID }];
+function setCheckRow(arr: Array<any>) {
+  checkRow.value = arr;
+}
+async function operate() {
+  try {
+    const oldCheckTaskID = checkRow.value.map(item => item.physicalID);
+    await physicalModule.getDocOperate({
+      physicalID: oldCheckTaskID,
+      operate: isReset.value,
+    });
+    openNotify('bottomRight', `${title[isReset.value]}操作成功`, true);
+    getDataPage();
+    oldCheckedRow.value = [];
+    checkRow.value = [];
+  }
+  catch (error) {
+    error;
+    openNotify('bottomRight', `${title[isReset.value]}操作失败`);
+  }
+  finally {
+    setOpen(false);
+  }
+}
+
+function rowAction(type: number, physicalID?: string) {
+  modal.value = title[type];
+  checkRow.value = !physicalID ? checkRow.value : [{ physicalID }];
   nextTick(() => {
     if (checkRow.value.length === 0 && oldCheckedRow.value.length === 0) {
       openNotify('bottomRight', `您还没有选中数据`);
     }
+
     if (checkRow.value.length || oldCheckedRow.value.length) {
-      modal.value = `可能含有不能${type === 'stop' ? '挂起' : '重新生产'}的数据，是否继续${type === 'stop' ? '挂起' : '重新生产'}${
+      modal.value = `可能含有不能${title[type]}的数据，是否继续${title[type]}${
         checkRow.value.length
       }条数据?`;
-      isReset.value = type === 'stop' ? 0 : 1;
+      isReset.value = type;
       open.value = true;
     }
   });
 }
-
 // 分页
 function pageChange() {
   oldCheckedRow.value.push(...checkRow.value); // 将 checkRow 的内容追加到 oldCheckedRow
   oldCheckedRow.value = [
-    ...new Map(oldCheckedRow.value.map(item => [item.taskID, item])).values(),
+    ...new Map(
+      oldCheckedRow.value.map(item => [item.physicalID, item]),
+    ).values(),
   ];
   getDataPage();
 }
@@ -153,37 +192,24 @@ function setOpen(value: boolean) {
   open.value = value;
 }
 
-async function operate() {
-  try {
-    const oldCheckTaskID = checkRow.value.map(item => item.taskID);
-    await TaskModule.getTaskOperate({
-      taskID: oldCheckTaskID,
-      operate: isReset.value,
-    });
-    openNotify(
-      'bottomRight',
-      `${isReset.value ? '重新生产' : '挂起'}操作成功`,
-      true,
-    );
-    getDataPage();
-    oldCheckedRow.value = [];
-    checkRow.value = [];
-  }
-  catch (error) {
-    error;
-    openNotify('bottomRight', `${isReset.value ? '重新生产' : '挂起'}操作失败`);
-  }
-  finally {
-    setOpen(false);
-  }
+function setDetailOpen(value: boolean) {
+  detailOpen.value = value;
+}
+const currentRow = ref({});
+// 查看详情
+function setDetai(row: any) {
+  detailOpen.value = true;
+  currentRow.value = row;
 }
 
+onActivated(() => {
+  getDataPage();
+});
 onDeactivated(() => {
   // 清空筛选
   oldCheckedRow.value = [];
   checkRow.value = [];
   tableData.value = [];
-  isSearching.value = false;
   pageVO.currentPage = 1;
   pageVO.pageSize = 20;
 });
@@ -196,35 +222,31 @@ async function getDataPage() {
       page: pageVO.currentPage,
       rowPerPage: pageVO.pageSize,
     };
-    const data = await TaskModule.getTaskPage(params);
+    const data = await physicalModule.getDocDetailGeneral(params);
     if (data.respData) {
-      tableData.value = data.respData.taskInfo;
+      tableData.value = data.respData.docInfo;
       pageVO.currentPage = data.respData.page;
       pageVO.total = data.respData.totalRows;
       pageVO.pageSize = data.respData.rowPerPage;
     }
   }
   catch (error) {
-    error;
-    openNotify('bottomRight', `接口超时`);
-    // stop();
+    openNotify('bottomRight', error);
   }
   finally {
     useAppStore().setSpinning(false);
   }
 }
 
-function setCheckRow(arr: Array<any>) {
-  checkRow.value = arr;
-}
 watch(
   () => props.choose,
   (newValue) => {
-    if (newValue === 1) {
+    if (newValue === 3) {
       nextTick(() => {
         if (searchRef.value) {
-          searchRef.value.setTaskID(
+          searchRef.value.setBatchIDandGroupId(
             typeof props.docTaskId === 'string' ? props.docTaskId : '',
+            typeof props.docBatchId === 'string' ? props.docBatchId : '',
           );
         }
       });
@@ -232,11 +254,6 @@ watch(
   },
   { deep: true, immediate: true },
 );
-// async function startGetDataPage() {
-//   start(async () => {
-//     await getDataPage();
-//   }, 1);
-// }
 </script>
 
 <style scoped lang="less">
@@ -252,7 +269,6 @@ watch(
     background-color: unset;
   }
   .is--active {
-    // background: #fff !important;
     box-shadow: 0 0 0.25em 0 #7ff3fd !important;
   }
 }

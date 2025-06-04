@@ -4,6 +4,7 @@
     :open="props.open"
     wrap-class-name="test"
     :closable="false"
+    centered
     :width="1000"
     destroy-on-close
     force-render

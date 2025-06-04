@@ -40,36 +40,33 @@
     </div>
 
     <main class="box-border h80% w-full">
-      <MyTable
-        ref="tableRef"
-        :colums="colums"
-        :checkbox="true"
-        :data="tableData"
+      <RecordCard
+        :items="tableData"
+        :check-row="checkRow"
+        :old-checked-row="oldCheckedRow"
+        :set-check-row="setCheckRow"
         :rowfun="rowAction"
-        :update-old-checked-row="updateOldCheckedRow"
-        :change-task-id-or-batch-id="props.changeTaskIdOrBatchId"
         :set-detai="setDetai"
-        key-field="docSN"
-        page-name="docList"
+        :change-task-id-or-batch-id="props.changeTaskIdOrBatchId"
       />
+      <vxe-pager
+        v-model:current-page="pageVO.currentPage"
+        v-model:page-size="pageVO.pageSize"
+        class="z-99 w-full flex items-center justify-center"
+        :total="pageVO.total"
+        :layouts="['Home', 'PrevPage', 'Number', 'NextPage', 'End']"
+        @page-change="pageChange"
+      >
+        <template #right>
+          <div class="relative top-1">
+            <span>共{{ Math.ceil(pageVO.total / pageVO.pageSize) }}页，{{
+              pageVO.total
+            }}条记录
+            </span>
+          </div>
+        </template>
+      </vxe-pager>
     </main>
-    <vxe-pager
-      v-model:current-page="pageVO.currentPage"
-      v-model:page-size="pageVO.pageSize"
-      class="z-99 w-full flex items-center justify-center"
-      :total="pageVO.total"
-      :layouts="['Home', 'PrevPage', 'Number', 'NextPage', 'End']"
-      @page-change="pageChange"
-    >
-      <template #right>
-        <div class="relative top-1">
-          <span>共{{ Math.ceil(pageVO.total / pageVO.pageSize) }}页，{{
-            pageVO.total
-          }}条记录
-          </span>
-        </div>
-      </template>
-    </vxe-pager>
   </div>
   <!-- 下边按钮 -->
   <TheModal
@@ -94,12 +91,10 @@
 import type { MenuProps } from 'ant-design-vue';
 import { documentModule } from '@/apis/proApi';
 import { contextHolder, openNotify } from '@/components/base/useNotification';
-
-import MyTable from '@/components/base/vxeTable.vue';
 import TheModal from '@/components/modal/TheModal.vue';
-import { findLabelByValue } from '@/pages/bigScreen/batch/option.ts';
 import { useAppStore } from '@/store/index';
 import { DownOutlined } from '@ant-design/icons-vue';
+import RecordCard from './card.vue';
 import DetailModal from './detailModal.vue';
 import docForm from './doc-form.vue';
 
@@ -112,11 +107,11 @@ const props = defineProps({
 const pageVO = reactive({
   total: 20,
   currentPage: 1,
-  pageSize: 20,
+  pageSize: 6,
 });
-const checkedRow = ref();
+const checkRow = ref();
 const oldCheckedRow = ref([]);
-const tableRef = ref(null);
+// const tableRef = ref(null);
 const searchRef = ref(null);
 const searchForm = ref({});
 const open = ref<boolean>(false);
@@ -136,256 +131,29 @@ const handleMenuClick: MenuProps['onClick'] = (e) => {
   console.log('click', e.key);
   rowAction(e.key);
 };
-// const imgShow = {
-//   name: 'VxeImage',
-//   props: {
-//     width: 80,
-//     height: 80,
-//     maskClosable: true,
-//   },
-// };
-const colums = ref([
-  {
-    title: '序号',
-    field: 'seq',
-    fixed: 'left',
-    width: 60,
-    overflow: 'title',
-  },
-  {
-    title: '证本号',
-    field: 'docID',
-    width: 150,
-    overflow: 'title',
-  },
-
-  // {
-  //   title: '证本流水线号',
-  //   field: 'docSN',
-  //   width: 180,
-  //   overflow: 'title',
-  // },
-  {
-    title: '所属任务号',
-    field: 'taskID',
-    type: 'html',
-    width: 180,
-    overflow: 'ellipsis',
-  },
-  {
-    title: '所属批次号',
-    field: 'batchID',
-    width: 120,
-    overflow: 'title',
-  },
-  {
-    title: '证件号',
-    field: 'idNum',
-    width: 150,
-    overflow: 'title',
-  },
-  {
-    title: '证件类型',
-    field: 'idType',
-    formatter: formatterValue,
-    width: 120,
-    overflow: 'title',
-  },
-
-  // {
-  //   title: '派遣单位',
-  //   field: 'dispatchUnit',
-  //   formatter: formatterValue,
-  //   width: 130,
-  //   overflow: 'title',
-  // },
-  // {
-  //   title: '数据来源',
-  //   field: 'dataSource',
-  //   formatter: formatterValue,
-  //   width: 130,
-  //   overflow: 'title',
-  // },
-
-  // {
-  //   title: '加急程度',
-  //   field: 'urgentType',
-  //   formatter: formatterValue,
-  //   width: 100,
-  //   overflow: 'title',
-  // },
-
-  {
-    title: '当前工位',
-    field: 'position',
-    // formatter: formatterValue,
-    overflow: 'title',
-    width: 180,
-  },
-  {
-    title: '状态',
-    field: 'docStatus',
-    formatter: formatterValue,
-    width: 100,
-    overflow: 'title',
-  },
-  {
-    title: '证本类型',
-    field: 'type',
-    formatter: formatterValue,
-    width: 120,
-    overflow: 'title',
-  },
-
-  // {
-  //   title: '姓(中)',
-  //   field: 'cnSurname',
-  //   width: 70,
-  //   overflow: 'title',
-  // },
-  // {
-  //   title: '名(中)',
-  //   field: 'cnGivenName',
-  //   width: 70,
-  //   overflow: 'title',
-  // },
-  // {
-  //   title: '人像',
-  //   field: 'photo',
-  //   width: 100,
-  //   overflow: 'title',
-  //   imgUrlCellRender: imgShow,
-  // },
-  // {
-  //   title: '加注类型',
-  //   field: 'cnObsvType',
-  //   formatter: formatterValue,
-  //   width: 150,
-  //   overflow: 'title',
-  // },
-  // {
-  //   title: '机读码1',
-  //   field: 'mrz1',
-  //   width: 200,
-  //   overflow: 'title',
-  // },
-  // {
-  //   title: '机读码2',
-  //   field: 'mrz2',
-  //   width: 200,
-  //   overflow: 'title',
-  // },
-  // {
-  //   title: '空白本照片',
-  //   field: 'blankDocPic',
-  //   width: 120,
-  //   overflow: 'title',
-  //   imgUrlCellRender: imgShow,
-  // },
-  // {
-  //   title: '激光前定位照片',
-  //   field: 'laserPicLocation',
-  //   width: 140,
-  //   overflow: 'title',
-  //   imgUrlCellRender: imgShow,
-  // },
-  // {
-  //   title: '激光后质检照片',
-  //   field: 'laserPicCheck',
-  //   width: 140,
-  //   overflow: 'title',
-  //   imgUrlCellRender: imgShow,
-  // },
-  // {
-  //   title: '喷墨前定位照片(主)',
-  //   field: 'mainUVPicLocation',
-  //   width: 160,
-  //   overflow: 'title',
-  //   imgUrlCellRender: imgShow,
-  // },
-  // {
-  //   title: '喷墨后质检照片(主)',
-  //   field: 'mainUVPicCheck',
-  //   width: 160,
-  //   overflow: 'title',
-  //   imgUrlCellRender: imgShow,
-  // },
-  // {
-  //   title: '喷墨前定位照片(加)',
-  //   field: 'additionUVPicLocation',
-  //   width: 160,
-  //   overflow: 'title',
-  //   imgUrlCellRender: imgShow,
-  // },
-  // {
-  //   title: '喷墨前定位照片(加)',
-  //   field: 'additionUVPicCheck',
-  //   width: 160,
-  //   overflow: 'title',
-  //   imgUrlCellRender: imgShow,
-  // },
-  // {
-  //   title: '废本原因',
-  //   field: 'obsoleteReason',
-  //   width: 120,
-  //   overflow: 'title',
-  // },
-  {
-    title: '开始时间',
-    field: 'startTime',
-    width: 200,
-    overflow: 'title',
-  },
-  {
-    title: '更新时间',
-    field: 'endTime',
-    width: 200,
-    overflow: 'title',
-  },
-]);
-function formatterValue({ cellValue, column }: any) {
-  switch (column.field) {
-    // case 'position':
-    //   return getWorkstationName(cellValue);
-    case 'type':
-      return findLabelByValue('docTypesOptions', cellValue);
-    case 'idType':
-      return findLabelByValue('idTypesOptions', cellValue);
-    case 'docStatus':
-      return findLabelByValue('docStatusOptions', cellValue);
-    case 'cnObsvType':
-      return findLabelByValue('cnObsvTypeOptions', Number(cellValue));
-    case 'dispatchUnit':
-      return findLabelByValue('dispatchUnitOptions', cellValue);
-    case 'isTeam':
-      return findLabelByValue('teamOptions', cellValue);
-    case 'dataSource':
-      return findLabelByValue('dataSourceOptions', cellValue);
-    // case 'urgentType':
-    //   return findLabelByValue('urgencyOptions', cellValue);
-    default:
-      break;
-  }
-}
 
 function setSearchForm(formValue: object) {
   searchForm.value = formValue;
   pageVO.currentPage = 1;
   // 清空筛选
   oldCheckedRow.value = [];
-  checkedRow.value = [];
+  checkRow.value = [];
   getDataPage();
+}
+function setCheckRow(arr: Array<any>) {
+  checkRow.value = arr;
 }
 async function operate() {
   try {
-    const oldCheckrecID = oldCheckedRow.value.map(item => item.docSN);
-    const allCheckRox = [...new Set([...checkedRow.value, ...oldCheckrecID])];
+    const oldCheckTaskID = checkRow.value.map(item => item.docSN);
     await documentModule.getDocOperate({
-      docSN: allCheckRox,
+      docSN: oldCheckTaskID,
       operate: isReset.value,
     });
     openNotify('bottomRight', `${title[isReset.value]}操作成功`, true);
     getDataPage();
+    oldCheckedRow.value = [];
+    checkRow.value = [];
   }
   catch (error) {
     error;
@@ -396,62 +164,30 @@ async function operate() {
   }
 }
 
-// 取消的时候删掉这一行
-function updateOldCheckedRow(delectArr) {
-  let toDeleteIDs;
-  if (Array.isArray(delectArr)) {
-    toDeleteIDs = delectArr.map(item => item.docSN);
-  }
-  else {
-    toDeleteIDs = [delectArr.docSN];
-  }
-
-  // 使用 filter 方法过滤掉需要删除的元素
-  oldCheckedRow.value = oldCheckedRow.value.filter(
-    item => !toDeleteIDs.includes(item.docSN),
-  );
-}
-
 function rowAction(type: number, docSN?: string) {
   modal.value = title[type];
-  const newCheckRow = !docSN ? tableRef.value.getSelectEvent() : [docSN];
-  if (tableRef.value && newCheckRow) {
-    checkedRow.value = !docSN
-      ? newCheckRow.map(item => item.docSN)
-      : newCheckRow;
-  }
+  checkRow.value = !docSN ? checkRow.value : [{ docSN }];
   nextTick(() => {
-    if (checkedRow.value.length === 0 && oldCheckedRow.value.length === 0) {
+    if (checkRow.value.length === 0 && oldCheckedRow.value.length === 0) {
       openNotify('bottomRight', `您还没有选中数据`);
     }
 
-    if (checkedRow.value.length || oldCheckedRow.value.length) {
-      const oldCheckrecID = oldCheckedRow.value.map(item => item.docSN);
-      const allCheckRox = [...new Set([...checkedRow.value, ...oldCheckrecID])];
+    if (checkRow.value.length || oldCheckedRow.value.length) {
       modal.value = `可能含有不能${title[type]}的数据，是否继续${title[type]}${
-        allCheckRox.length
+        checkRow.value.length
       }条数据?`;
       isReset.value = type;
       open.value = true;
     }
   });
 }
-// function formatterStatus({ cellValue }: any) {
-//   const item = TaskStatusOptions.find((item) => item.value === cellValue);
-//   return item ? item.label : cellValue;
-// }
 // 分页
-function pageChange({ pageSize, currentPage }) {
+function pageChange() {
+  oldCheckedRow.value.push(...checkRow.value); // 将 checkRow 的内容追加到 oldCheckedRow
   oldCheckedRow.value = [
-    ...oldCheckedRow.value,
-    ...tableRef.value.getSelectEvent(),
+    ...new Map(oldCheckedRow.value.map(item => [item.docSN, item])).values(),
   ];
-
-  pageVO.currentPage = currentPage;
-  pageVO.pageSize = pageSize;
   getDataPage();
-  // 选回上一页的数据
-  tableRef.value.setSelectRow(oldCheckedRow.value, true);
 }
 
 function setOpen(value: boolean) {
@@ -474,12 +210,10 @@ onActivated(() => {
 onDeactivated(() => {
   // 清空筛选
   oldCheckedRow.value = [];
-  checkedRow.value = [];
+  checkRow.value = [];
   tableData.value = [];
-  // pageVO.total = 20;
   pageVO.currentPage = 1;
   pageVO.pageSize = 20;
-  // stop();
 });
 
 async function getDataPage() {
@@ -497,11 +231,9 @@ async function getDataPage() {
       pageVO.total = data.respData.totalRows;
       pageVO.pageSize = data.respData.rowPerPage;
     }
-    // startGetDataPage();
   }
   catch (error) {
     openNotify('bottomRight', error);
-    // stop();
   }
   finally {
     useAppStore().setSpinning(false);
@@ -511,7 +243,6 @@ async function getDataPage() {
 watch(
   () => props.choose,
   (newValue) => {
-    // console.log('🚀 ~ newValue:', newValue);
     if (newValue === 2) {
       nextTick(() => {
         if (searchRef.value) {
@@ -525,11 +256,6 @@ watch(
   },
   { deep: true, immediate: true },
 );
-// async function startGetDataPage() {
-//   start(async () => {
-//     await getDataPage();
-//   }, 1);
-// }
 </script>
 
 <style scoped lang="less">
