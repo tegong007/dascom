@@ -4,7 +4,7 @@
   >
     <bigScreenHeader title="维护" class="h8vh" />
     <div class="h-100% w-full flex flex-col text-white">
-      <div class="bg-color m-x-4em h-87% flex border-[4px] border-[#3F89DD]">
+      <div class="bg-color m-x-4em h-80vh flex border-[4px] border-[#3F89DD]">
         <div class="h-full w-[14%] flex flex-col">
           <a-radio-group
             v-model:value="currentModel"
@@ -28,6 +28,7 @@
           <!-- 整机测试 -->
           <section
             v-if="currentModel === '0'"
+            id="scroll-container"
             class="wh-full flex flex-col flex-1"
           >
             <OnlyTest />
@@ -35,7 +36,8 @@
           </section>
           <!-- 耗材 -->
           <section
-            v-show="currentModel === '5'"
+            v-if="currentModel === '5'"
+            id="scroll-container"
             class="scoll-bar box-border wh-full flex flex-col flex-1"
           >
             <Consumables :current-model="currentModel" />
@@ -48,13 +50,15 @@
                 && currentModel !== '0'
                 && currentModel !== ''
             "
+            id="scroll-container"
             class="scoll-bar box-border wh-full flex flex-col flex-1"
           >
             <ModuleTest :current-model="currentModel" />
           </section>
           <!-- 版本信息 -->
           <section
-            v-show="currentModel === '6'"
+            v-if="currentModel === '6'"
+            id="scroll-container"
             class="scoll-bar box-border wh-full flex flex-col flex-1"
           >
             <Version :current-model="currentModel" />

@@ -1,9 +1,9 @@
 <template>
   <div class="addMore text-[18px] text-white">
     <a-flex justify="center" align="center">
-      <div class="absolute left-0 top-0 h-3em w100% flex items-center">
-        <span class="m-x-0.4em text-2.5em line-height-[40px] font-[youshe]">03</span>
-        <span class="ml-10 text-[1.5em] color-[#CFDEF1]">{{
+      <div class="absolute left-0 top-0 h-2.5vh w100% flex items-center">
+        <span class="m-x-0.3vh text-2.5vh line-height-[40px] font-[youshe]">03</span>
+        <span class="ml-10 text-[1.3vh] color-[#CFDEF1]">{{
           props.data.name
         }}</span>
       </div>

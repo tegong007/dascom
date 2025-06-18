@@ -15,11 +15,7 @@
         <span>全选</span><span>已选中：{{ props.checkRow?.length }}个</span>
       </div>
     </section> -->
-    <a-result v-if="items.length === 0" class="" title="暂无数据">
-      <template #icon>
-        <SmileTwoTone />
-      </template>
-    </a-result>
+    <a-result v-if="items.length === 0" class="" title="暂无数据" />
     <section
       v-for="item in items"
       :key="item"
@@ -127,7 +123,6 @@
 
 <script setup lang="ts">
 import { findLabelByValue } from '@/pages/bigScreen/batch/option.ts';
-import { SmileTwoTone } from '@ant-design/icons-vue';
 import { watch } from 'vue';
 
 const props = defineProps({
@@ -225,8 +220,8 @@ watch(
       }
     });
     // 当页勾选的数据=页数，即全选
-    isAllCheck.value
-      = newItems.length && newItems.every(item => item.checked);
+    // isAllCheck.value
+    //   = newItems.length && newItems.every(item => item.checked);
     props.setCheckRow(resultArray);
   },
 

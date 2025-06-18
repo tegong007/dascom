@@ -45,7 +45,9 @@
                 class="m-r-10 w-150px"
                 size="large"
                 @input="validateInput($event, index, itemIndex, optionIndex)"
-                @click="onInputFocus($event, index, itemIndex, optionIndex)"
+                @touchstart="
+                  onInputFocus($event, index, itemIndex, optionIndex)
+                "
               />
               <a-popover>
                 <template #content>
@@ -103,13 +105,13 @@
 </template>
 
 <script lang="ts" setup>
+import { settingMoule } from '@/apis/proApi';
+import { getApiTransfer } from '@/apis/webApi';
+import SimpleKeyboard from '@/components/base/simpleKeyboard.vue';
+import { contextHolder } from '@/components/base/useNotification';
+import { useAppStore } from '@/store/index';
 import { QuestionCircleOutlined } from '@ant-design/icons-vue';
 import { App } from 'ant-design-vue';
-import { contextHolder } from '@/components/base/useNotification';
-import { getApiTransfer } from '@/apis/webApi';
-import { useAppStore } from '@/store/index';
-import { settingMoule } from '@/apis/proApi';
-import SimpleKeyboard from '@/components/base/simpleKeyboard.vue';
 
 const props = defineProps({
   currentModel: String,

@@ -291,8 +291,10 @@ function validateInput(event, index) {
 
 const changeIpt = ref(''); // 选择了哪个输入框
 const simpleKeyboard = ref(null);
-const transformValue = ref([300, -400]);
+const transformValue = ref([0, -400]);
 const cursorPosition = ref(null);
+const verticalScrollDistance = ref(0);
+
 function onInputFocus(event, res) {
   props.setShowKeyboard(true, 'InkjetPrinter');
   changeIpt.value = res;
@@ -302,9 +304,10 @@ function onInputFocus(event, res) {
   console.log('🚀 ~ onInputFocus ~ rect:', rect);
 
   // 获取距离上方和左方的位置
-  const top = rect.bottom + rect.height + window.scrollY; // 距离页面顶部的位置
+  const top = rect.bottom + window.scrollY; // 距离页面顶部的位置
+
   const left = rect.left + window.scrollX; // 距离页面左侧的位置
-  transformValue.value = [300, -(top - 450)];
+  transformValue.value = [0, -300 - verticalScrollDistance.value];
   console.log('距离页面顶部的位置:', top);
   console.log('距离页面左侧的位置:', left);
 }
@@ -343,6 +346,14 @@ function setInputCaretPosition(elem, pos) {
     }
   });
 }
+onMounted(() => {
+  const scrollContainer = document.getElementById('scroll-container');
+  /// 监听父元素的滚动事件
+  scrollContainer.addEventListener('scroll', () => {
+    // 获取滚动条在垂直方向上移动的距离
+    verticalScrollDistance.value = scrollContainer.scrollTop;
+  });
+});
 </script>
 
 <style scoped>

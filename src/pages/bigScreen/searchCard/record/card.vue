@@ -15,11 +15,7 @@
         <span>全选</span><span>已选中：{{ props.checkRow?.length }}个</span>
       </div>
     </section> -->
-    <a-result v-if="items.length === 0" class="" title="暂无数据">
-      <template #icon>
-        <smile-twoTone />
-      </template>
-    </a-result>
+    <a-result v-if="items.length === 0" class="" title="暂无数据" />
     <section
       v-for="item in items"
       :key="item"
@@ -226,8 +222,8 @@ watch(
       }
     });
     // 当页勾选的数据=页数，即全选
-    isAllCheck.value
-      = newItems.length && newItems.every(item => item.checked);
+    // isAllCheck.value =
+    //   newItems.length && newItems.every((item) => item?.checked);
     props.setCheckRow(resultArray);
   },
 
@@ -248,6 +244,9 @@ watch(
   // background-color: #ffffff38;
   background-color: #ffffff69;
   border-radius: 5px;
+}
+::v-deep(.ant-result-title) {
+  color: #fff;
 }
 .bg-color {
   background: linear-gradient(

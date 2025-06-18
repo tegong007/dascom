@@ -87,11 +87,11 @@ const props = defineProps({
   background-size: 100% 100%;
   background-repeat: 'no-repeat';
 
-  .table-data {
-    height: calc(100% - 8.3vh);
-    .scroll-table {
-      // height: calc(100vh - 15vh);
-    }
-  }
+  // .table-data {
+  //   height: calc(100% - 8.3vh);
+  //   .scroll-table {
+  //     // height: calc(100vh - 15vh);
+  //   }
+  // }
 }
 </style>
