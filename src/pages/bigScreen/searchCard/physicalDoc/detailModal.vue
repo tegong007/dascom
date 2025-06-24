@@ -4,10 +4,10 @@
     :open="props.open"
     wrap-class-name="test"
     :closable="false"
-    centered
+
     :width="1000"
-    destroy-on-close
-    force-render
+
+    destroy-on-close force-render centered
     @ok="props.handleOk"
   >
     <div class="delete-modal box-border h-[40em] p-t-50px">
@@ -69,7 +69,7 @@
             <a-descriptions-item label="机读码2">
               {{ props.currentRow.mrz2 }}
             </a-descriptions-item>
-            <a-descriptions-item label="空白本照片">
+            <!-- <a-descriptions-item label="空白本照片">
               <vxe-image
                 :src="`data:image/png;base64,${props.currentRow.blankDocPic}`"
                 :width="100"
@@ -103,7 +103,7 @@
                 mask-closable
                 :src="`data:image/png;base64,${props.currentRow.additionPicCheck}`"
               />
-            </a-descriptions-item>
+            </a-descriptions-item> -->
             <a-descriptions-item label="废本原因">
               {{ props.currentRow.obsoleteReason }}
             </a-descriptions-item>
