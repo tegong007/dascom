@@ -194,6 +194,12 @@ async function getDocNum() {
 }
 // 验证通过，告诉爸爸
 function onSubmit() {
+  if (props.title === '确认全线急停？') {
+    closekeyboard();
+    props.handleOk();
+    return;
+  }
+  // title
   formRef.value
     .validate()
     .then(() => {

@@ -99,26 +99,9 @@
         :title="entire.hasTask ? '暂停进本' : '开始进本'"
         @click="setModal(entire.hasTas ? 1 : 0)"
       />
-      <TheButton
-        title="全线急停"
-        :disable="entire.status !== 'error'"
-        @click="setModal(2)"
-      />
-    </div> -->
-    <div
-      class="groupBtn absolute right-30 top-300 h-100vh flex flex-col items-center justify-center"
-    >
-      <TheButton
-        :title="entire.hasTask ? '暂停进本' : '开始进本'"
-        @click="setModal(entire.hasTas ? 1 : 0)"
-      />
-      <TheButton
-        title="全线急停"
-        class="mt2em"
-        :disable="entire.status !== 'error'"
-        @click="setModal(2)"
-      />
+      <TheButton title="全线急停" @click="setModal(2)" />
     </div>
+
     <!-- 下边按钮 -->
     <div
       class="groupBtn absolute bottom-4vh h8em w-full flex items-center justify-center gap-20"
