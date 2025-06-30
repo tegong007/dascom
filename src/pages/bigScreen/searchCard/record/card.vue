@@ -19,10 +19,10 @@
     <section
       v-for="item in items"
       :key="item"
-      class="mt10 box-border flex items-center gap-10 text-[16px]"
+      class="mt30 box-border flex items-center gap-10 text-[16px]"
     >
       <div
-        class="bg-color relative box-border h-full flex flex-col flex-1 justify-start border-4 border-[#3F89DD] p-10 text-[1vh] line-height-30"
+        class="bg-color relative box-border h-full flex flex-col flex-1 justify-start border-4 border-[#3F89DD] p-10 text-[1vh] line-height-35"
         :class="item.checked === true && 'border-[#64CF44]'"
         @click="changeItemCheck(item, item.checked)"
       >
@@ -56,7 +56,7 @@
             <span>开始时间：{{ item.startTime }}</span>
             <span>更新时间：{{ item.endTime }}</span>
           </div>
-          <a-space :size="10" class="mt5 w-full flex justify-start">
+          <a-space :size="10" class="mt10 w-full flex justify-start">
             <a-button
               class="color-[#0c79c4] font-semibold"
               @click="

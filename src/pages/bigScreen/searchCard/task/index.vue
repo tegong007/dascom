@@ -106,7 +106,7 @@ const props = defineProps({
 const pageVO = reactive({
   total: 20,
   currentPage: 1,
-  pageSize: 6,
+  pageSize: 5,
 });
 const checkRow = ref([]); // 选中的数据
 const oldCheckedRow = ref([]); // 选中的数据
