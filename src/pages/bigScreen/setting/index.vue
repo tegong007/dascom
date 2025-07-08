@@ -5,7 +5,7 @@
     <bigScreenHeader title="设置" class="h8vh" />
     <div class="h-100% w-full flex flex-col text-white">
       <div class="bg-color m-x-4em h-87% flex border-[4px] border-[#3F89DD]">
-        <div class="h-full w-[15%] flex flex-col">
+        <div class="h-full w-[25%] flex flex-col">
           <a-radio-group
             v-model:value="currentModel"
             class="bg-color h-full w-full"

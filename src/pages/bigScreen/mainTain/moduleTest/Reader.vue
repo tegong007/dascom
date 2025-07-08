@@ -7,28 +7,29 @@
       <div
         v-for="(reader, index) in props.data"
         :key="index"
-        class="box-border w450px p-l-3em p-t-1em"
+        class="box-border p-y-1em p-l-1.5em p-r-0.5em shadow-blue-500/50 shadow-xl"
       >
         <div class="text-[18px]">
           {{ reader.readerName }}：
         </div>
         <br>
-        <a-input
+        <a-textarea
           v-model:value="reader.value"
           size="large"
           placeholder="读卡器数据"
           allow-clear
           :maxlength="40"
+          :auto-size="{ minRows: 2, maxRows: 3 }"
           @input="validateInput($event, index)"
           @touchstart="onInputFocus($event, index)"
         />
-        <div class="mt10 box-border flex justify-between">
+        <div class="mt10 box-border flex justify-between gap-15">
           <a-button
             type="link"
             class="btn hover:text-[#89f7ff]!"
             @click="transfer('/ips-r/read-test-data', index, reader)"
           >
-            读测试数据
+            读数据
           </a-button>
           <a-button
             type="link"
@@ -44,7 +45,7 @@
               transfer('/ips-r/write-test-data', index, reader, reader.value)
             "
           >
-            写入测试数据
+            写数据
           </a-button>
         </div>
       </div>

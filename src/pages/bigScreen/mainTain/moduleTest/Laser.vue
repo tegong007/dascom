@@ -7,7 +7,7 @@
       <div
         v-for="(laser, index) in props.data"
         :key="index"
-        class="max-w300px p-l-3em p-t-1em"
+        class="max-w350px p-1.5em shadow-2xl shadow-blue-500/50"
       >
         <div class="text-[18px]">
           {{ laser.laserName }}：

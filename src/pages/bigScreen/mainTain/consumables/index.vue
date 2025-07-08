@@ -3,15 +3,15 @@
     <section
       v-for="(moduleItems, moduleIndex) in modulesData"
       :key="moduleIndex"
-      class="h-full flex p-y-20"
+      class="h-full flex flex-col p-y-20"
     >
       <div class="h-full flex-col flex-1">
-        <span class="text-[28px] color-[#CFDEF1]">{{ moduleItems.moduleName }}油墨余量</span>
+        <span class="text-[28px] color-[#fff]">{{ moduleItems.moduleName }}油墨余量</span>
         <div class="flex">
           <div
             v-for="(item, index) in moduleItems.inkObjects"
             :key="index"
-            class="h250px flex flex-col flex-1 items-center justify-around"
+            class="h180px flex flex-col flex-1 items-center justify-around"
           >
             <div class="h25px w25px">
               <img
@@ -32,7 +32,7 @@
           </div>
         </div>
         <div
-          class="flex flex-col flex-1 justify-around text-[24px] color-[#CFDEF1]"
+          class="mt-20 h-100px flex flex-col justify-around text-[24px] color-[#CFDEF1]"
         >
           <span> 预计打印证本数</span>
           <span
@@ -41,7 +41,7 @@
         </div>
       </div>
       <div
-        class="box-border h-full w-150px flex flex-col border from-[#ffffff38] bg-gradient-to-b p-10 color-[#CFDEF1]"
+        class="m-t-30 box-border h-full flex flex-col border from-[#ffffff38] bg-gradient-to-b p-10 color-[#CFDEF1]"
       >
         <div class="flex-1">
           【墨水缺失】<br>

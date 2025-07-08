@@ -7,7 +7,7 @@
       <div
         v-for="(camera, index) in props.data"
         :key="index"
-        class="max-w250px p-l-3em p-t-1em"
+        class="max-w250px p-l-1.5em p-t-1em"
       >
         <div class="text-[18px]">
           {{ camera.cameraName }}：
