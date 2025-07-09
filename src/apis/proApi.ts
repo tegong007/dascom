@@ -55,8 +55,18 @@ const mainTainModule = {
 };
 // 设置页面
 const settingMoule = {
-  getSettingItem: (data: any) =>
-    request.post(`${v1}/tss/get-setting-item`, data),
+  getUvPlatformConfig: () => request.post(`${v1}/tss/get-uv-platform-config`),
+  setUvPlatformConfig: (data: any) =>
+    request.post(`${v1}/tss/set-uv-platform-config`, data),
+  getUvLocationg: () => request.post(`${v1}/tss/get-uv-location-base`),
+  setUvLocationg: (data: any) =>
+    request.post(`${v1}/tss/set-uv-location-base`, data),
+  getLoadSlot: () => request.post(`${v1}/tss/get-load-slot-enable`),
+  setLoadSlot: (data: any) =>
+    request.post(`${v1}/tss/set-load-slot-enable`, data),
+  getCollectionSlot: () => request.post(`${v1}/tss/get-collection-slot-enable`),
+  setCollectionSlot: (data: any) =>
+    request.post(`${v1}/tss/set-collection-slot-enable`, data),
 };
 export {
   documentModule,

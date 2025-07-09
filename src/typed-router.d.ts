@@ -69,6 +69,7 @@ declare module 'vue-router/auto-routes' {
     '/bigScreen/searchCard/team/': RouteRecordInfo<'/bigScreen/searchCard/team/', '/bigScreen/searchCard/team', Record<never, never>, Record<never, never>>,
     '/bigScreen/searchCard/team/team-form': RouteRecordInfo<'/bigScreen/searchCard/team/team-form', '/bigScreen/searchCard/team/team-form', Record<never, never>, Record<never, never>>,
     'Setting': RouteRecordInfo<'Setting', '/bigScreen/setting', Record<never, never>, Record<never, never>>,
+    '/bigScreen/setting/Oldset': RouteRecordInfo<'/bigScreen/setting/Oldset', '/bigScreen/setting/Oldset', Record<never, never>, Record<never, never>>,
     '/bigScreen/setting/set': RouteRecordInfo<'/bigScreen/setting/set', '/bigScreen/setting/set', Record<never, never>, Record<never, never>>,
     '/bigScreen/setting/sort/': RouteRecordInfo<'/bigScreen/setting/sort/', '/bigScreen/setting/sort', Record<never, never>, Record<never, never>>,
     '/bigScreen/setting/sort/setPwModal': RouteRecordInfo<'/bigScreen/setting/sort/setPwModal', '/bigScreen/setting/sort/setPwModal', Record<never, never>, Record<never, never>>,

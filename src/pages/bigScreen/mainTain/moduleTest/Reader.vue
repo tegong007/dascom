@@ -7,7 +7,7 @@
       <div
         v-for="(reader, index) in props.data"
         :key="index"
-        class="box-border p-y-1em p-l-1.5em p-r-0.5em shadow-blue-500/50 shadow-xl"
+        class="box-border p-y-1em p-l-1.5em p-r-0.5em"
       >
         <div class="text-[18px]">
           {{ reader.readerName }}：

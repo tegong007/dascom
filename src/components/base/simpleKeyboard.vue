@@ -16,16 +16,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch, watchEffect } from 'vue';
-import Keyboard from 'simple-keyboard';
-import 'simple-keyboard/build/css/index.css';
-// import layout from 'simple-keyboard-layouts/build/layouts/chinese'; // 中文输入法
-
 // 移动
 import type { CSSProperties } from 'vue';
-
-import { useDraggable } from '@vueuse/core';
 import layout from '@/utils/chinese';
+import { useDraggable } from '@vueuse/core';
+// import layout from 'simple-keyboard-layouts/build/layouts/chinese'; // 中文输入法
+
+import Keyboard from 'simple-keyboard';
+
+import { computed, onMounted, ref, watch, watchEffect } from 'vue';
+import 'simple-keyboard/build/css/index.css';
 
 // 中文库
 const props = defineProps({
@@ -278,11 +278,10 @@ watch(
 watch(
   () => props.layout,
   (newInput) => {
-    keyboard.value?.layout[newInput];
-    console.log(
-      '🚀 ~ keyboard.value?.layout[newInput]:',
-      keyboard.value?.layout[newInput],
-    );
+    keyboard.value.setOptions({
+      layoutName: newInput,
+    });
+
     // keyboard.value?.setOptions({ layout: newInput });
   },
 );
