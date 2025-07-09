@@ -5,7 +5,7 @@
     <bigScreenHeader title="设置" class="h8vh" />
     <div class="h-100% w-full flex flex-col text-white">
       <div class="bg-color m-x-4em h-87% flex border-[4px] border-[#3F89DD]">
-        <div class="scoll-bar wh-full border-l-[4px] border-[#3F89DD]">
+        <div class="wh-full border-l-[4px] border-[#3F89DD]">
           <!-- <section
             v-if="currentModel === 'sort'"
             class="wh-full flex flex-col flex-1"
@@ -16,7 +16,10 @@
           <!-- <section v-if="currentModel === '1'">
             <Print />
           </section> -->
-          <section v-if="currentModel === '2'">
+          <section
+            v-if="currentModel === '2'"
+            class="scoll-bar box-border wh-full flex flex-col flex-1"
+          >
             <Set :current-model="currentModel" />
           </section>
         </div>
