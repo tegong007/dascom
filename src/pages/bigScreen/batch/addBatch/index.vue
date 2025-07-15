@@ -2,7 +2,7 @@
   <div class="bg h-100vh flex flex-col items-center text-[18px] text-white">
     <bigScreenHeader />
     <div
-      class="absolute top-50 box-border h78% w90% flex flex-col items-center gap-10 p-2em p-b-0"
+      class="absolute top-100 box-border h78% w90% flex flex-col items-center gap-10 p-2em p-b-0"
     >
       <div class="w-full flex items-center">
         <a-button
@@ -57,7 +57,7 @@
 
     <!-- 下边按钮 -->
     <div
-      class="groupBtn absolute bottom-0 h8em w-full flex items-center justify-center gap-20"
+      class="groupBtn absolute bottom-80 h8em w-full flex items-center justify-center gap-20"
     >
       <!-- <div class="flex">
         <TheButton title="批次查询" />

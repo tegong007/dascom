@@ -110,7 +110,7 @@ const options = ref([
   { label: `空白本检测模块`, value: '1' },
   { label: `主副页打印模块`, value: '2' },
   { label: `加注页打印模块`, value: '3' },
-  { label: `成本收集模块`, value: '4' },
+  // { label: `成本收集模块`, value: '4' },
   { label: `关于`, value: '6' },
 ]);
 

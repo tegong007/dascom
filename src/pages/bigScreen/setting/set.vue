@@ -307,7 +307,7 @@
       </div>
     </div>
     <div class="bg-[#fff]/[0.4] p-y-5px p-l-0.5em">
-      <span>收本槽设置</span>
+      <span>进本槽设置</span>
     </div>
 
     <section class="position-box w-full flex">
@@ -640,6 +640,8 @@ async function switchChange(e, item) {
       class: 'notification-custom-class',
       placement: 'bottomRight',
     });
+    targetData[splitStringByDot(item).secondPart]
+      = !targetData[splitStringByDot(item).secondPart];
   }
   finally {
     useAppStore().setSpinning(false);
