@@ -67,7 +67,7 @@
         <!-- <TheButton title="返回首页" @click="$goto('BigScreen')" /> -->
         <TheButton title="返回" @click="handleTipModal(true)" />
         <!-- <TheButton title="添加批次" @click="AddBatch()" /> -->
-        <TheButton title="添加任务" @click="handleTipModal(false)" />
+        <TheButton title="确定" @click="handleTipModal(false)" />
       </div>
     </div>
     <contextHolder />

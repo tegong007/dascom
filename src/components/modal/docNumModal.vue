@@ -39,7 +39,7 @@
                 v-model:value="formState.num"
                 placeholder="（1-2000）"
                 :maxlength="4"
-                @click="onInputFocus($event, 'num')"
+                @touchstart="onInputFocus($event, 'num')"
               />
             </a-form-item>
           </a-form>
