@@ -11,7 +11,7 @@
         </div>
         ：
         <div class="flex-1 text-left">
-          <span class="">1.0.4</span>
+          <span class="">1.0.3.0.1</span>
         </div>
       </div>
       <div
@@ -43,9 +43,9 @@
 </template>
 
 <script lang="ts" setup>
+import { mainTainModule } from '@/apis/proApi';
 import { App } from 'ant-design-vue';
 import SuceessModal from './checkPwModal.vue';
-import { mainTainModule } from '@/apis/proApi';
 
 const props = defineProps({
   currentModel: String,
