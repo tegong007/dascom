@@ -5,6 +5,7 @@
       :data="item.readers"
       :update-item="handleUpdateItem"
       :current-page="currentPage"
+      :current-model="props.currentModel"
       :show-keyboard="showKeyboard"
       :set-show-keyboard="setShowKeyboard"
     />
@@ -30,14 +31,14 @@
 </template>
 
 <script lang="ts" setup>
-import { watch } from 'vue';
-import { App } from 'ant-design-vue';
-import Reader from './Reader.vue';
-import Camera from './Camera.vue';
-import Laser from './Laser.vue';
-import InkjetPrinter from './InkjetPrinter.vue';
 import { mainTainModule } from '@/apis/proApi';
 import { useAppStore } from '@/store/index';
+import { App } from 'ant-design-vue';
+import { watch } from 'vue';
+import Camera from './Camera.vue';
+import InkjetPrinter from './InkjetPrinter.vue';
+import Laser from './Laser.vue';
+import Reader from './Reader.vue';
 
 const props = defineProps({
   currentModel: String,

@@ -33,7 +33,7 @@
           title="返回首页"
           @click="
             () => {
-              setCurrentModel('2');
+              setCurrentModel('0');
               $goto('BigScreen');
             }
           "
@@ -47,7 +47,7 @@
 import TheButton from '@/components/base/TheButton.vue';
 import bigScreenHeader from '@/components/bigScreen/header.vue';
 import { ref } from 'vue';
-// import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router';
 import Set from './set.vue';
 
 definePage({
@@ -56,7 +56,7 @@ definePage({
     title: '设置页',
   },
 });
-// const route = useRoute();
+const route = useRoute();
 const currentModel = ref<string>('2');
 // const isProduce = ref<boolean>(false);
 // const options = ref([
@@ -73,12 +73,12 @@ const currentModel = ref<string>('2');
 function setCurrentModel(value: string) {
   currentModel.value = value;
 }
-// onMounted(() => {
-//   nextTick(() => {
-//     const query = route.query;
-//     currentModel.value = query.currentModel;
-//   });
-// });
+onActivated(() => {
+  nextTick(() => {
+    const query = route.query;
+    currentModel.value = query.currentModel;
+  });
+});
 </script>
 
 <style scoped lang="less">

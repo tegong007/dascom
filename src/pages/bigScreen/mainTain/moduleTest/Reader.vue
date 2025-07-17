@@ -75,8 +75,9 @@ const props = defineProps({
   showKeyboard: Boolean,
   setShowKeyboard: Function,
   currentPage: String,
+  currentModel: String,
 });
-const transformValue = ref([0, -1400]);
+const transformValue = ref([0, 0]);
 const { notification } = App.useApp();
 async function transfer(url, index, readerObj, inputData) {
   try {
@@ -148,7 +149,13 @@ function onInputFocus(event, res) {
   // 获取距离上方和左方的位置
   const top = rect.bottom + rect.height + window.scrollY; // 距离页面顶部的位置
   // const left = rect.left + window.scrollX; // 距离页面左侧的位置
-  transformValue.value = [0, top - 2000];
+  if (props.currentModel === '1') {
+    transformValue.value = [0, top - 1300];
+  }
+
+  if (props.currentModel === '3') {
+    transformValue.value = [0, 0];
+  }
   // console.log('距离页面顶部的位置:', top);
   // console.log('距离页面左侧的位置:', left);
 }

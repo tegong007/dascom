@@ -4,6 +4,17 @@
       <span>喷墨打印位置调整</span>
     </div>
     <div class="box-border flex flex-col">
+      <div v-show="showKeyboard">
+        <SimpleKeyboard
+          ref="simpleKeyboard"
+          :input="cursorPosition?.target.value"
+          keyboard-width="w32%"
+          :layout="layout"
+          :max-length="layout === 'num' ? 5 : 6"
+          @on-change="onChangeKeyboard"
+          @closekeyboard="closekeyboard"
+        />
+      </div>
       <section class="position-box w-full flex">
         <div class="w50% flex flex-col flex-1 pl-20">
           <div>主副页（平台1）</div>
@@ -20,7 +31,7 @@
                     class="m-r-10 w-150px"
                     size="large"
                     :maxlength="6"
-                    @click="
+                    @touchstart="
                       onInputFocus($event, 'PostionData.uvMainPlatform0.x')
                     "
                   /><span class="text-gray">mm</span>
@@ -218,7 +229,7 @@
                       class="m-r-10 w-150px"
                       size="large"
                       :maxlength="5"
-                      @click="onInputFocus($event, `platform0.${index}.x`)"
+                      @touchstart="onInputFocus($event, `platform0.${index}.x`)"
                     /><span class="text-gray">0.001mm</span>
                   </td>
                 </tr>
@@ -233,7 +244,7 @@
                       class="m-r-10 w-150px"
                       :maxlength="5"
                       size="large"
-                      @click="onInputFocus($event, `platform0.${index}.y`)"
+                      @touchstart="onInputFocus($event, `platform0.${index}.y`)"
                     /><span class="text-gray">0.001mm</span>
                   </td>
                 </tr>
@@ -269,7 +280,7 @@
                       :maxlength="5"
                       class="m-r-10 w-150px"
                       size="large"
-                      @click="onInputFocus($event, `platform1.${index}.x`)"
+                      @touchstart="onInputFocus($event, `platform1.${index}.x`)"
                     /><span class="text-gray">0.001mm</span>
                   </td>
                 </tr>
@@ -284,7 +295,7 @@
                       :maxlength="5"
                       class="m-r-10 w-150px"
                       size="large"
-                      @click="onInputFocus($event, `platform1.${index}.y`)"
+                      @touchstart="onInputFocus($event, `platform1.${index}.y`)"
                     /><span class="text-gray">0.001mm</span>
                   </td>
                 </tr>
@@ -448,17 +459,7 @@
       :handle-cancel="() => setSuccessOpen(false)"
       title="设置密码"
     />
-    <div v-show="showKeyboard">
-      <SimpleKeyboard
-        ref="simpleKeyboard"
-        :input="cursorPosition?.target.value"
-        keyboard-width="w32%"
-        :layout="layout"
-        :max-length="layout === 'num' ? 5 : 6"
-        @on-change="onChangeKeyboard"
-        @closekeyboard="closekeyboard"
-      />
-    </div>
+
     <contextHolder />
   </div>
 </template>
@@ -896,13 +897,14 @@ function closekeyboard() {
 watch(
   () => props.currentModel,
   () => {
+    console.log('🚀 ~  props.currentModel:', props.currentModel);
     showKeyboard.value = false;
     getData();
   },
   { deep: true, immediate: true },
 );
 onDeactivated(() => {
-  // showKeyboard.value = false;
+  showKeyboard.value = false;
 });
 </script>
 
