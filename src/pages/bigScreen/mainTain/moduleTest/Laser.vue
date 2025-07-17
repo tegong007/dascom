@@ -120,9 +120,13 @@ async function transfer(url, laserObj) {
     const params = {
       transURI: url,
       paraIn: {
-        objs: [{ deviceIndex: laserObj.deviceIndex, dev: laserObj.dev }],
+        objs:
+          url !== '/lpdps/emergency-stop'
+            ? laserObj
+            : [{ deviceIndex: laserObj.deviceIndex, dev: laserObj.dev }],
       },
     };
+    console.log('🚀 ~ transfer ~ params:', params);
     const data = await getApiTransfer(params);
     if (data.rslts[0].code !== 0) {
       notification.error({

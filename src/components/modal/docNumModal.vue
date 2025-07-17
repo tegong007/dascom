@@ -233,7 +233,7 @@ function onSubmit() {
     .validate()
     .then(() => {
       console.log('🚀 ~ .then ~ then:');
-      // props.handleOk(formState.num);
+      props.handleOk(formState.num);
     })
     .catch((error) => {
       console.log('error', error);
