@@ -70,7 +70,7 @@
               class="btn ml10 w80px hover:text-[#89f7ff]!"
               @click="clearAll"
             >
-              清空
+              重置
             </a-button>
           </div>
         </a-col>
