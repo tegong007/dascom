@@ -13,7 +13,7 @@
           <img src="@/assets/image/bigScreen/btn/huifu.svg" class="mr7 w12px">
           刷新
         </a-button>
-        <a-button
+        <!-- <a-button
           type="primary"
           class="btn flex items-center"
           @click="rowAction('reset')"
@@ -31,7 +31,25 @@
             class="m-r-7 w12px"
           >
           挂起
-        </a-button>
+        </a-button> -->
+        <a-dropdown>
+          <template #overlay>
+            <a-menu @click="handleMenuClick">
+              <a-menu-item :key="0">
+                挂起
+              </a-menu-item>
+              <a-menu-item :key="1">
+                重新生产
+              </a-menu-item>
+              <!-- <a-menu-item :key="2"> 设为成功 </a-menu-item>
+              <a-menu-item :key="3"> 设为失败 </a-menu-item> -->
+            </a-menu>
+          </template>
+          <a-button class="btn flex items-center">
+            批量操作
+            <DownOutlined />
+          </a-button>
+        </a-dropdown>
       </a-space>
     </div>
 
@@ -92,7 +110,7 @@ import { TaskModule } from '@/apis/proApi';
 import { contextHolder, openNotify } from '@/components/base/useNotification';
 import TheModal from '@/components/modal/TheModal.vue';
 import { useAppStore } from '@/store/index';
-import { RollbackOutlined } from '@ant-design/icons-vue';
+import { DownOutlined } from '@ant-design/icons-vue';
 import { defineProps, reactive } from 'vue';
 import TaskCard from './card.vue';
 import TeamForm from './task-form.vue';
@@ -103,6 +121,18 @@ const props = defineProps({
   docTaskId: String,
   changeTaskIdOrBatchId: Function,
 });
+const title: {
+  [key: string]: string;
+} = {
+  0: '挂起',
+  1: '重新生产',
+  2: '设为成功',
+  3: '设为失败',
+};
+const handleMenuClick: MenuProps['onClick'] = (e) => {
+  rowAction(e.key);
+};
+
 const pageVO = reactive({
   total: 20,
   currentPage: 1,
@@ -123,18 +153,18 @@ function setSearchForm(formValue: object) {
   pageVO.currentPage = 1;
   getDataPage();
 }
-function rowAction(type: string, taskID: string) {
-  modal.value = type;
+function rowAction(type: string, taskID?: string) {
+  modal.value = title[type];
   checkRow.value = !taskID ? checkRow.value : [{ taskID }];
   nextTick(() => {
     if (checkRow.value.length === 0 && oldCheckedRow.value.length === 0) {
       openNotify('bottomRight', `您还没有选中数据`);
     }
     if (checkRow.value.length || oldCheckedRow.value.length) {
-      modal.value = `可能含有不能${type === 'stop' ? '挂起' : '重新生产'}的数据，是否继续${type === 'stop' ? '挂起' : '重新生产'}${
+      modal.value = `可能含有不能${title[type]}的数据，是否继续${title[type]}${
         checkRow.value.length
       }条数据?`;
-      isReset.value = type === 'stop' ? 0 : 1;
+      isReset.value = type;
       open.value = true;
     }
   });
