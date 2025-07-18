@@ -37,9 +37,9 @@
             <a-form-item label="进本数" name="num">
               <a-input
                 v-model:value="formState.num"
-                :placeholder="`（0-${oldData}）`"
+                :placeholder="`（1-${oldData}）`"
                 :maxlength="4"
-                @touchstart="onInputFocus($event, 'num')"
+                @click="onInputFocus($event, 'num')"
               />
             </a-form-item>
           </a-form>
@@ -102,35 +102,18 @@ async function validatePass(_rule, value) {
   if (value > oldData.value) {
     return Promise.reject(`最大可进本数${oldData.value}`);
   }
+  else if (value === '' || value === '0' || value === undefined) {
+    return Promise.reject('请输入正整数');
+  }
+  else if (!/^\d*$/.test(value)) {
+    return Promise.reject('请输入正整数');
+  }
   else {
-    if (value === '' || value === undefined) {
-      return Promise.reject('不能为空');
-    }
-    // if (formState.num !== '') {
-    //   formRef.value.validateFields('num');
-    // }else{
-
-    // }
     return Promise.resolve();
   }
-  // 最大值是oldData.value
-  // if (oldData.value < 2000) {
-  //   if (value > oldData.value) {
-  //     return Promise.reject('最大可进本数' + oldData.value);
-  //   }else{
-
-  //   }
-  // }
 }
 const rules = {
   num: [
-    // { required: true, message: '请输入进本数', trigger: ['blur', 'change'] },
-
-    // {
-    //   pattern: /^(?:[1-9]|[1-9]\d{1,2}|1\d{3}|2000)$/,
-    //   message: '请输入1到2000的正整数',
-    //   trigger: ['blur', 'change'],
-    // },
     {
       required: true,
       validator: validatePass,
@@ -141,28 +124,6 @@ const rules = {
 const formState: UnwrapRef<FormState> = reactive({
   num: '1',
 });
-
-// function validateInput(event) {
-//   // 获取输入框的值
-//   let value = event.target.value;
-//   // 使用正则表达式限制输入为1到99的正整数
-//   const regex = /^(?:[1-9]|[1-9]\d{1,2}|1\d{3}|2000)$/; // 匹配1到2000的正整数
-//   // 如果输入不符合正则表达式，重置为上一次有效的值
-//   if (!regex.test(value)) {
-//     if (Number(value) >= 2000) {
-//       formState.num = value = '2000';
-//     } else {
-//       // 如果输入无效，清空输入框或设置为默认值
-//       formState.num = value = '';
-//     }
-//   } else {
-//     // 如果输入有效，更新绑定的值
-//     formState.num = value;
-//   }
-
-//   // 更新输入框的值
-//   event.target.value = value;
-// }
 
 const showKeyboard = ref(false); // 键盘默认隐藏
 const simpleKeyboard = ref(null);
@@ -179,6 +140,7 @@ function onChangeKeyboard(input, keyboard) {
   if (caretPosition !== null)
     setInputCaretPosition(cursorPosition.value, caretPosition);
   const Newvalue = input;
+  console.log('🚀 ~ onChangeKeyboard ~ input:', typeof input);
 
   // 更新输入框的值
   formState[changeIpt.value] = Newvalue;

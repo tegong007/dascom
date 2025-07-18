@@ -96,7 +96,7 @@
       </a-button>
     </section>
     <!-- 卡槽操作 -->
-    <div class="m-t-1.5em bg-[#fff]/[0.4] p-y-5px p-l-0.5em">
+    <!-- <div class="m-t-1.5em bg-[#fff]/[0.4] p-y-5px p-l-0.5em">
       <span>卡槽操作</span>
     </div>
     <section class="p-l-3em p-t-1em">
@@ -138,20 +138,20 @@
       >
         松开
       </a-button>
-    </section>
+    </section> -->
     <contextHolder />
   </div>
 </template>
 
 <script lang="ts" setup>
 import type { NotificationPlacement } from 'ant-design-vue';
-import { notification } from 'ant-design-vue';
-import { useAppStore } from '@/store/index';
 import {
   getApiTransfer,
   initMachine,
   startOrStopPrintTask,
 } from '@/apis/webApi';
+import { useAppStore } from '@/store/index';
+import { notification } from 'ant-design-vue';
 
 // const props = defineProps({
 //   isProduce: Boolean,
@@ -288,25 +288,23 @@ async function stopTask() {
     useAppStore().setSpinning(false);
   }
 }
-async function grooveOperate(grooveID: number, operate: number) {
-  try {
-    useAppStore().setSpinning(true);
-    // await sendDoc();
-    const params = {
-      transURI: `/doc-machine/groove-operate`,
-      paraIn: { grooveID, operate },
-    };
-    await getApiTransfer(params);
-    openNotify('bottomRight', '操作成功', 'success');
-  }
-  catch (error) {
-    error;
-    openNotify('bottomRight', '卡槽操作失败');
-  }
-  finally {
-    useAppStore().setSpinning(false);
-  }
-}
+// async function grooveOperate(grooveID: number, operate: number) {
+//   try {
+//     useAppStore().setSpinning(true);
+//     // await sendDoc();
+//     const params = {
+//       transURI: `/doc-machine/groove-operate`,
+//       paraIn: { grooveID, operate },
+//     };
+//     await getApiTransfer(params);
+//     openNotify('bottomRight', '操作成功', 'success');
+//   } catch (error) {
+//     error;
+//     openNotify('bottomRight', '卡槽操作失败');
+//   } finally {
+//     useAppStore().setSpinning(false);
+//   }
+// }
 // watch(
 //   () => props.isProduce,
 //   (newValue) => {

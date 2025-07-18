@@ -225,7 +225,7 @@
                   <td>
                     <a-input
                       v-model:value="item.x"
-                      placeholder="0-10000"
+                      placeholder="0-30000"
                       class="m-r-10 w-150px"
                       size="large"
                       :maxlength="5"
@@ -240,7 +240,7 @@
                   <td>
                     <a-input
                       v-model:value="item.y"
-                      placeholder="0-1200"
+                      placeholder="0-30000"
                       class="m-r-10 w-150px"
                       :maxlength="5"
                       size="large"
@@ -748,17 +748,17 @@ async function BtnClick(key: string) {
 
             // 校验 x
             const xNum = Number.parseFloat(xStr);
-            if (Number.isNaN(xNum) || xNum < 0 || xNum > 10000) {
+            if (Number.isNaN(xNum) || xNum < 0 || xNum > 30000) {
               throw new Error(
-                `喷墨定位基准:${item.position} X轴范围是（0-10000）`,
+                `喷墨定位基准:${item.position} X轴范围是（0-30000）`,
               );
             }
 
             // 校验 y
             const yNum = Number.parseFloat(yStr);
-            if (Number.isNaN(yNum) || yNum < 0 || yNum > 10000) {
+            if (Number.isNaN(yNum) || yNum < 0 || yNum > 30000) {
               throw new Error(
-                `喷墨定位基准:${item.position} Y轴范围是（0-10000）`,
+                `喷墨定位基准:${item.position} Y轴范围是（0-30000）`,
               );
             }
 

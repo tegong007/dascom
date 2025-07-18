@@ -4,8 +4,9 @@
     :open="props.open"
     wrap-class-name="test"
     :closable="false"
-
-    centered force-render destroy-on-close
+    centered
+    force-render
+    destroy-on-close
     @ok="props.handleOk"
   >
     <div class="delete-modal box-border h-[25em] p-t-50px">
@@ -33,9 +34,8 @@
                     v-model:value="formState.num"
                     placeholder="请输入数字（1-2000）"
                     class="w-full"
-                    :maxlength="4"
-                    @input="validateInput"
-                    @touchstart="onInputFocus($event, 'num')"
+                    type="text"
+                    @click="onInputFocus($event, 'num')"
                   />
                 </a-form-item>
               </a-col>
@@ -58,17 +58,6 @@
               </a-col>
             </a-row>
           </a-form>
-          <div v-show="showKeyboard">
-            <SimpleKeyboard
-              ref="simpleKeyboard"
-              keyboard-width="w20%"
-              layout="num"
-              :max-length="4"
-              :input="formState[changeIpt]"
-              @on-change="onChangeKeyboard"
-              @closekeyboard="closekeyboard"
-            />
-          </div>
         </div>
       </div>
     </div>
@@ -84,7 +73,20 @@
         />
       </a-flex>
     </template>
+    <div v-show="showKeyboard">
+      <SimpleKeyboard
+        ref="simpleKeyboard"
+        keyboard-width="w30%"
+        :transform="[0, -150]"
+        layout="num"
+        :max-length="4"
+        :input="formState[changeIpt]"
+        @on-change="onChangeKeyboard"
+        @closekeyboard="closekeyboard"
+      />
+    </div>
   </a-modal>
+
   <!-- </div> -->
 </template>
 
@@ -109,64 +111,35 @@ interface FormState {
   dataSource: string;
   isTeam: string;
   urgentType: string;
-  // timeRange: RangeValue;
 }
 const rules = {
   num: [
-    { required: true, message: '请输入人数', trigger: ['blur', 'change'] },
     {
-      pattern: /^(?:[1-9]|[1-9]\d{1,2}|1\d{3}|2000)$/,
-      message: '请输入1到2000的正整数',
-      trigger: ['blur', 'change'],
+      required: true,
+      validator: validatePass,
+      trigger: 'change',
     },
   ],
 };
 const formState: UnwrapRef<FormState> = reactive({
-  isTeam: 1,
   num: '1',
-  dispatchUnit: 1,
-  dataSource: 1,
   urgentType: 0,
 });
-// function teamChange(value) {
-//   if (!value) {
-//     formState.dispatchUnit = '-------';
-//     formState.dataSource = '-------';
-//     formState.urgentType = '-------';
-//   } else {
-//     formState.dispatchUnit = 1;
-//     formState.dataSource = 1;
-//     formState.urgentType = 0;
-//   }
-// }
-function validateInput(event) {
-  // 获取输入框的值
-  let value = event.target.value;
-  // 使用正则表达式限制输入为1到99的正整数
-  const regex = /^(?:[1-9]|[1-9]\d{1,2}|1\d{3}|2000)$/; // 匹配1到2000的正整数
-  // 如果输入不符合正则表达式，重置为上一次有效的值
-  if (!regex.test(value)) {
-    if (Number(value) >= 2000) {
-      formState.num = value = '2000';
-    }
-    else {
-      // 如果输入无效，清空输入框或设置为默认值
-      formState.num = value = '';
-    }
+async function validatePass(_rule, value) {
+  if (value > 2000) {
+    return Promise.reject(`最大可添加人数2000`);
+  }
+  else if (value === '' || value === '0' || value === undefined) {
+    return Promise.reject('请输入正整数');
+  }
+  else if (!/^\d*$/.test(value)) {
+    return Promise.reject('请输入正整数');
   }
   else {
-    // 如果输入有效，更新绑定的值
-    formState.num = value;
+    return Promise.resolve();
   }
+}
 
-  // 更新输入框的值
-  event.target.value = value;
-}
-function handleCancel() {
-  closekeyboard();
-  formRef.value.resetFields();
-  props.handleCancel();
-}
 // 验证通过，告诉爸爸
 function onSubmit() {
   formRef.value
@@ -189,10 +162,7 @@ function onSubmit() {
 // 弹窗表单收到要修改的值
 function updateForm(row: object) {
   formState.num = row.num;
-  formState.dispatchUnit = row.dispatchUnit;
-  formState.dataSource = row.dataSource;
   formState.urgentType = row.urgentType;
-  formState.isTeam = row.isTeam;
 }
 
 const showKeyboard = ref(false); // 键盘默认隐藏
@@ -210,25 +180,7 @@ function onChangeKeyboard(input, keyboard) {
   const caretPosition = keyboard.caretPosition;
   if (caretPosition !== null)
     setInputCaretPosition(cursorPosition.value, caretPosition);
-  let Newvalue = input;
-  // 使用正则表达式限制输入为1到99的正整数
-  const regex = /^(?:[1-9]|[1-9]\d{1,2}|1\d{3}|2000)$/; // 匹配1到2000的正整数
-  // 如果输入不符合正则表达式，重置为上一次有效的值
-  if (!regex.test(Newvalue)) {
-    if (Number(Newvalue) >= 2000) {
-      formState.num = Newvalue = '2000';
-    }
-    else {
-      // 如果输入无效，清空输入框或设置为默认值
-      formState.num = Newvalue = '';
-    }
-  }
-  else {
-    // 如果输入有效，更新绑定的值
-    formState.num = Newvalue;
-  }
-  // 更新输入框的值
-  formState[changeIpt.value] = Newvalue;
+  formState.num = input;
 }
 function setInputCaretPosition(elem, pos) {
   setTimeout(() => {
@@ -240,6 +192,12 @@ function setInputCaretPosition(elem, pos) {
 }
 function closekeyboard() {
   showKeyboard.value = false;
+}
+function handleCancel() {
+  closekeyboard();
+  formRef.value.resetFields();
+  changeIpt.value = '';
+  props.handleCancel();
 }
 defineExpose({
   updateForm,
