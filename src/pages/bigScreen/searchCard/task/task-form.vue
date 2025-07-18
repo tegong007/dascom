@@ -6,30 +6,28 @@
       class="w-full rounded-[8px] bg-[#ffffff34] p-x-10 p-y-20"
     >
       <a-row :gutter="24">
-        <a-col :span="8" />
-        <a-col :span="8">
+        <a-col :span="6" />
+        <a-col :span="6">
           <a-form-item label="任务号" name="taskID">
             <a-input
               v-model:value="formState.taskID"
-              placeholder="请输入任务号"
               :maxlength="30"
               allow-clear
               @touchstart="onInputFocus($event, 'taskID')"
             />
           </a-form-item>
         </a-col>
-        <a-col :span="8">
+        <a-col :span="6">
           <a-form-item label="批次号" name="batchID">
             <a-input
               v-model:value="formState.batchID"
-              placeholder="请输入批次号"
               :maxlength="30"
               allow-clear
               @touchstart="onInputFocus($event, 'batchID')"
             />
           </a-form-item>
         </a-col>
-        <a-col :span="8">
+        <a-col :span="6">
           <a-form-item label="状态" name="status">
             <a-select v-model:value="formState.status" class="w-200px">
               <a-select-option
@@ -42,7 +40,15 @@
             </a-select>
           </a-form-item>
         </a-col>
-        <a-col :span="8" />
+        <a-col :span="10">
+          <a-form-item label="日期" name="dataRange">
+            <a-range-picker
+              v-model:value="formState.dataRange"
+              value-format="YYYY-MM-DD"
+              input-read-only
+            />
+          </a-form-item>
+        </a-col>
       </a-row>
       <a-row :gutter="24">
         <a-col :span="6">
@@ -104,6 +110,7 @@ const formState: UnwrapRef<FormState> = reactive({
   batchID: '',
   taskID: '',
   status: null,
+  dataRange: [null, null],
 });
 function setTaskID(value: string) {
   formState.taskID = value;

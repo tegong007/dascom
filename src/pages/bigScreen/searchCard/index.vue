@@ -5,7 +5,7 @@
       class="absolute left-100 top-126 z-99 flex items-center justify-between text-16px"
     >
       <span>搜索类型：</span>
-      <a-select v-model:value="choose" class="w180px" @change="changeChoose">
+      <a-select v-model:value="choose" class="w130px" @change="changeChoose">
         <a-select-option :value="1">
           任务
         </a-select-option>

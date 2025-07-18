@@ -44,7 +44,7 @@
               "
             >所属任务号：{{ item.taskID }}</a>
             <span>所属批次号：{{ item.batchID }}</span>
-            <span>证件号：{{ item.docID }}</span>
+            <span>证本号：{{ item.docID }}</span>
           </div>
           <div class="w-full flex justify-between">
             <span>证件类型：{{ formatterValue(item.idType, 'idType') }}</span>
